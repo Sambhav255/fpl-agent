@@ -188,9 +188,7 @@ def ingest_bundle(payload: bytes, output: Path) -> dict[str, Any]:
 
 
 def lagged_summary(history: list[dict[str, Any]]) -> dict[str, float]:
-    valid = [
-        r for r in history if known_number(r.get("minutes")) and known_number(r.get("points"))
-    ]
+    valid = [r for r in history if known_number(r.get("minutes")) and known_number(r.get("points"))]
     recent = valid[-5:]
     exposure = sum(float(r["minutes"]) for r in valid)
 

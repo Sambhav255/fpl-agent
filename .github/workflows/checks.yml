@@ -1,0 +1,74 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.3"
+          python-version: "3.12"
+          enable-cache: true
+      - name: Install locked dependencies
+        run: |
+          uv sync --locked --project backend
+          npm ci --prefix apps/web
+          cd apps/web && npx playwright install --with-deps chromium
+      - name: Backend checks
+        working-directory: backend
+        run: |
+          uv run pytest
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run mypy src
+      - name: Frontend checks and build
+        working-directory: apps/web
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm run test
+          npm run build
+      - name: Start API and worker
+        run: |
+          mkdir -p /tmp/fpl-ci
+          (cd backend && uv run uvicorn fpl_app.api.main:app --host 127.0.0.1 --port 8000) > /tmp/fpl-ci/api.log 2>&1 &
+          (cd backend && uv run python -m fpl_app.jobs.worker) > /tmp/fpl-ci/worker.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8000/api/v1/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/fpl-ci/api.log
+          exit 1
+      - name: Browser and persistence checks
+        env:
+          E2E_SERVER_COMMAND: npm run start
+        run: |
+          cd apps/web
+          npm run test:e2e
+          cd ../..
+          python3 scripts/smoke.py
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-diagnostics
+          path: |
+            apps/web/playwright-report/
+            apps/web/test-results/
+            /tmp/fpl-ci/
+          retention-days: 7

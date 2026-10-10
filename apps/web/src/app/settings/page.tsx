@@ -1,2 +1,4 @@
 import Dashboard from "../../components/dashboard";
-export default function Page() { return <Dashboard section="settings" />; }
+export default function Page() {
+  return <Dashboard section="settings" />;
+}

@@ -243,16 +243,22 @@ def validate_plan(
         or not isclose(plan.delta_to_baseline, plan.net_points - baseline.net_points, abs_tol=1e-7)
     ):
         errors.append("Hit budget or delta mismatch")
-    if plan.weeks and plan.this_week_net is not None and (
-        not isfinite(plan.this_week_net)
-        or not isclose(plan.this_week_net, float(plan.weeks[0]["net_points"]), abs_tol=1e-7)
+    if (
+        plan.weeks
+        and plan.this_week_net is not None
+        and (
+            not isfinite(plan.this_week_net)
+            or not isclose(plan.this_week_net, float(plan.weeks[0]["net_points"]), abs_tol=1e-7)
+        )
     ):
         errors.append("This week net mismatch")
     if plan.this_week_delta is not None:
         if baseline is None:
             expected_delta = 0.0
         else:
-            expected_delta = float(plan.weeks[0]["net_points"]) - float(baseline.weeks[0]["net_points"])
+            expected_delta = float(plan.weeks[0]["net_points"]) - float(
+                baseline.weeks[0]["net_points"]
+            )
         if not isfinite(plan.this_week_delta) or not isclose(
             plan.this_week_delta, expected_delta, abs_tol=1e-7
         ):

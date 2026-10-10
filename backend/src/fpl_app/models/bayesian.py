@@ -271,7 +271,7 @@ def train_bayesian(
     checksum = hashlib.sha256(dataset.read_bytes()).hexdigest()
     run_id = fingerprint({"dataset": checksum, "seed": seed, "draws": draws, "tune": tune})[:24]
     published = output / "bayesian" / run_id
-    from .publication import open_model_run, publish_model_run, reuse_model_run
+    from .publication import open_model_run, publication_timing, publish_model_run, reuse_model_run
 
     if reuse_model_run(published, checksum):
         diagnostics = json.loads((published / "diagnostics.json").read_text())
@@ -308,6 +308,7 @@ def train_bayesian(
             "dataset_sha256": checksum,
             "replay_timing": audit["replay_timing"],
             "model_status": "trained",
+            **publication_timing(train),
             "artifacts": artifacts,
             "seed": seed,
             "limitations": diagnostics["limitations"],

@@ -1,10 +1,6 @@
 import type { Pick as SquadPick, Plan } from "../../lib/api/client";
 import type { components } from "../../lib/api/schema";
-import {
-  ESTIMATE_PROVENANCE,
-  type PlannerSettings,
-  type PriceSuggestion,
-} from "./types";
+import { ESTIMATE_PROVENANCE, type PlannerSettings, type PriceSuggestion } from "./types";
 
 export type Fixture = components["schemas"]["Fixture"];
 
@@ -16,7 +12,10 @@ export type SalePick = {
   selling_price_provenance?: string | null;
 };
 
-export function remainingFreeTransfers(free: number | null | undefined, made: number | null | undefined): number | null {
+export function remainingFreeTransfers(
+  free: number | null | undefined,
+  made: number | null | undefined,
+): number | null {
   if (free == null || made == null) return null;
   if (!Number.isInteger(free) || !Number.isInteger(made)) return null;
   return Math.max(0, free - made);
@@ -40,7 +39,11 @@ export function transferSettings(input: {
   };
 }
 
-export function countFromSettings(maxTransfers: number | null | undefined, remaining: number | null, allowHit: boolean): number | null {
+export function countFromSettings(
+  maxTransfers: number | null | undefined,
+  remaining: number | null,
+  allowHit: boolean,
+): number | null {
   if (remaining == null) return null;
   if (maxTransfers == null) return remaining;
   return Math.min(remaining, Math.max(0, maxTransfers - (allowHit ? 1 : 0)));
@@ -48,7 +51,8 @@ export function countFromSettings(maxTransfers: number | null | undefined, remai
 
 export function pickSaleConfirmed(pick: SalePick): boolean {
   if (pick.selling_price_provenance === ESTIMATE_PROVENANCE) return false;
-  if (pick.selling_price_units != null && CONFIRMED_SALE.has(pick.selling_price_provenance || "")) return true;
+  if (pick.selling_price_units != null && CONFIRMED_SALE.has(pick.selling_price_provenance || ""))
+    return true;
   return pick.purchase_price_units != null;
 }
 
@@ -59,7 +63,8 @@ export function transferSearchAllowed(input: {
   hits: number | null | undefined;
   picks: SalePick[];
 }): boolean {
-  if (input.bank == null || input.free == null || input.made == null || input.hits == null) return false;
+  if (input.bank == null || input.free == null || input.made == null || input.hits == null)
+    return false;
   return input.picks.length > 0 && input.picks.every(pickSaleConfirmed);
 }
 
@@ -88,8 +93,8 @@ export type PriceDecision = {
 
 /** Blank rows stay as they are. Rejected rows return to unknown. An estimate is not saved here. */
 export function applyAcceptedPrices(picks: SquadPick[], decisions: PriceDecision[]): SquadPick[] {
-  const byId = new Map(decisions.map(decision => [decision.player_id, decision]));
-  return picks.map(pick => {
+  const byId = new Map(decisions.map((decision) => [decision.player_id, decision]));
+  return picks.map((pick) => {
     const decision = byId.get(pick.player_id);
     if (!decision) return pick;
     if (decision.rejected) {
@@ -107,7 +112,10 @@ export function applyAcceptedPrices(picks: SquadPick[], decisions: PriceDecision
       return {
         ...pick,
         purchase_price_units: decision.units,
-        selling_price_provenance: pick.selling_price_provenance === ESTIMATE_PROVENANCE ? "user_confirmed" : pick.selling_price_provenance,
+        selling_price_provenance:
+          pick.selling_price_provenance === ESTIMATE_PROVENANCE
+            ? "user_confirmed"
+            : pick.selling_price_provenance,
       };
     }
     return {
@@ -119,9 +127,13 @@ export function applyAcceptedPrices(picks: SquadPick[], decisions: PriceDecision
   });
 }
 
-export function withSellMarket(picks: SquadPick[], marketUnits: (playerId: number) => number | null): SquadPick[] {
-  return picks.map(pick => {
-    if (pick.selling_price_provenance !== "user_confirmed" || pick.selling_price_units == null) return pick;
+export function withSellMarket(
+  picks: SquadPick[],
+  marketUnits: (playerId: number) => number | null,
+): SquadPick[] {
+  return picks.map((pick) => {
+    if (pick.selling_price_provenance !== "user_confirmed" || pick.selling_price_units == null)
+      return pick;
     return { ...pick, selling_price_market_units: marketUnits(pick.player_id) };
   });
 }
@@ -129,19 +141,25 @@ export function withSellMarket(picks: SquadPick[], marketUnits: (playerId: numbe
 export function parseSuggestions(payload: unknown): PriceSuggestion[] {
   const rows = Array.isArray(payload)
     ? payload
-    : payload && typeof payload === "object" && Array.isArray((payload as { suggestions?: unknown }).suggestions)
+    : payload &&
+        typeof payload === "object" &&
+        Array.isArray((payload as { suggestions?: unknown }).suggestions)
       ? (payload as { suggestions: unknown[] }).suggestions
       : [];
-  return rows.flatMap(row => {
+  return rows.flatMap((row) => {
     if (!row || typeof row !== "object") return [];
     const record = row as Record<string, unknown>;
     if (typeof record.player_id !== "number") return [];
-    return [{
-      player_id: record.player_id,
-      purchase_price_units: typeof record.purchase_price_units === "number" ? record.purchase_price_units : null,
-      selling_price_units: typeof record.selling_price_units === "number" ? record.selling_price_units : null,
-      provenance: typeof record.provenance === "string" ? record.provenance : ESTIMATE_PROVENANCE,
-    }];
+    return [
+      {
+        player_id: record.player_id,
+        purchase_price_units:
+          typeof record.purchase_price_units === "number" ? record.purchase_price_units : null,
+        selling_price_units:
+          typeof record.selling_price_units === "number" ? record.selling_price_units : null,
+        provenance: typeof record.provenance === "string" ? record.provenance : ESTIMATE_PROVENANCE,
+      },
+    ];
   });
 }
 
@@ -156,7 +174,8 @@ export function formatDeadline(value: unknown, timeZone?: string): string {
     hourCycle: "h23",
     timeZone,
   }).formatToParts(new Date(value));
-  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find(item => item.type === type)?.value ?? "";
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((item) => item.type === type)?.value ?? "";
   const clock = `${part("hour")}:${part("minute")}`;
   if (!part("weekday") || !part("day") || !part("month") || clock === ":") return "Unknown";
   return `${part("weekday")} ${part("day")} ${part("month")}, ${clock}`;
@@ -175,5 +194,8 @@ export function weekNet(plan: Plan | null | undefined, index = 0): number | null
 export function planGains(plan: Plan, keep: Plan): { thisWeek: number | null; horizon: number } {
   const current = weekNet(plan);
   const baseline = weekNet(keep);
-  return { thisWeek: current != null && baseline != null ? current - baseline : null, horizon: plan.delta_to_baseline };
+  return {
+    thisWeek: current != null && baseline != null ? current - baseline : null,
+    horizon: plan.delta_to_baseline,
+  };
 }

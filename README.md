@@ -1,70 +1,61 @@
 # FPL Assistant
 
-Personal local Fantasy Premier League recommendation tool. Next.js interface, FastAPI API, SQLite state, separate recoverable worker, immutable source snapshots, and Parquet modelling artifacts. Transfers and chips are performed manually on the official FPL site.
+A local Fantasy Premier League strategy workspace for squad review, projections, legal transfer comparisons, chip planning, and saved plans. Built with Next.js, TypeScript, FastAPI, SQLite, and a recoverable Python worker.
 
-## Install
+## Capabilities
 
-Requires Node 22 (tested 22.13.1), npm, Python 3.12, and uv.
+- Import published public team picks or explore a clearly labelled synthetic demo.
+- Correct manager state, distinguish purchase/current/selling prices, and preserve unknown finances.
+- Compare keeping the squad with legal transfers across up to eight gameweeks.
+- Select a lineup, captain, vice captain, and bench; inspect chip timing and save versioned plans.
+- Track immutable source snapshots, background jobs, and prediction provenance.
+
+The approximate baseline is active. CatBoost, Bayesian events, TFT, and ensemble pipelines are implemented to varying degrees; advanced model activation still requires verified historical data and chronological evaluation. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
+
+## Quick start
+
+Requires Node.js 22, Python 3.12, npm, and [uv](https://docs.astral.sh/uv/).
 
 ```sh
-cd backend
-uv sync --locked
-cd ../apps/web
-npm ci
-npx playwright install chromium
-cd ../..
-```
-
-## Run locally
-
-```sh
+(cd backend && uv sync --locked)
+(cd apps/web && npm ci)
 bash scripts/dev.sh
 ```
 
-Open http://127.0.0.1:3000. API documentation: http://127.0.0.1:8000/docs. Ctrl-C stops the interface, API, and worker.
+- Interface: http://127.0.0.1:3000
+- API documentation: http://127.0.0.1:8000/docs
 
-Processes can also be run in separate terminals:
+The launcher starts the interface, API, and worker. Ctrl-C stops all three. For a personal default, set `NEXT_PUBLIC_DEFAULT_TEAM_ID=YOUR_PUBLIC_TEAM_ID` in ignored `apps/web/.env.local`. The app loads saved state rather than reimporting it, and a deliberate demo selection remains available. Local defaults work without an environment file; [.env.example](.env.example) documents configuration. Store runtime environment values in the service's `.env.local` or export them in the shell as appropriate; the Python services use exported environment variables.
 
-```sh
-cd backend
-uv run uvicorn fpl_app.api.main:app --host 127.0.0.1 --port 8000
+Import a public team ID or load the demo, review the state, generate projections, compare alternatives, and save a plan. Public picks may reflect the last deadline rather than a manager's current private squad. Unconfirmed selling prices, bank, free transfers, or chip state block affected transfer recommendations while lineup analysis remains available.
+
+## Repository
+
+```text
+apps/web/       Next.js interface, generated API types, unit and browser tests
+backend/        FastAPI, providers, rules, optimiser, models, worker and tests
+docs/           Specifications, contracts, decisions and current build status
+scripts/        Local service launcher and integration checks
+data/           Local database, snapshots and model artifacts (Git ignored)
 ```
 
-```sh
-cd backend
-uv run python -m fpl_app.jobs.worker
-```
+Original build-kit specifications remain at the root; working specifications are indexed in [docs/README.md](docs/README.md).
+
+## Development checks
 
 ```sh
-cd apps/web
-npm run dev
+(cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check . && uv run mypy src)
+(cd apps/web && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build)
+(cd apps/web && npx playwright install chromium && npm run test:e2e)
+python3 scripts/smoke.py
 ```
 
-## Workflow
-
-Load the clearly labelled synthetic demo or import a public team ID. Public picks describe a deadline squad and can miss recent changes. Review and correct ownership, bank, purchase/selling prices, free transfers, transfers already made, committed hits, and chip inventory. Unknown financial fields stay unknown; lineup analysis is useful, transfer recommendations require confirmation. Generate projections, compare Keep with valid moves, inspect weekly lineup/captain/bench, and save a plan. No account credentials are needed.
-
-Baseline forecasts are approximate and have no calibrated confidence intervals. Advanced model status must be backed by genuine artifacts and chronological evaluation. Plans retain source/forecast/state versions; changed inputs mark them stale.
-
-## Checks
+Browser and integration tests require the API and worker to be running. Demo tests use synthetic team 0. The optional live check preserves existing local corrections:
 
 ```sh
-cd backend
-uv run pytest
-uv run ruff check .
-uv run mypy src
-cd ../apps/web
-npm run lint
-npm run typecheck
-npm run test
-npm run build
-npm run test:e2e
+python3 scripts/live_smoke.py --team-id YOUR_PUBLIC_TEAM_ID
 ```
 
-With the actual API and worker running, `python3 scripts/smoke.py` from the root checks the offline demo through persisted plans. Final verification results and exact remaining work are recorded in [docs/BUILD_STATUS.md](docs/BUILD_STATUS.md).
+For a separate production build, use `NEXT_BUILD_DIR=.next-production npm run build`, then `NEXT_BUILD_DIR=.next-production npm run start -- --port 3001` from `apps/web`. Browser tests can target it with `E2E_BASE_URL=http://127.0.0.1:3001 npm run test:e2e`.
 
-## Specifications
-
-The original root Markdown specifications are preserved; individual working copies are in docs. See [docs/DECISIONS.md](docs/DECISIONS.md) for implementation choices and [docs/CONTRACTS.md](docs/CONTRACTS.md) for shared integration contracts.
-
-The local baseline application is running and verified; the complete advanced-model release remains incomplete. Review fixes for missing statistics, availability labels, TFT deadline encoders, audit binding, and immutable model publication are in the code. Strict activation is still blocked: it needs a deadline-verified source bundle, held-out comparison, and explicit promotion. Continue from [docs/CURSOR_HANDOFF.md](docs/CURSOR_HANDOFF.md) and [docs/BUILD_STATUS.md](docs/BUILD_STATUS.md). Do not treat implemented training pipelines as trained or activated models.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting, API generation, optional model dependencies, and Git preparation. Latest checks and remaining work are recorded in [docs/BUILD_STATUS.md](docs/BUILD_STATUS.md).

@@ -225,12 +225,15 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
             ),
         }
 
-    def persist(state: ManagerState) -> ManagerState:
-        try:
-            previous = database.get("state", state.team_id)
-            version = previous["state_version"]
-        except KeyError:
-            version = 0
+    def persist(state: ManagerState, expected_version: int | None = None) -> ManagerState:
+        if expected_version is None:
+            try:
+                previous = database.get("state", state.team_id)
+                version = previous["state_version"]
+            except KeyError:
+                version = 0
+        else:
+            version = expected_version
         state.state_version = version + 1
         database.put("state", state.team_id, state.model_dump(mode="json"), expected=version)
         return state
@@ -245,7 +248,39 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
             raise ValueError("Provide exactly one team ID or official URL")
         value = body.team_id if body.team_id is not None else body.url
         assert value is not None
-        return persist(source.import_team(value))
+        imported = source.import_team(value)
+        try:
+            existing = ManagerState.model_validate(database.get("state", imported.team_id))
+        except KeyError:
+            return persist(imported, expected_version=0)
+        if (
+            existing.data_mode != "live"
+            or imported.data_mode != "live"
+            or existing.season != imported.season
+            or existing.next_event != imported.next_event
+            or {p.player_id for p in existing.picks} != {p.player_id for p in imported.picks}
+        ):
+            raise Conflict(
+                "Public import differs from the existing season, next event or owned squad. "
+                "Existing manager state must be reviewed before replacing it; "
+                "private state has been retained."
+            )
+        existing.snapshot_id = imported.snapshot_id
+        existing.public_source_event = imported.public_source_event
+        source_prefix = "Public picks source snapshot: "
+        existing.warnings = list(
+            dict.fromkeys(
+                [w for w in existing.warnings if not w.startswith(source_prefix)]
+                + [w for w in imported.warnings if w.startswith(source_prefix)]
+                + [
+                    (
+                        "Public deadline picks may differ from the current private squad or lineup; "
+                        "existing private corrections have been preserved."
+                    )
+                ]
+            )
+        )
+        return persist(existing, expected_version=existing.state_version)
 
     @app.get(prefix + "/teams/{team_id}/state", response_model=ManagerState)
     def get_state(team_id: int) -> ManagerState:

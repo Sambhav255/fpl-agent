@@ -9,16 +9,26 @@ def test_money_rejects_non_integer_or_negative(value):
     with pytest.raises(ValidationError):
         Pick(player_id=1, purchase_price_units=value)
 
+
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
 def test_nonfinite_forecast_rejected(value):
     with pytest.raises(ValidationError):
         Projection(player_id=1, fixture_id=1, event=1, expected_points=value, expected_minutes=60)
 
+
 def test_negative_points_allowed_but_probability_bounded():
     row = Projection(player_id=1, fixture_id=1, event=1, expected_points=-2, expected_minutes=0)
     assert row.expected_points == -2
     with pytest.raises(ValidationError):
-        Projection(player_id=1, fixture_id=1, event=1, expected_points=2, expected_minutes=60, appearance_probability=1.1)
+        Projection(
+            player_id=1,
+            fixture_id=1,
+            event=1,
+            expected_points=2,
+            expected_minutes=60,
+            appearance_probability=1.1,
+        )
+
 
 def test_unknown_money_and_availability_remain_null():
     pick = Pick(player_id=1)

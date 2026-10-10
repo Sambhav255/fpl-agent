@@ -20,11 +20,18 @@ export function AnalysisActions({
   const blocked = !hasState || busy || dirty || stale;
   return (
     <div className="planner-actions">
-      <button className="button" type="button" disabled={blocked || !transfersAllowed} onClick={onRun}>
+      <button
+        className="button"
+        type="button"
+        disabled={blocked || !transfersAllowed}
+        onClick={onRun}
+      >
         Run analysis <span aria-hidden="true">↗</span>
       </button>
       {!transfersAllowed && hasState ? (
-        <button className="button secondary" type="button" disabled={blocked} onClick={onLineup}>Run lineup only</button>
+        <button className="button secondary" type="button" disabled={blocked} onClick={onLineup}>
+          Run lineup only
+        </button>
       ) : null}
     </div>
   );
@@ -32,5 +39,9 @@ export function AnalysisActions({
 
 export function TransferGate({ reason }: { reason: string | null }) {
   if (!reason) return <p role="status">Transfer analysis can run.</p>;
-  return <p className="warning" role="status">{reason}</p>;
+  return (
+    <p className="warning" role="status">
+      {reason}
+    </p>
+  );
 }

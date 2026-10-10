@@ -1,2 +1,4 @@
-import Dashboard from "../../components/dashboard";
-export default function Page() { return <Dashboard section="models" />; }
+import ModelStatus from "../../components/model-status";
+export default function Page() {
+  return <ModelStatus />;
+}

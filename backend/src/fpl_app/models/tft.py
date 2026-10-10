@@ -31,6 +31,7 @@ def slot_panel(frame: pd.DataFrame, max_slots: int = 3) -> pd.DataFrame:
 
     return build_slot_panel(frame, max_slots)
 
+
 def fit_tft(
     panel: pd.DataFrame,
     train_end: int,
@@ -148,7 +149,7 @@ def fit_tft(
 def train_tft(dataset: Path, output: Path, seed: int = 42, max_epochs: int = 3) -> dict[str, Any]:
     import torch
 
-    from .publication import open_model_run, publish_model_run, reuse_model_run
+    from .publication import open_model_run, publication_timing, publish_model_run, reuse_model_run
 
     frame, audit = audited_panel(dataset, drop_missing_targets=False)
     if "event" not in frame.columns:
@@ -179,6 +180,7 @@ def train_tft(dataset: Path, output: Path, seed: int = 42, max_epochs: int = 3) 
             "model_family": "tft",
             "data_mode": "live",
             "model_status": "trained",
+            **publication_timing(train, validation),
             "dataset_sha256": checksum,
             "replay_timing": audit["replay_timing"],
             "seed": seed,
@@ -188,7 +190,6 @@ def train_tft(dataset: Path, output: Path, seed: int = 42, max_epochs: int = 3) 
     )
     publish_model_run(dest, published)
     return {"directory": str(published), "status": "trained", "active": False}
-
 
 
 def predict_tft(run: Path, future_panel: pd.DataFrame) -> dict[str, Any]:

@@ -6,8 +6,11 @@ import hashlib
 import json
 import os
 import shutil
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+
+import pandas as pd
 
 
 def run_staging(dest: Path) -> Path:
@@ -64,3 +67,27 @@ def reuse_model_run(dest: Path, dataset_sha256: str) -> bool:
     if meta.get("dataset_sha256") != dataset_sha256:
         raise ValueError("existing run is not bound to this dataset")
     return True
+
+
+def publication_timing(*partitions: pd.DataFrame) -> dict[str, str]:
+    """Bound new artifacts to all information used for fitting/model selection.
+
+    Availability is actual execution time, never an inferred historical deadline.
+    Untouched test outcomes must not be passed as fitting partitions.
+    """
+    timestamps = []
+    for partition in partitions:
+        for field in ("decision_cutoff", "target_available_at"):
+            if field not in partition:
+                raise ValueError("training information timestamps missing")
+            parsed = pd.to_datetime(partition[field], utc=True, errors="raise")
+            if parsed.isna().any() or not len(parsed):
+                raise ValueError("training information timestamps incomplete")
+            timestamps.append(parsed.max())
+    if not timestamps:
+        raise ValueError("no fitting partitions")
+    information = max(timestamps)
+    available = datetime.now(UTC)
+    if information.to_pydatetime() > available:
+        raise ValueError("training uses future information")
+    return {"training_cutoff": information.isoformat(), "available_at": available.isoformat()}

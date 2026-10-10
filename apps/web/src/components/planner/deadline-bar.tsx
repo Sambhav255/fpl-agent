@@ -30,7 +30,9 @@ export function DeadlineBar({
       <div>
         <p>Free transfers</p>
         <strong>{freeTransfers == null ? "Unknown" : freeTransfers}</strong>
-        <small>{transfersMade == null ? "Already made unknown" : `${transfersMade} already made`}</small>
+        <small>
+          {transfersMade == null ? "Already made unknown" : `${transfersMade} already made`}
+        </small>
       </div>
       <div>
         <p>Hit cost</p>

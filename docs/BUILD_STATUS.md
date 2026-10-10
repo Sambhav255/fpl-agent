@@ -1,70 +1,52 @@
-# Build status — Cursor handoff
+# Build status
 
-Updated 2026-10-10 after a full check of the running app and public team 6340295. Start with [CURSOR_HANDOFF.md](CURSOR_HANDOFF.md). The baseline app is running. Advanced models are not activated. No commit was made.
+Updated 2026-10-10. The baseline application is implemented and locally verified. Advanced ML-backed strategy is the remaining product priority. No advanced model is active. Git preparation does not publish the application or submit FPL actions.
 
 ## Ownership
 
-Lead: contracts/manifests/locks/generatedtypes/integration/docs. A Gibbs backend,data,jobs; B James domain/planner; C Schrodinger frontend; D Laplace features/models/evaluation. All implementation agents completed, released ownership and closed. Independent reviewer Galileo reviewed correctness/integration/leakage; lead fixed material domain/integration findings and requested final followup. No parallel application editing should continue while Cursor takes over.
+The lead owns integration, contracts, configuration, generated types, dependencies, and release checks. Earlier implementation agents completed their scoped backend, rules, frontend, and model work; independent review findings were addressed. Repository cleanup is performed in the existing checkout, preserving user changes and local data.
 
 ## Milestones
 
-| Milestone | Actual state |
-|---|---|
-|0 setup/demo|Implemented, runnable, lockeddependencies, health/demo/browser/build checked|
-|1 rules/state|Implemented, official2026/27configuration, meaningful money/transfer/scoring/chip tests|
-|2 providers/import|Implemented/cache/rawsnapshots/validatedURLs; live6340295import verified|
-|3 baseline/decisions|Implemented, actual projection→worker→legal lineup/alternatives→save/reload checked|
-|4 historical/CatBoost|Strictpipeline and actual retrospective diagnostic training/evaluation; strictdeadlineverifiedactivation blocked by source timing/deadline data|
-|5 horizon|Implemented1–8event boundedbeam/HiGHScandidates, independentlyvalidated; frozenprices/unfittedterminalpolicy and expectedautosubobjective omission disclosed|
-|6 Bayesian|Realoptionalimplementation and synthetic actualsampling smoke passed; realtraining/calibratedminutes/fullscoring/simulationintegration incomplete|
-|7 TFT/ensemble|Synthetic fit/reload passed; deadline-safe one-step encoders implemented; multiweek decoder, adapters, real training, and activation incomplete|
-|8 chips/release|Rules/transitions/inventory/persistedplans/export implemented; finaladvancedrelease and remainingacceptance incomplete|
+| Area | Current state |
+| --- | --- |
+| Local application | Next.js interface, FastAPI, SQLite and recoverable worker implemented |
+| Rules and state | Season configuration, money, formations, transfers, chip inventory, captain fallback and substitutions tested |
+| Import and providers | Validated public import, caching, immutable snapshots, manual corrections and unknown-state handling implemented |
+| Baseline decisions | Labelled projections, legal lineup, transfer comparisons, weekly plans, persistence and stale-input checks implemented |
+| Horizon planning | Up to eight events using bounded beam/HiGHS candidates; frozen prices and approximate terminal policy disclosed |
+| Historical/CatBoost | Audit/features/training/evaluation pipeline and retrospective diagnostic artifact; strict activation blocked |
+| Bayesian | Real optional sampling pipeline and strict adapter; calibrated minutes/full scoring and real evaluation incomplete |
+| TFT/ensemble | Real optional one-event fit/inference pipeline, deadline encoders and adapters; multiweek decoder, real evaluation and ensemble activation incomplete |
+| Git preparation | Source formatting, grouped ignores, documentation index, contributor guide and offline CI workflow added |
 
-## Verification actually run
+## Verification
 
-Cursor continued from the handoff on 2026-10-09 and fixed the outstanding review findings.
+Cleanup backend checks: **194 passed, 3 skipped**; Ruff lint and format checks passed; mypy passed for **34 source files**. Frontend lint, generated route types, typecheck, **11 unit tests**, and the production build passed. Typechecking the clean snapshot also passed without pre-existing Next.js output. Final production Playwright verification passed **14/14 tests** on desktop and mobile, including independent Models display, configured default profile without import, demo corrections, caps, saves, stale state and the real financial gate. Earlier runs exposed an over-specific selector, initial loading races, and a concurrent demo smoke collision; those were corrected, and the final suite ran serially without weakening assertions.
 
-- Full backend: `uv run pytest -q` — **166 passed, 2 skipped**. The previous failure `test_double_blank_and_missing_statistics` now passes.
-- `uv run ruff check .` — pass.
-- `uv run mypy src` — pass, 31 source files.
-- Optional real-library smoke: `FPL_OPTIONAL_SMOKE=1 uv run --all-extras pytest -q tests/test_models.py tests/test_features.py tests/test_evaluation.py` — **27 passed**. PyMC sampling and TFT fit/reload remain synthetic installation checks, not registered models.
-- A timestamped TFT panel built a `TimeSeriesDataSet` (12 training samples, 4 validation samples, one batch). That check did not train or register a model. Unseen origin series are encoded as missing categories.
-- Earlier frontend lint/typecheck, 7 unit tests, production build, Playwright 6/6, API smoke, and live team 6340295 smoke were already recorded before the review-fix pass. API health during that pass: status ok, database ok, schema version 1. Web http://127.0.0.1:3000 returned 200.
+Previous milestone checks: frontend lint/typecheck, **9 unit tests**, production build and **10 production browser tests** passed. Optional real-library checks passed **41 tests** using synthetic fixtures. Public import and live unknown-price gate were verified without submitting transfers or changing unconfirmed private values. Synthetic optional training is not model-performance evidence.
 
-2026-10-10, same checkout, services left running:
+CI is configured but has not yet run on a hosted Git provider. The frontend dependency audit reports five high-severity entries in the development-only Next.js ESLint dependency chain, rooted in the unpatched `braces` advisory. Production-only dependency audit passed with **zero vulnerabilities**. Actual API/worker integration smoke passed again after the API restart. Optional live public-team smoke also passed, including legal lineup persistence and preservation of manager finances.
 
-- `uv run pytest -q` — **166 passed, 2 skipped**.
-- `npm run lint`, `npm run typecheck`, and `npm run test` — pass, 7 unit tests.
-- `npm run test:e2e` — **6 passed** (desktop and mobile). Demo tests wrote only team 0.
-- `python3 scripts/live_smoke.py --team-id 6340295` — pass. Saved state stayed version 2, Gameweek 5 public picks, bank and chip fields unknown.
-- Official history, transfers, and Gameweek 5 picks were fetched through the provider. A Gameweek 6 transfer search was run in memory from those published figures and reconstructed purchase prices. It was not saved and no transfer or chip was submitted.
+## Personal-profile and Models fixes
 
-## Model status
+Personal default configuration is read from ignored frontend environment settings; loading it never submits an import or overwrites state. Models now load independently of manager state, with refresh/error handling and clear inactive/diagnostic labels. Repeated identical public imports preserve private corrections and unknowns with CAS protection; changed season, event or ownership returns a review conflict. These behaviors have unit/API tests and independent review.
 
-Only the labelled approximate baseline is active. The six review findings below are fixed in code. They do not make an advanced model eligible for release.
-
-- Missing minutes, points, goals, and assists stay missing for both null and non-finite values. A missing minute total is `missing_statistic`, not an appearance.
-- Unknown minute labels are excluded from availability heads and from appearance calibration. A real zero stays a non-appearance.
-- TFT training keeps explicit missing target rows and gives them zero loss weight, so a gap is not closed by dropping the event.
-- Each TFT forecast deadline gets an encoder built only from point versions published by that deadline. A later revision is excluded. If no earlier version was stored, the step is masked.
-- Strict training rejects a panel unless `audit.json` carries that parquet's checksum and every row's `replay_timing` and `timing_verified` match the audit. Approximate training accepts only a uniform `conservative_assumed` panel, and only with `--allow-approximate`.
-- Bayesian, TFT, and CatBoost runs stage files and publish them after checksum verification. A repeat run reuses the completed directory.
-
-The existing CatBoost diagnostic at `data/models/catboost/b7e63558b354da060b283edb/` is still inactive and retrospective. Its archive audit has no panel checksum, so a new training attempt on that parquet is rejected until the archive is ingested again. MAE was worse than recent points. No superiority claim.
-
-Real Bayesian and TFT training on deadline-verified data is not done. Ensemble activation still needs eligible out-of-fold forecasts and an untouched held-out comparison. Expected autosub and vice fallback are still absent from the optimiser objective. Bayesian minutes and full points scoring are still partial. The TFT path is still a one-event decoder, not a fixed multiweek decoder.
+A private, timestamped baseline strategy report and conditional transfer watchlist are saved locally under ignored `docs/local/`, with live projection/analysis artifacts under `data/`. A legal lineup-only Keep plan is persisted; no transfer or chip was submitted. Budget-valid real transfer search remains blocked by unconfirmed selling values.
 
 ## Running services
 
-Root `bash scripts/dev.sh` is still serving web http://127.0.0.1:3000 and API http://127.0.0.1:8000/docs. SQLite is `data/app.sqlite`. Do not restart unless a later change is imported by the API or worker. User workspace 6340295 and its saved plan were left in place.
+Final production interface: http://127.0.0.1:3001 (built with `NEXT_BUILD_DIR=.next-release-v2`, served with `NEXT_BUILD_DIR=.next-release-v2 npm run start -- --port 3001` from `apps/web`). Development interface remains at http://127.0.0.1:3000. API was restarted with the tested import fix at http://127.0.0.1:8000; worker remains running. Temporary superseded production servers were stopped.
 
-## Exact next steps
+## Runtime and data
 
-1. Obtain a historical bundle whose source versions and deadlines are actually verified, ingest it, and write the checksum-bound audit. Do not relabel the current Vaastav archive as verified.
-2. Wire Bayesian and TFT `ProjectionRun` adapters only after those models have genuine evaluation artifacts. Keep them inactive until a held-out comparison justifies promotion.
-3. Add expected autosub and vice fallback to the optimiser objective, with tests, without double-counting availability.
-4. Selling prices are still not stored for team 6340295. The Gameweek 6 plan used published gameweek prices as purchase prices and was not written back. Confirm those selling prices in the app before treating a later saved plan as budget-checked. Do not submit transfers or chips.
+Use `bash scripts/dev.sh` from the repository root. Interface: http://127.0.0.1:3000; API: http://127.0.0.1:8000/docs. The local database is `data/app.sqlite`; source snapshots and analytical/model artifacts also live under ignored `data/`. Existing state and artifacts are preserved. Private historical session notes are retained under ignored `docs/local/`.
 
-No advanced-model release signoff.
+## Blockers and exact next steps
 
-2026-10-10 Codex resumed Cursor planner plan. Existingtransfercap/weeklycandidate/chip/UI implementation found; financialstate stillunknown. Lead owns planner/API/frontendfixes andverification. NativeMLadapteragent owns NEW strategy_adapters.py/test_strategy_adapters.py/ML_INTEGRATION.md only. Fixing sell-estimatekind, marginalchipscoring, weeklyHiGHScandidate, savedweeklyplan support. User clarified MLstrategies are mainpriority; baseline must remainlabelled untilvalidatedmodelsready.
+1. Obtain deadline-verified historical source bundles, fixtures, deadlines, and explicit cross-season player/club mappings; audit their immutable timestamps.
+2. Complete calibrated Bayesian minutes/scoring and TFT multiweek decoding; run genuine chronological training, validation, and untouched-test evaluation.
+3. Bind evaluated artifacts, mappings, source versions and input fingerprints into recoverable prediction jobs and registry eligibility; activate only after passing those checks.
+4. Fit ensemble weights on eligible validation forecasts and report held-out strategy/model results honestly.
+5. Confirm required private financial state in the interface before real transfer recommendations. Unknown values remain blocked.
+6. Review the diff and dependency advisory. Existing history contains earlier personal notes; use the clean source snapshot for a new public repository unless publishing that history is intentional. No Git push is performed by this cleanup task.

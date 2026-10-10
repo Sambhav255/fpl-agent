@@ -28,18 +28,44 @@ export function TransferStepper({
           <p className="eyebrow">THIS GAMEWEEK</p>
           <h2 id="transfer-count-label">Transfers this Gameweek</h2>
         </div>
-        <p className="muted">{known ? `${remaining} free still available` : "Free transfers unknown"}</p>
+        <p className="muted">
+          {known ? `${remaining} free still available` : "Free transfers unknown"}
+        </p>
       </div>
       <div className="stepper-row">
-        <button type="button" className="button secondary" aria-label="Fewer transfers" disabled={disabled || !known || count <= 0} onClick={() => onCount(count! - 1)}>−</button>
+        <button
+          type="button"
+          className="button secondary"
+          aria-label="Fewer transfers"
+          disabled={disabled || !known || count <= 0}
+          onClick={() => onCount(count! - 1)}
+        >
+          −
+        </button>
         <output aria-labelledby="transfer-count-label">{known ? count : "Unknown"}</output>
-        <button type="button" className="button secondary" aria-label="More transfers" disabled={disabled || !known || count >= remaining!} onClick={() => onCount(count! + 1)}>+</button>
+        <button
+          type="button"
+          className="button secondary"
+          aria-label="More transfers"
+          disabled={disabled || !known || count >= remaining!}
+          onClick={() => onCount(count! + 1)}
+        >
+          +
+        </button>
         <label className="checkbox hit-toggle">
-          <input type="checkbox" checked={allowHit} disabled={disabled} onChange={event => onAllowHit(event.target.checked)} />
+          <input
+            type="checkbox"
+            checked={allowHit}
+            disabled={disabled}
+            onChange={(event) => onAllowHit(event.target.checked)}
+          />
           Allow one hit
         </label>
       </div>
-      <p className="muted">The solver can use fewer transfers than this cap. One hit costs 4 points and allows one extra move.</p>
+      <p className="muted">
+        The solver can use fewer transfers than this cap. One hit costs 4 points and allows one
+        extra move.
+      </p>
     </section>
   );
 }

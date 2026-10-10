@@ -108,6 +108,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/teams/{team_id}/selling-price-suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Selling Price Suggestions */
+        get: operations["selling_price_suggestions_api_v1_teams__team_id__selling_price_suggestions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/teams/{team_id}/readiness": {
         parameters: {
             query?: never;
@@ -418,6 +435,25 @@ export interface components {
             projection_run_id: string;
             settings?: components["schemas"]["Settings"];
         };
+        /** ChipAdvice */
+        ChipAdvice: {
+            /**
+             * Chip
+             * @enum {string}
+             */
+            chip: "wildcard" | "free_hit" | "bench_boost" | "triple_captain";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "used" | "unavailable" | "save" | "play_this_week" | "not_evaluated";
+            /** This Week Points */
+            this_week_points?: number | null;
+            /** Comparison Points */
+            comparison_points?: number | null;
+            /** Reason */
+            reason: string;
+        };
         /** Fixture */
         Fixture: {
             /** Fixture Id */
@@ -633,6 +669,10 @@ export interface components {
             };
             /** Chip */
             chip?: string | null;
+            /** This Week Net */
+            this_week_net?: number | null;
+            /** This Week Delta */
+            this_week_delta?: number | null;
             /** Assumptions */
             assumptions?: string[];
             /** Solver */
@@ -785,6 +825,9 @@ export interface components {
             baseline_plan: components["schemas"]["Plan"];
             /** Alternatives */
             alternatives: components["schemas"]["Plan"][];
+            gameweek_optimum?: components["schemas"]["Plan"] | null;
+            /** Chip Advice */
+            chip_advice?: components["schemas"]["ChipAdvice"][];
             /** Source Cutoff */
             source_cutoff: string;
             /** Rules Version */
@@ -829,6 +872,54 @@ export interface components {
             /** Stale Reasons */
             stale_reasons?: string[];
         };
+        /** SellingPriceSuggestion */
+        SellingPriceSuggestion: {
+            /** Player Id */
+            player_id: number;
+            /** Purchase Event */
+            purchase_event: number;
+            /** Purchase Price Units */
+            purchase_price_units: number;
+            /** Market Price Units */
+            market_price_units: number;
+            /** Selling Price Units */
+            selling_price_units: number;
+            /**
+             * Provenance
+             * @constant
+             */
+            provenance: "published_gameweek_price_estimate";
+            /**
+             * Estimate
+             * @default true
+             * @constant
+             */
+            estimate: true;
+        };
+        /** SellingPriceSuggestions */
+        SellingPriceSuggestions: {
+            /** Team Id */
+            team_id: number;
+            /**
+             * Provenance
+             * @constant
+             */
+            provenance: "published_gameweek_price_estimate";
+            /**
+             * Estimate
+             * @default true
+             * @constant
+             */
+            estimate: true;
+            /** Note */
+            note: string;
+            /** Suggestions */
+            suggestions: components["schemas"]["SellingPriceSuggestion"][];
+            /** Missing */
+            missing?: {
+                [key: string]: unknown;
+            }[];
+        };
         /** Settings */
         Settings: {
             /**
@@ -841,6 +932,8 @@ export interface components {
              * @default 4
              */
             max_additional_hit_points: number;
+            /** Max Transfers This Event */
+            max_transfers_this_event?: number | null;
             /** Locked Player Ids */
             locked_player_ids?: number[];
             /** Excluded Player Ids */
@@ -1110,6 +1203,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    selling_price_suggestions_api_v1_teams__team_id__selling_price_suggestions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                team_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SellingPriceSuggestions"];
                 };
             };
             /** @description Validation Error */

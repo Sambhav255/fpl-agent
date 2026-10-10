@@ -1,11 +1,27 @@
-# Decisions
+# Engineering decisions
 
-2026-10-09: preserve root specification originals and copy individual specifications to docs; combined specification not read. Shared checkout with strict ownership because repository starts empty. Persist versioned JSON entities in SQLite with SQLAlchemy, immutable source files and analytical Parquet. Keep advanced training unavailable until an audited panel exists.
+## Repository and storage — 2026-10-09
 
-Generated frontend schemas derive from Pydantic contracts; final API OpenAPI export will replace provisional schema. Financial provenance, confirmation timestamps and transfer ledger explicit in manager contract. Next.js upgraded to 16.4 and Vitest 5.0.3 after dependency audit.
+Preserve the original root specifications and maintain working copies in `docs/`. Use a shared checkout with explicit file ownership for authorized parallel implementation. Persist versioned JSON entities in SQLite through SQLAlchemy; keep immutable source bytes and analytical Parquet under ignored local data storage.
 
-Explicit lineup/transfers request mode separates useful lineup analysis from financial readiness gates. A marked real-world club transfer exception may retain the original squad; all proposed transfer results strictly obey club limit. Saved unknown hit totals carry an unavailable marker. Optional Bayesian/TFT extras installed to exercise genuine implementations; synthetic execution tests are never live training artifacts.
+## Contracts and manager state — 2026-10-09
 
-2026-10-09: Missing minutes, points, goals, and assists stay missing when the stored value is null or non-finite; they are not treated as zero. Unknown minute labels are dropped from availability training and appearance calibration, while a real zero remains a non-appearance. A TFT encoder for a forecast deadline uses the latest points version published at or before that deadline. A later revision is not an input. If no earlier version was kept, that history step is masked. Strict training requires the audit file's panel checksum and requires every row's replay timing and timing_verified flag to match the audit. Bayesian, TFT, and CatBoost runs write a staging directory and publish it only after the manifest checksums verify; a later identical run reuses that directory.
+Generate frontend schemas from Pydantic contracts. Record financial provenance, confirmation timestamps, and the transfer ledger explicitly. Separate lineup analysis from transfer analysis so unknown finances do not prevent useful lineup recommendations. Unknown hit totals remain unavailable. A marked real-world club transfer exception may retain an existing squad; proposed transfer squads obey club limits.
 
-2026-10-10: Cursor planner facts (GW6 bank7, FT3, made0, hits0, BBused) saved without inferring finances from history. Estimated sellprices remain unknown until UIacceptance; accepting a sellestimate never sets purchaseprice. Chip timing compares marginal captain/bench points on eligible chipweeks, notwholeXI totals. Weekly HiGHScandidate complements horizoncandidate; UI explicitly labelsboundedsearch ratherthan claimingglobaloptimum. Added weeklyplans to savevalidation. Userprioritizes MLstrategies; dedicatedagent implementingstrictadvancedforecastadapters, nofakepromotion.
+## Forecast integrity — 2026-10-09
+
+Missing minutes, points, goals, and assists remain missing rather than becoming zero. Drop unknown minute labels from availability training; genuine zero minutes remains a non-appearance. TFT encoders use only information published by the forecast deadline, masking unavailable history. Bind strict training to panel checksums and audited replay timing. Publish model runs atomically from staging directories after checksum validation. Synthetic optional-library tests are installation checks, not live training evidence.
+
+## Planner semantics — 2026-10-10
+
+Save manager corrections only from explicitly confirmed facts. Selling estimates remain unknown until accepted; acceptance never creates a purchase price. Compare marginal chip uplift across eligible weeks. Include a weekly HiGHS candidate alongside horizon candidates, independently validate saved plans, and label bounded search without claiming global optimality. Advanced model adapters enforce artifact eligibility; they do not authorize promotion.
+
+## Repository hygiene — 2026-10-10
+
+Use Ruff for Python and pinned Prettier for frontend formatting. Exclude generated API artifacts from formatting. Preserve private session notes under ignored `docs/local/` and maintain current public handoffs. CI uses offline fixtures and synthetic demo state with a production frontend. Preserve lockfiles and local data. Do not invent a license or remote, or push as part of repository preparation.
+
+The dependency audit identified an unpatched development-only ESLint dependency advisory. Preserve the compatible framework rather than applying the suggested major downgrade; recheck upstream when updating dependencies. Advanced models remain inactive until genuine data and chronological evaluation meet release requirements.
+
+## Personal workspace and model status — 2026-10-10
+
+Keep the personal default in ignored local environment configuration. Loading a saved profile is a GET, never an automatic public reimport. Model registry display is independent of the manager workspace; diagnostic evaluation does not imply activation. Preserve private state on repeated same-event/same-ownership imports and reject ambiguous replacements. Conditional lineup watchlists may describe price thresholds but never substitute unknown selling values or enable blocked transfer recommendations.

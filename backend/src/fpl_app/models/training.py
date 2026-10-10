@@ -90,7 +90,7 @@ def train_catboost(
         {"dataset": checksum, "model": "catboost", "seed": seed, "iterations": iterations}
     )[:24]
     published = output / "catboost" / run_id
-    from .publication import open_model_run, publish_model_run, reuse_model_run
+    from .publication import open_model_run, publication_timing, publish_model_run, reuse_model_run
 
     if reuse_model_run(published, checksum):
         return published
@@ -193,7 +193,7 @@ def train_catboost(
         "replay_timing": audit["replay_timing"],
         "seed": seed,
         "iterations": iterations,
-        "training_cutoff": max(train["decision_cutoff"]),
+        **publication_timing(train, validation),
         "train_target_end": max(train["target_available_at"]),
         "validation_cutoffs": sorted(validation["decision_cutoff"].unique().tolist()),
         "test_cutoffs": sorted(test["decision_cutoff"].unique().tolist()),

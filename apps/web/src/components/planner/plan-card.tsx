@@ -18,9 +18,11 @@ export function TransferList({
       <h2>Transfers</h2>
       {pairs.length ? (
         <ol className="transfer-pairs">
-          {pairs.map(pair => (
+          {pairs.map((pair) => (
             <li key={`${pair.event ?? "gw"}-${pair.out}-${pair.in}`}>
-              <strong>{name(pair.out)} → {name(pair.in)}</strong>
+              <strong>
+                {name(pair.out)} → {name(pair.in)}
+              </strong>
               <span>{pair.event ? `GW ${pair.event}` : "This plan"}</span>
               <span>Sell {money(pair.sale)}</span>
               <span>Buy {money(pair.purchase)}</span>
@@ -28,7 +30,9 @@ export function TransferList({
             </li>
           ))}
         </ol>
-      ) : <p>No transfers in the chosen plan.</p>}
+      ) : (
+        <p>No transfers in the chosen plan.</p>
+      )}
     </section>
   );
 }
@@ -57,11 +61,24 @@ export function PlanCard({
       <div className="plan-score">
         <strong>{unavailable ? "Unavailable" : plan.net_points.toFixed(1)}</strong>
         <span>net expected points</span>
-        <b>{unavailable ? "Unknown committed hits" : <>{plan.delta_to_baseline >= 0 ? "+" : ""}{plan.delta_to_baseline.toFixed(1)} vs Keep</>}</b>
+        <b>
+          {unavailable ? (
+            "Unknown committed hits"
+          ) : (
+            <>
+              {plan.delta_to_baseline >= 0 ? "+" : ""}
+              {plan.delta_to_baseline.toFixed(1)} vs Keep
+            </>
+          )}
+        </b>
       </div>
       <p>Captain: {captainName}</p>
-      <button className="text-button" type="button" onClick={onShow}>Show {plan.name} on the pitch</button>
-      <button className="button secondary" type="button" disabled={busy} onClick={onSave}>Save {plan.name}</button>
+      <button className="text-button" type="button" onClick={onShow}>
+        Show {plan.name} on the pitch
+      </button>
+      <button className="button secondary" type="button" disabled={busy} onClick={onSave}>
+        Save {plan.name}
+      </button>
     </article>
   );
 }

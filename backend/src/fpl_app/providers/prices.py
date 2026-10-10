@@ -20,9 +20,7 @@ def suggest_selling_prices(
     current = entry_history.get("current")
     rows = current if isinstance(current, list) else []
     events = [
-        row["event"]
-        for row in rows
-        if isinstance(row, dict) and type(row.get("event")) is int
+        row["event"] for row in rows if isinstance(row, dict) and type(row.get("event")) is int
     ]
     if not events:
         raise ValueError("Entry history has no current gameweeks")
@@ -43,16 +41,16 @@ def suggest_selling_prices(
     for player_id in squad_ids:
         market = market_prices.get(player_id)
         if type(market) is not int:
-            missing.append({"player_id": player_id, "reason": "Current market price is unavailable"})
+            missing.append(
+                {"player_id": player_id, "reason": "Current market price is unavailable"}
+            )
             continue
         event = acquired.get(player_id, first_event)
         history = element_histories.get(player_id, [])
         values = [
             row["value"]
             for row in history
-            if isinstance(row, dict)
-            and row.get("round") == event
-            and type(row.get("value")) is int
+            if isinstance(row, dict) and row.get("round") == event and type(row.get("value")) is int
         ]
         if not values:
             missing.append(

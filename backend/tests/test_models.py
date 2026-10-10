@@ -309,9 +309,7 @@ def test_strict_audit_rejects_unbound_and_unverified_rows(tmp_path: Path):
         _feature_row(1, 1, replay_timing="conservative_assumed", timing_verified=False),
         _feature_row(2, 1, replay_timing="verified", timing_verified=True),
     ]
-    dataset = _write_panel(
-        tmp_path / "mixed", mixed, replay_timing="conservative_assumed"
-    )
+    dataset = _write_panel(tmp_path / "mixed", mixed, replay_timing="conservative_assumed")
     with pytest.raises(ValueError, match="replay_timing|mixed|verified"):
         audited_panel(dataset, allow_approximate=True)
     dataset = _write_panel(
@@ -410,7 +408,9 @@ def test_repeat_publication_reuses_verified_manifest(tmp_path: Path):
     assert complete is False
     (staging / "posterior.nc").write_bytes(b"trace")
     digest = hashlib.sha256(b"trace").hexdigest()
-    immutable_json(staging / "manifest.json", {"artifacts": {"posterior.nc": digest}, "dataset_sha256": "abc"})
+    immutable_json(
+        staging / "manifest.json", {"artifacts": {"posterior.nc": digest}, "dataset_sha256": "abc"}
+    )
     publish_model_run(staging, dest)
     again, done = open_model_run(dest)
     assert done is True and again == dest

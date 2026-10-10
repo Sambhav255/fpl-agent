@@ -1,1 +1,40 @@
-{"name":"fpl-assistant-web","version":"0.1.0","private":true,"scripts":{"dev":"next dev --hostname 127.0.0.1","build":"next build","start":"next start --hostname 127.0.0.1","lint":"eslint .","typecheck":"tsc --noEmit","test":"vitest run","test:e2e":"playwright test","generate:api":"openapi-typescript http://127.0.0.1:8000/openapi.json -o src/lib/api/schema.d.ts"},"dependencies":{"@tanstack/react-query":"^5.80.0","lucide-react":"^0.468.0","next":"^16.4.0","react":"^19.1.0","react-dom":"^19.1.0","recharts":"^3.0.0"},"devDependencies":{"@playwright/test":"^1.51.0","@testing-library/jest-dom":"^6.6.0","@testing-library/react":"^16.3.0","@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0","eslint":"^9.0.0","eslint-config-next":"^16.4.0","jsdom":"^26.1.0","openapi-typescript":"^7.8.0","typescript":"^5.8.0","vitest":"^5.0.3"}}
+{
+  "name": "fpl-assistant-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "generate:api": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/lib/api/schema.d.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.80.0",
+    "lucide-react": "^0.468.0",
+    "next": "^16.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^3.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.4.0",
+    "jsdom": "^26.1.0",
+    "openapi-typescript": "^7.8.0",
+    "prettier": "3.6.2",
+    "typescript": "^5.8.0",
+    "vitest": "^5.0.3"
+  }
+}

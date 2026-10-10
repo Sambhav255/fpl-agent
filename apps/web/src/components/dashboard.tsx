@@ -1,152 +1,1683 @@
 "use client";
 
 import Link from "next/link";
+import { preferredTeamId } from "../lib/profile";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { api, ApiError, money, parseMoney, teamId, totals, waitForJob, type State, type Player, type Pick, type Settings, type Run, type Recommendation, type Plan } from "../lib/api/client";
+import {
+  api,
+  ApiError,
+  money,
+  parseMoney,
+  teamId,
+  totals,
+  waitForJob,
+  type State,
+  type Player,
+  type Pick,
+  type Settings,
+  type Run,
+  type Recommendation,
+  type Plan,
+} from "../lib/api/client";
 import type { components } from "../lib/api/schema";
 
 type Section = "overview" | "players" | "planner" | "history" | "models" | "settings";
 type Saved = components["schemas"]["SavedPlan"];
 type Catalog = components["schemas"]["PlayersResponse"];
-const sections: [Section, string, string][] = [["overview","Overview","◫"],["players","Players","≋"],["planner","Planner","↗"],["history","Saved plans","◷"],["models","Models","◇"],["settings","Settings","⚙"]];
+const sections: [Section, string, string][] = [
+  ["overview", "Overview", "◫"],
+  ["players", "Players", "≋"],
+  ["planner", "Planner", "↗"],
+  ["history", "Saved plans", "◷"],
+  ["models", "Models", "◇"],
+  ["settings", "Settings", "⚙"],
+];
 const positions = ["", "GK", "DEF", "MID", "FWD"];
 const chips = ["wildcard", "free_hit", "bench_boost", "triple_captain"] as const;
 const label = (value: string) => value.replaceAll("_", " ");
-const defaults: Settings = {horizon_events:6,max_additional_hit_points:4,locked_player_ids:[],excluded_player_ids:[],chip_policy:"none",solver_time_limit_seconds:15};
-const timestamp = (value: unknown) => typeof value === "string" && !Number.isNaN(Date.parse(value)) ? new Date(value).toLocaleString(undefined, {timeZoneName:"short"}) : "Unavailable";
-function ids(value: unknown): number[] {return Array.isArray(value) ? value.filter((n):n is number=>typeof n==="number") : [];}
+const defaults: Settings = {
+  horizon_events: 6,
+  max_additional_hit_points: 4,
+  locked_player_ids: [],
+  excluded_player_ids: [],
+  chip_policy: "none",
+  solver_time_limit_seconds: 15,
+};
+const timestamp = (value: unknown) =>
+  typeof value === "string" && !Number.isNaN(Date.parse(value))
+    ? new Date(value).toLocaleString(undefined, { timeZoneName: "short" })
+    : "Unavailable";
+function ids(value: unknown): number[] {
+  return Array.isArray(value) ? value.filter((n): n is number => typeof n === "number") : [];
+}
 
-export default function Dashboard({section}: {section:Section}) {
-  const [state,setState]=useState<State|null>(null);
-  const [draft,setDraft]=useState<State|null>(null);
-  const [editorRevision,setEditorRevision]=useState(0);
-  const [catalog,setCatalog]=useState<Catalog|null>(null);
-  const [status,setStatus]=useState<Record<string,unknown>>({});
-  const [models,setModels]=useState<Record<string,unknown>[]>([]);
-  const [saved,setSaved]=useState<Saved[]>([]);
-  const [run,setRun]=useState<Run|null>(null);
-  const [recommendation,setRecommendation]=useState<Recommendation|null>(null);
-  const [settings,setSettings]=useState<Settings>(defaults);
-  const [importValue,setImportValue]=useState("");
-  const [search,setSearch]=useState("");
-  const [position,setPosition]=useState("");
-  const [price,setPrice]=useState("");
-  const [busy,setBusy]=useState("Loading workspace");
-  const [progress,setProgress]=useState(0);
-  const [activeJob,setActiveJob]=useState<string|null>(null);
-  const [readiness,setReadiness]=useState<{transfers_ready:boolean;lineup_ready:boolean;missing_fields:string[];errors:string[]}|null>(null);
-  const [error,setError]=useState("");
-  const [notice,setNotice]=useState("");
-  const [dirty,setDirty]=useState(false);
-  const [invalidInputs,setInvalidInputs]=useState<Record<string,boolean>>({});
-  const reportValidity=useCallback((name:string,invalid:boolean)=>setInvalidInputs(previous=>({...previous,[name]:invalid})),[]);
-  const invalidCorrections=Object.values(invalidInputs).some(Boolean);
-  const controller=useRef<AbortController|null>(null);
-  const jobId=useRef<string|null>(null);
-  const playerMap=new Map((catalog?.players || []).map(p=>[p.player_id,p]));
-  const points=totals(run,state?.next_event);
-  const horizonPoints=totals(run);
-  const stale=Boolean(state&&catalog&&state.snapshot_id!==catalog.snapshot_id);
-  const ready=readiness?.transfers_ready===true;
+export default function Dashboard({ section }: { section: Section }) {
+  const [state, setState] = useState<State | null>(null);
+  const [draft, setDraft] = useState<State | null>(null);
+  const [editorRevision, setEditorRevision] = useState(0);
+  const [catalog, setCatalog] = useState<Catalog | null>(null);
+  const [status, setStatus] = useState<Record<string, unknown>>({});
+  const [models, setModels] = useState<Record<string, unknown>[]>([]);
+  const [saved, setSaved] = useState<Saved[]>([]);
+  const [run, setRun] = useState<Run | null>(null);
+  const [recommendation, setRecommendation] = useState<Recommendation | null>(null);
+  const [settings, setSettings] = useState<Settings>(defaults);
+  const [importValue, setImportValue] = useState("");
+  const [search, setSearch] = useState("");
+  const [position, setPosition] = useState("");
+  const [price, setPrice] = useState("");
+  const [busy, setBusy] = useState("Loading workspace");
+  const [progress, setProgress] = useState(0);
+  const [activeJob, setActiveJob] = useState<string | null>(null);
+  const [readiness, setReadiness] = useState<{
+    transfers_ready: boolean;
+    lineup_ready: boolean;
+    missing_fields: string[];
+    errors: string[];
+  } | null>(null);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [dirty, setDirty] = useState(false);
+  const [invalidInputs, setInvalidInputs] = useState<Record<string, boolean>>({});
+  const reportValidity = useCallback(
+    (name: string, invalid: boolean) =>
+      setInvalidInputs((previous) => ({ ...previous, [name]: invalid })),
+    [],
+  );
+  const invalidCorrections = Object.values(invalidInputs).some(Boolean);
+  const controller = useRef<AbortController | null>(null);
+  const jobId = useRef<string | null>(null);
+  const playerMap = new Map((catalog?.players || []).map((p) => [p.player_id, p]));
+  const points = totals(run, state?.next_event);
+  const horizonPoints = totals(run);
+  const stale = Boolean(state && catalog && state.snapshot_id !== catalog.snapshot_id);
+  const ready = readiness?.transfers_ready === true;
 
-  const loadWorkspace=useCallback(async (manager: State, signal: AbortSignal) => {
-    const [players,freshness,registry,plans,readyState]=await Promise.all([api<Catalog>(`/players?data_mode=${manager.data_mode}`,undefined,"GET",signal),api<Record<string,unknown>>(`/status?data_mode=${manager.data_mode}`,undefined,"GET",signal),api<{models:Record<string,unknown>[]}>('/models',undefined,"GET",signal),api<Saved[]>('/plans',undefined,"GET",signal),api<NonNullable<typeof readiness>>(`/teams/${manager.team_id}/readiness`,undefined,"GET",signal).catch((error:unknown)=>{
-      if(signal.aborted)throw error;
-      if(error instanceof ApiError&&error.status===409)return {transfers_ready:false,lineup_ready:false,missing_fields:["Manager snapshot is stale. Review current prices and save corrections."],errors:[]};
-      return {transfers_ready:false,lineup_ready:false,missing_fields:["Readiness could not be verified. Reload current state before analysis."],errors:[]};
-    })]);
-    if(signal.aborted) return;
-    setReadiness(readyState);setCatalog(players);setStatus(freshness);setModels(registry.models);setSaved(plans.filter(p=>p.team_id===manager.team_id));setState(manager);setDraft(structuredClone(manager));setDirty(false);setInvalidInputs({});setEditorRevision(value=>value+1);
-    localStorage.setItem("touchline.team",String(manager.team_id));
-    const artifactKey=`touchline.artifacts.${manager.team_id}.${manager.state_version}`;
-    const stored=sessionStorage.getItem(artifactKey);
-    if(stored){try{const references=JSON.parse(stored) as {run:string;recommendation?:string;settings?:Settings};const forecast=await api<Run>(`/projections/runs/${encodeURIComponent(references.run)}`,undefined,"GET",signal);if(!signal.aborted&&forecast.snapshot_id===players.snapshot_id){setRun(forecast);setSettings(references.settings||{...defaults,horizon_events:forecast.horizon_events});if(references.recommendation){const result=await api<Recommendation>(`/recommendations/${encodeURIComponent(references.recommendation)}`,undefined,"GET",signal);if(!signal.aborted)setRecommendation(result);}}}catch{sessionStorage.removeItem(artifactKey);}}
-  },[]);
-  useEffect(()=>{
-    const abort=new AbortController();controller.current=abort;
-    async function start(){
+  const loadWorkspace = useCallback(async (manager: State, signal: AbortSignal) => {
+    const [players, freshness, registry, plans, readyState] = await Promise.all([
+      api<Catalog>(`/players?data_mode=${manager.data_mode}`, undefined, "GET", signal),
+      api<Record<string, unknown>>(
+        `/status?data_mode=${manager.data_mode}`,
+        undefined,
+        "GET",
+        signal,
+      ),
+      api<{ models: Record<string, unknown>[] }>("/models", undefined, "GET", signal),
+      api<Saved[]>("/plans", undefined, "GET", signal),
+      api<NonNullable<typeof readiness>>(
+        `/teams/${manager.team_id}/readiness`,
+        undefined,
+        "GET",
+        signal,
+      ).catch((error: unknown) => {
+        if (signal.aborted) throw error;
+        if (error instanceof ApiError && error.status === 409)
+          return {
+            transfers_ready: false,
+            lineup_ready: false,
+            missing_fields: [
+              "Manager snapshot is stale. Review current prices and save corrections.",
+            ],
+            errors: [],
+          };
+        return {
+          transfers_ready: false,
+          lineup_ready: false,
+          missing_fields: [
+            "Readiness could not be verified. Reload current state before analysis.",
+          ],
+          errors: [],
+        };
+      }),
+    ]);
+    if (signal.aborted) return;
+    setReadiness(readyState);
+    setCatalog(players);
+    setStatus(freshness);
+    setModels(registry.models);
+    setSaved(plans.filter((p) => p.team_id === manager.team_id));
+    setState(manager);
+    setDraft(structuredClone(manager));
+    setDirty(false);
+    setInvalidInputs({});
+    setEditorRevision((value) => value + 1);
+    localStorage.setItem("touchline.team", String(manager.team_id));
+    const artifactKey = `touchline.artifacts.${manager.team_id}.${manager.state_version}`;
+    const stored = sessionStorage.getItem(artifactKey);
+    if (stored) {
       try {
-        const id=localStorage.getItem("touchline.team");
-        if(id!==null&&/^\d+$/.test(id)) await loadWorkspace(await api<State>(`/teams/${id}/state`,undefined,"GET",abort.signal),abort.signal);
-      } catch(e){if(!abort.signal.aborted)setError(e instanceof Error?e.message:"Workspace could not load.");}
-      finally {if(!abort.signal.aborted)setBusy("");}
+        const references = JSON.parse(stored) as {
+          run: string;
+          recommendation?: string;
+          settings?: Settings;
+        };
+        const forecast = await api<Run>(
+          `/projections/runs/${encodeURIComponent(references.run)}`,
+          undefined,
+          "GET",
+          signal,
+        );
+        if (!signal.aborted && forecast.snapshot_id === players.snapshot_id) {
+          setRun(forecast);
+          setSettings(
+            references.settings || { ...defaults, horizon_events: forecast.horizon_events },
+          );
+          if (references.recommendation) {
+            const result = await api<Recommendation>(
+              `/recommendations/${encodeURIComponent(references.recommendation)}`,
+              undefined,
+              "GET",
+              signal,
+            );
+            if (!signal.aborted) setRecommendation(result);
+          }
+        }
+      } catch {
+        sessionStorage.removeItem(artifactKey);
+      }
     }
-    void start();return()=>{abort.abort();};
-  },[loadWorkspace]);
-  const cancelJob=()=>{controller.current?.abort();if(jobId.current)void api(`/jobs/${jobId.current}/cancel`,{}).catch(()=>{});jobId.current=null;setActiveJob(null);setBusy("");setNotice("Stopped waiting for analysis. You can retry.");};
-  const task=async (name:string, action:(signal:AbortSignal)=>Promise<void>)=>{
-    controller.current?.abort();const abort=new AbortController();controller.current=abort;setBusy(name);setProgress(0);setError("");setNotice("");
-    try{await action(abort.signal);}catch(e){if(!abort.signal.aborted){setError(e instanceof Error?e.message:"Request failed.");if(e instanceof ApiError&&e.status===409)setNotice("Inputs changed. Reload current state, then review and save your corrections again.");}}
-    finally{if(controller.current===abort){jobId.current=null;setActiveJob(null);setBusy("");}}
+  }, []);
+  useEffect(() => {
+    const abort = new AbortController();
+    controller.current = abort;
+    async function start() {
+      try {
+        const id = preferredTeamId();
+        if (id !== null && /^\d+$/.test(id))
+          await loadWorkspace(
+            await api<State>(`/teams/${id}/state`, undefined, "GET", abort.signal),
+            abort.signal,
+          );
+      } catch (e) {
+        if (!abort.signal.aborted)
+          setError(e instanceof Error ? e.message : "Workspace could not load.");
+      } finally {
+        if (!abort.signal.aborted) setBusy("");
+      }
+    }
+    void start();
+    return () => {
+      abort.abort();
+    };
+  }, [loadWorkspace]);
+  const cancelJob = () => {
+    controller.current?.abort();
+    if (jobId.current) void api(`/jobs/${jobId.current}/cancel`, {}).catch(() => {});
+    jobId.current = null;
+    setActiveJob(null);
+    setBusy("");
+    setNotice("Stopped waiting for analysis. You can retry.");
   };
-  const importTeam=(demo:boolean)=>void task(demo?"Loading synthetic demo":"Importing public deadline squad",async signal=>{
-    const manager=demo?await api<State>('/demo',{},"POST",signal):await api<State>('/teams/import',{team_id:teamId(importValue)},"POST",signal);
-    await loadWorkspace(manager,signal);if(signal.aborted)return;setRun(null);setRecommendation(null);setNotice(demo?"Synthetic demo loaded. No real manager data is used.":"Public deadline squad imported. Review current players, finances, and chip state before analysis.");
-  });
-  const edit=(change:(s:State)=>State)=>{if(!draft)return;setDraft(change(draft));setDirty(true);setRecommendation(null);};
-  const editPick=(index:number,change:Partial<Pick>)=>edit(s=>({...s,picks:s.picks.map((p,i)=>i===index?{...p,...change}:p)}));
-  const financial=(key:"bank_units"|"free_transfers_at_event_start"|"transfers_made_this_event"|"confirmed_hit_points",value:number|null)=>edit(s=>({...s,[key]:value,financial_provenance:{...s.financial_provenance,[key]:value===null?"unknown":"user_confirmed"},financial_confirmed_at:new Date().toISOString()}));
-  const saveState=()=>{const invalid=document.querySelector<HTMLInputElement|HTMLTextAreaElement>('[aria-invalid="true"]');if(invalid){setError("Fix invalid correction inputs before saving.");invalid.focus();return;}void task("Saving corrections",async signal=>{
-    if(!draft||!state||!catalog)return;
-    const corrected={...draft,snapshot_id:catalog.snapshot_id};
-    const updated=await api<State>(`/teams/${state.team_id}/state`,{expected_version:state.state_version,state:corrected},"PATCH",signal);
-    await loadWorkspace(updated,signal);if(signal.aborted)return;setRun(null);setRecommendation(null);setNotice(`Corrections saved · version ${updated.state_version}`);
-  });};
-  const analyse=()=>void task("Generating baseline forecasts",async signal=>{
-    if(!state||dirty||stale)return;
-    const queued=await api<{job_id:string}>('/projections/runs',{team_id:state.team_id,horizon_events:settings.horizon_events},"POST",signal);jobId.current=queued.job_id;setActiveJob(queued.job_id);
-    const forecast=await waitForJob<Run>(queued.job_id,j=>setProgress(j.progress),signal);if(signal.aborted)return;setRun(forecast);sessionStorage.setItem(`touchline.artifacts.${state.team_id}.${state.state_version}`,JSON.stringify({run:forecast.projection_run_id,settings}));setBusy("Finding independently validated plans");
-    const analysis=await api<{job_id:string}>('/recommendations',{team_id:state.team_id,expected_state_version:state.state_version,projection_run_id:forecast.projection_run_id,settings,analysis_mode:ready?"transfers":"lineup"},"POST",signal);jobId.current=analysis.job_id;setActiveJob(analysis.job_id);
-    const result=await waitForJob<Recommendation>(analysis.job_id,j=>setProgress(j.progress),signal);if(signal.aborted)return;setRecommendation(result);sessionStorage.setItem(`touchline.artifacts.${state.team_id}.${state.state_version}`,JSON.stringify({run:forecast.projection_run_id,recommendation:result.recommendation_id,settings}));setNotice("Analysis ready. Review assumptions before saving a plan.");
-  });
-  const savePlan=(plan:Plan)=>void task("Saving plan",async signal=>{
-    if(!recommendation)return;await api('/plans',{recommendation_id:recommendation.recommendation_id,plan_id:plan.plan_id},"POST",signal);
-    const plans=await api<Saved[]>('/plans',undefined,"GET",signal);if(signal.aborted)return;setSaved(plans.filter(p=>p.team_id===state?.team_id));setNotice("Plan saved. Actions must be completed manually on FPL.");
-  });
-  const refresh=()=>void task("Refreshing official data",async signal=>{
-    const queued=await api<{job_id:string}>('/data/refresh',{},"POST",signal);jobId.current=queued.job_id;setActiveJob(queued.job_id);await waitForJob<Record<string,unknown>>(queued.job_id,j=>setProgress(j.progress),signal);
-    if(state)await loadWorkspace(await api<State>(`/teams/${state.team_id}/state`,undefined,"GET",signal),signal);if(signal.aborted)return;setRun(null);setRecommendation(null);setNotice("Refresh completed. Reconcile the new snapshot and review prices before analysing.");
-  });
-  const changeSettings=(patch:Partial<Settings>)=>{setSettings(s=>({...s,...patch}));setRecommendation(null);if(state)sessionStorage.removeItem(`touchline.artifacts.${state.team_id}.${state.state_version}`);};
-  const selectedPlan=recommendation?.baseline_plan;
-  const starters=selectedPlan?ids(selectedPlan.lineup.starters):state?.picks.filter(p=>p.position<=11).sort((a,b)=>a.position-b.position).map(p=>p.player_id)||[];
-  const bench=selectedPlan?ids(selectedPlan.lineup.bench):state?.picks.filter(p=>p.position>11).sort((a,b)=>a.position-b.position).map(p=>p.player_id)||[];
-  const captain=selectedPlan?.lineup.captain||state?.picks.find(p=>p.is_captain)?.player_id;
-  const vice=selectedPlan?.lineup.vice_captain||state?.picks.find(p=>p.is_vice_captain)?.player_id;
-  const renderPlayer=(id:number,benched=false)=>{const player=playerMap.get(id);return <div className={`pitch-player ${benched?"benched":""}`} key={id}><div className="shirt" aria-hidden="true">{positions[player?.position||0]}{id===captain?<b>C</b>:id===vice?<b>V</b>:null}</div><strong>{player?.name||`Player ${id}`}</strong><span>{points.has(id)?`${points.get(id)!.points.toFixed(1)} xP`:money(player?.market_price_units)}</span></div>;};
-  const planCard=(plan:Plan,isSaved=false,staleReasons:string[]=[]) => <article className="plan-card" key={plan.plan_id}><div className="section-heading"><h3>{plan.name}</h3><span className="tag">{plan.chip?label(plan.chip):"No chip"}</span></div><div className="plan-score"><strong>{plan.solver?.net_points_status==="unavailable_unknown_committed_hits"?"Unavailable":plan.net_points.toFixed(1)}</strong><span>net expected points</span><b>{plan.solver?.net_points_status==="unavailable_unknown_committed_hits"?"Unknown committed hits":<>{plan.delta_to_baseline>=0?"+":""}{plan.delta_to_baseline.toFixed(1)} vs Keep</>}</b></div><dl className="plan-facts"><div><dt>Gross points</dt><dd>{plan.gross_points.toFixed(1)}</dd></div><div><dt>Total hits</dt><dd>{plan.solver?.net_points_status==="unavailable_unknown_committed_hits"?"Unknown":`${plan.total_hits} pts`}</dd></div><div><dt>Additional hits</dt><dd>{plan.incremental_hits} pts</dd></div><div><dt>Bank after</dt><dd>{money(plan.bank_units)}</dd></div><div><dt>Next free transfers</dt><dd>{plan.free_transfers_next??"Unknown"}</dd></div><div><dt>Formation</dt><dd>{String(plan.lineup.formation||"Unavailable")}</dd></div></dl><ul className="actions">{(plan.actions||[]).length?plan.actions!.map((a,i)=><li key={i}>{actionText(a,playerMap)}</li>):<li>Keep your current squad. No transfers.</li>}</ul><p>Captain: {playerMap.get(Number(plan.lineup.captain))?.name||"Unavailable"} · Vice: {playerMap.get(Number(plan.lineup.vice_captain))?.name||"Unavailable"}</p><p>Bench priority: {ids(plan.lineup.bench).map(id=>playerMap.get(id)?.name||id).join(" → ")||"Unavailable"}</p>{staleReasons.length>0&&<p className="warning">Stale: {staleReasons.join(" · ")}</p>}<details><summary>Assumptions & provenance</summary><ul>{plan.assumptions?.map((a,i)=><li key={i}>{a}</li>)}</ul><p>State v{plan.state_version} · Run {plan.projection_run_id}</p><p>Input fingerprint: {plan.input_fingerprint}</p><pre>{JSON.stringify(plan.solver,null,2)}</pre>{plan.weeks?.length?<pre>{JSON.stringify(plan.weeks,null,2)}</pre>:null}</details>{!isSaved&&<button className="button secondary" disabled={Boolean(busy)||dirty||stale} onClick={()=>savePlan(plan)}>Save {plan.name}</button>}</article>;
+  const task = async (name: string, action: (signal: AbortSignal) => Promise<void>) => {
+    controller.current?.abort();
+    const abort = new AbortController();
+    controller.current = abort;
+    setBusy(name);
+    setProgress(0);
+    setError("");
+    setNotice("");
+    try {
+      await action(abort.signal);
+    } catch (e) {
+      if (!abort.signal.aborted) {
+        setError(e instanceof Error ? e.message : "Request failed.");
+        if (e instanceof ApiError && e.status === 409)
+          setNotice(
+            "Inputs changed. Reload current state, then review and save your corrections again.",
+          );
+      }
+    } finally {
+      if (controller.current === abort) {
+        jobId.current = null;
+        setActiveJob(null);
+        setBusy("");
+      }
+    }
+  };
+  const importTeam = (demo: boolean) =>
+    void task(
+      demo ? "Loading synthetic demo" : "Importing public deadline squad",
+      async (signal) => {
+        const manager = demo
+          ? await api<State>("/demo", {}, "POST", signal)
+          : await api<State>("/teams/import", { team_id: teamId(importValue) }, "POST", signal);
+        await loadWorkspace(manager, signal);
+        if (signal.aborted) return;
+        setRun(null);
+        setRecommendation(null);
+        setNotice(
+          demo
+            ? "Synthetic demo loaded. No real manager data is used."
+            : "Public deadline squad imported. Review current players, finances, and chip state before analysis.",
+        );
+      },
+    );
+  const edit = (change: (s: State) => State) => {
+    if (!draft) return;
+    setDraft(change(draft));
+    setDirty(true);
+    setRecommendation(null);
+  };
+  const editPick = (index: number, change: Partial<Pick>) =>
+    edit((s) => ({ ...s, picks: s.picks.map((p, i) => (i === index ? { ...p, ...change } : p)) }));
+  const financial = (
+    key:
+      | "bank_units"
+      | "free_transfers_at_event_start"
+      | "transfers_made_this_event"
+      | "confirmed_hit_points",
+    value: number | null,
+  ) =>
+    edit((s) => ({
+      ...s,
+      [key]: value,
+      financial_provenance: {
+        ...s.financial_provenance,
+        [key]: value === null ? "unknown" : "user_confirmed",
+      },
+      financial_confirmed_at: new Date().toISOString(),
+    }));
+  const saveState = () => {
+    const invalid = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+      '[aria-invalid="true"]',
+    );
+    if (invalid) {
+      setError("Fix invalid correction inputs before saving.");
+      invalid.focus();
+      return;
+    }
+    void task("Saving corrections", async (signal) => {
+      if (!draft || !state || !catalog) return;
+      const corrected = { ...draft, snapshot_id: catalog.snapshot_id };
+      const updated = await api<State>(
+        `/teams/${state.team_id}/state`,
+        { expected_version: state.state_version, state: corrected },
+        "PATCH",
+        signal,
+      );
+      await loadWorkspace(updated, signal);
+      if (signal.aborted) return;
+      setRun(null);
+      setRecommendation(null);
+      setNotice(`Corrections saved · version ${updated.state_version}`);
+    });
+  };
+  const analyse = () =>
+    void task("Generating baseline forecasts", async (signal) => {
+      if (!state || dirty || stale) return;
+      const queued = await api<{ job_id: string }>(
+        "/projections/runs",
+        { team_id: state.team_id, horizon_events: settings.horizon_events },
+        "POST",
+        signal,
+      );
+      jobId.current = queued.job_id;
+      setActiveJob(queued.job_id);
+      const forecast = await waitForJob<Run>(queued.job_id, (j) => setProgress(j.progress), signal);
+      if (signal.aborted) return;
+      setRun(forecast);
+      sessionStorage.setItem(
+        `touchline.artifacts.${state.team_id}.${state.state_version}`,
+        JSON.stringify({ run: forecast.projection_run_id, settings }),
+      );
+      setBusy("Finding independently validated plans");
+      const analysis = await api<{ job_id: string }>(
+        "/recommendations",
+        {
+          team_id: state.team_id,
+          expected_state_version: state.state_version,
+          projection_run_id: forecast.projection_run_id,
+          settings,
+          analysis_mode: ready ? "transfers" : "lineup",
+        },
+        "POST",
+        signal,
+      );
+      jobId.current = analysis.job_id;
+      setActiveJob(analysis.job_id);
+      const result = await waitForJob<Recommendation>(
+        analysis.job_id,
+        (j) => setProgress(j.progress),
+        signal,
+      );
+      if (signal.aborted) return;
+      setRecommendation(result);
+      sessionStorage.setItem(
+        `touchline.artifacts.${state.team_id}.${state.state_version}`,
+        JSON.stringify({
+          run: forecast.projection_run_id,
+          recommendation: result.recommendation_id,
+          settings,
+        }),
+      );
+      setNotice("Analysis ready. Review assumptions before saving a plan.");
+    });
+  const savePlan = (plan: Plan) =>
+    void task("Saving plan", async (signal) => {
+      if (!recommendation) return;
+      await api(
+        "/plans",
+        { recommendation_id: recommendation.recommendation_id, plan_id: plan.plan_id },
+        "POST",
+        signal,
+      );
+      const plans = await api<Saved[]>("/plans", undefined, "GET", signal);
+      if (signal.aborted) return;
+      setSaved(plans.filter((p) => p.team_id === state?.team_id));
+      setNotice("Plan saved. Actions must be completed manually on FPL.");
+    });
+  const refresh = () =>
+    void task("Refreshing official data", async (signal) => {
+      const queued = await api<{ job_id: string }>("/data/refresh", {}, "POST", signal);
+      jobId.current = queued.job_id;
+      setActiveJob(queued.job_id);
+      await waitForJob<Record<string, unknown>>(
+        queued.job_id,
+        (j) => setProgress(j.progress),
+        signal,
+      );
+      if (state)
+        await loadWorkspace(
+          await api<State>(`/teams/${state.team_id}/state`, undefined, "GET", signal),
+          signal,
+        );
+      if (signal.aborted) return;
+      setRun(null);
+      setRecommendation(null);
+      setNotice(
+        "Refresh completed. Reconcile the new snapshot and review prices before analysing.",
+      );
+    });
+  const changeSettings = (patch: Partial<Settings>) => {
+    setSettings((s) => ({ ...s, ...patch }));
+    setRecommendation(null);
+    if (state)
+      sessionStorage.removeItem(`touchline.artifacts.${state.team_id}.${state.state_version}`);
+  };
+  const selectedPlan = recommendation?.baseline_plan;
+  const starters = selectedPlan
+    ? ids(selectedPlan.lineup.starters)
+    : state?.picks
+        .filter((p) => p.position <= 11)
+        .sort((a, b) => a.position - b.position)
+        .map((p) => p.player_id) || [];
+  const bench = selectedPlan
+    ? ids(selectedPlan.lineup.bench)
+    : state?.picks
+        .filter((p) => p.position > 11)
+        .sort((a, b) => a.position - b.position)
+        .map((p) => p.player_id) || [];
+  const captain = selectedPlan?.lineup.captain || state?.picks.find((p) => p.is_captain)?.player_id;
+  const vice =
+    selectedPlan?.lineup.vice_captain || state?.picks.find((p) => p.is_vice_captain)?.player_id;
+  const renderPlayer = (id: number, benched = false) => {
+    const player = playerMap.get(id);
+    return (
+      <div className={`pitch-player ${benched ? "benched" : ""}`} key={id}>
+        <div className="shirt" aria-hidden="true">
+          {positions[player?.position || 0]}
+          {id === captain ? <b>C</b> : id === vice ? <b>V</b> : null}
+        </div>
+        <strong>{player?.name || `Player ${id}`}</strong>
+        <span>
+          {points.has(id)
+            ? `${points.get(id)!.points.toFixed(1)} xP`
+            : money(player?.market_price_units)}
+        </span>
+      </div>
+    );
+  };
+  const planCard = (plan: Plan, isSaved = false, staleReasons: string[] = []) => (
+    <article className="plan-card" key={plan.plan_id}>
+      <div className="section-heading">
+        <h3>{plan.name}</h3>
+        <span className="tag">{plan.chip ? label(plan.chip) : "No chip"}</span>
+      </div>
+      <div className="plan-score">
+        <strong>
+          {plan.solver?.net_points_status === "unavailable_unknown_committed_hits"
+            ? "Unavailable"
+            : plan.net_points.toFixed(1)}
+        </strong>
+        <span>net expected points</span>
+        <b>
+          {plan.solver?.net_points_status === "unavailable_unknown_committed_hits" ? (
+            "Unknown committed hits"
+          ) : (
+            <>
+              {plan.delta_to_baseline >= 0 ? "+" : ""}
+              {plan.delta_to_baseline.toFixed(1)} vs Keep
+            </>
+          )}
+        </b>
+      </div>
+      <dl className="plan-facts">
+        <div>
+          <dt>Gross points</dt>
+          <dd>{plan.gross_points.toFixed(1)}</dd>
+        </div>
+        <div>
+          <dt>Total hits</dt>
+          <dd>
+            {plan.solver?.net_points_status === "unavailable_unknown_committed_hits"
+              ? "Unknown"
+              : `${plan.total_hits} pts`}
+          </dd>
+        </div>
+        <div>
+          <dt>Additional hits</dt>
+          <dd>{plan.incremental_hits} pts</dd>
+        </div>
+        <div>
+          <dt>Bank after</dt>
+          <dd>{money(plan.bank_units)}</dd>
+        </div>
+        <div>
+          <dt>Next free transfers</dt>
+          <dd>{plan.free_transfers_next ?? "Unknown"}</dd>
+        </div>
+        <div>
+          <dt>Formation</dt>
+          <dd>{String(plan.lineup.formation || "Unavailable")}</dd>
+        </div>
+      </dl>
+      <ul className="actions">
+        {(plan.actions || []).length ? (
+          plan.actions!.map((a, i) => <li key={i}>{actionText(a, playerMap)}</li>)
+        ) : (
+          <li>Keep your current squad. No transfers.</li>
+        )}
+      </ul>
+      <p>
+        Captain: {playerMap.get(Number(plan.lineup.captain))?.name || "Unavailable"} · Vice:{" "}
+        {playerMap.get(Number(plan.lineup.vice_captain))?.name || "Unavailable"}
+      </p>
+      <p>
+        Bench priority:{" "}
+        {ids(plan.lineup.bench)
+          .map((id) => playerMap.get(id)?.name || id)
+          .join(" → ") || "Unavailable"}
+      </p>
+      {staleReasons.length > 0 && <p className="warning">Stale: {staleReasons.join(" · ")}</p>}
+      <details>
+        <summary>Assumptions & provenance</summary>
+        <ul>
+          {plan.assumptions?.map((a, i) => (
+            <li key={i}>{a}</li>
+          ))}
+        </ul>
+        <p>
+          State v{plan.state_version} · Run {plan.projection_run_id}
+        </p>
+        <p>Input fingerprint: {plan.input_fingerprint}</p>
+        <pre>{JSON.stringify(plan.solver, null, 2)}</pre>
+        {plan.weeks?.length ? <pre>{JSON.stringify(plan.weeks, null, 2)}</pre> : null}
+      </details>
+      {!isSaved && (
+        <button
+          className="button secondary"
+          disabled={Boolean(busy) || dirty || stale}
+          onClick={() => savePlan(plan)}
+        >
+          Save {plan.name}
+        </button>
+      )}
+    </article>
+  );
 
-  return <div className="app-shell"><a href="#main" className="skip-link">Skip to main content</a><aside className="sidebar"><Link className="brand" href="/"><span className="brand-mark">t.</span><span>touchline<small>FPL ASSISTANT</small></span></Link><div className="workspace-label">YOUR WORKSPACE</div><nav aria-label="Main navigation">{sections.map(([id,name,icon])=><Link key={id} href={id==="overview"?"/":`/${id}`} aria-current={section===id?"page":undefined}><span aria-hidden="true">{icon}</span>{name}</Link>)}</nav><div className="sidebar-note"><span className="dot"/> Local workspace<p>Your team. Your decisions.<br/>Transfers are always manual.</p></div></aside><div className="content"><header className="topbar"><span>Fantasy Premier League <span className="muted">/ {state?.season||"Personal workspace"}</span></span><span className={`tag ${state?.data_mode==="demo"?"amber":""}`}>{state?.data_mode==="demo"?"SYNTHETIC DEMO":state?"LIVE DATA":"LOCAL TOOL"}</span></header><main id="main"><div className="page-heading"><div><p className="eyebrow">PLAN WITH A CLEARER PICTURE</p><h1>{section==="overview"?"Your next move starts here.":sections.find(s=>s[0]===section)?.[1]}</h1><p className="muted">{state?`Gameweek ${state.next_event} · ${state.data_mode==="demo"?"Synthetic squad":`Team ${state.team_id}`} · State v${state.state_version}`:"Import your team or explore a clearly labelled synthetic demo."}</p></div>{state&&<button className="button" onClick={analyse} disabled={Boolean(busy)||dirty||stale}>Run analysis <span aria-hidden="true">↗</span></button>}</div>
-    {busy&&<div role="status" className="feedback"><span className="spinner"/>{busy}{activeJob&&<><progress max={100} value={progress<=1?progress*100:progress} aria-label="Analysis progress"/><button className="text-button" onClick={cancelJob}>Cancel</button></>}</div>}
-    {error&&<div role="alert" className="feedback error">{error}</div>}{notice&&<div role="status" className="feedback success">{notice}</div>}
-    {dirty&&<div className="feedback warning">Unsaved corrections. Save manager inputs before analysis.</div>}{stale&&<div className="feedback warning">Manager state uses an older snapshot. Review prices and save corrections to reconcile.</div>}
-    {!state||section==="settings"?<section className="panel import-panel"><div><p className="eyebrow">START WITH YOUR SQUAD</p><h2>Bring your team to the touchline.</h2><p>Public import shows the last deadline squad. Recent transfers, bank, selling prices, and chips may need correction.</p></div><form onSubmit={e=>{e.preventDefault();importTeam(false);}}><label htmlFor="team-id">Team ID or official Points page URL</label><div className="inline"><input id="team-id" value={importValue} onChange={e=>setImportValue(e.target.value)} placeholder="e.g. 123456" required disabled={Boolean(busy)}/><button className="button" disabled={Boolean(busy)}>Import team</button></div><button className="text-button" type="button" disabled={Boolean(busy)} onClick={()=>importTeam(true)}>Explore synthetic demo →</button></form></section>:null}
-    {state&&<><div className="metrics"><Metric label="In the bank" value={money(state.bank_units)} detail="Confirmed manager input"/><Metric label="Free transfers" value={String(state.free_transfers_at_event_start??"Unknown")} detail={`${state.transfers_made_this_event??"Unknown"} already made this event`}/><Metric label="Committed hits" value={state.confirmed_hit_points==null?"Unknown":`${state.confirmed_hit_points} pts`} detail="Included in Keep comparison"/><Metric label="Forecast" value={run?label(run.model_family):"Not run"} detail={run?`${run.horizon_events} gameweeks · ${run.model_status}`:"No invented projections"}/></div>
-    {(section==="overview"||section==="planner")&&<><div className="dashboard-grid"><section className="panel squad-panel"><div className="section-heading"><div><p className="eyebrow">THE MATCHDAY PICTURE</p><h2>{selectedPlan?"Suggested Keep lineup":"Your current lineup"}</h2></div><span className="tag">GW {state.next_event}</span></div><div className="pitch" role="img" aria-label="Football pitch lineup; full player details in the squad table below"><div className="pitch-circle"/>{[1,2,3,4].map(pos=><div className="pitch-row" key={pos}>{starters.filter(id=>playerMap.get(id)?.position===pos).map(id=>renderPlayer(id))}</div>)}</div><div className="bench"><span className="eyebrow">BENCH · PRIORITY ORDER</span><div className="bench-row">{bench.map(id=>renderPlayer(id,true))}</div></div><SquadTable picks={selectedPlan?[...starters,...bench].map((id,i)=>({...state.picks.find(p=>p.player_id===id)!,player_id:id,position:i+1,is_captain:id===captain,is_vice_captain:id===vice})):state.picks} players={playerMap} points={points}/></section><div className="side-panels"><section className="panel"><p className="eyebrow">BEFORE YOU COMMIT</p><h2>Decision readiness</h2><ul className="checklist"><li>{ready?"✓":"!"} Financial inputs {ready?"present":"need correction"}</li><li>{dirty||stale?"!":"✓"} {dirty?"Unsaved manager edits":stale?"Snapshot needs reconciliation":"Manager version saved"}</li><li>{run?"✓":"○"} {run?"Baseline forecast available":"Run a baseline forecast"}</li></ul><p className="warning">{[...(readiness?.missing_fields||[]),...(readiness?.errors||[])].join(" · ")}</p><p className="muted">The backend independently validates every plan. Unknown financial inputs can block transfer recommendations.</p><Link className="text-link" href="/settings">Review manager inputs →</Link></section><section className="panel dark-panel"><p className="eyebrow">A LITTLE CONTEXT</p><h2>Expected ≠ guaranteed.</h2><p>Points are unconditional forecast means. Calibrated confidence and outcome ranges are unavailable unless supplied by a genuine evaluated model.</p><span className="tag">BASELINE FIRST</span></section><section className="panel"><h3>Source & freshness</h3><p>Imported deadline: {state.public_source_event==null?"Unavailable":`GW ${state.public_source_event}`}</p><p>Next deadline: {timestamp(status.deadline||status.next_deadline)}</p><p>Captured: {timestamp(status.captured_at||status.available_at)}</p><p>Forecast cutoff: {timestamp(run?.source_cutoff)}</p><p className="muted break">Snapshot: {catalog?.snapshot_id||state.snapshot_id}</p>{status.stale===true&&<p className="warning">Provider data is stale.</p>}<details><summary>Provider metadata</summary><pre>{JSON.stringify(status,null,2)}</pre></details></section></div></div>{section==="planner"&&<section className="panel"><h2>Planning constraints</h2><div className="form-grid"><label>Horizon (Gameweeks)<input type="number" min={1} max={8} value={settings.horizon_events} disabled={Boolean(busy)} onChange={e=>changeSettings({horizon_events:Number(e.target.value)})}/></label><label>Maximum additional hit points<input type="number" min={0} max={80} step={4} value={settings.max_additional_hit_points} disabled={Boolean(busy)} onChange={e=>changeSettings({max_additional_hit_points:Number(e.target.value)})}/></label><label>Chip scenario<select value={settings.chip_policy} disabled={Boolean(busy)} onChange={e=>changeSettings({chip_policy:e.target.value as Settings["chip_policy"]})}><option value="none">No chip</option>{chips.map(c=><option key={c} value={c}>{label(c)}</option>)}</select></label><label>Solver limit (seconds)<input type="number" min={1} max={60} value={settings.solver_time_limit_seconds} disabled={Boolean(busy)} onChange={e=>changeSettings({solver_time_limit_seconds:Number(e.target.value)})}/></label></div><p className="muted">The backend reports actual solver coverage and rejects unsupported chip scenarios. A forecast horizon does not imply full sequence optimisation.</p><div className="form-grid"><label>Lock players<select multiple value={(settings.locked_player_ids||[]).map(String)} disabled={Boolean(busy)} onChange={e=>changeSettings({locked_player_ids:Array.from(e.target.selectedOptions,o=>Number(o.value))})}>{state.picks.map(p=><option key={p.player_id} value={p.player_id}>{playerMap.get(p.player_id)?.name||p.player_id}</option>)}</select></label><label>Exclude players<select multiple value={(settings.excluded_player_ids||[]).map(String)} disabled={Boolean(busy)} onChange={e=>changeSettings({excluded_player_ids:Array.from(e.target.selectedOptions,o=>Number(o.value))})}>{catalog?.players.map(p=><option key={p.player_id} value={p.player_id}>{p.name}</option>)}</select></label></div><p className="muted">Use Ctrl / Command to select or clear multiple players.</p></section>}
-    <section className="panel"><div className="section-heading"><div><p className="eyebrow">COMPARE THE OPTIONS</p><h2>Plans, with the trade-offs visible.</h2></div></div>{recommendation?<><p className="muted">Rules {recommendation.rules_version} · State v{recommendation.state_version} · Cutoff {timestamp(recommendation.source_cutoff)}</p><div className="plan-grid">{[recommendation.baseline_plan,...recommendation.alternatives].map(p=>planCard(p))}</div>{recommendation.warnings?.map((w,i)=><p className="warning" key={i}>{w}</p>)}</>:<div className="empty"><span aria-hidden="true">↗</span><h3>Your next move is still an open question.</h3><p>Run analysis to compare Keep with validated alternatives. No recommendations are shown before computation.</p></div>}</section></>}
-    {section==="players"&&<section className="panel"><div className="section-heading"><div><p className="eyebrow">THE PLAYER POOL</p><h2>Find the right fit.</h2></div><span className="tag">{run?"BASELINE PROJECTIONS":"FORECAST UNAVAILABLE"}</span></div><div className="form-grid filters"><label>Search players<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by name"/></label><label>Position<select value={position} onChange={e=>setPosition(e.target.value)}><option value="">All positions</option>{[1,2,3,4].map(p=><option value={p} key={p}>{positions[p]}</option>)}</select></label><label>Maximum price (£m)<input type="number" min={0} step="0.1" value={price} onChange={e=>setPrice(e.target.value)}/></label></div><div className="table-scroll"><table><caption>Player catalogue and {run?.horizon_events??settings.horizon_events}-Gameweek forecast means</caption><thead><tr><th scope="col">Player</th><th scope="col">Position / club</th><th scope="col">Market</th><th scope="col">Horizon xP</th><th scope="col">Forecast minutes</th><th scope="col">Fixtures / availability</th></tr></thead><tbody>{catalog?.players.filter(p=>p.name.toLowerCase().includes(search.toLowerCase())&&(!position||p.position===Number(position))&&(!price||p.market_price_units<=Number(price)*10)).map(p=><tr key={p.player_id}><th scope="row">{p.name}<small>{p.status!=="a"?`Status: ${p.status}`:""}</small></th><td>{positions[p.position]} · Club {p.club}</td><td>{money(p.market_price_units)}</td><td>{horizonPoints.get(p.player_id)?.points.toFixed(1)??"Unavailable"}</td><td>{horizonPoints.get(p.player_id)?.minutes.toFixed(0)??"Unavailable"}</td><td>{horizonPoints.get(p.player_id)?.fixtures??"Unknown"} fixtures · {p.availability==null?"Availability unknown":`${Math.round(p.availability*100)}% available`}<details><summary>Fixture forecast details</summary>{run?.projections.filter(r=>r.player_id===p.player_id).map(r=><p key={r.fixture_id}>GW {r.event} · Fixture {r.fixture_id} · {r.expected_points.toFixed(1)} xP · {r.expected_minutes.toFixed(0)} minutes<br/>{r.assumptions?.join(" · ")}</p>)||<p>Run analysis to generate projections.</p>}</details></td></tr>)}</tbody></table></div></section>}
-    {section==="history"&&<section className="panel"><p className="eyebrow">YOUR DECISION LOG</p><h2>Saved plans</h2><p className="muted">Frozen forecasts and assumptions. Realised results and evaluation history are unavailable until recorded by the backend.</p>{saved.length?<div className="plan-grid">{saved.map(s=><div key={s.plan_id}><p className="muted">Saved {timestamp(s.saved_at)}</p>{planCard(s.plan,true,s.stale_reasons)}</div>)}</div>:<div className="empty"><h3>No saved plans yet.</h3><p>Analyse your squad and save a plan to keep a decision record.</p></div>}</section>}
-    {section==="models"&&<section className="panel"><p className="eyebrow">EVIDENCE BEFORE COMPLEXITY</p><h2>Model registry</h2><p className="muted">Training and validation metrics are only shown when provided by real artifacts. Calibrated uncertainty and ensemble disagreement are currently unavailable.</p><div className="plan-grid">{models.map((m,i)=><article className="plan-card" key={i}><h3>{String(m.name||m.model_family||m.family||"Model")}</h3><span className="tag">{String(m.status||m.state||"Unavailable")}</span><p>{String(m.reason||m.description||"See recorded registry metadata.")}</p><pre>{JSON.stringify(m,null,2)}</pre></article>)}</div>{!models.length&&<p>Registry unavailable. Retry loading your team.</p>}</section>}
-    {section==="settings"&&draft&&<section className="panel"><div className="section-heading"><div><p className="eyebrow">MAKE THE PUBLIC SQUAD CURRENT</p><h2>Manager corrections</h2></div><button className="button" disabled={Boolean(busy)||invalidCorrections||!dirty&&!stale} onClick={saveState}>Save corrections</button></div><p className="muted">Blank values mean unknown, never zero. Prices use £0.1m increments. Replacement is a manual correction; record actual event transfers and committed hits separately.</p><fieldset disabled={Boolean(busy)}><legend>Financial and event inputs</legend><div className="form-grid"><MoneyInput onValidity={reportValidity} key={`bank-${draft.team_id}-${editorRevision}`} label="Bank (£m)" value={draft.bank_units} onChange={v=>financial("bank_units",v)}/>{([['free_transfers_at_event_start','Free transfers at event start',1,5],['transfers_made_this_event','Transfers already made',0,10000],['confirmed_hit_points','Already committed hit points',0,80]] as const).map(([key,title,min,max])=><label key={key}>{title}<input type="number" min={min} max={key==="transfers_made_this_event"?undefined:max} step={key==="confirmed_hit_points"?4:1} value={draft[key]??""} onChange={e=>financial(key,e.target.value===""?null:Number(e.target.value))}/></label>)}<label>Upcoming Gameweek<input type="number" min={1} max={38} value={draft.next_event} onChange={e=>edit(s=>({...s,next_event:Number(e.target.value)}))}/></label><label>Chip already active<select value={draft.current_chip||""} onChange={e=>edit(s=>({...s,current_chip:e.target.value||null}))}><option value="">None (confirm below)</option>{chips.map(c=><option key={c} value={c}>{label(c)}</option>)}</select></label><label className="checkbox"><input type="checkbox" checked={draft.current_chip_confirmed||false} onChange={e=>edit(s=>({...s,current_chip_confirmed:e.target.checked}))}/>Current chip status confirmed</label><label className="checkbox"><input type="checkbox" checked={draft.club_limit_exception||false} onChange={e=>edit(s=>({...s,club_limit_exception:e.target.checked}))}/>Imported club-limit exception</label><p className="muted">Only mark a club-limit exception for an imported squad affected by a real-world club transfer. The backend requires a compliant resulting transfer squad.</p><label>Previous Free Hit Gameweek<input type="number" min={1} max={38} value={draft.previous_free_hit_event??""} onChange={e=>edit(s=>({...s,previous_free_hit_event:e.target.value?Number(e.target.value):null}))}/></label><MoneyInput onValidity={reportValidity} key={`start-bank-${draft.team_id}-${editorRevision}`} label="Event-start bank (£m)" value={draft.event_start_bank_units} onChange={v=>edit(s=>({...s,event_start_bank_units:v}))}/></div><legend>Chip inventory · backend applies season windows</legend><div className="form-grid">{Array.from(new Set([...Object.keys(draft.chips||{}),...chips])).map(c=><label key={c}>{label(c)}<select value={draft.chips?.[c]==null?"unknown":draft.chips[c]?"available":"used"} onChange={e=>edit(s=>({...s,chips:{...s.chips,[c]:e.target.value==="unknown"?null:e.target.value==="available"}}))}><option value="unknown">Unknown</option><option value="available">Available</option><option value="used">Used / unavailable</option></select></label>)}</div><div className="table-scroll"><table className="edit-table"><caption>Active squad · replace players, correct prices, lineup slots and captaincy</caption><thead><tr><th>Player</th><th>Market</th><th>Purchase (£m)</th><th>Sell (£m)</th><th>Slot 1–15</th><th>Captain / vice</th></tr></thead><tbody>{draft.picks.map((p,index)=><tr key={index}><td><select aria-label={`Player in slot ${index+1}`} value={p.player_id} onChange={e=>{const id=Number(e.target.value);editPick(index,{player_id:id,purchase_price_units:null,selling_price_units:null,selling_price_market_units:null,selling_price_provenance:"unknown",confirmed_at:null,acquisition_id:null});}}>{catalog?.players.map(player=><option key={player.player_id} value={player.player_id}>{player.name} · {positions[player.position]} · Club {player.club}</option>)}</select></td><td>{money(playerMap.get(p.player_id)?.market_price_units)}</td><td><MoneyInput onValidity={reportValidity} key={`purchase-${editorRevision}-${p.player_id}`} label={`Purchase price for slot ${index+1}`} hidden value={p.purchase_price_units} onChange={v=>editPick(index,{purchase_price_units:v})}/></td><td><MoneyInput onValidity={reportValidity} key={`sell-${editorRevision}-${p.player_id}`} label={`Selling price for slot ${index+1}`} hidden value={p.selling_price_units} onChange={v=>editPick(index,{selling_price_units:v,selling_price_market_units:v===null?null:playerMap.get(p.player_id)?.market_price_units,selling_price_provenance:v===null?"unknown":"user_confirmed",confirmed_at:new Date().toISOString()})}/></td><td><input aria-label={`Lineup position for slot ${index+1}`} type="number" min={1} max={15} value={p.position} onChange={e=>editPick(index,{position:Number(e.target.value)})}/></td><td><label className="checkbox"><input type="checkbox" checked={p.is_captain} aria-label={`Captain slot ${index+1}`} onChange={e=>edit(s=>({...s,picks:s.picks.map((pick,i)=>({...pick,is_captain:i===index?e.target.checked:false}))}))}/> C</label><label className="checkbox"><input type="checkbox" checked={p.is_vice_captain} aria-label={`Vice captain slot ${index+1}`} onChange={e=>edit(s=>({...s,picks:s.picks.map((pick,i)=>({...pick,is_vice_captain:i===index?e.target.checked:false}))}))}/> V</label></td></tr>)}</tbody></table></div><div className="form-grid"><JsonInput onValidity={reportValidity} key={`persistent-${editorRevision}`} label="Persistent squad (Free Hit restore picks)" value={draft.persistent_picks} onChange={v=>edit(s=>({...s,persistent_picks:v as Pick[]|null}))}/><JsonInput onValidity={reportValidity} key={`event-${editorRevision}`} label="Event-start squad" value={draft.event_start_picks} onChange={v=>edit(s=>({...s,event_start_picks:v as Pick[]|null}))}/><JsonInput onValidity={reportValidity} key={`ledger-${editorRevision}`} label="Already-made transfer ledger" value={draft.transfer_ledger||[]} onChange={v=>edit(s=>({...s,transfer_ledger:v as NonNullable<State["transfer_ledger"]>}))}/></div><p className="muted">Advanced squad records use the same pick fields as the active squad. Leave unknown records null; backend validation remains authoritative.</p></fieldset><div className="inline"><button className="button" disabled={Boolean(busy)||invalidCorrections||!dirty&&!stale} onClick={saveState}>Save corrections</button><button className="button secondary" disabled={Boolean(busy)} onClick={()=>void task("Reloading current state",async signal=>{await loadWorkspace(await api<State>(`/teams/${state.team_id}/state`,undefined,"GET",signal),signal);setRecommendation(null);setRun(null);})}>Reload current state</button><button className="button secondary" disabled={Boolean(busy)||state.data_mode==="demo"} onClick={refresh}>Refresh official data</button></div></section>}
-    {state.warnings?.map((w,i)=><p className="warning" key={i}>{w}</p>)}{run?.warnings?.map((w,i)=><p className="warning" key={i}>{w}</p>)}</>}
-    <footer>Built for thoughtful decisions. All FPL actions are manual. <span>Local · Free data · Transparent baseline</span></footer>
-  </main></div></div>;
+  return (
+    <div className="app-shell">
+      <a href="#main" className="skip-link">
+        Skip to main content
+      </a>
+      <aside className="sidebar">
+        <Link className="brand" href="/">
+          <span className="brand-mark">t.</span>
+          <span>
+            touchline<small>FPL ASSISTANT</small>
+          </span>
+        </Link>
+        <div className="workspace-label">YOUR WORKSPACE</div>
+        <nav aria-label="Main navigation">
+          {sections.map(([id, name, icon]) => (
+            <Link
+              key={id}
+              href={id === "overview" ? "/" : `/${id}`}
+              aria-current={section === id ? "page" : undefined}
+            >
+              <span aria-hidden="true">{icon}</span>
+              {name}
+            </Link>
+          ))}
+        </nav>
+        <div className="sidebar-note">
+          <span className="dot" /> Local workspace
+          <p>
+            Your team. Your decisions.
+            <br />
+            Transfers are always manual.
+          </p>
+        </div>
+      </aside>
+      <div className="content">
+        <header className="topbar">
+          <span>
+            Fantasy Premier League{" "}
+            <span className="muted">/ {state?.season || "Personal workspace"}</span>
+          </span>
+          <span className={`tag ${state?.data_mode === "demo" ? "amber" : ""}`}>
+            {state?.data_mode === "demo" ? "SYNTHETIC DEMO" : state ? "LIVE DATA" : "LOCAL TOOL"}
+          </span>
+        </header>
+        <main id="main">
+          <div className="page-heading">
+            <div>
+              <p className="eyebrow">PLAN WITH A CLEARER PICTURE</p>
+              <h1>
+                {section === "overview"
+                  ? "Your next move starts here."
+                  : sections.find((s) => s[0] === section)?.[1]}
+              </h1>
+              <p className="muted">
+                {state
+                  ? `Gameweek ${state.next_event} · ${state.data_mode === "demo" ? "Synthetic squad" : `Team ${state.team_id}`} · State v${state.state_version}`
+                  : "Import your team or explore a clearly labelled synthetic demo."}
+              </p>
+            </div>
+            {state && (
+              <button
+                className="text-button"
+                type="button"
+                disabled={Boolean(busy)}
+                onClick={() => importTeam(true)}
+              >
+                Explore synthetic demo →
+              </button>
+            )}
+            {state && (
+              <button
+                className="button"
+                onClick={analyse}
+                disabled={Boolean(busy) || dirty || stale}
+              >
+                Run analysis <span aria-hidden="true">↗</span>
+              </button>
+            )}
+          </div>
+          {busy && (
+            <div role="status" className="feedback">
+              <span className="spinner" />
+              {busy}
+              {activeJob && (
+                <>
+                  <progress
+                    max={100}
+                    value={progress <= 1 ? progress * 100 : progress}
+                    aria-label="Analysis progress"
+                  />
+                  <button className="text-button" onClick={cancelJob}>
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+          {error && (
+            <div role="alert" className="feedback error">
+              {error}
+            </div>
+          )}
+          {notice && (
+            <div role="status" className="feedback success">
+              {notice}
+            </div>
+          )}
+          {dirty && (
+            <div className="feedback warning">
+              Unsaved corrections. Save manager inputs before analysis.
+            </div>
+          )}
+          {stale && (
+            <div className="feedback warning">
+              Manager state uses an older snapshot. Review prices and save corrections to reconcile.
+            </div>
+          )}
+          {!state || section === "settings" ? (
+            <section className="panel import-panel">
+              <div>
+                <p className="eyebrow">START WITH YOUR SQUAD</p>
+                <h2>Bring your team to the touchline.</h2>
+                <p>
+                  Public import shows the last deadline squad. Recent transfers, bank, selling
+                  prices, and chips may need correction.
+                </p>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  importTeam(false);
+                }}
+              >
+                <label htmlFor="team-id">Team ID or official Points page URL</label>
+                <div className="inline">
+                  <input
+                    id="team-id"
+                    value={importValue}
+                    onChange={(e) => setImportValue(e.target.value)}
+                    placeholder="e.g. 123456"
+                    required
+                    disabled={Boolean(busy)}
+                  />
+                  <button className="button" disabled={Boolean(busy)}>
+                    Import team
+                  </button>
+                </div>
+                <button
+                  className="text-button"
+                  type="button"
+                  disabled={Boolean(busy)}
+                  onClick={() => importTeam(true)}
+                >
+                  Explore synthetic demo →
+                </button>
+              </form>
+            </section>
+          ) : null}
+          {state && (
+            <>
+              <div className="metrics">
+                <Metric
+                  label="In the bank"
+                  value={money(state.bank_units)}
+                  detail="Confirmed manager input"
+                />
+                <Metric
+                  label="Free transfers"
+                  value={String(state.free_transfers_at_event_start ?? "Unknown")}
+                  detail={`${state.transfers_made_this_event ?? "Unknown"} already made this event`}
+                />
+                <Metric
+                  label="Committed hits"
+                  value={
+                    state.confirmed_hit_points == null
+                      ? "Unknown"
+                      : `${state.confirmed_hit_points} pts`
+                  }
+                  detail="Included in Keep comparison"
+                />
+                <Metric
+                  label="Forecast"
+                  value={run ? label(run.model_family) : "Not run"}
+                  detail={
+                    run
+                      ? `${run.horizon_events} gameweeks · ${run.model_status}`
+                      : "No invented projections"
+                  }
+                />
+              </div>
+              {(section === "overview" || section === "planner") && (
+                <>
+                  <div className="dashboard-grid">
+                    <section className="panel squad-panel">
+                      <div className="section-heading">
+                        <div>
+                          <p className="eyebrow">THE MATCHDAY PICTURE</p>
+                          <h2>{selectedPlan ? "Suggested Keep lineup" : "Your current lineup"}</h2>
+                        </div>
+                        <span className="tag">GW {state.next_event}</span>
+                      </div>
+                      <div
+                        className="pitch"
+                        role="img"
+                        aria-label="Football pitch lineup; full player details in the squad table below"
+                      >
+                        <div className="pitch-circle" />
+                        {[1, 2, 3, 4].map((pos) => (
+                          <div className="pitch-row" key={pos}>
+                            {starters
+                              .filter((id) => playerMap.get(id)?.position === pos)
+                              .map((id) => renderPlayer(id))}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="bench">
+                        <span className="eyebrow">BENCH · PRIORITY ORDER</span>
+                        <div className="bench-row">{bench.map((id) => renderPlayer(id, true))}</div>
+                      </div>
+                      <SquadTable
+                        picks={
+                          selectedPlan
+                            ? [...starters, ...bench].map((id, i) => ({
+                                ...state.picks.find((p) => p.player_id === id)!,
+                                player_id: id,
+                                position: i + 1,
+                                is_captain: id === captain,
+                                is_vice_captain: id === vice,
+                              }))
+                            : state.picks
+                        }
+                        players={playerMap}
+                        points={points}
+                      />
+                    </section>
+                    <div className="side-panels">
+                      <section className="panel">
+                        <p className="eyebrow">BEFORE YOU COMMIT</p>
+                        <h2>Decision readiness</h2>
+                        <ul className="checklist">
+                          <li>
+                            {ready ? "✓" : "!"} Financial inputs{" "}
+                            {ready ? "present" : "need correction"}
+                          </li>
+                          <li>
+                            {dirty || stale ? "!" : "✓"}{" "}
+                            {dirty
+                              ? "Unsaved manager edits"
+                              : stale
+                                ? "Snapshot needs reconciliation"
+                                : "Manager version saved"}
+                          </li>
+                          <li>
+                            {run ? "✓" : "○"}{" "}
+                            {run ? "Baseline forecast available" : "Run a baseline forecast"}
+                          </li>
+                        </ul>
+                        <p className="warning">
+                          {[
+                            ...(readiness?.missing_fields || []),
+                            ...(readiness?.errors || []),
+                          ].join(" · ")}
+                        </p>
+                        <p className="muted">
+                          The backend independently validates every plan. Unknown financial inputs
+                          can block transfer recommendations.
+                        </p>
+                        <Link className="text-link" href="/settings">
+                          Review manager inputs →
+                        </Link>
+                      </section>
+                      <section className="panel dark-panel">
+                        <p className="eyebrow">A LITTLE CONTEXT</p>
+                        <h2>Expected ≠ guaranteed.</h2>
+                        <p>
+                          Points are unconditional forecast means. Calibrated confidence and outcome
+                          ranges are unavailable unless supplied by a genuine evaluated model.
+                        </p>
+                        <span className="tag">BASELINE FIRST</span>
+                      </section>
+                      <section className="panel">
+                        <h3>Source & freshness</h3>
+                        <p>
+                          Imported deadline:{" "}
+                          {state.public_source_event == null
+                            ? "Unavailable"
+                            : `GW ${state.public_source_event}`}
+                        </p>
+                        <p>Next deadline: {timestamp(status.deadline || status.next_deadline)}</p>
+                        <p>Captured: {timestamp(status.captured_at || status.available_at)}</p>
+                        <p>Forecast cutoff: {timestamp(run?.source_cutoff)}</p>
+                        <p className="muted break">
+                          Snapshot: {catalog?.snapshot_id || state.snapshot_id}
+                        </p>
+                        {status.stale === true && (
+                          <p className="warning">Provider data is stale.</p>
+                        )}
+                        <details>
+                          <summary>Provider metadata</summary>
+                          <pre>{JSON.stringify(status, null, 2)}</pre>
+                        </details>
+                      </section>
+                    </div>
+                  </div>
+                  {section === "planner" && (
+                    <section className="panel">
+                      <h2>Planning constraints</h2>
+                      <div className="form-grid">
+                        <label>
+                          Horizon (Gameweeks)
+                          <input
+                            type="number"
+                            min={1}
+                            max={8}
+                            value={settings.horizon_events}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({ horizon_events: Number(e.target.value) })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Maximum additional hit points
+                          <input
+                            type="number"
+                            min={0}
+                            max={80}
+                            step={4}
+                            value={settings.max_additional_hit_points}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({ max_additional_hit_points: Number(e.target.value) })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Chip scenario
+                          <select
+                            value={settings.chip_policy}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({
+                                chip_policy: e.target.value as Settings["chip_policy"],
+                              })
+                            }
+                          >
+                            <option value="none">No chip</option>
+                            {chips.map((c) => (
+                              <option key={c} value={c}>
+                                {label(c)}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          Solver limit (seconds)
+                          <input
+                            type="number"
+                            min={1}
+                            max={60}
+                            value={settings.solver_time_limit_seconds}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({ solver_time_limit_seconds: Number(e.target.value) })
+                            }
+                          />
+                        </label>
+                      </div>
+                      <p className="muted">
+                        The backend reports actual solver coverage and rejects unsupported chip
+                        scenarios. A forecast horizon does not imply full sequence optimisation.
+                      </p>
+                      <div className="form-grid">
+                        <label>
+                          Lock players
+                          <select
+                            multiple
+                            value={(settings.locked_player_ids || []).map(String)}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({
+                                locked_player_ids: Array.from(e.target.selectedOptions, (o) =>
+                                  Number(o.value),
+                                ),
+                              })
+                            }
+                          >
+                            {state.picks.map((p) => (
+                              <option key={p.player_id} value={p.player_id}>
+                                {playerMap.get(p.player_id)?.name || p.player_id}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          Exclude players
+                          <select
+                            multiple
+                            value={(settings.excluded_player_ids || []).map(String)}
+                            disabled={Boolean(busy)}
+                            onChange={(e) =>
+                              changeSettings({
+                                excluded_player_ids: Array.from(e.target.selectedOptions, (o) =>
+                                  Number(o.value),
+                                ),
+                              })
+                            }
+                          >
+                            {catalog?.players.map((p) => (
+                              <option key={p.player_id} value={p.player_id}>
+                                {p.name}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      </div>
+                      <p className="muted">
+                        Use Ctrl / Command to select or clear multiple players.
+                      </p>
+                    </section>
+                  )}
+                  <section className="panel">
+                    <div className="section-heading">
+                      <div>
+                        <p className="eyebrow">COMPARE THE OPTIONS</p>
+                        <h2>Plans, with the trade-offs visible.</h2>
+                      </div>
+                    </div>
+                    {recommendation ? (
+                      <>
+                        <p className="muted">
+                          Rules {recommendation.rules_version} · State v
+                          {recommendation.state_version} · Cutoff{" "}
+                          {timestamp(recommendation.source_cutoff)}
+                        </p>
+                        <div className="plan-grid">
+                          {[recommendation.baseline_plan, ...recommendation.alternatives].map((p) =>
+                            planCard(p),
+                          )}
+                        </div>
+                        {recommendation.warnings?.map((w, i) => (
+                          <p className="warning" key={i}>
+                            {w}
+                          </p>
+                        ))}
+                      </>
+                    ) : (
+                      <div className="empty">
+                        <span aria-hidden="true">↗</span>
+                        <h3>Your next move is still an open question.</h3>
+                        <p>
+                          Run analysis to compare Keep with validated alternatives. No
+                          recommendations are shown before computation.
+                        </p>
+                      </div>
+                    )}
+                  </section>
+                </>
+              )}
+              {section === "players" && (
+                <section className="panel">
+                  <div className="section-heading">
+                    <div>
+                      <p className="eyebrow">THE PLAYER POOL</p>
+                      <h2>Find the right fit.</h2>
+                    </div>
+                    <span className="tag">
+                      {run ? "BASELINE PROJECTIONS" : "FORECAST UNAVAILABLE"}
+                    </span>
+                  </div>
+                  <div className="form-grid filters">
+                    <label>
+                      Search players
+                      <input
+                        type="search"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search by name"
+                      />
+                    </label>
+                    <label>
+                      Position
+                      <select value={position} onChange={(e) => setPosition(e.target.value)}>
+                        <option value="">All positions</option>
+                        {[1, 2, 3, 4].map((p) => (
+                          <option value={p} key={p}>
+                            {positions[p]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      Maximum price (£m)
+                      <input
+                        type="number"
+                        min={0}
+                        step="0.1"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                  <div className="table-scroll">
+                    <table>
+                      <caption>
+                        Player catalogue and {run?.horizon_events ?? settings.horizon_events}
+                        -Gameweek forecast means
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Player</th>
+                          <th scope="col">Position / club</th>
+                          <th scope="col">Market</th>
+                          <th scope="col">Horizon xP</th>
+                          <th scope="col">Forecast minutes</th>
+                          <th scope="col">Fixtures / availability</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {catalog?.players
+                          .filter(
+                            (p) =>
+                              p.name.toLowerCase().includes(search.toLowerCase()) &&
+                              (!position || p.position === Number(position)) &&
+                              (!price || p.market_price_units <= Number(price) * 10),
+                          )
+                          .map((p) => (
+                            <tr key={p.player_id}>
+                              <th scope="row">
+                                {p.name}
+                                <small>{p.status !== "a" ? `Status: ${p.status}` : ""}</small>
+                              </th>
+                              <td>
+                                {positions[p.position]} · Club {p.club}
+                              </td>
+                              <td>{money(p.market_price_units)}</td>
+                              <td>
+                                {horizonPoints.get(p.player_id)?.points.toFixed(1) ?? "Unavailable"}
+                              </td>
+                              <td>
+                                {horizonPoints.get(p.player_id)?.minutes.toFixed(0) ??
+                                  "Unavailable"}
+                              </td>
+                              <td>
+                                {horizonPoints.get(p.player_id)?.fixtures ?? "Unknown"} fixtures ·{" "}
+                                {p.availability == null
+                                  ? "Availability unknown"
+                                  : `${Math.round(p.availability * 100)}% available`}
+                                <details>
+                                  <summary>Fixture forecast details</summary>
+                                  {run?.projections
+                                    .filter((r) => r.player_id === p.player_id)
+                                    .map((r) => (
+                                      <p key={r.fixture_id}>
+                                        GW {r.event} · Fixture {r.fixture_id} ·{" "}
+                                        {r.expected_points.toFixed(1)} xP ·{" "}
+                                        {r.expected_minutes.toFixed(0)} minutes
+                                        <br />
+                                        {r.assumptions?.join(" · ")}
+                                      </p>
+                                    )) || <p>Run analysis to generate projections.</p>}
+                                </details>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
+              {section === "history" && (
+                <section className="panel">
+                  <p className="eyebrow">YOUR DECISION LOG</p>
+                  <h2>Saved plans</h2>
+                  <p className="muted">
+                    Frozen forecasts and assumptions. Realised results and evaluation history are
+                    unavailable until recorded by the backend.
+                  </p>
+                  {saved.length ? (
+                    <div className="plan-grid">
+                      {saved.map((s) => (
+                        <div key={s.plan_id}>
+                          <p className="muted">Saved {timestamp(s.saved_at)}</p>
+                          {planCard(s.plan, true, s.stale_reasons)}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="empty">
+                      <h3>No saved plans yet.</h3>
+                      <p>Analyse your squad and save a plan to keep a decision record.</p>
+                    </div>
+                  )}
+                </section>
+              )}
+              {section === "models" && (
+                <section className="panel">
+                  <p className="eyebrow">EVIDENCE BEFORE COMPLEXITY</p>
+                  <h2>Model registry</h2>
+                  <p className="muted">
+                    Training and validation metrics are only shown when provided by real artifacts.
+                    Calibrated uncertainty and ensemble disagreement are currently unavailable.
+                  </p>
+                  <div className="plan-grid">
+                    {models.map((m, i) => (
+                      <article className="plan-card" key={i}>
+                        <h3>{String(m.name || m.model_family || m.family || "Model")}</h3>
+                        <span className="tag">{String(m.status || m.state || "Unavailable")}</span>
+                        <p>
+                          {String(m.reason || m.description || "See recorded registry metadata.")}
+                        </p>
+                        <pre>{JSON.stringify(m, null, 2)}</pre>
+                      </article>
+                    ))}
+                  </div>
+                  {!models.length && <p>Registry unavailable. Retry loading your team.</p>}
+                </section>
+              )}
+              {section === "settings" && draft && (
+                <section className="panel">
+                  <div className="section-heading">
+                    <div>
+                      <p className="eyebrow">MAKE THE PUBLIC SQUAD CURRENT</p>
+                      <h2>Manager corrections</h2>
+                    </div>
+                    <button
+                      className="button"
+                      disabled={Boolean(busy) || invalidCorrections || (!dirty && !stale)}
+                      onClick={saveState}
+                    >
+                      Save corrections
+                    </button>
+                  </div>
+                  <p className="muted">
+                    Blank values mean unknown, never zero. Prices use £0.1m increments. Replacement
+                    is a manual correction; record actual event transfers and committed hits
+                    separately.
+                  </p>
+                  <fieldset disabled={Boolean(busy)}>
+                    <legend>Financial and event inputs</legend>
+                    <div className="form-grid">
+                      <MoneyInput
+                        onValidity={reportValidity}
+                        key={`bank-${draft.team_id}-${editorRevision}`}
+                        label="Bank (£m)"
+                        value={draft.bank_units}
+                        onChange={(v) => financial("bank_units", v)}
+                      />
+                      {(
+                        [
+                          ["free_transfers_at_event_start", "Free transfers at event start", 1, 5],
+                          ["transfers_made_this_event", "Transfers already made", 0, 10000],
+                          ["confirmed_hit_points", "Already committed hit points", 0, 80],
+                        ] as const
+                      ).map(([key, title, min, max]) => (
+                        <label key={key}>
+                          {title}
+                          <input
+                            type="number"
+                            min={min}
+                            max={key === "transfers_made_this_event" ? undefined : max}
+                            step={key === "confirmed_hit_points" ? 4 : 1}
+                            value={draft[key] ?? ""}
+                            onChange={(e) =>
+                              financial(key, e.target.value === "" ? null : Number(e.target.value))
+                            }
+                          />
+                        </label>
+                      ))}
+                      <label>
+                        Upcoming Gameweek
+                        <input
+                          type="number"
+                          min={1}
+                          max={38}
+                          value={draft.next_event}
+                          onChange={(e) =>
+                            edit((s) => ({ ...s, next_event: Number(e.target.value) }))
+                          }
+                        />
+                      </label>
+                      <label>
+                        Chip already active
+                        <select
+                          value={draft.current_chip || ""}
+                          onChange={(e) =>
+                            edit((s) => ({ ...s, current_chip: e.target.value || null }))
+                          }
+                        >
+                          <option value="">None (confirm below)</option>
+                          {chips.map((c) => (
+                            <option key={c} value={c}>
+                              {label(c)}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="checkbox">
+                        <input
+                          type="checkbox"
+                          checked={draft.current_chip_confirmed || false}
+                          onChange={(e) =>
+                            edit((s) => ({ ...s, current_chip_confirmed: e.target.checked }))
+                          }
+                        />
+                        Current chip status confirmed
+                      </label>
+                      <label className="checkbox">
+                        <input
+                          type="checkbox"
+                          checked={draft.club_limit_exception || false}
+                          onChange={(e) =>
+                            edit((s) => ({ ...s, club_limit_exception: e.target.checked }))
+                          }
+                        />
+                        Imported club-limit exception
+                      </label>
+                      <p className="muted">
+                        Only mark a club-limit exception for an imported squad affected by a
+                        real-world club transfer. The backend requires a compliant resulting
+                        transfer squad.
+                      </p>
+                      <label>
+                        Previous Free Hit Gameweek
+                        <input
+                          type="number"
+                          min={1}
+                          max={38}
+                          value={draft.previous_free_hit_event ?? ""}
+                          onChange={(e) =>
+                            edit((s) => ({
+                              ...s,
+                              previous_free_hit_event: e.target.value
+                                ? Number(e.target.value)
+                                : null,
+                            }))
+                          }
+                        />
+                      </label>
+                      <MoneyInput
+                        onValidity={reportValidity}
+                        key={`start-bank-${draft.team_id}-${editorRevision}`}
+                        label="Event-start bank (£m)"
+                        value={draft.event_start_bank_units}
+                        onChange={(v) => edit((s) => ({ ...s, event_start_bank_units: v }))}
+                      />
+                    </div>
+                    <legend>Chip inventory · backend applies season windows</legend>
+                    <div className="form-grid">
+                      {Array.from(new Set([...Object.keys(draft.chips || {}), ...chips])).map(
+                        (c) => (
+                          <label key={c}>
+                            {label(c)}
+                            <select
+                              value={
+                                draft.chips?.[c] == null
+                                  ? "unknown"
+                                  : draft.chips[c]
+                                    ? "available"
+                                    : "used"
+                              }
+                              onChange={(e) =>
+                                edit((s) => ({
+                                  ...s,
+                                  chips: {
+                                    ...s.chips,
+                                    [c]:
+                                      e.target.value === "unknown"
+                                        ? null
+                                        : e.target.value === "available",
+                                  },
+                                }))
+                              }
+                            >
+                              <option value="unknown">Unknown</option>
+                              <option value="available">Available</option>
+                              <option value="used">Used / unavailable</option>
+                            </select>
+                          </label>
+                        ),
+                      )}
+                    </div>
+                    <div className="table-scroll">
+                      <table className="edit-table">
+                        <caption>
+                          Active squad · replace players, correct prices, lineup slots and captaincy
+                        </caption>
+                        <thead>
+                          <tr>
+                            <th>Player</th>
+                            <th>Market</th>
+                            <th>Purchase (£m)</th>
+                            <th>Sell (£m)</th>
+                            <th>Slot 1–15</th>
+                            <th>Captain / vice</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {draft.picks.map((p, index) => (
+                            <tr key={index}>
+                              <td>
+                                <select
+                                  aria-label={`Player in slot ${index + 1}`}
+                                  value={p.player_id}
+                                  onChange={(e) => {
+                                    const id = Number(e.target.value);
+                                    editPick(index, {
+                                      player_id: id,
+                                      purchase_price_units: null,
+                                      selling_price_units: null,
+                                      selling_price_market_units: null,
+                                      selling_price_provenance: "unknown",
+                                      confirmed_at: null,
+                                      acquisition_id: null,
+                                    });
+                                  }}
+                                >
+                                  {catalog?.players.map((player) => (
+                                    <option key={player.player_id} value={player.player_id}>
+                                      {player.name} · {positions[player.position]} · Club{" "}
+                                      {player.club}
+                                    </option>
+                                  ))}
+                                </select>
+                              </td>
+                              <td>{money(playerMap.get(p.player_id)?.market_price_units)}</td>
+                              <td>
+                                <MoneyInput
+                                  onValidity={reportValidity}
+                                  key={`purchase-${editorRevision}-${p.player_id}`}
+                                  label={`Purchase price for slot ${index + 1}`}
+                                  hidden
+                                  value={p.purchase_price_units}
+                                  onChange={(v) => editPick(index, { purchase_price_units: v })}
+                                />
+                              </td>
+                              <td>
+                                <MoneyInput
+                                  onValidity={reportValidity}
+                                  key={`sell-${editorRevision}-${p.player_id}`}
+                                  label={`Selling price for slot ${index + 1}`}
+                                  hidden
+                                  value={p.selling_price_units}
+                                  onChange={(v) =>
+                                    editPick(index, {
+                                      selling_price_units: v,
+                                      selling_price_market_units:
+                                        v === null
+                                          ? null
+                                          : playerMap.get(p.player_id)?.market_price_units,
+                                      selling_price_provenance:
+                                        v === null ? "unknown" : "user_confirmed",
+                                      confirmed_at: new Date().toISOString(),
+                                    })
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <input
+                                  aria-label={`Lineup position for slot ${index + 1}`}
+                                  type="number"
+                                  min={1}
+                                  max={15}
+                                  value={p.position}
+                                  onChange={(e) =>
+                                    editPick(index, { position: Number(e.target.value) })
+                                  }
+                                />
+                              </td>
+                              <td>
+                                <label className="checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={p.is_captain}
+                                    aria-label={`Captain slot ${index + 1}`}
+                                    onChange={(e) =>
+                                      edit((s) => ({
+                                        ...s,
+                                        picks: s.picks.map((pick, i) => ({
+                                          ...pick,
+                                          is_captain: i === index ? e.target.checked : false,
+                                        })),
+                                      }))
+                                    }
+                                  />{" "}
+                                  C
+                                </label>
+                                <label className="checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={p.is_vice_captain}
+                                    aria-label={`Vice captain slot ${index + 1}`}
+                                    onChange={(e) =>
+                                      edit((s) => ({
+                                        ...s,
+                                        picks: s.picks.map((pick, i) => ({
+                                          ...pick,
+                                          is_vice_captain: i === index ? e.target.checked : false,
+                                        })),
+                                      }))
+                                    }
+                                  />{" "}
+                                  V
+                                </label>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="form-grid">
+                      <JsonInput
+                        onValidity={reportValidity}
+                        key={`persistent-${editorRevision}`}
+                        label="Persistent squad (Free Hit restore picks)"
+                        value={draft.persistent_picks}
+                        onChange={(v) =>
+                          edit((s) => ({ ...s, persistent_picks: v as Pick[] | null }))
+                        }
+                      />
+                      <JsonInput
+                        onValidity={reportValidity}
+                        key={`event-${editorRevision}`}
+                        label="Event-start squad"
+                        value={draft.event_start_picks}
+                        onChange={(v) =>
+                          edit((s) => ({ ...s, event_start_picks: v as Pick[] | null }))
+                        }
+                      />
+                      <JsonInput
+                        onValidity={reportValidity}
+                        key={`ledger-${editorRevision}`}
+                        label="Already-made transfer ledger"
+                        value={draft.transfer_ledger || []}
+                        onChange={(v) =>
+                          edit((s) => ({
+                            ...s,
+                            transfer_ledger: v as NonNullable<State["transfer_ledger"]>,
+                          }))
+                        }
+                      />
+                    </div>
+                    <p className="muted">
+                      Advanced squad records use the same pick fields as the active squad. Leave
+                      unknown records null; backend validation remains authoritative.
+                    </p>
+                  </fieldset>
+                  <div className="inline">
+                    <button
+                      className="button"
+                      disabled={Boolean(busy) || invalidCorrections || (!dirty && !stale)}
+                      onClick={saveState}
+                    >
+                      Save corrections
+                    </button>
+                    <button
+                      className="button secondary"
+                      disabled={Boolean(busy)}
+                      onClick={() =>
+                        void task("Reloading current state", async (signal) => {
+                          await loadWorkspace(
+                            await api<State>(
+                              `/teams/${state.team_id}/state`,
+                              undefined,
+                              "GET",
+                              signal,
+                            ),
+                            signal,
+                          );
+                          setRecommendation(null);
+                          setRun(null);
+                        })
+                      }
+                    >
+                      Reload current state
+                    </button>
+                    <button
+                      className="button secondary"
+                      disabled={Boolean(busy) || state.data_mode === "demo"}
+                      onClick={refresh}
+                    >
+                      Refresh official data
+                    </button>
+                  </div>
+                </section>
+              )}
+              {state.warnings?.map((w, i) => (
+                <p className="warning" key={i}>
+                  {w}
+                </p>
+              ))}
+              {run?.warnings?.map((w, i) => (
+                <p className="warning" key={i}>
+                  {w}
+                </p>
+              ))}
+            </>
+          )}
+          <footer>
+            Built for thoughtful decisions. All FPL actions are manual.{" "}
+            <span>Local · Free data · Transparent baseline</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+  );
 }
-function Metric({label,value,detail}:{label:string;value:string;detail:string}){return <section className="metric"><p>{label}</p><strong>{value}</strong><small>{detail}</small></section>;}
-export function MoneyInput({label,value,onChange,hidden=false,onValidity}:{label:string;value:number|null|undefined;onChange:(v:number|null)=>void;hidden?:boolean;onValidity?:(name:string,invalid:boolean)=>void}){
-  const [text,setText]=useState(value==null?"":(value/10).toFixed(1));
-  const [invalid,setInvalid]=useState(false);
-  useEffect(()=>()=>onValidity?.(label,false),[onValidity,label]);
+function Metric({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <section className="metric">
+      <p>{label}</p>
+      <strong>{value}</strong>
+      <small>{detail}</small>
+    </section>
+  );
+}
+export function MoneyInput({
+  label,
+  value,
+  onChange,
+  hidden = false,
+  onValidity,
+}: {
+  label: string;
+  value: number | null | undefined;
+  onChange: (v: number | null) => void;
+  hidden?: boolean;
+  onValidity?: (name: string, invalid: boolean) => void;
+}) {
+  const [text, setText] = useState(value == null ? "" : (value / 10).toFixed(1));
+  const [invalid, setInvalid] = useState(false);
+  useEffect(() => () => onValidity?.(label, false), [onValidity, label]);
   // Parent keys reset local editing text on a new state version or player replacement.
-  return <label className={hidden?"money-label":""}>{!hidden&&label}<input aria-label={label} inputMode="decimal" value={text} aria-invalid={invalid} placeholder="Unknown" onChange={e=>{setText(e.target.value);try{const units=parseMoney(e.target.value);setInvalid(false);onValidity?.(label,false);e.target.setCustomValidity("");onChange(units);}catch{setInvalid(true);onValidity?.(label,true);e.target.setCustomValidity("Use a nonnegative price with one decimal place.");}}}/>{invalid&&<small role="alert">Use 0.1m increments</small>}</label>;
+  return (
+    <label className={hidden ? "money-label" : ""}>
+      {!hidden && label}
+      <input
+        aria-label={label}
+        inputMode="decimal"
+        value={text}
+        aria-invalid={invalid}
+        placeholder="Unknown"
+        onChange={(e) => {
+          setText(e.target.value);
+          try {
+            const units = parseMoney(e.target.value);
+            setInvalid(false);
+            onValidity?.(label, false);
+            e.target.setCustomValidity("");
+            onChange(units);
+          } catch {
+            setInvalid(true);
+            onValidity?.(label, true);
+            e.target.setCustomValidity("Use a nonnegative price with one decimal place.");
+          }
+        }}
+      />
+      {invalid && <small role="alert">Use 0.1m increments</small>}
+    </label>
+  );
 }
-export function JsonInput({label,value,onChange,onValidity}:{label:string;value:unknown;onChange:(value:unknown)=>void;onValidity?:(name:string,invalid:boolean)=>void}){
- const [text,setText]=useState(JSON.stringify(value??null,null,2));const [invalid,setInvalid]=useState(false);
- useEffect(()=>()=>onValidity?.(label,false),[onValidity,label]);
- return <label>{label}<textarea aria-label={label} rows={4} value={text} aria-invalid={invalid} onChange={e=>{setText(e.target.value);try{const parsed=JSON.parse(e.target.value);if(parsed!==null&&!Array.isArray(parsed))throw new Error();setInvalid(false);onValidity?.(label,false);onChange(parsed);}catch{setInvalid(true);onValidity?.(label,true);}}}/>{invalid&&<small role="alert">Enter a JSON array or null.</small>}</label>;
+export function JsonInput({
+  label,
+  value,
+  onChange,
+  onValidity,
+}: {
+  label: string;
+  value: unknown;
+  onChange: (value: unknown) => void;
+  onValidity?: (name: string, invalid: boolean) => void;
+}) {
+  const [text, setText] = useState(JSON.stringify(value ?? null, null, 2));
+  const [invalid, setInvalid] = useState(false);
+  useEffect(() => () => onValidity?.(label, false), [onValidity, label]);
+  return (
+    <label>
+      {label}
+      <textarea
+        aria-label={label}
+        rows={4}
+        value={text}
+        aria-invalid={invalid}
+        onChange={(e) => {
+          setText(e.target.value);
+          try {
+            const parsed = JSON.parse(e.target.value);
+            if (parsed !== null && !Array.isArray(parsed)) throw new Error();
+            setInvalid(false);
+            onValidity?.(label, false);
+            onChange(parsed);
+          } catch {
+            setInvalid(true);
+            onValidity?.(label, true);
+          }
+        }}
+      />
+      {invalid && <small role="alert">Enter a JSON array or null.</small>}
+    </label>
+  );
 }
-function SquadTable({picks,players,points}:{picks:Pick[];players:Map<number,Player>;points:ReturnType<typeof totals>}){return <details className="squad-table" open><summary>Accessible squad table</summary><div className="table-scroll"><table><caption>Same squad as the pitch · slots 1–11 start, 12–15 are bench priority</caption><thead><tr><th scope="col">Slot</th><th scope="col">Player</th><th scope="col">Position</th><th scope="col">Market / sell</th><th scope="col">GW xP</th></tr></thead><tbody>{[...picks].sort((a,b)=>a.position-b.position).map(p=><tr key={p.player_id}><td>{p.position<=11?p.position:`Bench ${p.position-11}`}</td><th scope="row">{players.get(p.player_id)?.name||p.player_id}{p.is_captain?" (C)":p.is_vice_captain?" (V)":""}</th><td>{positions[players.get(p.player_id)?.position||0]}</td><td>{money(players.get(p.player_id)?.market_price_units)} / {money(p.selling_price_units)}</td><td>{points.get(p.player_id)?.points.toFixed(1)??"Unavailable"}</td></tr>)}</tbody></table></div></details>;}
-function actionText(action:Record<string,unknown>,players:Map<number,Player>) {
- const outgoing=Number(action.out_player_id||action.out||action.player_out);const incoming=Number(action.in_player_id||action.in||action.player_in);
- return outgoing&&incoming?`${players.get(outgoing)?.name||outgoing} → ${players.get(incoming)?.name||incoming}${action.event?` · GW ${action.event}`:""}`:JSON.stringify(action);
+function SquadTable({
+  picks,
+  players,
+  points,
+}: {
+  picks: Pick[];
+  players: Map<number, Player>;
+  points: ReturnType<typeof totals>;
+}) {
+  return (
+    <details className="squad-table" open>
+      <summary>Accessible squad table</summary>
+      <div className="table-scroll">
+        <table>
+          <caption>Same squad as the pitch · slots 1–11 start, 12–15 are bench priority</caption>
+          <thead>
+            <tr>
+              <th scope="col">Slot</th>
+              <th scope="col">Player</th>
+              <th scope="col">Position</th>
+              <th scope="col">Market / sell</th>
+              <th scope="col">GW xP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...picks]
+              .sort((a, b) => a.position - b.position)
+              .map((p) => (
+                <tr key={p.player_id}>
+                  <td>{p.position <= 11 ? p.position : `Bench ${p.position - 11}`}</td>
+                  <th scope="row">
+                    {players.get(p.player_id)?.name || p.player_id}
+                    {p.is_captain ? " (C)" : p.is_vice_captain ? " (V)" : ""}
+                  </th>
+                  <td>{positions[players.get(p.player_id)?.position || 0]}</td>
+                  <td>
+                    {money(players.get(p.player_id)?.market_price_units)} /{" "}
+                    {money(p.selling_price_units)}
+                  </td>
+                  <td>{points.get(p.player_id)?.points.toFixed(1) ?? "Unavailable"}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </details>
+  );
+}
+function actionText(action: Record<string, unknown>, players: Map<number, Player>) {
+  const outgoing = Number(action.out_player_id || action.out || action.player_out);
+  const incoming = Number(action.in_player_id || action.in || action.player_in);
+  return outgoing && incoming
+    ? `${players.get(outgoing)?.name || outgoing} → ${players.get(incoming)?.name || incoming}${action.event ? ` · GW ${action.event}` : ""}`
+    : JSON.stringify(action);
 }
