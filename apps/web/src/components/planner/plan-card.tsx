@@ -46,6 +46,7 @@ export function PlanCard({
   onSave: () => void;
   onShow: () => void;
 }) {
+  const captainName = players.get(Number(plan.lineup.captain))?.name || "Unknown";
   const unavailable = plan.solver?.net_points_status === "unavailable_unknown_committed_hits";
   return (
     <article className="plan-card">
@@ -58,6 +59,7 @@ export function PlanCard({
         <span>net expected points</span>
         <b>{unavailable ? "Unknown committed hits" : <>{plan.delta_to_baseline >= 0 ? "+" : ""}{plan.delta_to_baseline.toFixed(1)} vs Keep</>}</b>
       </div>
+      <p>Captain: {captainName}</p>
       <button className="text-button" type="button" onClick={onShow}>Show {plan.name} on the pitch</button>
       <button className="button secondary" type="button" disabled={busy} onClick={onSave}>Save {plan.name}</button>
     </article>

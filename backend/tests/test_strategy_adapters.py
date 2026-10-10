@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 
 import numpy as np
 import pandas as pd
@@ -179,6 +180,10 @@ def test_leakage_mapping_guards(tmp_path, monkeypatch, kind):
         call(tmp_path, monkeypatch, **args)
 
 
+@pytest.mark.skipif(
+    os.environ.get("FPL_OPTIONAL_SMOKE") != "1",
+    reason="opt-in optional ArviZ contract check, never training",
+)
 def test_actual_bayesian_sampler_library_shaped_posterior(tmp_path, monkeypatch):
     az = pytest.importorskip("arviz")
     artifact(tmp_path, "bayesian")
