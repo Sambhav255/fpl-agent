@@ -10,7 +10,6 @@ from sqlalchemy import insert, select, update
 
 from fpl_app.contracts import (
     AnalysisRequest,
-    Fixture,
     ManagerState,
     Player,
     ProjectionRun,
@@ -45,6 +44,21 @@ def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
         "data": data,
         "payload": payload,
     }
+    if kind == "projection" and payload.get("_forecast", {}).get("provider") == "baseline":
+        frozen = dict(payload["_forecast"])
+        frozen.pop("prediction_origin", None)
+        value["payload"] = {**payload, "_forecast": frozen}
+    if kind == "projection" and payload.get("_forecast", {}).get("provider") not in (
+        None,
+        "baseline",
+    ):
+        from fpl_app.models.router import verify_artifact
+
+        reference = payload["_forecast"]
+        verify_artifact(reference)
+        bundle = store.get("forecast_bundle", reference["serving_bundle_id"])
+        if fingerprint(bundle) != reference["bundle_fingerprint"]:
+            raise Conflict("Frozen forecast bundle changed")
     if kind == "recommendation":
         if state.state_version != payload["expected_state_version"]:
             raise Conflict("Manager version is stale")
@@ -66,6 +80,11 @@ class Queue:
         self.max_attempts = max_attempts
 
     def enqueue(self, kind: str, payload: dict[str, Any]) -> dict[str, Any]:
+        if kind == "projection" and "_forecast" not in payload:
+            from fpl_app.models.router import resolve_forecast
+
+            state, _ = input_state(self.store, payload["team_id"])
+            payload = {**payload, "_forecast": resolve_forecast(self.store, payload, state)}
         digest = inputs(self.store, kind, payload)
         with self.store.engine.begin() as connection:
             connection.exec_driver_sql("BEGIN IMMEDIATE")
@@ -316,18 +335,9 @@ class Worker:
         state, data = input_state(self.store, payload["team_id"])
         players = [Player.model_validate(p) for p in data["players"]]
         if kind == "projection":
-            from fpl_app.models import baseline_run
+            from fpl_app.models.router import forecast_job
 
-            run = baseline_run(
-                players,
-                [Fixture.model_validate(f) for f in data["fixtures"]],
-                state.snapshot_id,
-                data["source_cutoff"],
-                state.data_mode,
-                state.next_event,
-                payload["horizon_events"],
-            )
-            return dict(run.model_dump(mode="json"))
+            return dict(forecast_job(self.store, state, data, payload).model_dump(mode="json"))
         if kind == "recommendation":
             from fpl_app.optimisation import recommend
 

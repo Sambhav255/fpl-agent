@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import isfinite
 from time import monotonic
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from fpl_app.contracts import ManagerState, Plan, Player, ProjectionRun, Recommendation, Settings
@@ -54,7 +54,11 @@ def _plan(
         this_week_delta=0,
         assumptions=[
             "Frozen market prices over horizon; acquisition prices and selling profit retained",
-            "Beam search and linear HiGHS squad proxy are approximate; no global optimality claim",
+            (
+                "Beam search with original 15-player squad proxy comparator; no global optimality claim"
+                if metadata.get("candidate_comparator") == "squad_proxy"
+                else "Beam search with frozen-ownership lineup/captain MILP candidates; no global optimality claim"
+            ),
             "Terminal tiebreak preserves free transfers and bank; terminal values are not fitted",
             "No calibrated joint scenario uncertainty or autosub expectation",
         ],
@@ -62,7 +66,7 @@ def _plan(
     )
 
 
-def _highs_candidate(
+def squad_proxy_candidate(
     state: ManagerState,
     players: list[Player],
     run: ProjectionRun,
@@ -162,6 +166,99 @@ def _highs_candidate(
     return moves, metadata
 
 
+def _highs_candidate(
+    state: ManagerState,
+    players: list[Player],
+    run: ProjectionRun,
+    settings: Settings,
+    remaining: float,
+    chip: str | None,
+    max_moves: int,
+) -> tuple[list[dict[str, int]], dict[str, Any]]:
+    """Frozen ownership candidate with legal XI/captain per event, not a horizon policy."""
+    import numpy as np
+    from scipy.optimize import Bounds, LinearConstraint, milp
+
+    owned = {p.player_id: p for p in state.picks}
+    by_id = player_map(players)
+    n = len(players)
+    horizon = 1 if chip == "free_hit" else settings.horizon_events
+    horizon = min(horizon, 39 - state.next_event)
+    size = n * (1 + 2 * horizon)
+    objective = np.zeros(size)
+    rows, lower, upper = [], [], []
+
+    def constraint(terms, lo, hi):
+        row = np.zeros(size)
+        for index, value in terms:
+            row[index] = value
+        rows.append(row)
+        lower.append(lo)
+        upper.append(hi)
+
+    for position, count in enumerate(RULES.squad_counts, 1):
+        constraint([(i, 1) for i, p in enumerate(players) if p.position == position], count, count)
+    for club in sorted({p.club for p in players}):
+        constraint([(i, 1) for i, p in enumerate(players) if p.club == club], 0, 3)
+    budget = int(state.bank_units or 0) + sum(
+        sale_value(p, by_id[p.player_id]) for p in state.picks
+    )
+    constraint(
+        [
+            (i, sale_value(owned[p.player_id], p) if p.player_id in owned else p.market_price_units)
+            for i, p in enumerate(players)
+        ],
+        0,
+        budget,
+    )
+    constraint([(i, 1) for i, p in enumerate(players) if p.player_id not in owned], 0, max_moves)
+    for offset in range(horizon):
+        start, captain = n * (1 + 2 * offset), n * (2 + 2 * offset)
+        xp = projection_points(run.projections, state.next_event + offset)
+        constraint([(start + i, 1) for i in range(n)], 11, 11)
+        constraint([(captain + i, 1) for i in range(n)], 1, 1)
+        for position, lo, hi in [(1, 1, 1), (2, 3, 5), (3, 2, 5), (4, 1, 3)]:
+            constraint(
+                [(start + i, 1) for i, p in enumerate(players) if p.position == position], lo, hi
+            )
+        for i, p in enumerate(players):
+            constraint([(start + i, 1), (i, -1)], -np.inf, 0)
+            constraint([(captain + i, 1), (start + i, -1)], -np.inf, 0)
+            value = xp.get(p.player_id, 0)
+            boost = offset == 0 and chip == "bench_boost"
+            objective[i if boost else start + i] -= value
+            objective[captain + i] = -value * (2 if offset == 0 and chip == "triple_captain" else 1)
+    bound_lo, bound_hi = np.zeros(size), np.ones(size)
+    for i, p in enumerate(players):
+        if p.player_id in settings.locked_player_ids:
+            bound_lo[i] = 1
+        if p.player_id in settings.excluded_player_ids:
+            bound_hi[i] = 0
+    result = milp(
+        objective,
+        integrality=np.ones(size),
+        bounds=Bounds(bound_lo, bound_hi),
+        constraints=LinearConstraint(np.array(rows), np.array(lower), np.array(upper)),
+        options={"time_limit": max(0.001, min(remaining, 1.0))},
+    )
+    metadata = {
+        "engine": "scipy.milp/HiGHS",
+        "candidate_objective": "frozen_ownership_lineup_captain",
+        "candidate_status": int(result.status),
+        "candidate_message": str(result.message),
+        "candidate_gap": float(result.mip_gap)
+        if getattr(result, "mip_gap", None) is not None and isfinite(result.mip_gap)
+        else None,
+        "candidate_gap_scope": "frozen ownership candidate only; excludes future transfers and hits",
+    }
+    if result.x is None:
+        return [], metadata
+    from fpl_app.optimisation.oracle import funding_moves
+
+    selected = {p.player_id for i, p in enumerate(players) if result.x[i] > 0.5}
+    return funding_moves(state, players, selected), metadata
+
+
 @dataclass
 class Node:
     state: ManagerState
@@ -189,7 +286,11 @@ def recommend(
     settings: Settings,
     *,
     lineup_only: bool = False,
+    candidate_mode: Literal["lineup_captain", "squad_proxy"] = "lineup_captain",
 ) -> Recommendation:
+    candidate_generator = (
+        _highs_candidate if candidate_mode == "lineup_captain" else squad_proxy_candidate
+    )
     started = monotonic()
     _check_inputs(state, players, run, settings)
     deadline = started + settings.solver_time_limit_seconds
@@ -210,10 +311,11 @@ def recommend(
             current = advance_event(current)
     baseline_hits = sum(w["total_hits"] for w in weeks)
     metadata: dict[str, Any] = {
+        "candidate_comparator": candidate_mode,
         "status": "feasible_heuristic",
         "time_limit_seconds": settings.solver_time_limit_seconds,
         "optimality_gap": None,
-        "search": "beam_width_6, singles plus HiGHS multi-transfer candidates",
+        "search": "beam_width_6, singles plus funding-aware lineup/captain HiGHS candidates",
         "terminal_policy": "net points then saved FT then bank; unfitted",
         "candidate_universe_size": len(players),
     }
@@ -310,7 +412,7 @@ def recommend(
                         )
                 try:
                     if max_moves >= 1:
-                        moves, solver_info = _highs_candidate(
+                        moves, solver_info = candidate_generator(
                             node.state,
                             players,
                             run,
@@ -323,7 +425,7 @@ def recommend(
                         if moves and len(moves) <= max_moves:
                             candidates.insert(1, moves)
                         if offset == 0 and settings.horizon_events > 1:
-                            weekly_moves, weekly_info = _highs_candidate(
+                            weekly_moves, weekly_info = candidate_generator(
                                 node.state,
                                 players,
                                 run,

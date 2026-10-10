@@ -32,7 +32,7 @@ CI is configured but has not yet run on a hosted Git provider. The frontend depe
 
 Personal default configuration is read from ignored frontend environment settings; loading it never submits an import or overwrites state. Models now load independently of manager state, with refresh/error handling and clear inactive/diagnostic labels. Repeated identical public imports preserve private corrections and unknowns with CAS protection; changed season, event or ownership returns a review conflict. These behaviors have unit/API tests and independent review.
 
-A private, timestamped baseline strategy report and conditional transfer watchlist are saved locally under ignored `docs/local/`, with live projection/analysis artifacts under `data/`. A legal lineup-only Keep plan is persisted; no transfer or chip was submitted. Budget-valid real transfer search remains blocked by unconfirmed selling values.
+A private, timestamped baseline strategy report and conditional transfer watchlist are saved locally under ignored `docs/local/`, with live projection/analysis artifacts under `data/`. A legal lineup-only Keep plan is persisted; no transfer or chip was submitted. Selling prices have now been explicitly confirmed from the user’s transfer-page screenshot; private manager state version 8 is transfer-ready. Purchase prices remain unknown and were not inferred.
 
 ## Running services
 
@@ -50,3 +50,23 @@ Use `bash scripts/dev.sh` from the repository root. Interface: http://127.0.0.1:
 4. Fit ensemble weights on eligible validation forecasts and report held-out strategy/model results honestly.
 5. Confirm required private financial state in the interface before real transfer recommendations. Unknown values remain blocked.
 6. Review the diff and dependency advisory. Existing history contains earlier personal notes; use the clean source snapshot for a new public repository unless publishing that history is intentional. No Git push is performed by this cleanup task.
+
+## Intelligence upgrade — in progress
+
+Upgrade kit imported under docs/intelligence_upgrade, originals preserved. Audit baseline e759bcf matches current HEAD; working tree was clean apart from the new kit. Reproduced actual synthetic search counterexample: Keep84, returned94, legal exhaustive funding pair101; injury flag incorrectly persists zero through eight events. These are software fixtures, not measured real-team improvements.
+
+Ownership: lead shared contracts, API, jobs, router, CLI, registry, generated types and integration. Godel owns optimisation/planner plus new oracle/replay modules and tests. Confucius owns new prospective collection module/tests and collection report. Newton owns new football feature/CatBoost modules/tests and real experiment report. Peirce owns new social subsystem/tests and offline extraction report. No concurrent shared-file edits.
+
+Next: fix and lock search regression; capture current football without overwriting manager state; fit a qualified real historical CatBoost challenger; freeze artifact selection in projection jobs; integrate collection jobs and offline social status; run independent review and full checks. B01–B06 first intelligence release is not complete. Social providers remain disabled. Existing advanced models are not promoted.
+
+## Deadline decision run — 2026-10-10
+
+Priority: personal GW6 transfer decision before 10:00 UTC. All 15 displayed selling values, £0.7m bank and three free transfers are persisted through validated CAS API, state version 8. No account action performed. Private reports remain ignored under docs/local/.
+
+Completed: Godel fixed synthetic funding oracle (84/94/101), ownership/XI/captain candidate objective and bounded replay; scoped 121 checks passed. Confucius captured official bootstrap, fixture and 30 selected player histories at 06:56 UTC: immutable collection 5ca9f12d261942b69ba6c69e693cb1bb, 150 labels, no historical publication claim. Newton fitted real archive/current-era football CatBoost experiments; current GW6 artifact 20261010T070056-0125fbba is experimental only. Tiny current test RMSE 4.502 versus population 4.463, so not promoted. Peirce delivered offline social baseline (22 tests), external adapters disabled, then independent review assigned.
+
+Verification: full backend 248 passed, three skipped; source/test Ruff passed; backend-configured mypy passed 47 files. Deadline baseline one/two event plans were independently validated, but their model means are approximate and do not justify automatic adoption. Bayesian real team-goal diagnostic is running; full player scoring remains incomplete. TFT eligibility checks actually ran: five events below eight-event minimum, verified historical audit absent. No ensemble promotion.
+
+Exact next steps: finish Bayesian diagnostics and sensible limited-transfer cross-model comparisons; review availability and held-out weaknesses; write personal decision report. Integrate compatible artifact schema and immutable forecast adapter/bundles (router currently baseline only; no silent fallback), collection jobs/CLI, social status API; regenerate contracts and restart API/worker, run UI/build/browser checks. Full multi-event financial MILP, future chip optimisation, audited evolving-policy replay and full Bayesian/TFT evaluation remain unfinished.
+
+Deadline update: real Bayesian50-match team-goal fit completed at07:04UTC, converged (Rhat1.01, ESS534, zero divergences), still partial/unpromoted. Legal fixed comparisons and personal decision are retained in ignored docs/local/DEADLINE_DECISION.md. Frontend3000/3001 and API8000 returned200; statev8 and15selling prices verified. Advanced router integration and full upgrade remain pending.

@@ -25,3 +25,7 @@ The dependency audit identified an unpatched development-only ESLint dependency 
 ## Personal workspace and model status — 2026-10-10
 
 Keep the personal default in ignored local environment configuration. Loading a saved profile is a GET, never an automatic public reimport. Model registry display is independent of the manager workspace; diagnostic evaluation does not imply activation. Preserve private state on repeated same-event/same-ownership imports and reject ambiguous replacements. Conditional lineup watchlists may describe price thresholds but never substitute unknown selling values or enable blocked transfer recommendations.
+
+## Intelligence upgrade — 2026-10-10
+
+Apply the v2 intelligence kit without replacing the app or its data. Prioritise objective correctness, prospective collection, honest real-data experiments and operational serving over cosmetic changes. Keep default champion promotion strict while allowing explicit future-live experimental challenger selection with real availability timestamps. Capture football versions without silently advancing current manager snapshots. Social access remains disabled; implement and test authored offline examples independently.

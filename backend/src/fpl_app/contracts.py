@@ -89,6 +89,17 @@ class Projection(BaseModel):
 
 
 class ProjectionRun(BaseModel):
+    requested_provider: str = "baseline"
+    resolved_provider: str = "baseline"
+    artifact_id: str | None = None
+    artifact_manifest_sha256: str | None = None
+    prediction_origin: str | None = None
+    lifecycle_state: str = "unavailable"
+    evidence_mode: str = "unavailable"
+    feature_version: str | None = None
+    mapping_version: str | None = None
+    evaluation_reference: str | None = None
+    joint_scenario_reference: str | None = None
     projection_run_id: str
     snapshot_id: str
     source_cutoff: str

@@ -36,6 +36,10 @@ class ImportRequest(BaseModel):
 
 
 class ProjectionRequest(BaseModel):
+    provider: str = "baseline"
+    mode: Literal["default", "experimental", "shadow"] = "default"
+    artifact_id: str | None = None
+    serving_bundle_id: str | None = None
     team_id: int
     horizon_events: int = Field(default=6, ge=1, le=8)
 
