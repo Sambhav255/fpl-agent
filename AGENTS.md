@@ -1,6 +1,6 @@
 # FPL Assistant agent instructions
 
-Read this file before editing the project. Read the relevant specifications in `docs` before implementing a milestone.
+Read this file before editing the project. Start or resume with `docs/START_HERE.md` and `docs/BUILD_STATUS.md`. Read the relevant specifications in `docs` before implementing a milestone. Use `docs/FILE_STRUCTURE.md` for file locations; historical records and supplied originals do not override current status.
 
 ## Product
 
@@ -21,7 +21,7 @@ If documents conflict, resolve the smallest reversible choice and record it in `
 
 Use Next.js, React, TypeScript, and a Python FastAPI backend. Use SQLite for app state, Parquet for analytical artifacts, uv for Python dependencies, and npm for the interface. Make Bayesian and TFT dependencies optional.
 
-Build the requested milestone completely before moving on. Do not create a dashboard full of invented advanced model outputs. Keep `docs/BUILD_STATUS.md` current and inspect it when resuming.
+Build the requested milestone completely before moving on. Do not create a dashboard full of invented advanced model outputs. Keep `docs/BUILD_STATUS.md` current and inspect it when resuming. Update `docs/CHATGPT_PROGRESS_REPORT.md` as meaningful progress, actual checks, blockers or next actions change. Keep its file map and current summary concise; distinguish prior checks from newly run checks and omit private state.
 
 ## Domain correctness
 

@@ -5,11 +5,13 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 from fpl_app.contracts import ManagerState, Player, ProjectionRun, Settings
 from fpl_app.domain.plans import _check_inputs, validate_plan
 from fpl_app.domain.rules import MatchStats, advance_event, apply_transfers, readiness, score_lineup
+from fpl_app.evaluation.provenance import replay_time, verify_replay_manifest
 from fpl_app.optimisation.planner import recommend
 
 
@@ -22,6 +24,12 @@ class ReplayOrigin:
     outcomes: dict[int, list[MatchStats]]
     evidence_mode: str = "retrospective_assumed"
     financial_coverage: str = "assumed_frozen_prices"
+    manifest_path: Path | None = None
+    manifest_sha256: str | None = None
+    # Simulated label availability, not today's artifact publication time.
+    fitting_labels_available_at: str | None = None
+    # Set by the journal bridge from immutable retained references.
+    journal_reference: dict[str, str] | None = None
 
 
 Policy = Callable[[ManagerState, list[Player], ProjectionRun, Settings], Any]
@@ -64,23 +72,31 @@ def replay_policy(
         raise ValueError("Replay requires between one and 38 origins")
     current = initial.model_copy(deep=True)
     rows = []
-    previous_deadline = None
+    previous_deadline: datetime | None = None
     for offset, origin in enumerate(origins):
-        deadline = datetime.fromisoformat(origin.deadline)
-        available = datetime.fromisoformat(origin.information_available_at)
-        cutoff = datetime.fromisoformat(origin.forecasts.source_cutoff)
-        if deadline.tzinfo is None or available.tzinfo is None or cutoff.tzinfo is None:
-            raise ValueError("Replay times require timezone")
+        deadline = replay_time(origin.deadline)
+        available = replay_time(origin.information_available_at)
+        cutoff = replay_time(origin.forecasts.source_cutoff)
         if (
             available > deadline
-            or cutoff > deadline
+            or cutoff > available
             or previous_deadline
             and deadline <= previous_deadline
         ):
             raise ValueError("Future or noncontiguous information origin")
         previous_deadline = deadline
         current.snapshot_id = origin.forecasts.snapshot_id
-        local_settings = settings.model_copy(update={"horizon_events": 1})
+        horizon = min(
+            settings.horizon_events, origin.forecasts.horizon_events, 39 - current.next_event
+        )
+        # Greedy is deliberately myopic; other policies get the full supported path.
+        local_settings = settings.model_copy(
+            update={
+                "horizon_events": 1 if policy is greedy_policy else horizon,
+                **({"max_transfers_this_event": 1} if policy is greedy_policy else {}),
+            }
+        )
+        provenance = _check_provenance(origin, current.next_event, local_settings, policy)
         _check_inputs(current, origin.players, origin.forecasts, local_settings)
         if not readiness(current, origin.players)["transfers_ready"]:
             raise ValueError("Unknown finances: financial replay unavailable")
@@ -93,8 +109,6 @@ def replay_policy(
         )
         # Policies must return a plan bound to these exact settings and origin.
         validation_settings = local_settings
-        if policy is greedy_policy:
-            validation_settings = local_settings.model_copy(update={"max_transfers_this_event": 1})
         baseline = keep_policy(current, origin.players, origin.forecasts, validation_settings)
         errors = validate_plan(
             plan, current, origin.players, origin.forecasts, validation_settings, baseline
@@ -123,6 +137,10 @@ def replay_policy(
                 "information_available_at": origin.information_available_at,
                 "evidence_mode": origin.evidence_mode,
                 "financial_coverage": origin.financial_coverage,
+                "planning_horizon_events": local_settings.horizon_events,
+                "forecast_path_net_points": plan.net_points,
+                "plan_input_fingerprint": plan.input_fingerprint,
+                "provenance": provenance,
             }
         )
         current = advance_event(changed) if offset + 1 < len(origins) else changed
@@ -133,12 +151,57 @@ def replay_policy(
         "legal": True,
         "final_state": current.model_dump(),
         "limitations": [
-            "Policies refresh at each origin with one-event decisions; no multievent policy evaluation",
-            "Caller-supplied timing is an assertion, not audited provenance",
+            "Only the first planned event executes; subsequent events replan from their own origins",
+            "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+            "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
             "Full supplied MatchStats required; missing statistics are not reconstructed",
             "No rank or realistic historical financial coverage claim",
         ],
     }
+
+
+def _check_provenance(
+    origin: ReplayOrigin, event: int, settings: Settings, policy: Policy
+) -> dict[str, Any]:
+    mode = origin.evidence_mode
+    if mode == "prospective_strict":
+        if origin.manifest_path is None or origin.manifest_sha256 is None:
+            raise ValueError("Strict replay requires a frozen manifest reference")
+        hashes = verify_replay_manifest(
+            origin.manifest_path,
+            origin.manifest_sha256,
+            origin.forecasts,
+            origin.players,
+            origin.deadline,
+            origin.information_available_at,
+            list(range(event, event + settings.horizon_events)),
+            policy,
+        )
+        return {
+            "verified": True,
+            "manifest_sha256": origin.manifest_sha256,
+            "artifacts": hashes,
+            **({"journal_reference": origin.journal_reference} if origin.journal_reference else {}),
+        }
+    if mode == "historical_reconstructed":
+        if origin.fitting_labels_available_at is None:
+            raise ValueError("Reconstructed replay requires simulated fitting label cutoff")
+        if replay_time(origin.fitting_labels_available_at) > replay_time(
+            origin.information_available_at
+        ):
+            raise ValueError("Future reconstructed fitting labels")
+        if origin.forecasts.prediction_origin is None:
+            raise ValueError("Reconstructed replay requires actual prediction origin")
+        replay_time(origin.forecasts.prediction_origin)
+        return {
+            "verified": False,
+            "actual_prediction_origin": origin.forecasts.prediction_origin,
+            "simulated_information_origin": origin.information_available_at,
+            "simulated_fitting_labels_available_at": origin.fitting_labels_available_at,
+        }
+    if mode not in {"retrospective_assumed", "synthetic_mechanics"}:
+        raise ValueError("Unsupported replay evidence mode")
+    return {"verified": False, "timing": "caller_asserted"}
 
 
 def compare_policies(

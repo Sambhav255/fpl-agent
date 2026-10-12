@@ -2,7 +2,7 @@
 
 import json
 import re
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any, Literal, cast
 
 import httpx
@@ -122,6 +122,33 @@ def parse(resource: str, value: Any) -> Any:
         ):
             raise ValueError("Invalid transfer schema")
         return value
+    if re.fullmatch(r"event/[1-9][0-9]*/live/", resource):
+        if not isinstance(value, dict) or not isinstance(value.get("elements"), list):
+            raise ValueError("Invalid live event results schema")
+        identifiers: list[int] = []
+        for element in value["elements"]:
+            stats = element.get("stats")
+            if (
+                not isinstance(element.get("id"), int)
+                or element["id"] < 1
+                or not isinstance(stats, dict)
+                or type(stats.get("total_points")) is not int
+                or type(stats.get("minutes")) is not int
+                or not isinstance(element.get("explain"), list)
+            ):
+                raise ValueError("Invalid live event player result")
+            identifiers.append(element["id"])
+            for match in element["explain"]:
+                if (
+                    type(match.get("fixture")) is not int
+                    or match["fixture"] < 1
+                    or not isinstance(match.get("stats"), list)
+                    or any(type(line.get("points")) is not int for line in match["stats"])
+                ):
+                    raise ValueError("Invalid fixture-level live event result")
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("Duplicate player in live event results")
+        return value
     raise ValueError("Unsupported resource")
 
 
@@ -133,9 +160,13 @@ class Provider:
         self.minimum_interval = 0.1
 
     def fetch(self, resource: str, force: bool = False) -> dict[str, Any]:
-        if resource not in ("bootstrap-static/", "fixtures/") and not re.fullmatch(
-            r"(?:entry/[1-9][0-9]*/(?:event/([1-9]|[12][0-9]|3[0-8])/picks/|history/|transfers/)|element-summary/[1-9][0-9]*/)",
-            resource,
+        if (
+            resource not in ("bootstrap-static/", "fixtures/")
+            and not re.fullmatch(
+                r"(?:entry/[1-9][0-9]*/(?:event/([1-9]|[12][0-9]|3[0-8])/picks/|history/|transfers/)|element-summary/[1-9][0-9]*/)",
+                resource,
+            )
+            and not re.fullmatch(r"event/[1-9][0-9]*/live/", resource)
         ):
             raise ValueError("Unsupported provider path")
         cached = self.store.latest(resource)
@@ -336,9 +367,21 @@ def demo(store: Store) -> ManagerState:
         for event in range(8, 16)
         for club in range(1, 11, 2)
     ]
+    demo_clock = datetime.now(UTC)
+    events = [
+        {
+            "id": event,
+            "deadline_time": (demo_clock + timedelta(days=1 + 7 * (event - 8))).isoformat(),
+            "deadline_provenance": "authored_synthetic",
+            "finished": False,
+            "data_checked": False,
+        }
+        for event in range(1, 39)
+    ]
     raw = json.dumps(
         {
             "synthetic": True,
+            "events": events,
             "players": [p.model_dump() for p in players],
             "fixtures": [f.model_dump() for f in fixtures],
         }
@@ -349,7 +392,7 @@ def demo(store: Store) -> ManagerState:
         "data_mode": "demo",
         "source_cutoff": store.snapshot(snapshot)["available_at"],
         "next_event": 8,
-        "events": [],
+        "events": events,
         "players": [p.model_dump() for p in players],
         "fixtures": [f.model_dump() for f in fixtures],
     }

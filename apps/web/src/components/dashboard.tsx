@@ -1,5 +1,7 @@
 "use client";
 
+import { PlanningOptions } from "./planning-options";
+import { LearningReviewControls } from "./learning-review-controls";
 import Link from "next/link";
 import { preferredTeamId } from "../lib/profile";
 import { reviewNewEvent } from "../lib/manager-review";
@@ -25,6 +27,16 @@ import type { components } from "../lib/api/schema";
 type Section = "overview" | "players" | "planner" | "history" | "models" | "settings";
 type Saved = components["schemas"]["SavedPlan"];
 type Catalog = components["schemas"]["PlayersResponse"];
+type LearningDecision = {
+  decision_id: string;
+  event: number;
+  frozen_at: string;
+  execution_status: string;
+  recommended_action_id: string | null;
+  action_history: { sequence: number; execution_status: string }[];
+  outcome_revisions: { revision: number; metrics: Record<string, number> }[];
+  candidate_plans: { plan_id: string; name: string }[];
+};
 const sections: [Section, string, string][] = [
   ["overview", "Overview", "◫"],
   ["players", "Players", "≋"],
@@ -42,6 +54,8 @@ const defaults: Settings = {
   locked_player_ids: [],
   excluded_player_ids: [],
   chip_policy: "none",
+  planner_mode: "bounded",
+  future_chip_policy: "none",
   solver_time_limit_seconds: 15,
 };
 const timestamp = (value: unknown) =>
@@ -61,6 +75,8 @@ export default function Dashboard({ section }: { section: Section }) {
   const [status, setStatus] = useState<Record<string, unknown>>({});
   const [models, setModels] = useState<Record<string, unknown>[]>([]);
   const [saved, setSaved] = useState<Saved[]>([]);
+  const [decisions, setDecisions] = useState<LearningDecision[]>([]);
+  const [decisionChoices, setDecisionChoices] = useState<Record<string, string>>({});
   const [run, setRun] = useState<Run | null>(null);
   const [recommendation, setRecommendation] = useState<Recommendation | null>(null);
   const [settings, setSettings] = useState<Settings>(defaults);
@@ -138,6 +154,13 @@ export default function Dashboard({ section }: { section: Section }) {
     setStatus(freshness);
     setModels(registry.models);
     setSaved(plans.filter((p) => p.team_id === manager.team_id));
+    const journal = await api<LearningDecision[]>(
+      `/learning/decisions?team_id=${manager.team_id}`,
+      undefined,
+      "GET",
+      signal,
+    ).catch(() => []);
+    if (!signal.aborted) setDecisions(journal);
     setState(manager);
     setDraft(structuredClone(manager));
     setDirty(false);
@@ -372,6 +395,77 @@ export default function Dashboard({ section }: { section: Section }) {
       if (signal.aborted) return;
       setSaved(plans.filter((p) => p.team_id === state?.team_id));
       setNotice("Plan saved. Actions must be completed manually on FPL.");
+    });
+  const freezeDecision = (recommendationId: string) =>
+    void task("Freezing decision record", async (signal) => {
+      const decision = await api<LearningDecision>(
+        "/learning/decisions",
+        { recommendation_id: recommendationId, idempotency_key: crypto.randomUUID() },
+        "POST",
+        signal,
+      );
+      const updated = await api<LearningDecision[]>(
+        `/learning/decisions?team_id=${state?.team_id}`,
+        undefined,
+        "GET",
+        signal,
+      );
+      if (!signal.aborted) {
+        setDecisions(updated);
+        setNotice(`GW ${decision.event} decision frozen with its forecast and assumptions.`);
+      }
+    });
+  const recordDecisionAction = (decision: LearningDecision, status: string) =>
+    void task("Recording decision status", async (signal) => {
+      const actionId = decisionChoices[decision.decision_id] || decision.recommended_action_id;
+      await api(
+        `/learning/decisions/${decision.decision_id}/actions`,
+        {
+          idempotency_key: crypto.randomUUID(),
+          expected_sequence: decision.action_history.length,
+          execution_status: status,
+          ...(status === "execution_unknown" ? {} : { execution_action_id: actionId }),
+        },
+        "POST",
+        signal,
+      );
+      const updated = await api<LearningDecision[]>(
+        `/learning/decisions?team_id=${state?.team_id}`,
+        undefined,
+        "GET",
+        signal,
+      );
+      if (!signal.aborted) setDecisions(updated);
+    });
+  const reviewDecision = (decision: LearningDecision) =>
+    void task("Checking finalized outcomes", async (signal) => {
+      const response = await api<Record<string, unknown>>(
+        `/learning/decisions/${decision.decision_id}/outcomes`,
+        {},
+        "POST",
+        signal,
+      );
+      if (typeof response.job_id === "string") {
+        await waitForJob<Record<string, unknown>>(
+          response.job_id,
+          (job) => setProgress(job.progress),
+          signal,
+        );
+      }
+      const updated = await api<LearningDecision[]>(
+        `/learning/decisions?team_id=${state?.team_id}`,
+        undefined,
+        "GET",
+        signal,
+      );
+      if (!signal.aborted) {
+        setDecisions(updated);
+        setNotice(
+          response.status === "pending"
+            ? "FPL has not finalized this event yet."
+            : "Finalized outcomes recorded.",
+        );
+      }
     });
   const refresh = () =>
     void task("Refreshing official data", async (signal) => {
@@ -886,6 +980,11 @@ export default function Dashboard({ section }: { section: Section }) {
                             ))}
                           </select>
                         </label>
+                        <PlanningOptions
+                          settings={settings}
+                          disabled={Boolean(busy)}
+                          onChange={changeSettings}
+                        />
                         <label>
                           Solver limit (seconds)
                           <input
@@ -1106,9 +1205,15 @@ export default function Dashboard({ section }: { section: Section }) {
                 <section className="panel">
                   <p className="eyebrow">YOUR DECISION LOG</p>
                   <h2>Saved plans</h2>
+                  <LearningReviewControls
+                    key={state.team_id}
+                    teamId={state.team_id}
+                    live={state.data_mode === "live"}
+                  />
                   <p className="muted">
-                    Frozen forecasts and assumptions. Realised results and evaluation history are
-                    unavailable until recorded by the backend.
+                    Freeze the forecast before its deadline, record what you chose and executed,
+                    then review official results after FPL finalizes the event. Transfers stay
+                    manual.
                   </p>
                   {saved.length ? (
                     <div className="plan-grid">
@@ -1116,6 +1221,19 @@ export default function Dashboard({ section }: { section: Section }) {
                         <div key={s.plan_id}>
                           <p className="muted">Saved {timestamp(s.saved_at)}</p>
                           {planCard(s.plan, true, s.stale_reasons)}
+                          {!decisions.some((d) => d.recommended_action_id === s.plan.plan_id) && (
+                            <button
+                              className="button"
+                              disabled={
+                                Boolean(busy) ||
+                                Boolean(s.stale_reasons?.length) ||
+                                s.plan.state_version !== state.state_version
+                              }
+                              onClick={() => freezeDecision(s.recommendation_id)}
+                            >
+                              Freeze decision before deadline
+                            </button>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1123,6 +1241,74 @@ export default function Dashboard({ section }: { section: Section }) {
                     <div className="empty">
                       <h3>No saved plans yet.</h3>
                       <p>Analyse your squad and save a plan to keep a decision record.</p>
+                    </div>
+                  )}
+                  {!!decisions.length && (
+                    <div className="plan-grid">
+                      {decisions.map((decision) => (
+                        <article
+                          className="plan-card"
+                          key={decision.decision_id}
+                          data-decision-id={decision.decision_id}
+                        >
+                          <h3>
+                            GW {decision.event} · frozen {timestamp(decision.frozen_at)}
+                          </h3>
+                          <p>Execution status: {label(decision.execution_status)}</p>
+                          <label>
+                            Chosen candidate
+                            <select
+                              value={
+                                decisionChoices[decision.decision_id] ||
+                                decision.recommended_action_id ||
+                                ""
+                              }
+                              onChange={(event) =>
+                                setDecisionChoices((choices) => ({
+                                  ...choices,
+                                  [decision.decision_id]: event.target.value,
+                                }))
+                              }
+                            >
+                              {decision.candidate_plans.map((candidate) => (
+                                <option key={candidate.plan_id} value={candidate.plan_id}>
+                                  {candidate.name}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <div className="actions">
+                            <button
+                              className="button"
+                              disabled={Boolean(busy)}
+                              onClick={() => recordDecisionAction(decision, "user_selected")}
+                            >
+                              Record selected
+                            </button>
+                            <button
+                              className="button"
+                              disabled={Boolean(busy)}
+                              onClick={() => recordDecisionAction(decision, "confirmed_executed")}
+                            >
+                              Confirm executed
+                            </button>
+                            <button
+                              className="button secondary"
+                              disabled={Boolean(busy)}
+                              onClick={() => reviewDecision(decision)}
+                            >
+                              Review finalized results
+                            </button>
+                          </div>
+                          {decision.outcome_revisions.map((row) => (
+                            <p key={row.revision}>
+                              Outcome revision {row.revision}: MAE{" "}
+                              {row.metrics.mae?.toFixed(2) ?? "—"} · bias{" "}
+                              {row.metrics.bias?.toFixed(2) ?? "—"}
+                            </p>
+                          ))}
+                        </article>
+                      ))}
                     </div>
                   )}
                 </section>

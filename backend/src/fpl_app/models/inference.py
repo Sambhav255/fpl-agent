@@ -69,6 +69,8 @@ def common_projection(
         raise ValueError("missing or extraneous frozen fixture forecast")
     projections = []
     for row in predictions.to_dict("records"):
+        if not np.isfinite([float(row["expected_points"]), float(row["expected_minutes"])]).all():
+            raise ValueError("Nonfinite point or minute forecast")
         if utc(row["decision_cutoff"]) != utc(cutoff):
             raise ValueError("inconsistent forecast deadline")
         quantiles = None
@@ -111,6 +113,12 @@ def common_projection(
         }
     )
     return ProjectionRun(
+        requested_provider=model_family,
+        resolved_provider=model_family,
+        artifact_id=artifact_id or None,
+        prediction_origin=cutoff,
+        lifecycle_state="experimental",
+        player_universe_ids=sorted(p.player_id for p in players),
         projection_run_id=f"{model_family}-{identity[:24]}",
         snapshot_id=snapshot_id,
         source_cutoff=cutoff,

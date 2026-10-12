@@ -32,7 +32,15 @@
     ".next-release/types/**/*.ts",
     ".next-release/dev/types/**/*.ts",
     ".next-release-v2/types/**/*.ts",
-    ".next-release-v2/dev/types/**/*.ts"
+    ".next-release-v2/dev/types/**/*.ts",
+    ".next-learning-registry/types/**/*.ts",
+    ".next-learning-registry/dev/types/**/*.ts",
+    ".next-advanced-serving/types/**/*.ts",
+    ".next-advanced-serving/dev/types/**/*.ts",
+    ".next-learning-complete/types/**/*.ts",
+    ".next-learning-complete/dev/types/**/*.ts",
+    ".next-learning-final-verified/types/**/*.ts",
+    ".next-learning-final-verified/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

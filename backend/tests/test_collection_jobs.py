@@ -19,9 +19,9 @@ def test_collection_recoverable_without_manager_and_repeat_capture(tmp_path):
     assert store.list("state") == []
 
 
-@pytest.mark.parametrize("ids", [[0], [-1], [True], ["1"], list(range(1, 102))])
+@pytest.mark.parametrize("ids", [[0], [-1], [True], ["1"], list(range(1, 1002))])
 def test_invalid_collection_ids_rejected(tmp_path, ids):
-    with pytest.raises(ValueError, match="positive player IDs"):
+    with pytest.raises(ValueError, match="player universe"):
         Queue(Store(f"sqlite:///{tmp_path}/app.sqlite")).enqueue("collection", {"player_ids": ids})
 
 
@@ -33,6 +33,13 @@ def test_social_status_honest_and_collection_api(tmp_path):
     assert all(not p["live_fetch"] for p in status["providers"])
     response = client.post("/api/v1/data/collections", json={"player_ids": [1]})
     assert response.status_code == 202
+    assert client.post("/api/v1/data/collections", json={"include_all": True}).status_code == 202
+    assert (
+        client.post(
+            "/api/v1/data/collections", json={"include_all": True, "player_ids": [1]}
+        ).status_code
+        == 422
+    )
     assert client.post("/api/v1/data/collections", json={"player_ids": [-1]}).status_code == 422
 
 

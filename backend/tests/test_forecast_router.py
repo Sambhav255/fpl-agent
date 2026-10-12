@@ -148,6 +148,22 @@ def configured(tmp_path, monkeypatch):
 
 def test_real_fit_adapter_reload_worker_and_retry(configured):
     store, state, data, directory, _, payload, _, bundle = configured
+    manifest = json.loads((directory / "manifest.json").read_text())
+    evaluation = json.loads((directory / "evaluation.json").read_text())
+    fitted = pd.read_parquet(directory / "features.parquet")
+    assert manifest["artifact_kind"] == "latest_serving_refit"
+    assert manifest["partitions"]["fit"]["events"] == [1, 2, 3, 4, 5]
+    assert manifest["evaluation_completed_at"] <= manifest["executed_at"]
+    assert evaluation["held_out_events"] == [5]
+    assert evaluation["selected_method"] == "points_minutes_role_fixture"
+    assert len(evaluation["feature_ablation_sequence"]) == 3
+    assert manifest["method_matches_evaluation"] is True
+    fold = evaluation["folds"][0]
+    assert fold["train_events"] == [1, 2]
+    assert fold["validation_events"] == [3]
+    assert fold["calibration_events"] == [4]
+    assert fold["test_events"] == [5]
+    assert set(fitted.event) == {1, 2, 3, 4, 5}
     queue = Queue(store)
     first = queue.enqueue("projection", {"team_id": 1, "horizon_events": 1})
     assert Worker(queue).run_once()

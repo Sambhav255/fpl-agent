@@ -12,7 +12,7 @@ from typing import Any
 from fpl_app.providers import Provider
 from fpl_app.storage import Store, fingerprint
 
-MAX_PLAYERS = 100
+MAX_PLAYERS = 1_000
 
 
 def _instant(value: str) -> datetime:
@@ -51,14 +51,19 @@ def collect_football(
     provider: Provider | None = None,
     player_ids: list[int] | None = None,
     force: bool = True,
+    include_all: bool = False,
 ) -> dict[str, Any]:
-    """Capture bootstrap, fixtures and at most 100 explicitly selected element summaries."""
+    """Capture a bounded explicit universe or the full bootstrap element universe."""
+    if type(include_all) is not bool:
+        raise ValueError("include_all must be boolean")
     ids = [] if player_ids is None else player_ids
     if not isinstance(ids, list) or any(
         type(identifier) is not int or not 1 <= identifier <= 2_147_483_647 for identifier in ids
     ):
         raise ValueError("player_ids must be explicit positive integer IDs")
     ids = sorted(set(ids))
+    if include_all and ids:
+        raise ValueError("Full-universe capture cannot be combined with explicit player IDs")
     if len(ids) > MAX_PLAYERS:
         raise ValueError("Collection is bounded to 100 distinct players")
     provider = provider or Provider(store)
@@ -68,6 +73,10 @@ def collect_football(
     b = json.loads(bootstrap["raw"])
     fixtures = json.loads(fixture_snapshot["raw"])
     season = bootstrap["season"]
+    if include_all:
+        ids = sorted(element["id"] for element in b["elements"])
+        if len(ids) > MAX_PLAYERS:
+            raise ValueError("Bootstrap player universe exceeds the bounded collection limit")
     elements = {p["id"]: p for p in b["elements"]}
     if any(identifier not in elements for identifier in ids):
         raise ValueError("Requested player absent from bootstrap universe")
@@ -211,6 +220,15 @@ def collect_football(
         "before_deadline": next_event["before_deadline"] if next_event else None,
         "evidence_mode": next_event["evidence_mode"] if next_event else "no_next_deadline",
         "player_ids": ids,
+        "player_universe": {
+            "kind": "full_bootstrap_elements" if include_all else "explicit_selection",
+            "definition_version": "official-bootstrap-elements-v1",
+            "bootstrap_snapshot_id": bootstrap["id"],
+            "bootstrap_sha256": bootstrap["payload_sha256"],
+            "membership_sha256": fingerprint(ids),
+            "member_count": len(ids),
+            "selected_at": bootstrap["captured_at"],
+        },
         "player_mappings": [
             {
                 "provider": "official_fpl",
@@ -262,6 +280,7 @@ def collection_coverage(store: Store, collection_id: str) -> dict[str, Any]:
         for k in (
             "collection_id",
             "player_ids",
+            "player_universe",
             "coverage",
             "event_evidence",
             "limitations",

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
@@ -19,16 +20,22 @@ def run_staging(dest: Path) -> Path:
 
 def verify_model_run(dest: Path) -> dict[str, Any]:
     manifest_path = dest / "manifest.json"
-    if not manifest_path.is_file():
+    if dest.is_symlink() or manifest_path.is_symlink() or not manifest_path.is_file():
         raise ValueError("model manifest missing")
     meta = json.loads(manifest_path.read_text())
+    if not isinstance(meta, dict):
+        raise TypeError("model manifest must be an object")
     artifacts = meta.get("artifacts")
     if not isinstance(artifacts, dict) or not artifacts:
         raise ValueError("model manifest has no artifacts")
     for name, checksum in artifacts.items():
-        if not isinstance(name, str) or Path(name).name != name:
+        if not isinstance(name, str) or Path(name).name != name or name in {".", ".."}:
             raise ValueError("invalid artifact name")
+        if not isinstance(checksum, str) or not re.fullmatch(r"[0-9a-f]{64}", checksum):
+            raise ValueError("invalid artifact checksum")
         path = dest / name
+        if path.is_symlink():
+            raise ValueError("model artifact symlinks are not allowed")
         digest = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else ""
         if digest != checksum:
             raise ValueError("existing run artifact checksum mismatch")

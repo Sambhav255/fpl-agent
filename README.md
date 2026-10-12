@@ -10,7 +10,7 @@ A local Fantasy Premier League strategy workspace for squad review, projections,
 - Select a lineup, captain, vice captain, and bench; inspect chip timing and save versioned plans.
 - Track immutable source snapshots, background jobs, and prediction provenance.
 
-The approximate baseline is the default. Football CatBoost can run as an explicit, one-gameweek experiment with immutable source/artifact checks and a declared player universe. Its current small evaluation did not beat the simple comparison forecast, so it is not promoted. Bayesian player scoring, multiweek TFT and the eligible ensemble remain incomplete. The Models page shows actual evaluation status and an experimental comparison flow. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
+The approximate baseline is the default. Football CatBoost can run as an explicit, one-gameweek experiment with immutable source/artifact checks and a declared player universe. Preparation now evaluates expanding chronological event folds, then creates a separate latest-data serving refit; early seasons report insufficient evaluation instead of forcing a split. Earlier small tests did not beat the simple comparison forecast, so no challenger is promoted. Bayesian complete-component research scoring, real multilead TFT fitting/evaluation and eligible mean ensembles are implemented with audited opt-in shadow worker/UI contracts. Real-data qualification and calibration remain gated. The Models page shows actual evaluation status and an experimental comparison flow. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
 
 ## Quick start
 
@@ -40,7 +40,7 @@ backend/.venv/bin/python scripts/collect_football.py --help
 backend/.venv/bin/python scripts/prepare_football_forecast.py --help
 ```
 
-Capture with `--include-owned` and optional `--from-collection COLLECTION_ID`; the collector prints a new immutable collection ID without changing manager state. Prepare a qualified experiment with `prepare_football_forecast.py --collection-id COLLECTION_ID --team-id YOUR_PUBLIC_TEAM_ID`. Add `--register` only after reviewing the current manager state and matching retained catalogue sources. The Models page can then validate a serving bundle and request an experimental forecast through the worker. Preliminary event outcomes are excluded from the current experiment's fitting and lag features.
+Capture with `--include-owned` and optional `--from-collection COLLECTION_ID`; use `--include-all` for a deadline-frozen full bootstrap player universe (bounded at 1,000 players). The collector prints a new immutable collection ID without changing manager state. Prepare a qualified experiment with `prepare_football_forecast.py --collection-id COLLECTION_ID --team-id YOUR_PUBLIC_TEAM_ID`. Add `--register` only after reviewing the current manager state and matching retained catalogue sources. The Models page can then validate a serving bundle and request an experimental forecast through the worker. Preliminary event outcomes are excluded from the current experiment's fitting and lag features.
 
 Collection jobs are also available through `POST /api/v1/data/collections`; progress and failures use the existing jobs API. Reddit/X live collection is disabled; `/api/v1/social/status` reports capabilities honestly and social points adjustment is zero. Future baseline availability is an explicit conditional planning scenario, not a calibrated recovery forecast or a repeated current injury flag.
 
@@ -54,7 +54,7 @@ scripts/        Local service launcher and integration checks
 data/           Local database, snapshots and model artifacts (Git ignored)
 ```
 
-Original build-kit specifications remain at the root; working specifications are indexed in [docs/README.md](docs/README.md).
+Start a coding session with [docs/START_HERE.md](docs/START_HERE.md). Canonical specifications and engineering references are indexed in [docs/README.md](docs/README.md). See [the file map](docs/FILE_STRUCTURE.md) for the layout; unchanged supplied material is archived under `docs/reference/supplied/` and older status narratives under `docs/history/`.
 
 ## Development checks
 
@@ -75,3 +75,23 @@ python3 scripts/live_smoke.py --team-id YOUR_PUBLIC_TEAM_ID
 For a separate production build, use `NEXT_BUILD_DIR=.next-production npm run build`, then `NEXT_BUILD_DIR=.next-production npm run start -- --port 3001` from `apps/web`. Browser tests can target it with `E2E_BASE_URL=http://127.0.0.1:3001 npm run test:e2e`.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting, API generation, optional model dependencies, and Git preparation. Latest checks and remaining work are recorded in [docs/BUILD_STATUS.md](docs/BUILD_STATUS.md).
+
+## Learning research and reviews
+
+Saved Plans supports immutable deadline decisions, manual execution reporting and finalized outcome reviews. Future-chip and financial sequence controls are in Planner. Small-universe exhaustive search is distinguished from bounded full-catalogue paths, which cap replacements at two per event including chip weeks. Frozen journals can seal pre-deadline replay evidence; see [journal replay](docs/learning_upgrade/JOURNAL_REPLAY.md). Baseline and numerical planning remain the default champions.
+
+Optional local strategy research:
+
+```sh
+(cd backend && uv sync --locked --extra rl)
+backend/.venv/bin/python scripts/train_strategy.py --synthetic-smoke --timesteps 128
+# Run the normal worker to process the returned durable job ID:
+(cd backend && uv run --extra rl python -m fpl_app.jobs.worker)
+backend/.venv/bin/python scripts/benchmark_social.py
+```
+
+Use `--episodes path/to/frozen-episodes.json` for explicitly labelled local train/test research episodes. The JSON bytes and implementation are fingerprinted when queued; no arbitrary file path is requested through the API. Optional Bayesian/TFT development requires `uv sync --locked --extra bayes --extra deep --extra rl`. Synthetic PPO fitting checks mechanics and installation; it does not establish a live advantage. Models lists inactive policy evidence separately from football forecasts.
+
+Recurring reviews are disabled until saved in the live team's Saved Plans controls. With API/worker running, launch `backend/.venv/bin/python scripts/review_learning.py --watch` to enqueue due intervals. Enable collection/refitting deliberately in those controls. Closing the scheduler stops new ticks; disabling the schedule fences queued reviews. No private inputs, transfers, chips or champion pointers are changed by a review.
+
+The detailed implemented scope, remaining release/data prerequisites and actual verification are recorded in [learning implementation status](docs/learning_upgrade/IMPLEMENTATION_STATUS.md).

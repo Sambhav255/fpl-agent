@@ -9,7 +9,14 @@ from typing import Any, Literal
 from uuid import uuid4
 
 from fpl_app.contracts import ManagerState, Plan, Player, ProjectionRun, Recommendation, Settings
-from fpl_app.domain.plans import _check_inputs, _week, input_fingerprint, validate_plan
+from fpl_app.domain.plans import (
+    _check_inputs,
+    _week,
+    allowed_chips,
+    event_players,
+    input_fingerprint,
+    validate_plan,
+)
 from fpl_app.domain.rules import (
     RULES,
     advance_event,
@@ -306,7 +313,15 @@ def recommend(
     current = state.model_copy(deep=True)
     weeks = []
     for offset in range(settings.horizon_events):
-        weeks.append(_week(current, players, run, current.current_chip, []))
+        weeks.append(
+            _week(
+                current,
+                event_players(players, settings, current.next_event),
+                run,
+                current.current_chip,
+                [],
+            )
+        )
         if offset + 1 < settings.horizon_events:
             current = advance_event(current)
     baseline_hits = sum(w["total_hits"] for w in weeks)
@@ -320,6 +335,10 @@ def recommend(
         "candidate_universe_size": len(players),
     }
     baseline = _plan(state, run, fingerprint, weeks, "Keep", metadata.copy(), baseline_hits)
+    if settings.price_scenario:
+        baseline.assumptions[0] = (
+            "Conditional declared market-price path; purchase and selling basis retained"
+        )
     errors = validate_plan(baseline, state, players, run, settings, enforce_preferences=False)
     if errors:
         raise ValueError("Invalid Keep plan: " + "; ".join(errors))
@@ -356,7 +375,7 @@ def recommend(
             projection_run_id=run.projection_run_id,
             warnings=warnings,
         )
-    chip = settings.chip_policy if settings.chip_policy != "none" else state.current_chip
+    chip = allowed_chips(state, settings, 0)[0]
     chip_errors = validate_chip(state, chip)
     if chip_errors:
         warnings += chip_errors
@@ -372,6 +391,72 @@ def recommend(
             projection_run_id=run.projection_run_id,
             warnings=warnings,
         )
+    if settings.planner_mode == "sequence":
+        from fpl_app.optimisation.sequence import solve_sequence
+
+        sequence_result = solve_sequence(
+            state,
+            players,
+            run,
+            settings.model_copy(
+                update={"solver_time_limit_seconds": max(0.001, deadline - monotonic())}
+            ),
+        )
+        sequence_meta = {
+            **metadata,
+            "search": "financial-state dynamic programming; full declared squad/chip path",
+            "status": sequence_result.status,
+            "evaluated_edges": sequence_result.evaluated_edges,
+            "search_scope": sequence_result.search_scope,
+            "optimality_gap": 0 if sequence_result.complete and sequence_result.weeks else None,
+            "elapsed_seconds": monotonic() - started,
+            "scope": "declared deterministic price and forecast path; budget bounded",
+        }
+        sequence_alternatives: list[Plan] = []
+        if sequence_result.weeks:
+            plan = _plan(
+                state,
+                run,
+                fingerprint,
+                sequence_result.weeks,
+                "Financial sequence plan",
+                sequence_meta,
+                baseline_hits,
+            )
+            plan.delta_to_baseline = plan.net_points - baseline.net_points
+            plan.this_week_delta = float(plan.weeks[0]["net_points"]) - float(
+                baseline.weeks[0]["net_points"]
+            )
+            plan.assumptions = [
+                "Complete financial-state path over the declared universe when search exhausts; bounded incumbents otherwise",
+                "Large catalogues restrict each event to at most two replacements, including Wildcard/Free Hit",
+                "Conditional declared price path"
+                if settings.price_scenario
+                else "Frozen prices; exact acquisition and selling basis",
+                "Future chips subject to confirmed inventory, expiry and Free Hit restoration",
+                "Forecast means; no joint uncertainty or fitted continuation value",
+            ]
+            errors = validate_plan(plan, state, players, run, settings, baseline)
+            if errors:
+                raise ValueError("Invalid sequence incumbent: " + "; ".join(errors))
+            sequence_alternatives.append(plan)
+        if not sequence_result.complete:
+            warnings.append(
+                "Sequence search is restricted or budget exhausted; only complete validated paths returned, no global optimality claim"
+            )
+        baseline.solver = sequence_meta
+        return Recommendation(
+            recommendation_id=str(uuid4()),
+            baseline_plan=baseline,
+            alternatives=sequence_alternatives,
+            gameweek_optimum=None,
+            chip_advice=chip_advice(state, state, players, run, settings, baseline, None),
+            source_cutoff=run.source_cutoff,
+            rules_version=run.rules_version,
+            state_version=state.state_version,
+            projection_run_id=run.projection_run_id,
+            warnings=warnings,
+        )
     beam = [Node(state.model_copy(deep=True), [], 0.0, 0)]
     by_id = player_map(players)
     timed_out = False
@@ -379,111 +464,124 @@ def recommend(
     for offset in range(settings.horizon_events):
         expanded = []
         for node in beam:
-            event_chip = chip if offset == 0 else None
-            candidates: list[list[dict[str, int]]] = [[]]
-            owned = {p.player_id for p in node.state.picks}
-            if monotonic() < deadline:
-                xp = projection_points(run.projections, node.state.next_event)
-                eligible = [
-                    p
-                    for p in players
-                    if p.player_id not in owned and p.player_id not in settings.excluded_player_ids
-                ]
-                eligible.sort(key=lambda p: (-xp.get(p.player_id, 0), p.player_id))
-                remaining_hits = settings.max_additional_hit_points - node.additional_hits
-                free = int(node.state.free_transfers_at_event_start or 1)
-                made = int(node.state.transfers_made_this_event or 0)
-                max_moves = (
-                    15
-                    if event_chip in {"wildcard", "free_hit"}
-                    else min(20 - made, max(0, free - made) + remaining_hits // 4)
-                )
-                if offset == 0 and settings.max_transfers_this_event is not None:
-                    max_moves = min(max_moves, settings.max_transfers_this_event)
-                # Full single-transfer universe, bounded by wall clock and this-week cap.
-                if max_moves >= 1:
-                    for out in node.state.picks:
-                        if out.player_id in settings.locked_player_ids:
-                            continue
-                        candidates.extend(
-                            [{"out": out.player_id, "in": p.player_id}]
-                            for p in eligible
-                            if p.position == by_id[out.player_id].position
-                        )
-                try:
+            week_players = event_players(players, settings, node.state.next_event)
+            for event_chip in allowed_chips(node.state, settings, offset):
+                if validate_chip(node.state, event_chip):
+                    continue
+                candidates: list[list[dict[str, int]]] = [[]]
+                owned = {p.player_id for p in node.state.picks}
+                if monotonic() < deadline:
+                    xp = projection_points(run.projections, node.state.next_event)
+                    eligible = [
+                        p
+                        for p in week_players
+                        if p.player_id not in owned
+                        and p.player_id not in settings.excluded_player_ids
+                    ]
+                    eligible.sort(key=lambda p: (-xp.get(p.player_id, 0), p.player_id))
+                    remaining_hits = settings.max_additional_hit_points - node.additional_hits
+                    free = int(node.state.free_transfers_at_event_start or 1)
+                    made = int(node.state.transfers_made_this_event or 0)
+                    max_moves = (
+                        15
+                        if event_chip in {"wildcard", "free_hit"}
+                        else min(20 - made, max(0, free - made) + remaining_hits // 4)
+                    )
+                    if offset == 0 and settings.max_transfers_this_event is not None:
+                        max_moves = min(max_moves, settings.max_transfers_this_event)
+                    # Full single-transfer universe, bounded by wall clock and this-week cap.
                     if max_moves >= 1:
-                        moves, solver_info = candidate_generator(
-                            node.state,
-                            players,
-                            run,
-                            settings,
-                            deadline - monotonic(),
-                            event_chip,
-                            max_moves,
-                        )
-                        metadata.update(solver_info)
-                        if moves and len(moves) <= max_moves:
-                            candidates.insert(1, moves)
-                        if offset == 0 and settings.horizon_events > 1:
-                            weekly_moves, weekly_info = candidate_generator(
+                        for out in node.state.picks:
+                            if out.player_id in settings.locked_player_ids:
+                                continue
+                            candidates.extend(
+                                [{"out": out.player_id, "in": p.player_id}]
+                                for p in eligible
+                                if p.position == by_id[out.player_id].position
+                            )
+                    try:
+                        if max_moves >= 1:
+                            moves, solver_info = candidate_generator(
                                 node.state,
-                                players,
+                                week_players,
                                 run,
-                                settings.model_copy(update={"horizon_events": 1}),
+                                settings,
                                 deadline - monotonic(),
                                 event_chip,
                                 max_moves,
                             )
-                            metadata["this_week_candidate_status"] = weekly_info
-                            if (
-                                weekly_moves
-                                and len(weekly_moves) <= max_moves
-                                and weekly_moves not in candidates
-                            ):
-                                candidates.insert(1, weekly_moves)
-                except (ImportError, ValueError) as exc:
-                    metadata["highs_unavailable_or_failed"] = str(exc)
-            else:
-                timed_out = True
-            for index, moves in enumerate(candidates):
-                if index > 0 and monotonic() >= deadline:
+                            metadata.update(solver_info)
+                            if moves and len(moves) <= max_moves:
+                                candidates.insert(1, moves)
+                            if offset == 0 and settings.horizon_events > 1:
+                                weekly_moves, weekly_info = candidate_generator(
+                                    node.state,
+                                    week_players,
+                                    run,
+                                    settings.model_copy(update={"horizon_events": 1}),
+                                    deadline - monotonic(),
+                                    event_chip,
+                                    max_moves,
+                                )
+                                metadata["this_week_candidate_status"] = weekly_info
+                                if (
+                                    weekly_moves
+                                    and len(weekly_moves) <= max_moves
+                                    and weekly_moves not in candidates
+                                ):
+                                    candidates.insert(1, weekly_moves)
+                    except (ImportError, ValueError) as exc:
+                        metadata["highs_unavailable_or_failed"] = str(exc)
+                else:
                     timed_out = True
-                    break
-                try:
-                    result, ledger = apply_transfers(node.state, players, moves, event_chip)
-                    if {p.player_id for p in result.picks} & set(settings.excluded_player_ids):
-                        continue
-                    week = _week(result, players, run, event_chip, ledger)
-                    extra = node.additional_hits + max(
-                        0,
-                        week["total_hits"]
-                        - (baseline.weeks[offset]["total_hits"] if offset == 0 else 0),
-                    )
-                    if extra > settings.max_additional_hit_points:
-                        continue
-                    if (
-                        offset == 0
-                        and settings.max_transfers_this_event is not None
-                        and len(ledger) > settings.max_transfers_this_event
-                    ):
-                        continue
-                    if offset == 0:
-                        rank = (
-                            float(week["net_points"]),
-                            int(week["free_transfers_next"] or 0),
-                            int(result.bank_units or 0),
-                            -len(ledger),
+                for index, moves in enumerate(candidates):
+                    if index > 0 and monotonic() >= deadline:
+                        timed_out = True
+                        break
+                    try:
+                        result, ledger = apply_transfers(
+                            node.state, week_players, moves, event_chip
                         )
-                        if this_week_best is None or rank > this_week_best[0]:
-                            this_week_best = (rank, result, week)
-                    next_state = (
-                        advance_event(result) if offset + 1 < settings.horizon_events else result
-                    )
-                    expanded.append(
-                        Node(next_state, node.weeks + [week], node.net + week["net_points"], extra)
-                    )
-                except ValueError:
-                    continue
+                        if {p.player_id for p in result.picks} & set(settings.excluded_player_ids):
+                            continue
+                        week = _week(result, week_players, run, event_chip, ledger)
+                        extra = node.additional_hits + max(
+                            0,
+                            week["total_hits"]
+                            - (baseline.weeks[offset]["total_hits"] if offset == 0 else 0),
+                        )
+                        if extra > settings.max_additional_hit_points:
+                            continue
+                        if (
+                            offset == 0
+                            and settings.max_transfers_this_event is not None
+                            and len(ledger) > settings.max_transfers_this_event
+                        ):
+                            continue
+                        if offset == 0:
+                            rank = (
+                                float(week["net_points"]),
+                                int(week["free_transfers_next"] or 0),
+                                int(result.bank_units or 0),
+                                -len(ledger),
+                            )
+                            if this_week_best is None or rank > this_week_best[0]:
+                                this_week_best = (rank, result, week)
+                        next_state = (
+                            advance_event(result)
+                            if offset + 1 < settings.horizon_events
+                            else result
+                        )
+                        expanded.append(
+                            Node(
+                                next_state,
+                                node.weeks + [week],
+                                node.net + week["net_points"],
+                                extra,
+                            )
+                        )
+                    except ValueError:
+                        continue
         if not expanded:
             warnings.append("No complete legal plan satisfying preferences within search budget")
             beam = []
@@ -499,6 +597,15 @@ def recommend(
                 n.state.bank_units,
                 n.state.free_transfers_at_event_start,
                 n.additional_hits,
+                tuple(sorted(n.state.chips.items())),
+                n.state.current_chip,
+                n.state.previous_free_hit_event,
+                tuple(
+                    sorted(
+                        (p.player_id, p.purchase_price_units)
+                        for p in (n.state.persistent_picks or [])
+                    )
+                ),
             )
             if key not in unique:
                 unique[key] = n
@@ -516,6 +623,14 @@ def recommend(
             metadata.copy(),
             baseline_hits,
         )
+        if settings.price_scenario:
+            plan.assumptions[0] = (
+                "Conditional declared price scenario; acquisition basis and sale rounding replayed at every event"
+            )
+        if settings.future_chip_policy == "optimise" or settings.chip_schedule:
+            plan.assumptions.append(
+                "Future chips searched under confirmed inventory and season windows; dates are conditional proposals"
+            )
         plan.delta_to_baseline = plan.net_points - baseline.net_points
         plan.this_week_delta = float(plan.weeks[0]["net_points"]) - float(
             baseline.weeks[0]["net_points"]
@@ -523,8 +638,13 @@ def recommend(
         errors = validate_plan(plan, state, players, run, settings, baseline)
         if (
             not errors
-            and (plan.actions or plan.chip != baseline.chip)
-            and all(plan.actions != p.actions or plan.chip != p.chip for p in alternatives)
+            and (
+                plan.actions
+                or any(
+                    w["chip"] != b["chip"] for w, b in zip(plan.weeks, baseline.weeks, strict=True)
+                )
+            )
+            and all(plan.weeks != p.weeks for p in alternatives)
         ):
             alternatives.append(plan)
         elif errors:

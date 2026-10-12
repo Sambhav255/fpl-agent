@@ -1,4 +1,4 @@
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import ConfigDict, Field
@@ -122,6 +122,15 @@ class Settings(BaseModel):
     locked_player_ids: list[int] = Field(default_factory=list)
     excluded_player_ids: list[int] = Field(default_factory=list)
     chip_policy: Literal["none", "wildcard", "free_hit", "bench_boost", "triple_captain"] = "none"
+    planner_mode: Literal["bounded", "sequence"] = "bounded"
+    future_chip_policy: Literal["none", "optimise"] = "none"
+    chip_schedule: dict[int, Literal["wildcard", "free_hit", "bench_boost", "triple_captain"]] = (
+        Field(default_factory=dict)
+    )
+    # Explicit conditional scenario, never an inferred future market observation.
+    price_scenario: dict[int, dict[int, Annotated[int, Field(ge=0, strict=True)]]] = Field(
+        default_factory=dict
+    )
     solver_time_limit_seconds: float = Field(default=15, gt=0, le=60)
 
 

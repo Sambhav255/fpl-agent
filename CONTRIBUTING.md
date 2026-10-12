@@ -4,13 +4,13 @@ Read [AGENTS.md](AGENTS.md) and the relevant [specifications](docs/README.md) be
 
 ## Setup and formatting
 
-Use the locked installation commands in the README. Format Python with `uv run ruff format .` from `backend`; format the interface with `npm run format` from `apps/web`. Generated API types and OpenAPI snapshots are excluded from frontend formatting.
+Use the locked installation commands in the README. Format Python with `uv run ruff format .` from `backend`; format the interface with `npm run format` from `apps/web`. Generated API types and OpenAPI snapshots are excluded from frontend formatting and retain generator formatting.
 
 Run the README checks before proposing changes. Root `bash scripts/check.sh` runs the combined checks; API and worker must already be available for browser tests. CI uses offline fixtures and synthetic demo state. Live provider checks are opt-in.
 
 ## API contracts
 
-Change Pydantic contracts in `backend/src/fpl_app/contracts.py`, start the API, and run `npm run generate:api` from `apps/web`. Keep the generated types and `apps/web/openapi.json` consistent with the actual API. `openapi.contracts.json` is the original contract-design snapshot; it is not the deployed API.
+Change the Pydantic contracts/request models, then run `npm run generate:api` from `apps/web` after installing locked backend dependencies. This generates `apps/web/openapi.json` and `apps/web/src/lib/api/schema.d.ts` offline from the actual API with an in-memory store; a running server is unnecessary. The original design-only snapshot is preserved at `docs/reference/contracts/openapi-design.json`. Read [the file map](docs/FILE_STRUCTURE.md) before moving source or generated artifacts.
 
 ## Model work
 

@@ -67,21 +67,33 @@ test("synthetic demo → replacement and financial corrections → validated pla
   await page.getByRole("link", { name: "Planner", exact: true }).click();
   await page.getByLabel("Horizon (Gameweeks)", { exact: true }).fill("2");
   await page.getByLabel("Solver limit (seconds)", { exact: true }).fill("2");
+  await page
+    .getByRole("combobox", { name: "Planning search", exact: true })
+    .selectOption("sequence");
+  await expect(
+    page.getByText(/Large sequence searches compare up to two replacements/),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Run analysis" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Analysis ready" })).toBeVisible({
     timeout: 90000,
   });
   await expect(page.getByRole("heading", { name: "Suggested Keep lineup" })).toBeVisible();
+  await expect(page.getByText(/Sequence search is restricted or budget exhausted/)).toBeVisible();
   await expect(page.getByRole("table").first()).toBeVisible();
   await page.screenshot({
     path: `test-results/dashboard-${test.info().project.name}.png`,
     fullPage: true,
   });
+  const savedPlan = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/v1/plans") && response.request().method() === "POST",
+  );
   await page
     .locator(".plan-card")
     .first()
     .getByRole("button", { name: /^Save / })
     .click();
+  expect((await savedPlan).ok()).toBe(true);
   await expect(page.getByRole("status").filter({ hasText: "Plan saved" })).toBeVisible();
   await page.getByRole("link", { name: "Players", exact: true }).click();
   await expect(page.getByText("BASELINE PROJECTIONS", { exact: true })).toBeVisible();
@@ -89,6 +101,34 @@ test("synthetic demo → replacement and financial corrections → validated pla
   await expect(page.getByRole("rowheader", { name: replacement.name, exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Saved plans", exact: true }).click();
   await expect(page.locator(".plan-card")).not.toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Recurring learning reviews" })).toBeVisible();
+  await expect(
+    page.getByLabel("Enable recurring learning reviews", { exact: true }),
+  ).toBeDisabled();
+  const frozenResponse = page.waitForResponse(
+    (r) => r.url().endsWith("/api/v1/learning/decisions") && r.request().method() === "POST",
+  );
+  await page
+    .getByRole("button", { name: "Freeze decision before deadline", exact: true })
+    .and(page.locator(":enabled"))
+    .first()
+    .click();
+  const response = await frozenResponse;
+  expect(response.status()).toBe(201);
+  const decision = await response.json();
+  const card = page.locator(`[data-decision-id="${decision.decision_id}"]`);
+  await expect(card.getByRole("button", { name: "Record selected", exact: true })).toBeVisible();
+  await card.getByRole("button", { name: "Record selected", exact: true }).click();
+  await expect(card.getByText("Execution status: user selected", { exact: true })).toBeVisible();
+  await card.getByRole("button", { name: "Confirm executed", exact: true }).click();
+  await expect(
+    card.getByText("Execution status: confirmed executed", { exact: true }),
+  ).toBeVisible();
+  const journal = await (await page.request.get("/api/v1/learning/decisions?team_id=0")).json();
+  expect(
+    journal.find((d: { decision_id: string }) => d.decision_id === decision.decision_id)
+      .execution_status,
+  ).toBe("confirmed_executed");
   await page.reload();
   await expect(page.locator(".plan-card")).not.toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(

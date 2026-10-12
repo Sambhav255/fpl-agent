@@ -1,4 +1,4 @@
-"""Fit an immutable current-era challenger; register only after current-state validation.
+"""Evaluate expanding temporal folds, then fit a separate latest-data artifact.
 
 Run with backend/.venv/bin/python scripts/prepare_football_forecast.py
 --collection-id ID --team-id ID [--register]. No fetching, state edits or promotion.
@@ -74,14 +74,20 @@ def prepare_forecast(
         "forecast_files": origin["files"],
         "artifact_manifest_sha256": origin["artifact_manifest_sha256"],
         "partitions": manifest["partitions"],
-        "label_states": dict(
-            Counter(label["label_status"] for label in collection["labels"])
+        "evaluation_status": json.loads((run / manifest["evaluation_reference"]).read_text()).get(
+            "status", "unknown"
         ),
+        "evaluation_fold_count": json.loads(
+            (run / manifest["evaluation_reference"]).read_text()
+        ).get("fold_count", 0),
+        "evaluation_artifact_reference": manifest.get("evaluation_artifact_reference"),
+        "label_states": dict(Counter(label["label_status"] for label in collection["labels"])),
         "evaluation": json.loads((run / manifest["evaluation_reference"]).read_text()),
         "limitations": [
-            "Only final_revision labels enter fitting and diagnostic evaluation; preliminary GW6 is excluded",
+            "Only final_revision labels available by the recorded cutoff enter fitting or held-out evaluation",
             "Future lag features currently also use final_revision rows only; pending observed event statistics are not treated as finals or zeros",
-            "Selected-player limited experimental benchmark; no champion promotion",
+            "Expanding folds require at least two earlier training events plus validation and calibration events; early seasons report insufficient evaluation",
+            "Selected-player universe and assumed historical timing limit evidence; no champion promotion",
             "Artifact preparation does not advance manager event or confirm finances/chips",
         ],
         "serving_bundle_id": None,
@@ -99,9 +105,7 @@ def prepare_forecast(
             summary["serving_bundle_id"] = bundle["serving_bundle_id"]
             summary["serving_status"] = "registered_experimental_only"
     if store.get("state", team_id) != before:
-        raise ValueError(
-            "Manager state changed during preparation; review concurrent edits"
-        )
+        raise ValueError("Manager state changed during preparation; review concurrent edits")
     return summary
 
 

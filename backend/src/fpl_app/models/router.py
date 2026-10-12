@@ -26,7 +26,14 @@ def instant(value: str) -> datetime:
 
 
 def artifact_path(family: str, identifier: str) -> Path:
-    if family not in {"football_catboost", "catboost", "bayesian", "tft"}:
+    if family not in {
+        "football_catboost",
+        "catboost",
+        "bayesian",
+        "tft",
+        "tft_multilead",
+        "ensemble",
+    }:
         raise ValueError("Unknown forecast provider")
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,96}", identifier):
         raise ValueError("Invalid artifact ID")
@@ -44,13 +51,18 @@ def verify_artifact(reference: dict[str, Any]) -> dict[str, Any]:
     if hashlib.sha256(raw).hexdigest() != reference["manifest_sha256"]:
         raise ValueError("Selected artifact manifest changed; create a new job")
     metadata: dict[str, Any] = json.loads(raw)
+    if not isinstance(metadata, dict):
+        raise TypeError("Model manifest must be an object")
     if (
         metadata.get("model_family")
         and metadata.get("family")
         and metadata["model_family"] != metadata["family"]
     ):
         raise ValueError("Conflicting artifact family aliases")
-    if metadata.get("artifact_id") and metadata["artifact_id"] != reference["artifact_id"]:
+    if metadata.get("artifact_id") and metadata["artifact_id"] not in {
+        reference["artifact_id"],
+        f"{reference['provider']}/{reference['artifact_id']}",
+    }:
         raise ValueError("Artifact identity mismatch")
     hashes = metadata.get("artifacts", metadata.get("files", {}))
     if (
@@ -87,6 +99,29 @@ def resolve_forecast(store: Store, payload: dict[str, Any], state: ManagerState)
     if provider == "baseline":
         if payload.get("artifact_id") or payload.get("serving_bundle_id"):
             raise ValueError("Baseline does not accept advanced artifacts")
+        return reference
+    from .advanced_serving import FAMILIES, checked_inputs
+
+    if provider in FAMILIES:
+        from fpl_app.evaluation.provenance import implementation_sha256
+
+        if mode != "shadow":
+            raise ValueError("Advanced research providers support explicit shadow mode only")
+        identifier = payload.get("serving_bundle_id")
+        if not identifier:
+            raise ValueError("Advanced shadow requires a registered immutable input bundle")
+        bundle = store.get("forecast_bundle", identifier)
+        if payload.get("artifact_id") != bundle.get("artifact_id"):
+            raise ValueError("Advanced selection artifact differs from frozen bundle")
+        reference.update(
+            artifact_id=bundle["artifact_id"],
+            manifest_sha256=bundle["manifest_sha256"],
+            prediction_origin=bundle["prediction_origin"],
+            horizon_events=payload["horizon_events"],
+            bundle_fingerprint=fingerprint(bundle),
+            implementation_sha256=implementation_sha256(),
+        )
+        checked_inputs(store, state, store.get("dataset", state.snapshot_id), reference)
         return reference
     if state.data_mode != "live":
         raise ValueError("Real model artifacts cannot serve synthetic demo squads")
@@ -198,6 +233,11 @@ def forecast_job(
         "baseline": baseline_provider,
         "football_catboost": football_provider,
     }
+    from .advanced_serving import FAMILIES, advanced_provider
+
+    if reference["provider"] in FAMILIES and reference.get("mode") != "shadow":
+        raise ValueError("Advanced research providers support explicit shadow mode only")
+    providers.update(dict.fromkeys(FAMILIES, advanced_provider))
     if runners:
         providers.update(runners)
     if reference["provider"] not in providers:

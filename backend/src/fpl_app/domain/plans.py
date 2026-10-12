@@ -9,6 +9,7 @@ from typing import Any
 
 from fpl_app.contracts import ManagerState, Plan, Player, ProjectionRun, Settings
 from fpl_app.domain.rules import (
+    CHIPS,
     RULES,
     advance_event,
     apply_transfers,
@@ -32,6 +33,28 @@ def input_fingerprint(
         "settings": settings.model_dump(),
     }
     return sha256(json.dumps(payload, sort_keys=True, allow_nan=False).encode()).hexdigest()
+
+
+def event_players(players: list[Player], settings: Settings, event: int) -> list[Player]:
+    """Use a declared price path, carrying the last known scenario price forward."""
+    prices: dict[int, int] = {}
+    for origin in sorted(settings.price_scenario):
+        if origin <= event:
+            prices.update(settings.price_scenario[origin])
+    return [
+        p.model_copy(update={"market_price_units": prices.get(p.player_id, p.market_price_units)})
+        for p in players
+    ]
+
+
+def allowed_chips(state: ManagerState, settings: Settings, offset: int) -> list[str | None]:
+    """Preferences admit choices; domain validation independently enforces inventory."""
+    scheduled = settings.chip_schedule.get(state.next_event)
+    if scheduled is not None:
+        return [scheduled]
+    if offset == 0:
+        return [settings.chip_policy if settings.chip_policy != "none" else state.current_chip]
+    return [None, *sorted(CHIPS)] if settings.future_chip_policy == "optimise" else [None]
 
 
 def _check_inputs(
@@ -59,6 +82,26 @@ def _check_inputs(
         or not locks <= {p.player_id for p in state.picks}
     ):
         raise ValueError("Invalid locks or exclusions")
+    end = state.next_event + settings.horizon_events
+    if any(not state.next_event <= event < end for event in settings.chip_schedule):
+        raise ValueError("Chip schedule outside planning horizon")
+    if (
+        state.next_event in settings.chip_schedule
+        and settings.chip_policy != "none"
+        and settings.chip_schedule[state.next_event] != settings.chip_policy
+    ):
+        raise ValueError("Conflicting current chip preferences")
+    for event, prices in settings.price_scenario.items():
+        if not state.next_event <= event < end or not prices.keys() <= ids:
+            raise ValueError("Price scenario outside planning horizon or unknown player")
+        if any(type(v) is not int or v < 0 for v in prices.values()):
+            raise ValueError("Scenario prices must be nonnegative integer tenths")
+        if event == state.next_event and any(
+            by_id_value.market_price_units
+            != prices.get(by_id_value.player_id, by_id_value.market_price_units)
+            for by_id_value in players
+        ):
+            raise ValueError("Scenario cannot change observed current market prices")
     projection_points(run.projections, state.next_event)
     if any(p.player_id not in ids for p in run.projections):
         raise ValueError("Unknown projected player")
@@ -147,6 +190,10 @@ def validate_plan(
 ) -> list[str]:
     """Replay from original state without consulting any solver variables."""
     errors: list[str] = []
+    try:
+        _check_inputs(state, players, run, settings)
+    except ValueError as exc:
+        return [str(exc)]
     if (
         plan.state_version != state.state_version
         or plan.projection_run_id != run.projection_run_id
@@ -161,11 +208,14 @@ def validate_plan(
     for offset, week in enumerate(plan.weeks):
         try:
             chip = week.get("chip")
-            expected_chip = state.current_chip if offset == 0 else None
-            if enforce_preferences and offset == 0 and settings.chip_policy != "none":
-                expected_chip = settings.chip_policy
-            if chip != expected_chip:
+            options = (
+                allowed_chips(current, settings, offset)
+                if enforce_preferences
+                else [state.current_chip if offset == 0 else None]
+            )
+            if chip not in options:
                 raise ValueError("Unexpected chip or event")
+            week_players = event_players(players, settings, current.next_event)
             if week.get("event") != current.next_event:
                 raise ValueError("Noncontiguous events")
             chip_errors = validate_chip(current, chip)
@@ -173,11 +223,11 @@ def validate_plan(
                 raise ValueError("; ".join(chip_errors))
             actions = week.get("actions", [])
             if actions or chip and chip != current.current_chip:
-                current, ledger = apply_transfers(current, players, actions, chip)
+                current, ledger = apply_transfers(current, week_players, actions, chip)
                 for actual, recorded in zip(ledger, actions, strict=True):
                     if any(recorded.get(k) != v for k, v in actual.items()):
                         raise ValueError("Transfer ledger mismatch")
-            lineup_errors = validate_lineup(week["lineup"], current, players)
+            lineup_errors = validate_lineup(week["lineup"], current, week_players)
             if lineup_errors:
                 raise ValueError("; ".join(lineup_errors))
             if enforce_preferences:
@@ -186,7 +236,7 @@ def validate_plan(
                     settings.excluded_player_ids
                 ):
                     raise ValueError("Lock or exclusion violation")
-            expected = _week(current, players, run, chip, actions)
+            expected = _week(current, week_players, run, chip, actions)
             for key in (
                 "squad_ids",
                 "bank_units",

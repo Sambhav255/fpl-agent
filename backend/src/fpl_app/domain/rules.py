@@ -507,6 +507,56 @@ def score_lineup(
         for i, rows in outcomes.items()
     }
     minutes = {i: sum(s.minutes for s in rows) for i, rows in outcomes.items()}
+    event_points = {
+        i: sum(score_match(by_id[i].position, row) for row in rows)
+        for i, rows in outcomes.items()
+        if i in by_id
+    }
+    return _score_lineup_totals(lineup, state, players, played, minutes, event_points, chip)
+
+
+@dataclass(frozen=True)
+class OfficialEventPoints:
+    points: int
+    minutes: int
+    participated: bool
+
+
+def score_official_lineup(
+    lineup: dict[str, Any],
+    state: ManagerState,
+    players: list[Player],
+    outcomes: dict[int, OfficialEventPoints],
+    chip: str | None = None,
+):
+    """Validated official totals avoid reconstructing unknown scoring components."""
+    if not {p.player_id for p in state.picks} <= outcomes.keys():
+        raise ValueError("Official scoring requires full squad coverage")
+    if any(
+        type(row.points) is not int
+        or type(row.minutes) is not int
+        or row.minutes < 0
+        or type(row.participated) is not bool
+        or row.minutes > 0
+        and not row.participated
+        for row in outcomes.values()
+    ):
+        raise ValueError("Invalid official points/minutes/participation coverage")
+    errors = validate_lineup(lineup, state, players)
+    if errors:
+        raise ValueError("; ".join(errors))
+    return _score_lineup_totals(
+        lineup,
+        state,
+        players,
+        {i: r.participated for i, r in outcomes.items()},
+        {i: r.minutes for i, r in outcomes.items()},
+        {i: r.points for i, r in outcomes.items()},
+        chip,
+    )
+
+
+def _score_lineup_totals(lineup, state, players, played, minutes, event_points, chip):
     starters = list(lineup["starters"])
     bench = list(lineup["bench"])
     substitutions = []
@@ -525,9 +575,7 @@ def score_lineup(
             _, outs, ins, starters = min(choices, key=lambda c: c[0])
             substitutions = [{"out": o, "in": i} for o, i in zip(outs, ins, strict=True)]
     scoring_ids = lineup["starters"] + bench if chip == "bench_boost" else starters
-    scores = {
-        i: sum(score_match(by_id[i].position, s) for s in outcomes.get(i, [])) for i in scoring_ids
-    }
+    scores = {i: event_points.get(i, 0) for i in scoring_ids}
     captain = (
         lineup["captain"]
         if minutes.get(lineup["captain"], 0) > 0

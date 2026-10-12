@@ -1,5 +1,6 @@
 "use client";
 
+import { PlanningOptions } from "../planning-options";
 import "./planner.css";
 import { money } from "../../lib/api/client";
 import { AppChrome } from "../app-chrome";
@@ -154,6 +155,11 @@ export default function PlannerScreen() {
                   }
                 />
               </label>
+              <PlanningOptions
+                settings={ws.settings}
+                disabled={Boolean(ws.busy)}
+                onChange={actions.changeSettings}
+              />
               <label>
                 Solver limit (seconds)
                 <input
@@ -174,6 +180,16 @@ export default function PlannerScreen() {
               The forecast is the labelled approximate baseline. Transfers and chips stay manual.
             </p>
           </section>
+          {ws.recommendation?.warnings?.length ? (
+            <section className="panel" aria-label="Planning limitations">
+              <h2>Planning limitations</h2>
+              <ul>
+                {Array.from(new Set(ws.recommendation.warnings)).map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
           {actions.suggestionNote ? <p className="muted">{actions.suggestionNote}</p> : null}
           <SellingPrices
             key={`${state.team_id}-${state.state_version}`}

@@ -11,7 +11,18 @@ ROOT = Path(__file__).resolve().parents[1]
 commands = [
     (
         ROOT / "backend",
-        ["uv", "run", "uvicorn", "fpl_app.api.main:app", "--host", "127.0.0.1", "--port", "8000"],
+        [
+            "uv",
+            "run",
+            "uvicorn",
+            "fpl_app.api.main:app",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "8000",
+            "--timeout-keep-alive",
+            "65",
+        ],
     ),
     (ROOT / "backend", ["uv", "run", "python", "-m", "fpl_app.jobs.worker"]),
     (ROOT / "apps/web", ["npm", "run", "dev"]),

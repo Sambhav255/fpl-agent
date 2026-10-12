@@ -9,7 +9,7 @@ import httpx
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from fpl_app.contracts import (
     AnalysisRequest,
@@ -21,8 +21,10 @@ from fpl_app.contracts import (
     Recommendation,
 )
 from fpl_app.jobs import Queue, input_state, inputs, projection_players
+from fpl_app.learning.journal import decision_view, freeze_decision, record_decision_action
+from fpl_app.learning.outcomes import event_status
 from fpl_app.providers import Provider, demo
-from fpl_app.storage import Conflict, Store, utcnow
+from fpl_app.storage import Conflict, Store, fingerprint, utcnow
 
 
 class StateEdit(BaseModel):
@@ -52,15 +54,44 @@ class RefreshRequest(BaseModel):
 
 class CollectionRequest(BaseModel):
     player_ids: list[Annotated[int, Field(gt=0, strict=True)]] = Field(
-        default_factory=list, max_length=100
+        default_factory=list, max_length=1_000
     )
     force: bool = True
+    include_all: bool = False
+
+    @model_validator(mode="after")
+    def validate_universe_choice(self) -> "CollectionRequest":
+        if self.include_all and self.player_ids:
+            raise ValueError("Full-universe capture cannot include explicit player IDs")
+        return self
+
+
+class ReviewScheduleRequest(BaseModel):
+    enabled: bool = False
+    interval_minutes: int = Field(default=360, ge=60, le=10080, strict=True)
+    collect: bool = False
+    include_all: bool = False
+    train: bool = False
+    expected_version: int = Field(default=0, ge=0)
 
 
 class ServingBundleRequest(BaseModel):
     team_id: int
-    collection_id: str
+    provider: Literal["football_catboost", "bayesian", "tft", "tft_multilead", "ensemble"] = (
+        "football_catboost"
+    )
+    collection_id: str | None = None
+    input_bundle_id: str | None = None
     artifact_id: str
+
+    @model_validator(mode="after")
+    def validate_input_selection(self) -> "ServingBundleRequest":
+        if self.provider == "football_catboost":
+            if not self.collection_id or self.input_bundle_id:
+                raise ValueError("Football CatBoost requires a retained collection only")
+        elif not self.input_bundle_id or self.collection_id:
+            raise ValueError("Advanced shadow requires a retained input bundle only")
+        return self
 
 
 class Incomplete(ValueError):
@@ -74,6 +105,19 @@ class StateVersionConflict(Conflict):
 class SaveRequest(BaseModel):
     recommendation_id: str
     plan_id: str
+
+
+class FreezeDecisionRequest(BaseModel):
+    recommendation_id: str
+    idempotency_key: str = Field(min_length=1, max_length=128)
+
+
+class DecisionActionRequest(BaseModel):
+    idempotency_key: str = Field(min_length=1, max_length=128)
+    expected_sequence: int = Field(ge=0)
+    execution_status: Literal["execution_unknown", "user_selected", "confirmed_executed"]
+    execution_action_id: str | None = None
+    paper_portfolio_action_id: str | None = None
 
 
 class PlayersResponse(BaseModel):
@@ -511,7 +555,35 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
         from fpl_app.models.router import create_serving_bundle
 
         state, _ = input_state(database, body.team_id)
-        return create_serving_bundle(database, state, body.collection_id, body.artifact_id)
+        if body.provider != "football_catboost":
+            from fpl_app.models.advanced_serving import register_bundle
+
+            return register_bundle(
+                database, state, body.provider, body.artifact_id, body.input_bundle_id or ""
+            )
+        return create_serving_bundle(database, state, body.collection_id or "", body.artifact_id)
+
+    @app.get(prefix + "/projections/bundles")
+    def serving_bundles(team_id: int) -> dict[str, Any]:
+        state, _ = input_state(database, team_id)
+        return {
+            "bundles": [
+                {
+                    "serving_bundle_id": row["serving_bundle_id"],
+                    **{
+                        key: row[key]
+                        for key in (
+                            "provider",
+                            "artifact_id",
+                            "horizon_events",
+                            "prediction_origin",
+                        )
+                    },
+                }
+                for row in database.list("forecast_bundle")
+                if row.get("team_id") == team_id and row.get("snapshot_id") == state.snapshot_id
+            ]
+        }
 
     @app.post(prefix + "/data/collections", response_model=JobResponse, status_code=202)
     def collect(body: CollectionRequest) -> JobResponse:
@@ -684,7 +756,40 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
             "states": database.list("state"),
             "saved_plans": [p.model_dump(mode="json") for p in list_plans()],
             "projections": database.list("projection"),
+            "learning_decisions": database.list("decision_journal"),
+            "learning_action_history": [
+                record
+                for journal in database.list("decision_journal")
+                for record in database.decision_records(journal["decision_id"])
+            ],
+            "learning_outcomes": database.list("learning_outcome"),
+            "learning_scorecards": database.list("learning_scorecard"),
+            "learning_reviews": database.list("learning_review"),
+            "learning_review_schedules": database.list("review_schedule"),
         }
+
+    @app.get(prefix + "/strategy/status")
+    def strategy_status() -> dict[str, Any]:
+        from fpl_app.strategy.registry import strategy_registry
+
+        return strategy_registry()
+
+    @app.get(prefix + "/teams/{team_id}/learning/reviews")
+    def review_reports(team_id: int) -> dict[str, Any]:
+        return {"reviews": [r for r in database.list("learning_review") if r["team_id"] == team_id]}
+
+    @app.get(prefix + "/teams/{team_id}/learning/schedule")
+    def review_schedule(team_id: int) -> dict[str, Any]:
+        try:
+            return database.get("review_schedule", team_id)
+        except KeyError:
+            return {"team_id": team_id, "enabled": False, "schedule_version": 0}
+
+    @app.put(prefix + "/teams/{team_id}/learning/schedule")
+    def edit_review_schedule(team_id: int, request: ReviewScheduleRequest) -> dict[str, Any]:
+        from fpl_app.learning.review import configure_review
+
+        return configure_review(database, team_id, **request.model_dump())
 
     @app.get(prefix + "/models")
     def models() -> dict[str, Any]:
@@ -695,5 +800,126 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
     @app.get(prefix + "/evaluations")
     def evaluations() -> list[dict[str, Any]]:
         return database.list("evaluation")
+
+    @app.post(prefix + "/learning/decisions", status_code=201)
+    def freeze_learning_decision(body: FreezeDecisionRequest) -> dict[str, Any]:
+        recommendation = get_recommendation(body.recommendation_id)
+        reference = database.get("recommendation_input", body.recommendation_id)
+        # The immutable forecast binds the schedule and event; the current dataset is used
+        # only to obtain that source version's deadline metadata.
+        run = get_projection(recommendation.projection_run_id)
+        source_data = database.get("dataset", run.snapshot_id)
+        event_id = reference["payload"].get("event", source_data["next_event"])
+        expected_decision_id = fingerprint(
+            {
+                "team_id": reference["payload"]["team_id"],
+                "event": event_id,
+                "idempotency_key": body.idempotency_key,
+            }
+        )
+        try:
+            old = database.get("decision_journal", expected_decision_id)
+            if old["recommendation_id"] != body.recommendation_id:
+                raise Conflict("Decision idempotency key already belongs to another recommendation")
+            return decision_view(database, expected_decision_id)
+        except KeyError:
+            pass
+        if inputs(database, "recommendation", reference["payload"]) != reference["fingerprint"]:
+            raise Conflict("Recommendation inputs changed before decision freeze")
+        deadline = next(
+            (
+                event["deadline_time"]
+                for event in source_data.get("events", [])
+                if event.get("id") == event_id
+            ),
+            None,
+        )
+        if deadline is None:
+            raise ValueError("Frozen decision requires the source event deadline")
+        journal = freeze_decision(
+            database, recommendation, reference, deadline, body.idempotency_key
+        )
+        return decision_view(database, journal["decision_id"])
+
+    @app.get(prefix + "/learning/decisions/{decision_id}")
+    def get_learning_decision(decision_id: str) -> dict[str, Any]:
+        return decision_view(database, decision_id)
+
+    @app.get(prefix + "/learning/decisions")
+    def list_learning_decisions(team_id: int) -> list[dict[str, Any]]:
+        return [
+            {
+                "decision_id": journal["decision_id"],
+                "team_id": journal["team_id"],
+                "event": journal["event"],
+                "deadline": journal["deadline"],
+                "frozen_at": journal["frozen_at"],
+                "recommendation_id": journal["recommendation_id"],
+                "recommended_action_id": journal["recommended_action_id"],
+                "execution_status": journal["execution_status"],
+                "execution_action_id": journal["execution_action_id"],
+                "paper_portfolio_action_id": journal["paper_portfolio_action_id"],
+                "candidate_plans": [
+                    {
+                        "plan_id": plan["plan_id"],
+                        "name": plan["name"],
+                        "net_points": plan["net_points"],
+                    }
+                    for plan in journal["candidate_plans"]
+                ],
+                "action_history": journal["action_history"],
+                "outcome_revisions": [
+                    {
+                        "revision": row["revision"],
+                        "created_at": row["created_at"],
+                        "metrics": row["metrics"],
+                    }
+                    for row in journal["outcome_revisions"]
+                ],
+                "evidence_mode": journal["evidence_mode"],
+            }
+            for journal in (
+                decision_view(database, row["decision_id"])
+                for row in database.list("decision_journal")
+                if row["team_id"] == team_id
+            )
+        ]
+
+    @app.post(prefix + "/learning/decisions/{decision_id}/actions")
+    def action_learning_decision(decision_id: str, body: DecisionActionRequest) -> dict[str, Any]:
+        return record_decision_action(
+            database,
+            decision_id,
+            idempotency_key=body.idempotency_key,
+            execution_status=body.execution_status,
+            execution_action_id=body.execution_action_id,
+            paper_portfolio_action_id=body.paper_portfolio_action_id,
+            expected_sequence=body.expected_sequence,
+        )
+
+    @app.get(prefix + "/learning/decisions/{decision_id}/outcomes/status")
+    def learning_outcome_status(decision_id: str) -> dict[str, Any]:
+        journal = database.get("decision_journal", decision_id)
+        if journal["data_mode"] != "live":
+            return {"event": journal["event"], "ready": False, "reason": "synthetic_demo"}
+        return event_status(source, journal["event"])
+
+    @app.post(prefix + "/learning/decisions/{decision_id}/outcomes", status_code=202)
+    def review_learning_outcomes(decision_id: str) -> dict[str, Any]:
+        journal = database.get("decision_journal", decision_id)
+        if journal["data_mode"] != "live":
+            raise ValueError("Official outcomes cannot attach to synthetic decisions")
+        finalization = event_status(source, journal["event"])
+        if not finalization["ready"]:
+            return {"status": "pending", "finalization": finalization}
+        queued = queue.enqueue(
+            "outcome_review",
+            {
+                "decision_id": decision_id,
+                "finalization_snapshot_id": finalization["finalization_snapshot_id"],
+                "finalization_sha256": finalization["finalization_sha256"],
+            },
+        )
+        return job_response(queued).model_dump(mode="json")
 
     return app

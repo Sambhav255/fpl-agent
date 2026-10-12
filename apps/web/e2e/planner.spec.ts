@@ -40,7 +40,11 @@ test("planner caps one and three and persisted weekly plan", async ({ page }) =>
       timeout: 90000,
     });
     await expect(page.getByRole("heading", { name: "Optimum move" })).toBeVisible();
+    const savedPlan = page.waitForResponse(
+      (result) => result.url().includes("/api/v1/plans") && result.request().method() === "POST",
+    );
     await page.getByRole("button", { name: "Save this-week plan" }).click();
+    expect((await savedPlan).ok()).toBe(true);
     await expect(page.getByRole("status").filter({ hasText: "Plan saved" })).toBeVisible();
   }
   await expect(

@@ -160,6 +160,30 @@ def test_affordability_ledger_rebuy_and_no_mutation():
         apply_transfers(state, players, [{"out": 3, "in": 18}])
 
 
+def test_market_moves_across_deadlines_preserve_reacquisition_basis_and_ledger():
+    state, players = sample()
+    players[2].market_price_units = 55
+    first, first_ledger = apply_transfers(state, players, [{"out": 3, "in": 18}])
+    assert first_ledger[0]["sale_units"] == 52
+    assert first_ledger[0]["purchase_units"] == 50
+    assert first.bank_units == 7
+    assert state.bank_units == 5
+
+    next_event = advance_event(first)
+    assert next_event.free_transfers_at_event_start == 2
+    players[16].market_price_units = 55
+    second, second_ledger = apply_transfers(next_event, players, [{"out": 18, "in": 3}])
+    assert second_ledger[0]["sale_units"] == 52
+    assert second_ledger[0]["purchase_units"] == 55
+    assert second.bank_units == 4
+    assert second.picks[2].purchase_price_units == 55
+    assert second.picks[2].acquisition_id != state.picks[2].acquisition_id
+
+    players[2].market_price_units = 54
+    assert selling_price(second.picks[2].purchase_price_units, players[2].market_price_units) == 54
+    assert [row["event"] for row in second.transfer_ledger] == [8, 9]
+
+
 def test_hit_reconciliation():
     state, players = sample()
     state.transfers_made_this_event = 3

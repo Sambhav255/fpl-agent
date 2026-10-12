@@ -18,13 +18,12 @@ The existing app uses an approximate forecast and has useful infrastructure, but
 | CODEX_EXECUTION_PROMPT.md | Copyable execution instructions with multiple agents |
 | SOURCES.md | Pinned code evidence and primary external references |
 | verification/ | Portable review probes and recorded synthetic results |
-| FPL_INTELLIGENCE_UPGRADE_COMPLETE.md | Combined Markdown copy for convenient reading |
 
-## Use in Cursor
+## Use in a coding session
 
-Copy this folder into the project as `docs/intelligence_upgrade/`. Do not overwrite the working source, original specifications, manager state or local data. Give Codex `CODEX_EXECUTION_PROMPT.md`.
+This is the canonical upgrade specification folder. First read [the current handoff](../START_HERE.md) and [build status](../BUILD_STATUS.md). The audit below describes the original audited commit; several findings have since been fixed. Use `IMPLEMENTATION_BACKLOG.md` for acceptance criteria, checked against current status.
 
-This kit revises the forecasting, strategy and social scope of the original specifications. Current official rules and existing integrity requirements remain controlling. Compare the current branch with the audited commit before treating a finding as still present. Use the individual files for implementation; do not read the combined file again unless needed.
+This kit revises the forecasting, strategy and social scope of the original specifications. Current official rules and existing integrity requirements remain controlling. Compare the current branch with the audited commit before treating a finding as still present. Use the individual files for implementation; the redundant combined copy has been removed.
 
 The first intelligence release consists of B01 through B06: reproduce and fix the funding pair miss, collect real data, evaluate CatBoost, wire the serving router and run strategy replay. Social extraction can proceed independently with synthetic examples while live access is pending.
 

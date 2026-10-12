@@ -36,6 +36,8 @@ export const defaultSettings: PlannerSettings = {
   locked_player_ids: [],
   excluded_player_ids: [],
   chip_policy: "none",
+  planner_mode: "bounded",
+  future_chip_policy: "none",
   solver_time_limit_seconds: 15,
   max_transfers_this_event: null,
 };

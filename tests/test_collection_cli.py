@@ -100,12 +100,7 @@ def test_capture_owned_union_summary_and_read_only_coverage(tmp_path, capsys):
     assert output["event_origin"]["before_deadline"] is True
     assert cli.guard_versions(store) == before
     assert len(requests) == 4
-    assert (
-        cli.main(
-            ["--coverage", output["collection_id"]], store=store, provider=provider
-        )
-        == 0
-    )
+    assert cli.main(["--coverage", output["collection_id"]], store=store, provider=provider) == 0
     assert json.loads(capsys.readouterr().out) == output
     assert len(requests) == 4
     assert "PRIVATE_SENTINEL" not in json.dumps(output)
@@ -123,9 +118,22 @@ def test_capture_owned_union_summary_and_read_only_coverage(tmp_path, capsys):
     assert len(requests) == 8  # Forced fresh capture, not cache reuse.
 
 
-@pytest.mark.parametrize(
-    "value", ["0", "-1", "true", "https://evil.test", "2147483648", "１"]
-)
+def test_full_bootstrap_universe_cli_freezes_membership_without_private_state(tmp_path, capsys):
+    store, provider, requests = fixture_store(tmp_path)
+    before = cli.guard_versions(store)
+    assert cli.main(["--include-all"], store=store, provider=provider) == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output["coverage"]["player_count"] == 2
+    assert output["player_universe"]["kind"] == "full_bootstrap_elements"
+    assert output["player_universe"]["member_count"] == 2
+    assert cli.guard_versions(store) == before
+    assert len(requests) == 4
+    with pytest.raises(SystemExit):
+        cli.main(["--include-all", "--include-owned"], store=store, provider=provider)
+    assert len(requests) == 4
+
+
+@pytest.mark.parametrize("value", ["0", "-1", "true", "https://evil.test", "2147483648", "１"])
 def test_invalid_ids_prevent_network(tmp_path, value):
     store, provider, requests = fixture_store(tmp_path)
     with pytest.raises(SystemExit):
@@ -136,13 +144,9 @@ def test_invalid_ids_prevent_network(tmp_path, value):
 def test_union_bounds_and_safe_errors(tmp_path, capsys):
     store, provider, requests = fixture_store(tmp_path)
     with pytest.raises(SystemExit):
-        cli.main(
-            ["--player-ids", *map(str, range(1, 102))], store=store, provider=provider
-        )
+        cli.main(["--player-ids", *map(str, range(1, 1002))], store=store, provider=provider)
     assert not requests
-    assert (
-        cli.main(["--from-collection", "missing"], store=store, provider=provider) == 1
-    )
+    assert cli.main(["--from-collection", "missing"], store=store, provider=provider) == 1
     captured = capsys.readouterr()
     assert not captured.out
     assert "PRIVATE_SENTINEL" not in captured.err
@@ -184,9 +188,7 @@ def test_provider_error_does_not_leak_details(tmp_path, capsys, monkeypatch):
 
 def test_combined_selection_bound_before_network(tmp_path, capsys, monkeypatch):
     store, provider, requests = fixture_store(tmp_path)
-    monkeypatch.setattr(
-        cli, "load_collection", lambda *args: {"player_ids": list(range(2, 102))}
-    )
+    monkeypatch.setattr(cli, "load_collection", lambda *args: {"player_ids": list(range(2, 1002))})
     assert (
         cli.main(
             ["--include-owned", "--from-collection", "example"],
@@ -218,7 +220,5 @@ def test_concurrent_state_change_is_detected(tmp_path, capsys, monkeypatch):
 def test_conflicting_read_only_arguments(tmp_path):
     store, provider, requests = fixture_store(tmp_path)
     with pytest.raises(SystemExit):
-        cli.main(
-            ["--coverage", "example", "--include-owned"], store=store, provider=provider
-        )
+        cli.main(["--coverage", "example", "--include-owned"], store=store, provider=provider)
     assert not requests

@@ -114,6 +114,7 @@ def shared_scenarios(
     samples: int = 500,
     seed: int = 42,
     time_index: float | None = None,
+    minutes_override: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """One shared score per match; goals conserved and competing GKs exclusive.
 
@@ -203,6 +204,16 @@ def shared_scenarios(
             mean_minutes = np.clip(float(row["minutes_per_appearance"]), 1, 90)
             long_prob = np.clip((mean_minutes - 20) / 60, 0, 1)
             minutes[:, idx] = active * np.where(rng.random(samples) < long_prob, 80.0, 20.0)
+    if minutes_override is not None:
+        override = np.asarray(minutes_override)
+        if (
+            override.shape != (samples, n)
+            or not np.isfinite(override).all()
+            or (override < 0).any()
+            or (override > 90).any()
+        ):
+            raise ValueError("Invalid fitted minutes override")
+        minutes = override.astype(float)
     unallocated = np.zeros((samples, 2), dtype=int)
     for side, (club, scores) in enumerate(((home_club, home_goals), (away_club, away_goals))):
         indices = rows.index[rows["club"] == club].to_numpy()

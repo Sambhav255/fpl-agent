@@ -108,6 +108,10 @@ def test_deadline_missing_double_blank_and_no_silent_zeros(tmp_path, before):
     assert result["coverage"][2]["status"] == "blank_event"
     assert len(result["schedule_exposures"]) == 3
     assert collection_coverage(store, result["collection_id"])["coverage"] == result["coverage"]
+    assert (
+        collection_coverage(store, result["collection_id"])["player_universe"]
+        == result["player_universe"]
+    )
     assert load_collection(store, result["collection_id"]) == result
     assert len(requests) == 3
 
@@ -131,12 +135,48 @@ def test_revised_labels_preserve_old_sources_and_current_manager(tmp_path):
     )
 
 
-@pytest.mark.parametrize("ids", [[True], [0], [-1], ["https://evil.test"], list(range(1, 102))])
+@pytest.mark.parametrize("ids", [[True], [0], [-1], ["https://evil.test"], list(range(1, 1002))])
 def test_bounded_validated_ids_before_network(tmp_path, ids):
     store, provider, _, requests = setup_collection(tmp_path)
     with pytest.raises(ValueError):
         collect_football(store, provider, ids)
     assert requests == []
+
+
+def test_full_bootstrap_universe_is_frozen_and_bound_to_source(tmp_path):
+    from fpl_app.storage import fingerprint
+
+    store, provider, _, _ = setup_collection(tmp_path)
+    result = collect_football(store, provider, include_all=True)
+    assert result["player_ids"] == [1, 2]
+    assert result["player_universe"]["kind"] == "full_bootstrap_elements"
+    assert result["player_universe"]["member_count"] == 2
+    assert result["player_universe"]["membership_sha256"] == fingerprint([1, 2])
+    assert result["player_universe"]["bootstrap_snapshot_id"] == result["sources"][0]["id"]
+    assert load_collection(store, result["collection_id"]) == result
+    with pytest.raises(ValueError, match="cannot be combined"):
+        collect_football(store, provider, [1], include_all=True)
+
+
+def test_full_current_mapping_survives_when_player_has_no_historical_label(tmp_path):
+    store, provider, _, _ = setup_collection(tmp_path, final=True)
+    collection = collect_football(store, provider, include_all=True)
+    collection["labels"] = [
+        label for label in collection["labels"] if label["provider_player_id"] == 1
+    ]
+    for label in collection["labels"]:
+        label["statistics"]["kickoff_time"] = "2026-08-01T00:00:00Z"
+    from fpl_app.storage import fingerprint
+
+    collection["envelope_sha256"] = fingerprint(
+        {key: value for key, value in collection.items() if key != "envelope_sha256"}
+    )
+    # Player 2 still belongs to the frozen universe even though no history rows exist.
+    from fpl_app.features.football import collection_frames
+
+    _, future, mappings = collection_frames(collection, "fpl-2026-27")
+    assert mappings.current_player_id.tolist() == [1, 2]
+    assert set(future.player_id) == {1, 2}
 
 
 def test_bootstrap_only_and_cached_source_timing(tmp_path):

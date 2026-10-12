@@ -1,0 +1,19 @@
+{
+  "archive_location": "docs/reference/supplied/fpl_learning_upgrade",
+  "files": {
+    "CODEX_MASTER_PROMPT.md": "b5408fa7e897d24888ed975ce48d44d4d6724f0f6207b2f48e7ab3e68e20a301",
+    "EVALUATION_AND_BACKLOG.md": "dd5877514db5965d990b2cd421a226603b8b25b80b86b465b076e830fdbeb376",
+    "FPL_COMPLETE_LEARNING_UPGRADE.md": "9bc6eb6ccdec0a15d93e132f17b5927c7142233f5aabaab39492066c086ddf3d",
+    "GAMEWEEK_REVIEW_PROMPT.md": "3debdfc46dc5c42bb4b8f9a83900ed0ee4d197b5f75906fdc72c50d3cc360a59",
+    "LATEST_REPOSITORY_AUDIT.md": "a6831eef122112f36cd2af579c27ee059ff25dc152662aa276cb714d20143d28",
+    "PRD_V3.md": "6b541688933fcc96a8835f279a48928922c64974c83e20609429922c3e0a1ba4",
+    "README.md": "a8c71db7650ca817cde8b01599159233e176058e035303e377eaaaca2aca3d4b",
+    "RL_AND_LEARNING_SPEC.md": "afd3577b71234f22d6d6692bcabccbfa325ad954704a5bc002cf209af3f6f9ae",
+    "SOCIAL_NEXT_STAGE.md": "5b2bfaf43eae86b21a8a3243dc5bc4c8d61e683fb0972041ba006c3593de6d2b",
+    "SOURCES.md": "40ed040561250adf7c8c8a2c89a350e50968683831a175c4938bbb385b85bef2",
+    "verification/README.md": "8f0538c1dc5c6d71b443efec388ef50f5cc648b5f7403be88de986ceb121a927",
+    "verification/latest_probe_results.json": "6bfa3dd43b18f5bdce36b0629c7d8d6d97f35ada58db53d76c7120c91ada17e8",
+    "verification/latest_probes.py": "a1e2509b3ed7fcbde66fb3350b428b0ab0d41c0a71daa8ec9ed823493b0549e0"
+  },
+  "original_location": "fpl_learning_upgrade"
+}

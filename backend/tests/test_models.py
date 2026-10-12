@@ -143,6 +143,14 @@ def test_common_projection_checks_missing_double_and_negative_mean():
         common_projection(
             rows.iloc[:1], players(), fixtures(), "s", "2026-10-01T10:00:00Z", "demo", 8, 1, "tft"
         )
+    for column in ["expected_points", "expected_minutes"]:
+        for value in [float("nan"), float("inf")]:
+            changed = rows.copy()
+            changed[column] = value
+            with pytest.raises(ValueError, match="Nonfinite"):
+                common_projection(
+                    changed, players(), fixtures(), "s", "2026-10-01T10:00:00Z", "demo", 8, 1, "tft"
+                )
 
 
 @pytest.mark.skipif(

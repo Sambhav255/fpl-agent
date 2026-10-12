@@ -11,6 +11,7 @@ Migration v1 is additive and transactional. No destructive automatic migrations.
 
 import hashlib
 import json
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Any
 
@@ -24,6 +25,7 @@ from sqlalchemy import (
     MetaData,
     String,
     Table,
+    UniqueConstraint,
     create_engine,
     delete,
     event,
@@ -79,6 +81,17 @@ jobs = Table(
     Column("error", JSON),
     Column("created_at", String),
     Column("updated_at", String),
+)
+decision_log = Table(
+    "decision_log",
+    metadata,
+    Column("decision_id", String, primary_key=True),
+    Column("sequence", Integer, primary_key=True),
+    Column("event_key", String, nullable=False),
+    Column("record_sha256", String, nullable=False),
+    Column("record", JSON, nullable=False),
+    Column("created_at", String, nullable=False),
+    UniqueConstraint("decision_id", "event_key", name="uq_decision_log_event_key"),
 )
 
 
@@ -188,7 +201,14 @@ class Store:
                     raise Conflict("Concurrent edit")
         return version
 
-    def put_checked(self, kind: str, identifier: str, payload: dict[str, Any], verify: Any) -> None:
+    def put_checked(
+        self,
+        kind: str,
+        identifier: str,
+        payload: dict[str, Any],
+        verify: Any,
+        same: Any = None,
+    ) -> None:
         """Verify inputs and persist under a reserved SQLite write transaction."""
         with self.engine.begin() as connection:
             connection.exec_driver_sql("BEGIN IMMEDIATE")
@@ -199,7 +219,9 @@ class Store:
                 )
             ).first()
             if existing is not None:
-                # Saving the same selected plan is idempotent.
+                matches = same(existing[0], payload) if same else existing[0] == payload
+                if not matches:
+                    raise Conflict("Idempotency key already belongs to different data")
                 return
             connection.execute(
                 insert(entities).values(
@@ -214,6 +236,71 @@ class Store:
                 for row in connection.execute(
                     select(entities.c.payload).where(entities.c.kind == kind)
                 )
+            ]
+
+    def append_decision_record(
+        self,
+        decision_id: str,
+        event_key: str,
+        record: dict[str, Any],
+        expected_sequence: int,
+    ) -> dict[str, Any]:
+        """Append one immutable decision record; retry by event key is idempotent."""
+        digest = fingerprint(record)
+        with self.engine.begin() as connection:
+            connection.exec_driver_sql("BEGIN IMMEDIATE")
+            if (
+                connection.execute(
+                    select(entities.c.id).where(
+                        entities.c.kind == "decision_journal", entities.c.id == decision_id
+                    )
+                ).first()
+                is None
+            ):
+                raise KeyError(decision_id)
+            old = (
+                connection.execute(
+                    select(decision_log).where(
+                        decision_log.c.decision_id == decision_id,
+                        decision_log.c.event_key == event_key,
+                    )
+                )
+                .mappings()
+                .first()
+            )
+            if old is not None:
+                if old["record_sha256"] != digest:
+                    raise Conflict("Idempotency key was reused with different decision data")
+                return dict(old)
+            sequence = connection.execute(
+                select(decision_log.c.sequence)
+                .where(decision_log.c.decision_id == decision_id)
+                .order_by(decision_log.c.sequence.desc())
+                .limit(1)
+            ).scalar_one_or_none()
+            if (sequence or 0) != expected_sequence:
+                raise Conflict("Decision action history changed")
+            sequence = 1 if sequence is None else sequence + 1
+            value = {
+                "decision_id": decision_id,
+                "sequence": sequence,
+                "event_key": event_key,
+                "record_sha256": digest,
+                "record": record,
+                "created_at": utcnow(),
+            }
+            connection.execute(insert(decision_log).values(**value))
+            return value
+
+    def decision_records(self, decision_id: str) -> Sequence[dict[str, Any]]:
+        with self.engine.connect() as connection:
+            return [
+                dict(row)
+                for row in connection.execute(
+                    select(decision_log)
+                    .where(decision_log.c.decision_id == decision_id)
+                    .order_by(decision_log.c.sequence)
+                ).mappings()
             ]
 
     def delete_team(self, identifier: int) -> None:
@@ -258,6 +345,42 @@ class Store:
                             entities.c.kind == "plan", entities.c.id == row["id"]
                         )
                     )
+            for row in connection.execute(
+                select(entities).where(entities.c.kind == "decision_journal")
+            ).mappings():
+                if row["payload"].get("team_id") == identifier:
+                    decision_id = row["id"]
+                    connection.execute(
+                        delete(decision_log).where(decision_log.c.decision_id == decision_id)
+                    )
+                    connection.execute(
+                        delete(entities).where(
+                            entities.c.kind == "decision_replay_seal",
+                            entities.c.id.like(f"{decision_id}:%"),
+                        )
+                    )
+                    for kind in ("learning_outcome", "learning_scorecard"):
+                        connection.execute(
+                            delete(entities).where(
+                                entities.c.kind == kind,
+                                entities.c.id.like(f"{decision_id}:%"),
+                            )
+                        )
+                    connection.execute(
+                        delete(entities).where(
+                            entities.c.kind == "decision_journal", entities.c.id == row["id"]
+                        )
+                    )
+            for kind in ("review_schedule", "review_tick", "learning_review"):
+                for row in connection.execute(
+                    select(entities).where(entities.c.kind == kind)
+                ).mappings():
+                    if row["payload"].get("team_id") == identifier:
+                        connection.execute(
+                            delete(entities).where(
+                                entities.c.kind == kind, entities.c.id == row["id"]
+                            )
+                        )
             for row in connection.execute(
                 select(jobs).where(jobs.c.status.in_(["queued", "running"]))
             ).mappings():

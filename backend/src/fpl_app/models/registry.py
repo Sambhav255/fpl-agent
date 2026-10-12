@@ -47,14 +47,24 @@ def registry() -> list[dict[str, Any]]:
             ):
                 raise ValueError("artifact integrity check failed")
             evaluation = json.loads((path.parent / "evaluation.json").read_text())
+            evaluated = evaluation.get("status", "evaluated") == "evaluated"
             football.update(
-                status="evaluated_experimental",
+                status="evaluated_experimental" if evaluated else "insufficient_evaluation",
                 artifact_id=meta["artifact_id"],
                 metrics=evaluation.get("comparators", {}).get("football_catboost"),
                 comparators=evaluation.get("comparators"),
                 evaluation_kind=evaluation.get("evaluation_kind", "retrospective_assumed"),
                 reason=[
                     "Experimental only; not promoted to default recommendations",
+                    *(
+                        []
+                        if evaluated
+                        else [
+                            evaluation.get(
+                                "reason", "Chronological evaluation has insufficient eligible folds"
+                            )
+                        ]
+                    ),
                     "Historical availability is assumed; prospective validation remains required",
                     *meta.get("limitations", []),
                 ],
@@ -123,4 +133,7 @@ def registry() -> list[dict[str, Any]]:
             except (OSError, ValueError, KeyError, TypeError) as exc:
                 entry.update(status="disabled", reason=f"Invalid artifact: {exc}", metrics=None)
         entries.append(entry)
+    from .research_registry import research_entries
+
+    entries.extend(research_entries(root))
     return entries

@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 from fpl_app.contracts import Fixture, Player, ProjectionRun
+from fpl_app.domain.rules import RULES
 from fpl_app.features.pipeline import utc
 
 from .bayesian import shared_scenarios
@@ -23,12 +24,15 @@ from .tft import predict_tft
 
 
 def _artifact(path: Path, family: str, cutoff: str) -> dict[str, Any]:
+    if path.is_symlink() or (path / "manifest.json").is_symlink():
+        raise ValueError("Unsafe artifact path")
     manifest: dict[str, Any] = json.loads((path / "manifest.json").read_text())
     if (
         manifest.get("model_family") != family
         or manifest.get("data_mode") != "live"
         or manifest.get("replay_timing") != "verified"
         or manifest.get("model_status") != "trained"
+        or manifest.get("rules_version") != RULES.version
     ):
         raise ValueError("verified live trained artifact required; retrospective/demo rejected")
     for field in ("training_cutoff", "available_at"):
@@ -152,6 +156,18 @@ def bayesian_run(
 
     trace = az.from_netcdf(artifact / "posterior.nc")
     rows["club"] = rows.club.map(club_map)
+    scoring = None
+    if "scoring_profiles.json" in manifest["artifacts"]:
+        scoring = json.loads((artifact / "scoring_profiles.json").read_text())
+        if (
+            scoring.get("version") != "complete-bayesian-player-scoring-v1"
+            or utc(scoring["fit_cutoff"]) > utc(manifest["training_cutoff"])
+            or not set(player_map) <= set(scoring["profiles"])
+        ):
+            raise ValueError(
+                "Complete scoring profiles differ from artifact cutoff or canonical mapping"
+            )
+        scoring["profiles"] = {str(player_map[key]): scoring["profiles"][key] for key in player_map}
     predictions = []
     limitations = list(manifest.get("limitations", []))
     for fixture in sorted(schedule, key=lambda f: f.fixture_id):
@@ -159,16 +175,31 @@ def bayesian_run(
         subset = rows[rows.club.isin([home, away])]
         if subset.empty:
             continue
-        outcomes = shared_scenarios(
-            trace,
-            diagnostics,
-            home,
-            away,
-            subset,
-            samples,
-            seed + fixture.fixture_id,
-            fixture_times[fixture.fixture_id],
-        )
+        if scoring is None:
+            outcomes = shared_scenarios(
+                trace,
+                diagnostics,
+                home,
+                away,
+                subset,
+                samples,
+                seed + fixture.fixture_id,
+                fixture_times[fixture.fixture_id],
+            )
+        else:
+            from fpl_app.models.bayesian_scoring import complete_scenarios
+
+            outcomes = complete_scenarios(
+                trace,
+                diagnostics,
+                home,
+                away,
+                subset,
+                scoring,
+                samples=samples,
+                seed=seed + fixture.fixture_id,
+                time_index=fixture_times[fixture.fixture_id],
+            )
         limitations.extend(outcomes["limitations"])
         for i, player_id in enumerate(outcomes["player_ids"]):
             minutes = outcomes["minutes"][:, i]
@@ -181,6 +212,9 @@ def bayesian_run(
                     expected_points=float(outcomes["points"][:, i].mean()),
                     expected_minutes=float(minutes.mean()),
                     appearance_probability=float((minutes > 0).mean()),
+                    start_probability=float(outcomes["starts"][:, i].mean())
+                    if scoring is not None
+                    else None,
                     minutes_60_probability=float((minutes >= 60).mean()),
                     **{
                         f"p{q}": float(outcomes["point_quantiles"][j, i])
@@ -204,8 +238,10 @@ def bayesian_run(
             dict.fromkeys(
                 [
                     *limitations,
-                    "Inactive partial-scoring posterior adapter; not evaluated or approved for recommendations",
-                    "Start probability unavailable; no second availability multiplier",
+                    "Inactive complete-component posterior adapter; empirical temporal/BPS approximations remain uncalibrated"
+                    if scoring is not None
+                    else "Inactive partial-scoring posterior adapter; not evaluated or approved for recommendations",
+                    "No second availability multiplier; fitted starts when complete profiles exist",
                 ]
             )
         ),
@@ -220,6 +256,7 @@ _COLUMNS = [
     "expected_points",
     "expected_minutes",
     "appearance_probability",
+    "start_probability",
     "minutes_60_probability",
     "p10",
     "p50",
@@ -240,16 +277,27 @@ def tft_run(
     player_map: dict[str, int],
     club_map: dict[int, int],
 ) -> ProjectionRun:
-    """Adapt library (N,1) mean and (N,1,3) quantiles via returned series index.
+    """Adapt independent mean/quantile heads via returned series and lead index.
 
     Caller supplies a deadline-safe slot_panel and separately sourced unconditional
-    minute estimates. Reject legacy panels and multi-event forecasts.
+    minute estimates. Legacy artifacts support one event; verified multilead
+    artifacts require exact horizon and purged model-selection label timing.
     """
-    manifest = _artifact(artifact, "tft", cutoff)
+    declared_family = json.loads((artifact / "manifest.json").read_text()).get("model_family")
+    if declared_family not in {"tft", "tft_multilead"}:
+        raise ValueError("Unsupported TFT artifact family")
+    manifest = _artifact(artifact, declared_family, cutoff)
+    multilead = declared_family == "tft_multilead"
     schedule = _schedule(fixtures, next_event, horizon)
     current = _mapping(players, player_map)
-    if horizon != 1:
+    if not multilead and horizon != 1:
         raise ValueError("TFT supports one-event decoder only")
+    if multilead and (
+        manifest.get("horizon_events") != horizon
+        or "selection_labels_available_at" not in manifest
+        or utc(manifest["selection_labels_available_at"]) >= utc(cutoff)
+    ):
+        raise ValueError("Multilead horizon or selection-label cutoff differs")
     required = {
         "series",
         "player",
@@ -268,19 +316,32 @@ def tft_run(
     }
     if not required <= set(panel) or panel.empty:
         raise ValueError("deadline-safe as-of slot panel required")
+    if multilead and not {"lead", "schedule_known"} <= set(panel):
+        raise ValueError("Multilead decoder contract missing")
     if (
         panel.duplicated(["series", "time_idx"]).any()
         or set(panel.forecast_origin) != {next_event}
         or any(utc(v) != utc(cutoff) for v in panel.decision_cutoff)
     ):
         raise ValueError("duplicate series or inconsistent forecast deadline/origin")
-    targets = panel.sort_values("time_idx").groupby("series", as_index=False).tail(1)
-    if (
-        not (targets.source_event == next_event).all()
-        or not (targets[["points", "encoder_points", "observation_mask", "weight"]] == 0)
-        .all()
-        .all()
-    ):
+    targets = (
+        panel[panel.lead > 0].copy()
+        if multilead
+        else panel.sort_values("time_idx").groupby("series", as_index=False).tail(1)
+    )
+    if multilead:
+        for _, group in targets.groupby("series"):
+            ordered = group.sort_values("time_idx")
+            if (
+                ordered.lead.tolist() != list(range(1, horizon + 1))
+                or ordered.source_event.tolist() != list(range(next_event, next_event + horizon))
+                or not (ordered.schedule_known == 1).all()
+                or ordered.player.nunique() != 1
+            ):
+                raise ValueError("Incomplete or inconsistent frozen multilead schedule")
+    if (not multilead and not (targets.source_event == next_event).all()) or not (
+        targets[["points", "encoder_points", "observation_mask", "weight"]] == 0
+    ).all().all():
         raise ValueError("decoder outcomes must be masked placeholders")
     history = panel.drop(targets.index)
     if (history.source_event >= next_event).any():
@@ -294,6 +355,8 @@ def tft_run(
         if row["player"] not in player_map or row["fixture_id"] not in by_fixture:
             raise ValueError("unmapped decoder player/fixture")
         p, f = current[player_map[row["player"]]], by_fixture[row["fixture_id"]]
+        if row["source_event"] != f.event:
+            raise ValueError("Decoder fixture event differs from frozen schedule")
         if p.club not in (f.home_club, f.away_club):
             raise ValueError("decoder player not in fixture")
         opponent = f.away_club if p.club == f.home_club else f.home_club
@@ -312,30 +375,30 @@ def tft_run(
     index = output["index"]
     n = len(index)
     mean, quantiles = np.asarray(output["mean"]), np.asarray(output["quantiles"])
-    if mean.shape != (n, 1) or quantiles.shape != (n, 1, 3):
+    if mean.shape != (n, horizon) or quantiles.shape != (n, horizon, 3):
         raise ValueError("unsupported TFT output dimensions")
     if not np.isfinite(mean).all() or not np.isfinite(quantiles).all():
         raise ValueError("nonfinite TFT output")
     if index.series.duplicated().any() or set(index.series) != set(targets.series):
         raise ValueError("TFT index does not cover decoder series")
     records = []
-    lookup = targets.set_index("series")
     for i, row in enumerate(index.to_dict("records")):
-        target = lookup.loc[row["series"]]
-        if row["time_idx"] != target.time_idx:
+        window = targets[targets.series == row["series"]].sort_values("time_idx")
+        if row["time_idx"] != window.iloc[0].time_idx:
             raise ValueError("TFT index decoder step mismatch")
-        if target.fixture_exists != 1:
-            continue
-        records.append(
-            dict(
-                player_id=player_map[target.player],
-                fixture_id=int(target.fixture_id),
-                event=next_event,
-                decision_cutoff=cutoff,
-                expected_points=float(mean[i, 0]),
-                **{f"p{q}": float(quantiles[i, 0, j]) for j, q in enumerate((10, 50, 90))},
+        for lead, target in enumerate(window.itertuples(index=False)):
+            if target.fixture_exists != 1:
+                continue
+            records.append(
+                dict(
+                    player_id=player_map[target.player],
+                    fixture_id=int(target.fixture_id),
+                    event=int(target.source_event),
+                    decision_cutoff=cutoff,
+                    expected_points=float(mean[i, lead]),
+                    **{f"p{q}": float(quantiles[i, lead, j]) for j, q in enumerate((10, 50, 90))},
+                )
             )
-        )
     predicted = pd.DataFrame(
         records,
         columns=[
@@ -369,7 +432,7 @@ def tft_run(
         manifest["run_id"],
         [
             *manifest.get("limitations", []),
-            "Inactive one-event TFT adapter; external unconditional minutes, not a TFT minutes head",
+            f"Inactive {horizon}-event TFT adapter; external unconditional minutes, not a TFT minutes head",
             "Encoder point publication provenance must be verified by the upstream slot builder",
             "Quantiles are fixture marginals; mean is separate and never availability-scaled",
         ],

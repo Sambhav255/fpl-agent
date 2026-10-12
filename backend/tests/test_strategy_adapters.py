@@ -17,7 +17,7 @@ CUTOFF = "2026-10-01T10:00:00Z"
 def artifact(path, family="tft"):
     names = (
         ["mean.ckpt", "quantiles.ckpt", "dataset.pt"]
-        if family == "tft"
+        if family.startswith("tft")
         else ["posterior.nc", "diagnostics.json"]
     )
     for name in names:
@@ -37,6 +37,7 @@ def artifact(path, family="tft"):
     manifest = {
         "model_family": family,
         "model_status": "trained",
+        "rules_version": "2026-27-v1",
         "data_mode": "live",
         "replay_timing": "verified",
         "run_id": "synthetic-contract-only",
@@ -227,3 +228,117 @@ def test_actual_bayesian_sampler_library_shaped_posterior(tmp_path, monkeypatch)
     exposures.loc[0, "club"] = 2
     with pytest.raises(ValueError, match="club/position"):
         bayesian_run(**args)
+
+
+def test_multilead_adapter_uses_frozen_slot_leads_and_returned_index(tmp_path, monkeypatch):
+    manifest = artifact(tmp_path, "tft_multilead")
+    manifest.update(horizon_events=2, selection_labels_available_at="2026-09-15T00:00:00Z")
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    args = inputs()
+    panel = args["panel"].copy()
+    panel["lead"] = panel.time_idx
+    panel["schedule_known"] = 1
+    later = panel[panel.lead == 1].copy()
+    later["time_idx"] = 2
+    later["lead"] = 2
+    later["source_event"] = 9
+    later["fixture_id"] = [21, -1]
+    later["fixture_exists"] = [1, 0]
+    args["panel"] = pd.concat([panel, later], ignore_index=True)
+    args["fixtures"].append(Fixture(fixture_id=21, event=9, home_club=1, away_club=2))
+    new_minutes = args["minutes"].iloc[[0]].copy()
+    new_minutes["fixture_id"] = 21
+    args["minutes"] = pd.concat([args["minutes"], new_minutes], ignore_index=True)
+    args["horizon"] = 2
+    means = np.array([[5.0, 99.0], [4.0, 6.0]])
+    output = {
+        "mean": means,
+        "quantiles": means[:, :, None] + np.array([-1.0, 0.0, 1.0]),
+        "index": pd.DataFrame({"series": ["s12", "s11"], "time_idx": [1, 1]}),
+    }
+    monkeypatch.setattr("fpl_app.models.strategy_adapters.predict_tft", lambda *_: output)
+    run = tft_run(artifact=tmp_path, **args)
+    assert {(p.fixture_id, p.event): p.expected_points for p in run.projections} == {
+        (11, 8): 4.0,
+        (12, 8): 5.0,
+        (21, 9): 6.0,
+    }
+    assert run.horizon_events == 2
+    assert run.resolved_provider == "tft" and run.artifact_id == "synthetic-contract-only"
+    args["panel"].loc[args["panel"].lead == 2, "schedule_known"] = 0
+    with pytest.raises(ValueError, match="frozen multilead"):
+        tft_run(artifact=tmp_path, **args)
+
+
+def test_complete_bayesian_adapter_binds_profiles_and_fitted_start_probability(
+    tmp_path, monkeypatch
+):
+    from dataclasses import asdict
+
+    platformdirs = pytest.importorskip("platformdirs")
+    monkeypatch.setattr(
+        platformdirs, "user_cache_dir", lambda *args, **kwargs: str(tmp_path / "cache")
+    )
+    az = pytest.importorskip("arviz")
+    from fpl_app.domain.rules import MatchStats
+    from fpl_app.models.bayesian_scoring import fit_scoring_profiles
+
+    manifest = artifact(tmp_path, "bayesian")
+    rows = [
+        {
+            "player_id": player,
+            "position": pos,
+            "started": True,
+            "bps": 20,
+            "available_at": "2026-08-30T00:00:00Z",
+            **asdict(MatchStats(minutes=90, tackles=12)),
+        }
+        for player, pos in zip(["keeper", "defender", "person", "forward"], [1, 2, 3, 4])
+    ]
+    profile = fit_scoring_profiles(pd.DataFrame(rows), "2026-09-01T00:00:00Z")
+    profile_path = tmp_path / "scoring_profiles.json"
+    profile_path.write_text(json.dumps(profile))
+    manifest["artifacts"][profile_path.name] = hashlib.sha256(profile_path.read_bytes()).hexdigest()
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    trace = az.from_dict(
+        posterior={
+            **{k: np.zeros((2, 8)) for k in ["base", "venue", "trend"]},
+            "dispersion": np.ones((2, 8)),
+            "attack": np.zeros((2, 8, 2)),
+            "defence": np.zeros((2, 8, 2)),
+        }
+    )
+    monkeypatch.setattr(az, "from_netcdf", lambda *_: trace)
+    args = inputs()
+    args.pop("panel")
+    args.pop("minutes")
+    args.update(
+        exposures=pd.DataFrame(
+            [
+                {
+                    "canonical_player_id": "person",
+                    "club": 1,
+                    "position": 3,
+                    "available_at": CUTOFF,
+                    "appearances": 6,
+                    "total_matches": 8,
+                    "minutes_per_appearance": 70,
+                    "goals": 2,
+                    "assists": 1,
+                    "total_minutes": 420,
+                }
+            ]
+        ),
+        fixture_times={11: 8.0, 12: 9.0},
+        samples=100,
+    )
+    run = bayesian_run(artifact=tmp_path, **args)
+    assert len(run.projections) == 2
+    assert all(
+        p.start_probability is not None and p.start_probability <= p.appearance_probability
+        for p in run.projections
+    )
+    assert any("complete-component" in warning for warning in run.warnings)
+    profile_path.write_text(profile_path.read_text() + " ")
+    with pytest.raises(ValueError, match="checksum"):
+        bayesian_run(artifact=tmp_path, **args)

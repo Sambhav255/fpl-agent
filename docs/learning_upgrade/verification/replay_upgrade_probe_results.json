@@ -1,0 +1,95 @@
+{
+  "audit_commit": "840c1185d005270717c7453fb278dc30a03c05f3",
+  "synthetic": true,
+  "minimal_storage": false,
+  "syntax_files": 84,
+  "funding": {
+    "keep": 84.0,
+    "old_proxy": 94.0,
+    "new_planner": 101.0,
+    "exact_oracle": 101.0
+  },
+  "availability": [
+    {
+      "event": 8,
+      "points": 0.0,
+      "appearance_probability": 0.0,
+      "scenario_endpoints": null
+    },
+    {
+      "event": 9,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 10,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 11,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 12,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 13,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 14,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    },
+    {
+      "event": 15,
+      "points": 3.561197860962567,
+      "appearance_probability": null,
+      "scenario_endpoints": {
+        "nonappearance": 0.0,
+        "available": 3.561197860962567
+      }
+    }
+  ],
+  "replay_horizon": {
+    "requested": 6,
+    "observed_by_policy": [
+      6
+    ]
+  },
+  "reconstructed_future_artifact": {
+    "evidence_mode": "historical_reconstructed",
+    "deadline": "2026-10-10T12:00:00Z",
+    "prediction_origin": "2026-10-11T00:00:00Z",
+    "accepted": true
+  }
+}

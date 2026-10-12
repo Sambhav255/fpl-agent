@@ -73,6 +73,16 @@ export function PlanCard({
         </b>
       </div>
       <p>Captain: {captainName}</p>
+      {plan.assumptions?.length ? (
+        <details>
+          <summary>Assumptions and search limits</summary>
+          <ul>
+            {Array.from(new Set(plan.assumptions)).map((assumption) => (
+              <li key={assumption}>{assumption}</li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
       <button className="text-button" type="button" onClick={onShow}>
         Show {plan.name} on the pitch
       </button>

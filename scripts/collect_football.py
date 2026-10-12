@@ -13,6 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend" / "src"))
 
 import httpx
+from sqlalchemy import select, text
+from sqlalchemy.exc import SQLAlchemyError
+
 from fpl_app.providers import Provider
 from fpl_app.providers.collection import (
     MAX_PLAYERS,
@@ -21,16 +24,10 @@ from fpl_app.providers.collection import (
     load_collection,
 )
 from fpl_app.storage import Store, entities
-from sqlalchemy import select, text
-from sqlalchemy.exc import SQLAlchemyError
 
 
 def positive_id(value: str) -> int:
-    if (
-        not value.isascii()
-        or not value.isdecimal()
-        or not 1 <= int(value) <= 2_147_483_647
-    ):
+    if not value.isascii() or not value.isdecimal() or not 1 <= int(value) <= 2_147_483_647:
         raise argparse.ArgumentTypeError("Use positive numeric player IDs, not URLs")
     return int(value)
 
@@ -64,17 +61,13 @@ def owned_ids(store: Store) -> list[int]:
                 )
             ).scalars()
         )
-    if any(
-        type(value) is not int or not 1 <= value <= 2_147_483_647 for value in values
-    ):
+    if any(type(value) is not int or not 1 <= value <= 2_147_483_647 for value in values):
         raise ValueError("Stored live ownership contains invalid player IDs")
     return sorted(set(values))
 
 
 def summarize(store: Store, collection: dict[str, Any]) -> dict[str, Any]:
-    source = next(
-        s for s in collection["sources"] if s["resource"] == "bootstrap-static/"
-    )
+    source = next(s for s in collection["sources"] if s["resource"] == "bootstrap-static/")
     bootstrap = json.loads(store.snapshot(source["id"])["raw"])
     current = next((e["id"] for e in bootstrap["events"] if e.get("is_current")), None)
     next_event = next((e["id"] for e in bootstrap["events"] if e.get("is_next")), None)
@@ -85,6 +78,7 @@ def summarize(store: Store, collection: dict[str, Any]) -> dict[str, Any]:
         "collection_id": collection["collection_id"],
         "captured_at": collection["captured_at"],
         "season": collection["season"],
+        "player_universe": collection["player_universe"],
         "event_origin": {
             "current_event": current,
             "next_event": next_event,
@@ -99,9 +93,7 @@ def summarize(store: Store, collection: dict[str, Any]) -> dict[str, Any]:
             "labels_by_event": dict(
                 sorted(Counter(r["event"] for r in collection["labels"]).items())
             ),
-            "labels_by_status": dict(
-                Counter(r["label_status"] for r in collection["labels"])
-            ),
+            "labels_by_status": dict(Counter(r["label_status"] for r in collection["labels"])),
             "schedule_rows_by_event": {
                 event: dict(counts) for event, counts in sorted(by_event.items())
             },
@@ -123,8 +115,11 @@ def main(
         help="Read only stored live owned player IDs",
     )
     parser.add_argument(
-        "--from-collection", help="Union IDs from a verified previous collection"
+        "--include-all",
+        action="store_true",
+        help="Freeze and collect every player in the captured official bootstrap universe",
     )
+    parser.add_argument("--from-collection", help="Union IDs from a verified previous collection")
     parser.add_argument(
         "--coverage",
         metavar="COLLECTION_ID",
@@ -137,11 +132,13 @@ def main(
     )
     args = parser.parse_args(argv)
     if args.coverage and (
-        args.player_ids or args.include_owned or args.from_collection
+        args.player_ids or args.include_owned or args.from_collection or args.include_all
     ):
         parser.error("--coverage cannot be combined with capture selectors")
+    if args.include_all and (args.player_ids or args.include_owned or args.from_collection):
+        parser.error("--include-all cannot be combined with other player selectors")
     if len(set(args.player_ids)) > MAX_PLAYERS:
-        parser.error("At most 100 distinct players per collection")
+        parser.error(f"At most {MAX_PLAYERS} distinct players per collection")
     try:
         store = store or Store()
         before = guard_versions(store)
@@ -154,10 +151,12 @@ def main(
             if args.from_collection:
                 ids.update(load_collection(store, args.from_collection)["player_ids"])
             if len(ids) > MAX_PLAYERS:
-                raise ValueError("Union exceeds 100 distinct players")
+                raise ValueError(f"Union exceeds {MAX_PLAYERS} distinct players")
             provider = provider or Provider(store)
             provider.minimum_interval = max(provider.minimum_interval, 0.25)
-            collection = collect_football(store, provider, sorted(ids), force=True)
+            collection = collect_football(
+                store, provider, sorted(ids), force=True, include_all=args.include_all
+            )
         output = summarize(store, collection)
         if args.parquet:
             export_collection_parquet(store, collection["collection_id"])
@@ -178,9 +177,7 @@ def main(
     ) as exc:
         # Provider/database exception strings can contain payloads/connection details.
         print(
-            json.dumps(
-                {"error": "COLLECTION_FAILED", "error_type": type(exc).__name__}
-            ),
+            json.dumps({"error": "COLLECTION_FAILED", "error_type": type(exc).__name__}),
             file=sys.stderr,
         )
         return 1

@@ -62,14 +62,42 @@ def projection_players(
 
 
 def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
+    if kind == "strategy_training":
+        from fpl_app.strategy.jobs import training_input
+
+        return training_input(payload)
+    if kind == "learning_review":
+        from fpl_app.learning.review import review_inputs
+
+        return review_inputs(store, payload)
+    if kind == "outcome_review":
+        journal = store.get("decision_journal", payload["decision_id"])
+        source = store.snapshot(payload["finalization_snapshot_id"])
+        if (
+            source["resource"] != "bootstrap-static/"
+            or source["validation_status"] != "valid"
+            or source["payload_sha256"] != payload["finalization_sha256"]
+        ):
+            raise Conflict("Official finalization snapshot changed")
+        return fingerprint(
+            {
+                "kind": kind,
+                "decision_id": payload["decision_id"],
+                "forecast_sha256": journal["forecast_sha256"],
+                "finalization_sha256": payload["finalization_sha256"],
+            }
+        )
     if kind == "collection":
         ids = payload.get("player_ids", [])
+        include_all = payload.get("include_all", False)
         if (
             not isinstance(ids, list)
-            or len(ids) > 100
+            or len(ids) > 1_000
             or any(type(identifier) is not int or identifier <= 0 for identifier in ids)
+            or type(include_all) is not bool
+            or (include_all and ids)
         ):
-            raise ValueError("Collection requires at most 100 positive player IDs")
+            raise ValueError("Collection requires a valid bounded player universe")
         return fingerprint({"kind": kind, "payload": payload})
     if kind == "refresh":
         return fingerprint({"kind": kind, "payload": payload})
@@ -100,6 +128,10 @@ def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
         bundle = store.get("forecast_bundle", reference["serving_bundle_id"])
         if fingerprint(bundle) != reference["bundle_fingerprint"]:
             raise Conflict("Frozen forecast bundle changed")
+        from fpl_app.models.advanced_serving import FAMILIES, checked_inputs
+
+        if reference["provider"] in FAMILIES:
+            checked_inputs(store, state, data, reference)
     if kind == "recommendation":
         if state.state_version != payload["expected_state_version"]:
             raise Conflict("Manager version is stale")
@@ -139,7 +171,9 @@ class Queue:
                         jobs.c.fingerprint == digest,
                         jobs.c.status.in_(
                             ["queued", "running"]
-                            if kind in {"refresh", "collection"}
+                            if kind in {"refresh", "collection", "outcome_review"}
+                            else ["queued", "running", "succeeded", "cancelled"]
+                            if kind == "learning_review"
                             else ["queued", "running", "succeeded"]
                         ),
                     )
@@ -368,6 +402,35 @@ class Worker:
         kind, payload = job["kind"], job["payload"]
         if kind in self.handlers:
             return dict(self.handlers[kind](payload))
+        if kind == "strategy_training":
+            from fpl_app.strategy.jobs import train_job
+
+            return train_job(payload, job, self.queue, self.owner)
+        if kind == "learning_review":
+            from fpl_app.learning.review import run_review
+            from fpl_app.providers import Provider
+
+            return run_review(self.store, self.provider or Provider(self.store), payload["tick_id"])
+        if kind == "outcome_review":
+            from fpl_app.learning.outcomes import collect_finalized_outcomes
+            from fpl_app.providers import Provider
+
+            outcome, scorecard = collect_finalized_outcomes(
+                self.store,
+                self.provider or Provider(self.store),
+                payload["decision_id"],
+                payload["finalization_sha256"],
+            )
+            revision = outcome["revision"]
+            return {
+                "decision_id": payload["decision_id"],
+                "revision": revision,
+                "metrics": scorecard["metrics"],
+                "_artifacts": [
+                    ("learning_outcome", f"{payload['decision_id']}:{revision}", outcome),
+                    ("learning_scorecard", f"{payload['decision_id']}:{revision}", scorecard),
+                ],
+            }
         if kind == "refresh":
             from fpl_app.providers import Provider
 
@@ -382,6 +445,7 @@ class Worker:
                 provider=self.provider,
                 player_ids=payload.get("player_ids"),
                 force=payload.get("force", True),
+                include_all=payload.get("include_all", False),
             )
         state, data = input_state(self.store, payload["team_id"])
         players = [Player.model_validate(p) for p in data["players"]]
@@ -443,6 +507,8 @@ class Worker:
                         ),
                     ]
                 )
+            elif job["kind"] in {"outcome_review", "learning_review"}:
+                artifacts.extend(result.pop("_artifacts"))
             self.queue.publish(job, self.owner, result, artifacts)
         except Exception as exc:  # noqa: BLE001 - worker must persist arbitrary computation failures
             code = "STALE_INPUTS" if isinstance(exc, Conflict) else "COMPUTATION_FAILED"

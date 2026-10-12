@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { api } from "../lib/api/client";
 import { AppChrome } from "./app-chrome";
+import { StrategyStatus } from "./strategy-status";
 import { ExperimentalForecast } from "./experimental-forecast";
+import { AdvancedShadowForecast } from "./advanced-shadow-forecast";
 
 type Model = {
   model_family: string;
@@ -14,6 +16,7 @@ type Model = {
   evaluation_kind?: string;
   artifact_id?: string;
   metrics?: { mae?: number; rmse?: number; n?: number } | null;
+  artifacts?: { artifact_id: string; status: string }[];
 };
 
 export default function ModelStatus() {
@@ -78,15 +81,19 @@ export default function ModelStatus() {
           {models.map((model) => (
             <article className="panel" key={model.model_family}>
               <h3>
-                {model.model_family === "tft"
-                  ? "Temporal Fusion Transformer"
-                  : model.model_family === "football_catboost"
-                    ? "Football CatBoost (experimental)"
-                    : model.model_family === "catboost"
-                      ? "CatBoost"
-                      : model.model_family === "bayesian"
-                        ? "Bayesian events"
-                        : "Baseline"}
+                {model.model_family === "tft_multilead"
+                  ? "Multilead TFT (research)"
+                  : model.model_family === "ensemble"
+                    ? "Mean ensemble (research)"
+                    : model.model_family === "tft"
+                      ? "Temporal Fusion Transformer"
+                      : model.model_family === "football_catboost"
+                        ? "Football CatBoost (experimental)"
+                        : model.model_family === "catboost"
+                          ? "CatBoost"
+                          : model.model_family === "bayesian"
+                            ? "Bayesian events"
+                            : "Baseline"}
               </h3>
               <p>
                 <strong>{model.status.replaceAll("_", " ")}</strong> ·{" "}
@@ -123,10 +130,21 @@ export default function ModelStatus() {
                   live strategy improvement.
                 </p>
               )}
+              {model.artifacts && model.artifacts.length > 0 && (
+                <ul aria-label="Retained research artifacts">
+                  {model.artifacts.map((artifact) => (
+                    <li key={artifact.artifact_id}>
+                      {artifact.artifact_id}: {artifact.status.replaceAll("_", " ")}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </article>
           ))}
         </div>
       </section>
+      <StrategyStatus />
+      <AdvancedShadowForecast />
       <ExperimentalForecast
         artifactId={
           models.find(
