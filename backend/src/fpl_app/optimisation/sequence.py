@@ -17,6 +17,7 @@ from typing import Any
 from fpl_app.contracts import ManagerState, Player, ProjectionRun, Settings
 from fpl_app.domain.plans import _check_inputs, _week, allowed_chips, event_players
 from fpl_app.domain.rules import RULES, advance_event, apply_transfers, readiness, validate_chip
+from fpl_app.optimisation.chip_candidates import complete_chip_squads
 from fpl_app.optimisation.oracle import funding_moves
 
 
@@ -40,7 +41,8 @@ def bounded_squads(
 ) -> Iterator[set[int]]:
     """Lazy roll/one/two-replacement edges over the entire supplied catalogue.
 
-    The two-replacement cap is a search restriction, including on chip weeks.
+    The two-replacement cap applies to this local menu. Chip weeks also receive
+    independently generated complete ownership/XI/captain replacement squads.
     Ranking uses unconditional forecast means only; legality/finances are checked
     by the existing transition engine. No Cartesian full-squad materialization.
     """
@@ -157,6 +159,36 @@ def solve_sequence(
     evaluated = 0
     complete = not restricted
     best: SequenceResult = SequenceResult([], float("-inf"), 0, False, "no_legal_path")
+    # Establish a complete legal roll path before optional solver imports and
+    # candidate fitting consume the budget. A requested chip can also keep its
+    # squad, with inventory and Free Hit restoration replayed normally.
+    if locks <= {p.player_id for p in state.picks} and not exclusions & {
+        p.player_id for p in state.picks
+    }:
+        held = state.model_copy(deep=True)
+        hold_weeks = []
+        try:
+            for offset in range(settings.horizon_events):
+                chip = next(
+                    choice
+                    for choice in allowed_chips(held, settings, offset)
+                    if not validate_chip(held, choice)
+                )
+                catalogue = event_players(players, settings, held.next_event)
+                held, ledger = apply_transfers(held, catalogue, [], chip)
+                hold_weeks.append(_week(held, catalogue, run, chip, ledger))
+                if offset + 1 < settings.horizon_events:
+                    held = advance_event(held)
+        except (ValueError, StopIteration):
+            pass
+        else:
+            best = SequenceResult(
+                hold_weeks,
+                sum(week["net_points"] for week in hold_weeks),
+                0,
+                False,
+                "valid_incumbent",
+            )
     # DFS with exact dominance on full financial/chip states. Explore roll first
     # so a complete incumbent exists before the expensive alternatives.
     seen: dict[tuple[Any, ...], float] = {}
@@ -177,11 +209,18 @@ def solve_sequence(
         seen[key] = net
         catalogue = event_players(players, settings, current.next_event)
         owned = {p.player_id for p in current.picks}
-        for chip in allowed_chips(current, settings, offset):
+        chips = allowed_chips(current, settings, offset)
+        if restricted:
+            # Reach complete replacement alternatives before the much larger local
+            # subtree consumes the shared budget. This remains a bounded ordering.
+            chips.sort(key=lambda chip: chip not in {"wildcard", "free_hit"})
+        for chip in chips:
             if validate_chip(current, chip):
                 continue
             choices = (
-                bounded_squads(current, catalogue, run, settings, deadline, offset)
+                complete_chip_squads(current, catalogue, run, settings, deadline, offset, chip)
+                if restricted and chip in {"wildcard", "free_hit"}
+                else bounded_squads(current, catalogue, run, settings, deadline, offset)
                 if restricted
                 else iter(sorted(squads, key=lambda s: (len(s - owned), tuple(sorted(s)))))
             )
@@ -218,7 +257,7 @@ def solve_sequence(
     best.evaluated_edges = evaluated
     best.complete = complete
     if restricted:
-        best.search_scope = "at_most_two_replacements_per_event_including_chips"
+        best.search_scope = "ordinary_events_at_most_two_replacements_complete_chip_milp_candidates"
         best.status = "bounded_no_incumbent"
     if best.weeks:
         best.status = (

@@ -133,7 +133,8 @@ def test_schedule_inventory_expiry_consecutive_fh_and_budget_are_not_invented():
     result = solve_sequence(state, players, run, settings)
     assert result.weeks == [] and result.status == "no_legal_path"
     exhausted = solve_sequence(state, players, run, Settings(horizon_events=2), max_edges=1)
-    assert not exhausted.complete and not exhausted.weeks
+    assert not exhausted.complete and exhausted.weeks
+    assert exhausted.net_points == sum(w["net_points"] for w in exhausted.weeks)
     state.chips = {"triple_captain_1": True}
     result = solve_sequence(
         state, players, run, Settings(horizon_events=2, chip_schedule={20: "triple_captain"})
@@ -199,7 +200,10 @@ def test_full_catalogue_returns_independently_validated_bounded_sequence():
     assert len(plan.weeks) == 2
     assert plan.solver["status"] == "bounded_catalogue_incumbent"
     assert plan.solver["optimality_gap"] is None
-    assert plan.solver["search_scope"] == "at_most_two_replacements_per_event_including_chips"
+    assert (
+        plan.solver["search_scope"]
+        == "ordinary_events_at_most_two_replacements_complete_chip_milp_candidates"
+    )
     assert not validate_plan(plan, state, players, run, settings, result.baseline_plan)
 
 
