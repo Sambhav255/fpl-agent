@@ -26,10 +26,51 @@ def input_state(store: Store, team: int) -> tuple[ManagerState, dict[str, Any]]:
         raise Conflict("Dataset mode differs from manager state")
     if current["snapshot_id"] != state.snapshot_id:
         raise Conflict("Manager snapshot is stale; refresh and confirm state")
+    if state.data_mode == "live" and state.next_event != data["next_event"]:
+        raise Conflict("Manager gameweek changed; review current squad and private finances")
     return state, data
 
 
+def projection_players(
+    state: ManagerState, data: dict[str, Any], run: ProjectionRun
+) -> list[Player]:
+    players = [Player.model_validate(p) for p in data["players"]]
+    if run.player_universe_ids is None:
+        if run.model_family != "baseline":
+            raise ValueError("Advanced forecast requires explicit player coverage")
+        return players
+    universe = set(run.player_universe_ids)
+    if len(universe) != len(run.player_universe_ids) or not universe:
+        raise ValueError("Invalid forecast player universe")
+    if not {p.player_id for p in state.picks} <= universe:
+        raise ValueError("Forecast universe must include every owned player")
+    selected = [p for p in players if p.player_id in universe]
+    if len(selected) != len(universe):
+        raise ValueError("Forecast universe contains unknown players")
+    expected = {
+        (p.player_id, f["fixture_id"], f["event"])
+        for p in selected
+        for f in data["fixtures"]
+        if f["event"] is not None
+        and state.next_event <= f["event"] < state.next_event + run.horizon_events
+        and p.club in (f["home_club"], f["away_club"])
+    }
+    actual = [(p.player_id, p.fixture_id, p.event) for p in run.projections]
+    if len(actual) != len(set(actual)) or set(actual) != expected:
+        raise ValueError("Forecast coverage differs from scheduled exposures")
+    return selected
+
+
 def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
+    if kind == "collection":
+        ids = payload.get("player_ids", [])
+        if (
+            not isinstance(ids, list)
+            or len(ids) > 100
+            or any(type(identifier) is not int or identifier <= 0 for identifier in ids)
+        ):
+            raise ValueError("Collection requires at most 100 positive player IDs")
+        return fingerprint({"kind": kind, "payload": payload})
     if kind == "refresh":
         return fingerprint({"kind": kind, "payload": payload})
     state, data = input_state(store, payload["team_id"])
@@ -69,6 +110,7 @@ def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
             raise Conflict("Projection horizon is too short")
         if run.source_cutoff != data["source_cutoff"]:
             raise Conflict("Projection cutoff is stale")
+        projection_players(state, data, run)
         value["run"] = run.model_dump()
     return fingerprint(value)
 
@@ -97,7 +139,7 @@ class Queue:
                         jobs.c.fingerprint == digest,
                         jobs.c.status.in_(
                             ["queued", "running"]
-                            if kind == "refresh"
+                            if kind in {"refresh", "collection"}
                             else ["queued", "running", "succeeded"]
                         ),
                     )
@@ -332,6 +374,15 @@ class Worker:
             return dict(
                 (self.provider or Provider(self.store)).refresh(payload.get("force", False))
             )
+        if kind == "collection":
+            from fpl_app.providers.collection import collect_football
+
+            return collect_football(
+                self.store,
+                provider=self.provider,
+                player_ids=payload.get("player_ids"),
+                force=payload.get("force", True),
+            )
         state, data = input_state(self.store, payload["team_id"])
         players = [Player.model_validate(p) for p in data["players"]]
         if kind == "projection":
@@ -345,6 +396,7 @@ class Worker:
             run = ProjectionRun.model_validate(
                 self.store.get("projection", request.projection_run_id)
             )
+            players = projection_players(state, data, run)
             recommendation = recommend(
                 state, players, run, request.settings, lineup_only=request.analysis_mode == "lineup"
             )

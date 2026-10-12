@@ -104,6 +104,7 @@ def collect_football(
     coverage: list[dict[str, Any]] = []
     for identifier, (snapshot, history) in histories.items():
         seen: set[int] = set()
+        pending: set[int] = set()
         for row in history["history"]:
             fixture_id = row["fixture"]
             if fixture_id in seen:
@@ -116,6 +117,13 @@ def collect_football(
                 and fixture.get("finished_provisional") is True
                 and (event.get("data_checked") is True)
             )
+            unstarted = (
+                fixture is not None
+                and fixture.get("started") is False
+                and fixture.get("finished_provisional") is not True
+            )
+            if unstarted:
+                pending.add(fixture_id)
             normalized = {
                 "provider": "official_fpl",
                 "season": season,
@@ -124,10 +132,14 @@ def collect_football(
                 "canonical_id_scope": "season_local_unverified_cross_season",
                 "fixture_id": fixture_id,
                 "event": row["round"],
-                "minutes": row.get("minutes"),
-                "total_points": row.get("total_points"),
+                "minutes": None if unstarted else row.get("minutes"),
+                "total_points": None if unstarted else row.get("total_points"),
                 "statistics": {k: v for k, v in row.items() if k not in ("fixture", "round")},
-                "label_status": "final_revision" if final else "preliminary",
+                "label_status": "pending_fixture"
+                if unstarted
+                else "final_revision"
+                if final
+                else "preliminary",
                 "original_timing": "unknown_original_timing",
                 "source_published_at": None,
                 "available_at": snapshot["available_at"],
@@ -150,11 +162,16 @@ def collect_football(
                     "event": event_id,
                     "schedule_basis": "captured_current_club_not_historical_membership",
                     "scheduled_fixture_ids": [f["id"] for f in scheduled],
+                    "pending_history_fixture_ids": [
+                        f["id"] for f in scheduled if f["id"] in pending
+                    ],
                     "missing_history_fixture_ids": [
                         f["id"] for f in scheduled if f["id"] not in seen
                     ],
                     "status": "blank_event"
                     if not scheduled
+                    else "pending_fixture_rows"
+                    if any(f["id"] in pending for f in scheduled)
                     else "rows_present"
                     if all(f["id"] in seen for f in scheduled)
                     else "missing_rows",

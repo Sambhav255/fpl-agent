@@ -210,6 +210,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/projections/bundles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Serving Bundle */
+        post: operations["serving_bundle_api_v1_projections_bundles_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/data/collections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Collections */
+        get: operations["collections_api_v1_data_collections_get"];
+        put?: never;
+        /** Collect */
+        post: operations["collect_api_v1_data_collections_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/data/collections/{collection_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Collection */
+        get: operations["collection_api_v1_data_collections__collection_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/social/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Social Status */
+        get: operations["social_status_api_v1_social_status_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/projections/runs/{run_id}": {
         parameters: {
             query?: never;
@@ -453,6 +522,16 @@ export interface components {
             comparison_points?: number | null;
             /** Reason */
             reason: string;
+        };
+        /** CollectionRequest */
+        CollectionRequest: {
+            /** Player Ids */
+            player_ids?: number[];
+            /**
+             * Force
+             * @default true
+             */
+            force: boolean;
         };
         /** Fixture */
         Fixture: {
@@ -764,6 +843,10 @@ export interface components {
             point_quantiles?: {
                 [key: string]: number;
             } | null;
+            /** Availability Scenario Points */
+            availability_scenario_points?: {
+                [key: string]: number;
+            } | null;
             /** Components */
             components?: {
                 [key: string]: number | null;
@@ -773,6 +856,21 @@ export interface components {
         };
         /** ProjectionRequest */
         ProjectionRequest: {
+            /**
+             * Provider
+             * @default baseline
+             */
+            provider: string;
+            /**
+             * Mode
+             * @default default
+             * @enum {string}
+             */
+            mode: "default" | "experimental" | "shadow";
+            /** Artifact Id */
+            artifact_id?: string | null;
+            /** Serving Bundle Id */
+            serving_bundle_id?: string | null;
             /** Team Id */
             team_id: number;
             /**
@@ -783,6 +881,42 @@ export interface components {
         };
         /** ProjectionRun */
         ProjectionRun: {
+            /**
+             * Requested Provider
+             * @default baseline
+             */
+            requested_provider: string;
+            /**
+             * Resolved Provider
+             * @default baseline
+             */
+            resolved_provider: string;
+            /** Artifact Id */
+            artifact_id?: string | null;
+            /** Artifact Manifest Sha256 */
+            artifact_manifest_sha256?: string | null;
+            /** Prediction Origin */
+            prediction_origin?: string | null;
+            /**
+             * Lifecycle State
+             * @default unavailable
+             */
+            lifecycle_state: string;
+            /**
+             * Evidence Mode
+             * @default unavailable
+             */
+            evidence_mode: string;
+            /** Feature Version */
+            feature_version?: string | null;
+            /** Mapping Version */
+            mapping_version?: string | null;
+            /** Evaluation Reference */
+            evaluation_reference?: string | null;
+            /** Joint Scenario Reference */
+            joint_scenario_reference?: string | null;
+            /** Player Universe Ids */
+            player_universe_ids?: number[] | null;
             /** Projection Run Id */
             projection_run_id: string;
             /** Snapshot Id */
@@ -920,6 +1054,15 @@ export interface components {
                 [key: string]: unknown;
             }[];
         };
+        /** ServingBundleRequest */
+        ServingBundleRequest: {
+            /** Team Id */
+            team_id: number;
+            /** Collection Id */
+            collection_id: string;
+            /** Artifact Id */
+            artifact_id: string;
+        };
         /** Settings */
         Settings: {
             /**
@@ -955,6 +1098,11 @@ export interface components {
             /** Expected Version */
             expected_version: number;
             state: components["schemas"]["ManagerState"];
+            /**
+             * Confirm Event Rollover
+             * @default false
+             */
+            confirm_event_rollover: boolean;
         };
         /** ValidationError */
         ValidationError: {
@@ -1411,6 +1559,151 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    serving_bundle_api_v1_projections_bundles_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ServingBundleRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    collections_api_v1_data_collections_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    collect_api_v1_data_collections_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CollectionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    collection_api_v1_data_collections__collection_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                collection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    social_status_api_v1_social_status_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
         };

@@ -9,7 +9,7 @@ from fpl_app.providers.collection import collect_football, collection_coverage, 
 from fpl_app.storage import Store
 
 
-def setup_collection(tmp_path, *, before=True, final=False):
+def setup_collection(tmp_path, *, before=True, final=False, unstarted=False):
     store = Store(f"sqlite:///{tmp_path}/app.sqlite")
     deadline = (datetime.now(UTC) + timedelta(days=1 if before else -1)).isoformat()
     bootstrap = {
@@ -45,6 +45,7 @@ def setup_collection(tmp_path, *, before=True, final=False):
             "team_h_difficulty": 3,
             "team_a_difficulty": 3,
             "finished_provisional": final,
+            "started": not unstarted,
         }
         for i in (1, 2, 3)
     ]
@@ -77,6 +78,18 @@ def setup_collection(tmp_path, *, before=True, final=False):
     provider = Provider(store, httpx.MockTransport(respond))
     provider.minimum_interval = 0
     return store, provider, history, requests
+
+
+def test_unstarted_provider_placeholder_is_not_an_observed_zero(tmp_path):
+    store, provider, _, _ = setup_collection(tmp_path, unstarted=True)
+    result = collect_football(store, provider, [1])
+    row = result["labels"][0]
+    assert row["label_status"] == "pending_fixture"
+    assert row["minutes"] is None and row["total_points"] is None
+    assert row["statistics"]["minutes"] == 0  # Original provider bytes remain inspectable.
+    assert result["coverage"][0]["pending_history_fixture_ids"] == [1]
+    assert result["coverage"][0]["status"] == "pending_fixture_rows"
+    assert load_collection(store, result["collection_id"]) == result
 
 
 @pytest.mark.parametrize("before", [True, False])

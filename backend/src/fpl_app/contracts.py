@@ -84,6 +84,7 @@ class Projection(BaseModel):
     start_probability: float | None = Field(default=None, ge=0, le=1)
     minutes_60_probability: float | None = Field(default=None, ge=0, le=1)
     point_quantiles: dict[str, float] | None = None
+    availability_scenario_points: dict[str, float] | None = None
     components: dict[str, float | None] = Field(default_factory=dict)
     assumptions: list[str] = Field(default_factory=list)
 
@@ -100,6 +101,7 @@ class ProjectionRun(BaseModel):
     mapping_version: str | None = None
     evaluation_reference: str | None = None
     joint_scenario_reference: str | None = None
+    player_universe_ids: list[int] | None = None
     projection_run_id: str
     snapshot_id: str
     source_cutoff: str

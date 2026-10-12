@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../lib/api/client";
 import { AppChrome } from "./app-chrome";
+import { ExperimentalForecast } from "./experimental-forecast";
 
 type Model = {
   model_family: string;
@@ -11,6 +12,7 @@ type Model = {
   active?: boolean;
   strict_release_eligible?: boolean;
   evaluation_kind?: string;
+  artifact_id?: string;
   metrics?: { mae?: number; rmse?: number; n?: number } | null;
 };
 
@@ -78,11 +80,13 @@ export default function ModelStatus() {
               <h3>
                 {model.model_family === "tft"
                   ? "Temporal Fusion Transformer"
-                  : model.model_family === "catboost"
-                    ? "CatBoost"
-                    : model.model_family === "bayesian"
-                      ? "Bayesian events"
-                      : "Baseline"}
+                  : model.model_family === "football_catboost"
+                    ? "Football CatBoost (experimental)"
+                    : model.model_family === "catboost"
+                      ? "CatBoost"
+                      : model.model_family === "bayesian"
+                        ? "Bayesian events"
+                        : "Baseline"}
               </h3>
               <p>
                 <strong>{model.status.replaceAll("_", " ")}</strong> ·{" "}
@@ -94,6 +98,12 @@ export default function ModelStatus() {
                 <p>
                   Retrospective diagnostic only. Historical publication timing is unverified; this
                   artifact is ineligible for live recommendations.
+                </p>
+              )}
+              {model.evaluation_kind === "retrospective_assumed" && (
+                <p>
+                  Historical timing is assumed. This experiment is not promoted; its scores do not
+                  establish an improvement over the baseline.
                 </p>
               )}
               {Array.isArray(model.reason) ? (
@@ -117,6 +127,15 @@ export default function ModelStatus() {
           ))}
         </div>
       </section>
+      <ExperimentalForecast
+        artifactId={
+          models.find(
+            (model) =>
+              model.model_family === "football_catboost" &&
+              model.status === "evaluated_experimental",
+          )?.artifact_id
+        }
+      />
     </AppChrome>
   );
 }

@@ -29,3 +29,13 @@ Keep the personal default in ignored local environment configuration. Loading a 
 ## Intelligence upgrade — 2026-10-10
 
 Apply the v2 intelligence kit without replacing the app or its data. Prioritise objective correctness, prospective collection, honest real-data experiments and operational serving over cosmetic changes. Keep default champion promotion strict while allowing explicit future-live experimental challenger selection with real availability timestamps. Capture football versions without silently advancing current manager snapshots. Social access remains disabled; implement and test authored offline examples independently.
+
+## 2026-10-12: scoped experiments and stale manager state
+
+Advanced projections carry an explicit player universe. Recommendation, lineup and saved-plan validation restrict candidates to that universe and reject missing scheduled exposures; unforecasted players are never zero-score candidates. Every owned player must be covered. Baseline retains the full catalogue.
+
+Football collection is a separate recoverable job and CLI. It retains observations without refreshing the active dataset or editing manager state. Repeating a completed capture starts a new capture; simultaneous identical requests deduplicate. Live social capabilities are reported unavailable and influence remains zero.
+
+Official data now identifies GW7. Refreshing fixtures and prices intentionally preserved the GW6 private corrections; those corrections cannot be silently carried into GW7. The saved deadline report is historical. Reconciliation is needed before new legal personal transfer recommendations.
+
+Independent review fixes: rollover confirmation is explicit at the API boundary; unrelated selling rows retain their prior market anchors. Availability scenario endpoints use a separate typed projection field so scoring components still sum to the expected value. Unstarted fixture placeholders are pending observations with null normalised outcomes, not nonappearance labels; raw immutable source statistics remain unchanged.

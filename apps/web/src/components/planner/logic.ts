@@ -130,8 +130,11 @@ export function applyAcceptedPrices(picks: SquadPick[], decisions: PriceDecision
 export function withSellMarket(
   picks: SquadPick[],
   marketUnits: (playerId: number) => number | null,
+  confirmedPlayerIds: readonly number[] = [],
 ): SquadPick[] {
+  const confirmed = new Set(confirmedPlayerIds);
   return picks.map((pick) => {
+    if (!confirmed.has(pick.player_id)) return pick;
     if (pick.selling_price_provenance !== "user_confirmed" || pick.selling_price_units == null)
       return pick;
     return { ...pick, selling_price_market_units: marketUnits(pick.player_id) };

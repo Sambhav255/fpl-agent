@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { preferredTeamId } from "../lib/profile";
+import { reviewNewEvent } from "../lib/manager-review";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   api,
@@ -55,6 +56,7 @@ export default function Dashboard({ section }: { section: Section }) {
   const [state, setState] = useState<State | null>(null);
   const [draft, setDraft] = useState<State | null>(null);
   const [editorRevision, setEditorRevision] = useState(0);
+  const [rolloverReviewed, setRolloverReviewed] = useState(false);
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [status, setStatus] = useState<Record<string, unknown>>({});
   const [models, setModels] = useState<Record<string, unknown>[]>([]);
@@ -291,11 +293,16 @@ export default function Dashboard({ section }: { section: Section }) {
       const corrected = { ...draft, snapshot_id: catalog.snapshot_id };
       const updated = await api<State>(
         `/teams/${state.team_id}/state`,
-        { expected_version: state.state_version, state: corrected },
+        {
+          expected_version: state.state_version,
+          state: corrected,
+          confirm_event_rollover: rolloverReviewed,
+        },
         "PATCH",
         signal,
       );
       await loadWorkspace(updated, signal);
+      setRolloverReviewed(false);
       if (signal.aborted) return;
       setRun(null);
       setRecommendation(null);
@@ -1201,11 +1208,27 @@ export default function Dashboard({ section }: { section: Section }) {
                           min={1}
                           max={38}
                           value={draft.next_event}
-                          onChange={(e) =>
-                            edit((s) => ({ ...s, next_event: Number(e.target.value) }))
-                          }
+                          onChange={(e) => {
+                            const event = Number(e.target.value);
+                            if (event !== draft.next_event) {
+                              edit((s) => reviewNewEvent(s, event));
+                              setEditorRevision((value) => value + 1);
+                              setRolloverReviewed(false);
+                            }
+                          }}
                         />
                       </label>
+                      {state && draft.next_event !== state.next_event && (
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={rolloverReviewed}
+                            onChange={(e) => setRolloverReviewed(e.target.checked)}
+                          />
+                          I reviewed the squad, prices, bank, transfers, hits and chips for this new
+                          gameweek.
+                        </label>
+                      )}
                       <label>
                         Chip already active
                         <select

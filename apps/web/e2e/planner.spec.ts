@@ -55,7 +55,7 @@ test("planner caps one and three and persisted weekly plan", async ({ page }) =>
   });
 });
 
-test("optional live manager facts and unconfirmed-price gate", async ({ page }) => {
+test("optional live manager facts enforce financial and freshness gates", async ({ page }) => {
   test.skip(!process.env.FPL_LIVE_TEAM_ID, "Explicit public team ID required");
   await page.addInitScript(
     (id) => localStorage.setItem("touchline.team", id),
@@ -63,18 +63,25 @@ test("optional live manager facts and unconfirmed-price gate", async ({ page }) 
   );
   await page.goto("/planner");
   await expect(page.getByText(new RegExp(`Team ${process.env.FPL_LIVE_TEAM_ID}\\b`))).toBeVisible();
-  await expect(page.getByRole("button", { name: "Run analysis" })).toBeDisabled();
-  const readiness = await (
-    await page.request.get(`/api/v1/teams/${process.env.FPL_LIVE_TEAM_ID}/readiness`)
-  ).json();
-  expect(readiness.transfers_ready).toBe(false);
-  expect(readiness.missing_fields.length).toBeGreaterThan(0);
-  await expect(
-    page.getByText(
-      /Accept selling prices before transfer analysis|Bank, free transfers, or hit cost is unknown/,
-    ),
-  ).toBeVisible();
-  await expect(page.getByRole("button", { name: "Run lineup only" })).toBeEnabled();
+  const response = await page.request.get(
+    `/api/v1/teams/${process.env.FPL_LIVE_TEAM_ID}/readiness`,
+  );
+  const readiness = await response.json();
+  if (response.status() === 409) {
+    expect(readiness.message).toMatch(/stale|gameweek changed/i);
+    await expect(page.getByRole("button", { name: "Run analysis" })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Run lineup only" })).toBeDisabled();
+    await expect(page.getByText(/snapshot|reconcil/i).first()).toBeVisible();
+  } else {
+    expect(response.ok()).toBe(true);
+    if (!readiness.transfers_ready) {
+      expect(readiness.missing_fields.length + readiness.errors.length).toBeGreaterThan(0);
+      await expect(page.getByRole("button", { name: "Run analysis" })).toBeDisabled();
+    } else {
+      await expect(page.getByRole("button", { name: "Run analysis" })).toBeEnabled();
+    }
+    await expect(page.getByRole("button", { name: "Run lineup only" })).toBeEnabled();
+  }
   await page.screenshot({
     path: `test-results/live-planner-${test.info().project.name}.png`,
     fullPage: true,

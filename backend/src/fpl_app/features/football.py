@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import timedelta
 from typing import Any
 
 import pandas as pd
@@ -156,7 +157,7 @@ def collection_frames(
                 "minutes": label["minutes"],
                 "starts": stats.get("starts"),
                 "kickoff": kickoff,
-                "available_at": kickoff + pd.Timedelta(days=1),
+                "available_at": kickoff + timedelta(days=1),
             }
         )
         labels.append(label)
@@ -195,7 +196,7 @@ def collection_frames(
                 "target_minutes": label["minutes"],
                 "target_start": stats.get("starts"),
                 "target_available_at": (
-                    pd.Timestamp(stats["kickoff_time"]) + pd.Timedelta(days=1)
+                    pd.Timestamp(stats["kickoff_time"]) + timedelta(days=1)
                 ).isoformat(),
             }
         )

@@ -6,6 +6,9 @@ from typing import Literal
 from fpl_app.contracts import Fixture, Player, Projection, ProjectionRun
 from fpl_app.features.pipeline import fingerprint, utc
 
+# Conditional planning scenario, not a fitted appearance probability.
+AVAILABILITY_POLICY_VERSION = "current-only-future-conditional-available-v3"
+
 
 def baseline_run(
     players: list[Player],
@@ -30,7 +33,7 @@ def baseline_run(
         if p.availability is not None and not 0 <= p.availability <= 1:
             raise ValueError("availability must be probability in [0,1]")
         # Official PPG is conditional on appearance; availability is applied once.
-        chance = (
+        current_chance = (
             p.availability
             if p.availability is not None
             else (0.0 if p.status in {"u", "s"} else 1.0)
@@ -51,6 +54,22 @@ def baseline_run(
                 or p.club not in (f.home_club, f.away_club)
             ):
                 continue
+            future_unknown = f.event != next_event
+            chance = 1.0 if future_unknown else current_chance
+            flagged_future = future_unknown and (
+                current_chance < 1 or p.status in {"i", "d", "s", "u"}
+            )
+            availability_assumption = (
+                "Future availability unknown: numeric points/minutes are conditional on being available; "
+                "available is a planning scenario, not an appearance probability or recovery forecast; "
+                "current snapshot flag applies only to the next event; no return date inferred"
+                if future_unknown
+                else "Unknown availability assumes available for current event only"
+                if p.availability is None and p.status not in {"u", "s"}
+                else "Current-event status implies nonappearance; future status unknown"
+                if p.availability is None
+                else "Snapshot availability applies only to current event"
+            )
             difficulty = f.home_difficulty if p.club == f.home_club else f.away_difficulty
             adjustment = max(
                 0.65,
@@ -83,7 +102,10 @@ def baseline_run(
                     event=f.event,
                     expected_points=points,
                     expected_minutes=minutes,
-                    appearance_probability=chance,
+                    appearance_probability=None if future_unknown else chance,
+                    availability_scenario_points={"nonappearance": 0.0, "available": points}
+                    if flagged_future
+                    else None,
                     components={
                         "appearance": 0.5 * appearance,
                         "goals": 0.5 * goal,
@@ -96,13 +118,24 @@ def baseline_run(
                     assumptions=[
                         "Season aggregates stand in for recent match distributions; fixture difficulty adjustment is heuristic",
                         "Bonus, minutes distribution and clean sheet eligibility approximate; defensive actions, cards, saves and concessions unavailable",
-                        "Weighted component contributions sum to expected points; PPG conditional on appearance; availability applied once",
+                        (
+                            "Scoring component contributions sum to points; "
+                            "PPG conditional on appearance; current availability applied once"
+                        ),
                         "Missing appearance count uses elapsed event exposure proxy"
                         if not p.appearances
                         else "Appearance count supplied",
-                        "Unknown availability assumes available"
-                        if p.availability is None
-                        else "Snapshot availability held constant across horizon",
+                        availability_assumption,
+                        *(
+                            [
+                                (
+                                    "Injury/status flagged: future return UNKNOWN; scenario endpoints are zero nonappearance and "
+                                    "conditional available-player points, not quantiles, confidence bounds or an averaged central forecast"
+                                )
+                            ]
+                            if flagged_future
+                            else []
+                        ),
                     ],
                 )
             )
@@ -115,6 +148,7 @@ def baseline_run(
             "mode": data_mode,
             "event": next_event,
             "horizon": horizon,
+            "availability_policy": AVAILABILITY_POLICY_VERSION,
         }
     )
     return ProjectionRun(
@@ -132,5 +166,40 @@ def baseline_run(
         warnings=[
             "Labelled approximate baseline; no trained model or calibrated intervals",
             "Snapshot aggregates require provenance at cutoff; historical replay must use the feature pipeline",
+            *(
+                [
+                    (
+                        "Future availability unknown: numeric points/minutes use a conditional available-player planning scenario; "
+                        "future appearance probabilities unavailable; no recovery dates or injury persistence inferred"
+                    )
+                ]
+                if horizon > 1
+                else []
+            ),
+            *(
+                [
+                    (
+                        "Future injury/status return UNKNOWN: conditional available-player xP may overstate injured players; "
+                        "zero nonappearance and conditional available scenario endpoints are exposed separately, not averaged"
+                    )
+                ]
+                if horizon > 1
+                and any(
+                    p.status in {"i", "d", "s", "u"}
+                    or (p.availability is not None and p.availability < 1)
+                    for p in players
+                )
+                else []
+            ),
+            *(
+                [
+                    (
+                        "Missing appearance counts: elapsed-event exposure proxy is approximate; blanks, doubles and player absence "
+                        "are not reconstructed from aggregate minutes"
+                    )
+                ]
+                if any(not p.appearances for p in players)
+                else []
+            ),
         ],
     )

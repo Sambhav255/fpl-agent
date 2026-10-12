@@ -110,6 +110,9 @@ export function usePlannerActions(ws: Workspace) {
     const picks = withSellMarket(
       applyAcceptedPrices(state.picks, decisions),
       (id) => ws.playerMap.get(id)?.market_price_units ?? null,
+      decisions
+        .filter((d) => d.kind === "sell" && !d.rejected && d.units !== null)
+        .map((d) => d.player_id),
     );
     const next: State = { ...state, snapshot_id: ws.catalog.snapshot_id, picks };
     void task("Saving selling prices", async (signal) => {

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+from pathlib import Path
 from typing import Any
 
 
@@ -20,6 +21,50 @@ def registry() -> list[dict[str, Any]]:
             "metrics": None,
         }
     ]
+    football: dict[str, Any] = {
+        "model_family": "football_catboost",
+        "name": "Football CatBoost",
+        "status": "not_trained",
+        "active": False,
+        "strict_release_eligible": False,
+        "reason": "No football-specific artifact; baseline remains default",
+        "metrics": None,
+    }
+    for path in sorted(root.glob("football_catboost/*/manifest.json")):
+        try:
+            if path.is_symlink() or path.parent.is_symlink():
+                raise ValueError("artifact symlinks are not allowed")
+            meta = json.loads(path.read_text())
+            if meta.get("model_family", meta.get("family")) != "football_catboost":
+                raise ValueError("artifact family mismatch")
+            files = meta.get("artifacts", meta.get("files", {}))
+            if not files or any(
+                Path(name).name != name
+                or (path.parent / name).is_symlink()
+                or not (path.parent / name).is_file()
+                or hashlib.sha256((path.parent / name).read_bytes()).hexdigest() != sha
+                for name, sha in files.items()
+            ):
+                raise ValueError("artifact integrity check failed")
+            evaluation = json.loads((path.parent / "evaluation.json").read_text())
+            football.update(
+                status="evaluated_experimental",
+                artifact_id=meta["artifact_id"],
+                metrics=evaluation.get("comparators", {}).get("football_catboost"),
+                comparators=evaluation.get("comparators"),
+                evaluation_kind=evaluation.get("evaluation_kind", "retrospective_assumed"),
+                reason=[
+                    "Experimental only; not promoted to default recommendations",
+                    "Historical availability is assumed; prospective validation remains required",
+                    *meta.get("limitations", []),
+                ],
+            )
+        except (OSError, ValueError, KeyError, TypeError):
+            football.pop("artifact_id", None)
+            football.update(
+                status="disabled", reason="Invalid football model artifact", metrics=None
+            )
+    entries.append(football)
     for family, dependency in (
         ("catboost", "catboost"),
         ("bayesian", "pymc"),

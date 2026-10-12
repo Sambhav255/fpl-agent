@@ -53,3 +53,9 @@ Remaining limitations: one-event horizon, selected universe only, no full minute
 ## Checks
 
 Real archive and official collection fits completed. Every model head saved/reloaded with exactly equal test predictions; frozen current forecasts generated successfully. Four focused tests cover future and same-event outcome exclusion, unknown-history distinction, pin mismatch, artifact creation time, reproducible reload/forecast, explicit mappings, rule mismatch, future source rejection, coherent probabilities/quantiles and corrupted artifact rejection. Synthetic test fits are mechanics checks, not performance evidence. Scoped Ruff and mypy checks pass.
+
+## Integrated GW7 experiment (12 October 2026)
+
+Prepared artifact20261012T043103-339bf843 at actual origin04:31UTC from collection2978d1299a354ab6882cb4600de34e39. Only150final GW1–5 labels enter fitting and future lags;30preliminary GW6 rows are excluded. Same tiny GW5 assumed-timing test: RMSE4.5017 versus population4.4634; no promotion. Current catalogue bootstrap bytes match the retained collection. Registration correctly fails for stale GW6 private state; model preparation did not edit it.
+
+Real worker routing now reloads the CatBoost heads and binds source bytes, envelope, frames, mappings, manifest, origin and declared universe. Current known absence is a full forecast replacement once, preserving raw values and source evidence. It is not extra availability scaling. The one-event experiment and baseline comparison are available from Models after state/source validation. Forecast preparation CLI: scripts/prepare_football_forecast.py. Historical timing assumptions, selected-universe bias, small test and missing calibrated confidence remain controlling limitations.

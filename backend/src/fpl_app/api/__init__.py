@@ -3,7 +3,7 @@
 import json
 import uuid
 from datetime import UTC
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 import httpx
 from fastapi import FastAPI, Request
@@ -20,7 +20,7 @@ from fpl_app.contracts import (
     ProjectionRun,
     Recommendation,
 )
-from fpl_app.jobs import Queue, input_state, inputs
+from fpl_app.jobs import Queue, input_state, inputs, projection_players
 from fpl_app.providers import Provider, demo
 from fpl_app.storage import Conflict, Store, utcnow
 
@@ -28,6 +28,7 @@ from fpl_app.storage import Conflict, Store, utcnow
 class StateEdit(BaseModel):
     expected_version: int = Field(ge=1)
     state: ManagerState
+    confirm_event_rollover: bool = Field(default=False, strict=True)
 
 
 class ImportRequest(BaseModel):
@@ -47,6 +48,19 @@ class ProjectionRequest(BaseModel):
 class RefreshRequest(BaseModel):
     resources: list[str] = Field(default_factory=lambda: ["bootstrap", "fixtures"])
     force: bool = False
+
+
+class CollectionRequest(BaseModel):
+    player_ids: list[Annotated[int, Field(gt=0, strict=True)]] = Field(
+        default_factory=list, max_length=100
+    )
+    force: bool = True
+
+
+class ServingBundleRequest(BaseModel):
+    team_id: int
+    collection_id: str
+    artifact_id: str
 
 
 class Incomplete(ValueError):
@@ -298,11 +312,33 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
         if body.expected_version != old.state_version:
             raise StateVersionConflict("State version changed")
         state = body.state
+        if (
+            state.next_event != old.next_event
+            and not body.confirm_event_rollover
+            and (
+                any(
+                    getattr(state, field) is not None
+                    for field in (
+                        "bank_units",
+                        "free_transfers_at_event_start",
+                        "transfers_made_this_event",
+                        "confirmed_hit_points",
+                    )
+                )
+                or state.current_chip_confirmed
+                or any(p.selling_price_units is not None for p in state.picks)
+            )
+        ):
+            raise ValueError("Explicit new-gameweek review required for private confirmations")
         if state.team_id != team_id or state.data_mode != old.data_mode:
             raise ValueError("Team identity and data mode cannot change")
         current = current_data(state.data_mode)
         if state.snapshot_id != current["snapshot_id"]:
             raise Conflict("Correction must use current snapshot")
+        if state.data_mode == "live" and state.next_event != current["next_event"]:
+            raise Conflict(
+                "Correction must review the current gameweek and private financial state"
+            )
         problems = validate_squad(state, [Player.model_validate(p) for p in current["players"]])
         if problems:
             raise ValueError("; ".join(problems))
@@ -470,6 +506,48 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
     def project(body: ProjectionRequest) -> JobResponse:
         return job_response(queue.enqueue("projection", body.model_dump()))
 
+    @app.post(prefix + "/projections/bundles", status_code=201)
+    def serving_bundle(body: ServingBundleRequest) -> dict[str, Any]:
+        from fpl_app.models.router import create_serving_bundle
+
+        state, _ = input_state(database, body.team_id)
+        return create_serving_bundle(database, state, body.collection_id, body.artifact_id)
+
+    @app.post(prefix + "/data/collections", response_model=JobResponse, status_code=202)
+    def collect(body: CollectionRequest) -> JobResponse:
+        return job_response(queue.enqueue("collection", body.model_dump()))
+
+    @app.get(prefix + "/data/collections/{collection_id}")
+    def collection(collection_id: str) -> dict[str, Any]:
+        from fpl_app.providers.collection import load_collection
+
+        return load_collection(database, collection_id)
+
+    @app.get(prefix + "/data/collections")
+    def collections() -> dict[str, Any]:
+        return {
+            "collections": [
+                {
+                    "collection_id": c["collection_id"],
+                    "captured_at": c["captured_at"],
+                    "actual_deadline": c.get("actual_deadline"),
+                    "player_count": len(c.get("player_ids", [])),
+                }
+                for c in database.list("football_collection")
+            ]
+        }
+
+    @app.get(prefix + "/social/status")
+    def social_status() -> dict[str, Any]:
+        from fpl_app.social.providers import RedditAdapter, XAdapter
+
+        return {
+            "providers": [a.status().model_dump() for a in (RedditAdapter(), XAdapter())],
+            "points_adjustment": 0,
+            "extraction_status": "offline_experimental",
+            "accuracy_benchmark": None,
+        }
+
     @app.get(prefix + "/projections/runs/{run_id}", response_model=ProjectionRun)
     def get_projection(run_id: str) -> ProjectionRun:
         return ProjectionRun.model_validate(database.get("projection", run_id))
@@ -483,7 +561,7 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
         run = get_projection(body.projection_run_id)
         return select_lineup(
             state,
-            [Player.model_validate(p) for p in data["players"]],
+            projection_players(state, data, run),
             run.projections,
             state.next_event,
         )
@@ -553,7 +631,7 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
         errors = validate_plan(
             plan,
             state,
-            [Player.model_validate(p) for p in data["players"]],
+            projection_players(state, data, run),
             run,
             request.settings,
             recommendation.baseline_plan,
