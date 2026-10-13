@@ -97,3 +97,43 @@ def test_liquidation_budget_preserves_sale_profit_and_move_cap_locks_exclusions(
     assert list(
         complete_chip_squads(state, players, run, capped, monotonic() + 5, 0, "wildcard")
     ) == [{p.player_id for p in state.picks}]
+
+
+def test_sparse_multilead_ownership_xi_captain_matches_exhaustive_frozen_squads():
+    from itertools import combinations, product
+
+    from fpl_app.domain.plans import _week
+    from fpl_app.domain.rules import RULES
+    from fpl_app.optimisation.planner import _highs_candidate
+
+    state, players, run = funding_fixture(2)
+    state.chips = {"wildcard_1": True}
+    for row in run.projections:
+        if row.player_id == 17:
+            row.expected_points = 3 if row.event == 8 else 40
+    settings = Settings(horizon_events=2, chip_policy="wildcard")
+    groups = [
+        list(combinations([p.player_id for p in players if p.position == pos], count))
+        for pos, count in enumerate(RULES.squad_counts, 1)
+    ]
+    scores = []
+    for groups_chosen in product(*groups):
+        selected = {i for group in groups_chosen for i in group}
+        try:
+            first, ledger = apply_transfers(
+                state, players, funding_moves(state, players, selected), "wildcard"
+            )
+        except ValueError:
+            continue
+        first_points = _week(first, players, run, "wildcard", ledger)["net_points"]
+        second_points = _week(advance_event(first), players, run, None, [])["net_points"]
+        scores.append(first_points + second_points)
+    moves, metadata = _highs_candidate(state, players, run, settings, 5, "wildcard", 15)
+    first, ledger = apply_transfers(state, players, moves, "wildcard")
+    actual = (
+        _week(first, players, run, "wildcard", ledger)["net_points"]
+        + _week(advance_event(first), players, run, None, [])["net_points"]
+    )
+    assert actual == max(scores)
+    assert metadata["candidate_status"] == 0
+    assert "candidate only" in metadata["candidate_gap_scope"]

@@ -185,6 +185,7 @@ def _highs_candidate(
     """Frozen ownership candidate with legal XI/captain per event, not a horizon policy."""
     import numpy as np
     from scipy.optimize import Bounds, LinearConstraint, milp
+    from scipy.sparse import coo_matrix
 
     owned = {p.player_id: p for p in state.picks}
     by_id = player_map(players)
@@ -193,13 +194,17 @@ def _highs_candidate(
     horizon = min(horizon, 39 - state.next_event)
     size = n * (1 + 2 * horizon)
     objective = np.zeros(size)
-    rows, lower, upper = [], [], []
+    matrix_rows: list[int] = []
+    matrix_columns: list[int] = []
+    matrix_values: list[float] = []
+    lower, upper = [], []
 
     def constraint(terms, lo, hi):
-        row = np.zeros(size)
+        row_index = len(lower)
         for index, value in terms:
-            row[index] = value
-        rows.append(row)
+            matrix_rows.append(row_index)
+            matrix_columns.append(index)
+            matrix_values.append(value)
         lower.append(lo)
         upper.append(hi)
 
@@ -245,7 +250,13 @@ def _highs_candidate(
         objective,
         integrality=np.ones(size),
         bounds=Bounds(bound_lo, bound_hi),
-        constraints=LinearConstraint(np.array(rows), np.array(lower), np.array(upper)),
+        constraints=LinearConstraint(
+            coo_matrix(
+                (matrix_values, (matrix_rows, matrix_columns)), shape=(len(lower), size)
+            ).tocsc(),
+            np.array(lower),
+            np.array(upper),
+        ),
         options={"time_limit": max(0.001, min(remaining, 1.0))},
     )
     metadata = {
