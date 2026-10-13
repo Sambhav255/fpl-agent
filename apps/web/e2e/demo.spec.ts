@@ -7,7 +7,13 @@ test("synthetic demo → replacement and financial corrections → validated pla
 }) => {
   test.setTimeout(120000);
   await page.goto("/");
+  const demoLoaded = Promise.all(
+    ["/players?data_mode=demo", "/status?data_mode=demo", "/plans", "/teams/0/readiness"].map(
+      (path) => page.waitForResponse((response) => response.url().includes(`/api/v1${path}`)),
+    ),
+  );
   await page.getByRole("button", { name: "Explore synthetic demo" }).click();
+  await demoLoaded;
   await expect(page.getByRole("status").filter({ hasText: "Synthetic demo loaded" })).toBeVisible();
   await expect(page.getByText("SYNTHETIC DEMO", { exact: true })).toBeVisible();
   const settingsLoaded = page.waitForResponse(
@@ -182,7 +188,13 @@ test("stale readiness conflict still permits latest catalogue corrections and re
   );
   await page.goto("/settings");
   await page.evaluate(() => localStorage.setItem("touchline.team", "0"));
+  const workspaceLoaded = Promise.all(
+    ["/players?data_mode=demo", "/status?data_mode=demo", "/plans", "/teams/0/readiness"].map(
+      (path) => page.waitForResponse((response) => response.url().includes(`/api/v1${path}`)),
+    ),
+  );
   await page.reload();
+  await workspaceLoaded;
   await expect(page.getByRole("heading", { name: "Manager corrections" })).toBeVisible();
   await expect(
     page.getByText("Manager state uses an older snapshot.", { exact: false }),

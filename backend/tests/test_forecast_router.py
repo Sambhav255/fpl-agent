@@ -18,11 +18,12 @@ from fpl_app.storage import Store
 
 
 @pytest.fixture
-def configured(tmp_path, monkeypatch):
+def configured(tmp_path, monkeypatch, request):
     from fpl_app.models import router
 
     monkeypatch.setattr(router, "data_dir", lambda: tmp_path)
     store = Store(f"sqlite:///{tmp_path}/app.sqlite")
+    final_events = getattr(request, "param", 5)
     deadline = (datetime.now(UTC) + timedelta(days=4)).isoformat()
     elements = [
         {
@@ -51,7 +52,7 @@ def configured(tmp_path, monkeypatch):
                 "deadline_time": f"2026-08-{event * 5:02d}T00:00:00Z",
                 "data_checked": True,
             }
-            for event in range(1, 6)
+            for event in range(1, final_events + 1)
         ]
         + [{"id": 7, "deadline_time": deadline, "is_next": True}],
     }
@@ -66,7 +67,7 @@ def configured(tmp_path, monkeypatch):
             "kickoff_time": f"2026-08-{event * 5:02d}T02:00:00Z",
             "finished_provisional": True,
         }
-        for event in range(1, 6)
+        for event in range(1, final_events + 1)
     ]
     fixtures += [
         {
@@ -100,7 +101,7 @@ def configured(tmp_path, monkeypatch):
                         "total_points": event + identifier,
                         "kickoff_time": f"2026-08-{event * 5:02d}T02:00:00Z",
                     }
-                    for event in range(1, 6)
+                    for event in range(1, final_events + 1)
                 ],
                 "fixtures": [],
                 "history_past": [],

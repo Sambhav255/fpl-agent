@@ -1,0 +1,3 @@
+# Preserved initial experiment
+
+This immutable report used the initial667-player capture while GW6 remained preliminary. Its CatBoost test coveredGW5; the separate current refit usedGW1–5. It is preserved as an earlier data revision, not described as the latest provider state. A later actual provider check finalizedGW6, causing a new capture, two-origin evaluation, refit and serving verification. Read [the finalized continuation](../2026-10-13-real-football-finalized/README.md) for current results, limits and reproduction commands. The original [manifest](manifest.json) and bound report bytes remain unchanged.

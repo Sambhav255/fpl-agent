@@ -339,7 +339,12 @@ def _football_bundle(
         or reference["horizon_events"] != 1
     ):
         raise ValueError("Unsupported live football regime or horizon")
-    directory = artifact_path("football_catboost", reference["artifact_id"])
+    if bundle.get("input_bundle_id"):
+        from .advanced_serving import input_path
+
+        directory = input_path(bundle["input_bundle_id"])
+    else:
+        directory = artifact_path("football_catboost", reference["artifact_id"])
     hashes = bundle.get("files", {})
     if not hashes:
         raise ValueError("Serving bundle file checksums required")
@@ -420,7 +425,9 @@ def _football_bundle(
                 for i in collection["player_ids"]
             ],
         }
-    _, expected, expected_mappings = collection_frames(collection, metadata["rules_version"])
+    _, expected, expected_mappings = collection_frames(
+        collection, metadata["rules_version"], include_training=False
+    )
     features = pd.read_parquet(directory / names[0])
     mappings = pd.read_parquet(directory / names[1])
     universe = bundle.get("player_ids")
@@ -637,7 +644,11 @@ def football_provider(
 
 
 def create_serving_bundle(
-    store: Store, state: ManagerState, collection_id: str, artifact_id: str
+    store: Store,
+    state: ManagerState,
+    collection_id: str,
+    artifact_id: str,
+    input_id: str | None = None,
 ) -> dict[str, Any]:
     """Register only a fully validated immutable bundle; never edit manager state.
 
@@ -660,6 +671,10 @@ def create_serving_bundle(
             "manifest_sha256": manifest_sha,
         }
     )
+    if input_id is not None:
+        from .advanced_serving import input_path
+
+        directory = input_path(input_id)
     origin_path = directory / "forecast_origin.json"
     if origin_path.is_symlink() or not origin_path.is_file():
         raise ValueError("Unsafe or missing serving origin file")
@@ -678,6 +693,9 @@ def create_serving_bundle(
             "Manager state is stale; review current event and private state before serving"
         )
     bundle = {
+        "provider": "football_catboost",
+        "team_id": state.team_id,
+        "horizon_events": 1,
         "snapshot_id": state.snapshot_id,
         "artifact_id": artifact_id,
         "manifest_sha256": manifest_sha,
@@ -692,7 +710,10 @@ def create_serving_bundle(
         "origin_file": "forecast_origin.json",
         "files": hashes,
     }
+    if input_id is not None:
+        bundle["input_bundle_id"] = input_id
     identifier = "football-" + fingerprint(bundle)[:32]
+    bundle["serving_bundle_id"] = identifier
 
     # Validation reads a bundle from Store. Use an in-memory overlay until it passes.
     class CandidateStore:

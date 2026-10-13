@@ -1,0 +1,133 @@
+{
+  "ablations": {
+    "congestion": [
+      "position",
+      "lead",
+      "points_5",
+      "history_count",
+      "opponent",
+      "home",
+      "team_for_5",
+      "team_against_5",
+      "opponent_for_5",
+      "opponent_against_5",
+      "minutes_5",
+      "appearance_5",
+      "starts_5",
+      "starts_missing",
+      "rest_days",
+      "fixtures_next_7d"
+    ],
+    "fixture_team_strength": [
+      "position",
+      "lead",
+      "points_5",
+      "history_count",
+      "opponent",
+      "home",
+      "team_for_5",
+      "team_against_5",
+      "opponent_for_5",
+      "opponent_against_5"
+    ],
+    "minutes_starts": [
+      "position",
+      "lead",
+      "points_5",
+      "history_count",
+      "opponent",
+      "home",
+      "team_for_5",
+      "team_against_5",
+      "opponent_for_5",
+      "opponent_against_5",
+      "minutes_5",
+      "appearance_5",
+      "starts_5",
+      "starts_missing"
+    ],
+    "points_position": [
+      "position",
+      "lead",
+      "points_5",
+      "history_count"
+    ],
+    "role_permitted_advanced": [
+      "position",
+      "lead",
+      "points_5",
+      "history_count",
+      "opponent",
+      "home",
+      "team_for_5",
+      "team_against_5",
+      "opponent_for_5",
+      "opponent_against_5",
+      "minutes_5",
+      "appearance_5",
+      "starts_5",
+      "starts_missing",
+      "rest_days",
+      "fixtures_next_7d",
+      "club",
+      "xg_90",
+      "xa_90",
+      "saves_90"
+    ]
+  },
+  "config": {
+    "depth": 5,
+    "iterations": 180,
+    "learning_rate": 0.06,
+    "loss_function": "RMSE",
+    "random_seed": 43,
+    "thread_count": 2
+  },
+  "historical_label_available": "fixture_kickoff_plus_7d_assumed",
+  "hyperparameter_search": false,
+  "maximum_lead": 8,
+  "origin": "event_earliest_kickoff_minus_48h_assumed",
+  "partitions": {
+    "calibration": [
+      22,
+      23,
+      24
+    ],
+    "test": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "train": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "validation": [
+      19,
+      20,
+      21
+    ]
+  },
+  "player_universe": "seen_in_origin_usable_history; future_joins_excluded",
+  "schema_version": 1,
+  "selected_method": "role_permitted_advanced"
+}

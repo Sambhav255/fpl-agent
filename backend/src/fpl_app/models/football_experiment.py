@@ -146,7 +146,8 @@ def build_archive_multilead(csv_path: Path, maximum_lead: int = 8) -> pd.DataFra
     origins = raw.groupby("event").kickoff.min() - pd.Timedelta(hours=48)
     schedule = raw.drop_duplicates(["club", "fixture_id"])
     rows: list[dict[str, Any]] = []
-    for origin_event, origin in origins.items():
+    for origin_key, origin in origins.items():
+        origin_event = int(str(origin_key))
         usable = raw[(raw.available_at <= origin) & (raw.event < origin_event)]
         if usable.empty:
             continue

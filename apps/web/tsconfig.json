@@ -40,7 +40,13 @@
     ".next-learning-complete/types/**/*.ts",
     ".next-learning-complete/dev/types/**/*.ts",
     ".next-learning-final-verified/types/**/*.ts",
-    ".next-learning-final-verified/dev/types/**/*.ts"
+    ".next-learning-final-verified/dev/types/**/*.ts",
+    ".next-real-research/types/**/*.ts",
+    ".next-real-research/dev/types/**/*.ts",
+    ".next-real-positive/types/**/*.ts",
+    ".next-real-positive/dev/types/**/*.ts",
+    ".next-real-finalized/types/**/*.ts",
+    ".next-real-finalized/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

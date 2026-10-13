@@ -41,3 +41,7 @@ The supplied root `fpl_learning_upgrade/` package moved to [reference/supplied/f
 [History](history/README.md) retains all preceding status narratives, with Markdown links rebased to their new location. Earlier test counts remain historical evidence and are not newly run checks. A separately described Codex progress tracker is absent from this checkout; its historical description does not imply an implemented package here.
 
 Dependencies, `.next*` builds, caches, test output, private notes, environment files and runtime data are deliberately outside the source organisation. They may be used by running services and were not moved or deleted. Git's existing unrelated edits/deletions remain intact.
+
+## Real experiment entrypoints
+
+`train_current_football.py` evaluates retained official labels and refits separately; `run_football_experiment.py` runs registered origin-frozen archive ablations/direct leads; `release_football_shadow.py` builds immutable football/baseline/ensemble inputs and release packets; `report_real_experiments.py` publishes checksum-bound public evidence. `run_historical_strategy.py` generates real reconstructed episodes and fits/evaluates five-seed challengers. `benchmark_season_planning.py` and `benchmark_historical_planning.py` compare bounded planners on frozen supported paths. All remain under `scripts/`. Runtime artifacts stay ignored under `data/research/`; reports are in [experiments/2026-10-13-real-football-finalized](experiments/2026-10-13-real-football-finalized/README.md).

@@ -1,0 +1,79 @@
+{
+  "actual_artifacts": {
+    "archive": {
+      "artifact_id": "20261013T000100-c09c405d",
+      "manifest_sha256": "0b4ffc86a0a8c31c245102b1c1135680ead23145e3e0baa37d5f0d37cbc9d752"
+    },
+    "current": {
+      "artifact_id": "20261013T000626-5724a5c9",
+      "manifest_sha256": "9f3a55cbc520a98e8a2ca652f7306dd122cd14009263e527fbfe71a06c338731",
+      "payloads": {
+        "appearance.cbm": "5e24f623c0ddf054fb8549206c5a70f90662a27ce39bb6ddd7a1b7e307782072",
+        "calibration.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "evaluation.json": "1a14326c896612a5bf30eee839b15dffa25b1b5f019668c1f6792c09c7daa610",
+        "features.parquet": "020ed44a8adc911e306a4a738ea1006f2b3fafea3274c221c0581d5a28f1c248",
+        "mappings.parquet": "6f58fe3bceeb99e015fcd050445f73b12504e727f95f449ea6f4a1acfb37629b",
+        "minutes.cbm": "485d919d300050b41e8bc2dbf6fbdde3c2eb5403fedb60899cdfe0ef363fb7d3",
+        "points.cbm": "1807e6d9e33f175272878f6cc04514f22ad5e020e6e5aec839234846139662cd",
+        "q10.cbm": "72977a24482965bbb2ce02eb38ae65c46121a9e1b98d5802a9903e62527e6f1d",
+        "q50.cbm": "b97617ece769304d6be6297aaf10ac83e02a40d3604c734af25dde8008c5f8ea",
+        "q90.cbm": "73828136e35ce9634c7e3f70639583eb0512c4f02b68735cc437a9f94f5d9de4",
+        "sixty.cbm": "18bd5f1e35d1782aa80a4c1155d300dca999c44702e9e44956e7d3c5642db34a",
+        "start.cbm": "e5fa16b172fab79645e907c0c7ab24951e204d149da16a71788f63cc2b1acba8"
+      }
+    },
+    "rl": {
+      "artifact_id": "maskable_ppo/1989674969b5401db4b0cdd8d1cdec03",
+      "manifest_sha256": "fbe6586a564c49543d81fb6298ae24632d59874aad25705f0ba128466e54cba7"
+    }
+  },
+  "champions": {
+    "football": "baseline",
+    "strategy": "numerical_planner"
+  },
+  "collection_id": "79bdde73593a4a379808a95977e977be",
+  "collection_sha256": "f4a005f15217784e5f7ac00e7f8b085a94a33610c8061f3b0024e06d9eadcbaf",
+  "configuration": {
+    "current": {
+      "depth": 5,
+      "early_stopping_rounds": 25,
+      "iterations": 180,
+      "learning_rate": 0.06,
+      "loss_function": "RMSE",
+      "random_seed": 43,
+      "thread_count": 2
+    },
+    "current_feature_version": "football-asof-v1",
+    "current_mapping_version": "season-scoped-explicit-v1",
+    "current_rules": "fpl-2026-27"
+  },
+  "files": {
+    "archive-evaluation.json": "2c7df663f405f2a5eb59cae30602863356b1fdd43cbff8301b25602cec65eac1",
+    "archive-protocol.json": "5e46a399b4c52a8c2e0450add2a28ef7810d63bd6e46fcd0d13bf514c2a30d4c",
+    "current-evaluation.json": "1a14326c896612a5bf30eee839b15dffa25b1b5f019668c1f6792c09c7daa610",
+    "integration.json": "3f5f10b8fa7aac5d5b12e5b681ada171d3f51cc7914f04a5a88f8862117a6da0",
+    "planning.json": "059ab69eac8f2f5216788edf612a91aa4cd1f3b79d053d6e219357ff3bb497c1",
+    "rl-evaluation.json": "9a0de399041980165632ea31476cf74f8dc107dbc7ca332000fede6b058cb595",
+    "sources.json": "02aa50e178ce22230cbc3e2611deb8fcbe1f573e3e9341ef7a6eb98afc18f675"
+  },
+  "produced_at": "2026-10-13T21:28:55.654247+00:00",
+  "real_vs_synthetic": {
+    "football_labels": "retained actual official and pinned archive results",
+    "future_serving": "actual pre-deadline shadow",
+    "historical_features": "explicit reconstructed assumptions",
+    "starting_squads_finances": "hypothetical paper portfolios; no actual manager inputs",
+    "strict_prospective_performance": "unavailable until future finalized labels"
+  },
+  "schema_version": 1,
+  "sources_sha256": "fa54204d00b91f06fedf6e522782179c0cb3be134afe548eacd40362ad63776f",
+  "timing": {
+    "actual_sources_available_at": "2026-10-12T23:59:36.855454+00:00",
+    "archive_historical_labels": "kickoff+7days assumed",
+    "archive_origins": "earliest event kickoff minus48hours assumed",
+    "capture_completed_at": "2026-10-12T23:59:37.776718+00:00",
+    "current_fit_available_at": "2026-10-13T00:06:32.161868+00:00",
+    "current_historical_labels": "kickoff+1day assumed; original publication unverified",
+    "preliminary_targets_excluded": true,
+    "rl_historical_labels": "kickoff+27hours assumed"
+  }
+}

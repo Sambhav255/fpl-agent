@@ -1,0 +1,37 @@
+{
+  "blend": {
+    "event_mean_spearman": 0.6455247682725482,
+    "mae": 1.2929361970651767,
+    "n": 1334,
+    "rmse": 2.191411046488719
+  },
+  "distribution_metrics": null,
+  "individuals": {
+    "app_baseline_reconstructed": {
+      "event_mean_spearman": 0.5486409828932141,
+      "mae": 1.8419661438368595,
+      "n": 1334,
+      "rmse": 2.3840777402431885
+    },
+    "football_catboost": {
+      "event_mean_spearman": 0.6455167272243199,
+      "mae": 1.2929361970651767,
+      "n": 1334,
+      "rmse": 2.191411046488719
+    }
+  },
+  "partition": "test",
+  "promotion": "retain_champion_pending_qualified_evidence",
+  "test_origin_count": 2,
+  "validation": {
+    "activation_eligible": false,
+    "best_individual_mse": 5.178857409203037,
+    "status": "evaluated",
+    "validation_mse": 5.1788574092030375,
+    "warning": "Validation fit only; held-out evaluation still required",
+    "weights": {
+      "app_baseline_reconstructed": 5.551115123125783e-17,
+      "football_catboost": 1.0
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "actual_manager": false,
+  "browser_projects_passed": [
+    "chromium",
+    "mobile"
+  ],
+  "champion_promoted": false,
+  "hypothetical_portfolio": true,
+  "optional_libraries_absent": [
+    "torch",
+    "gymnasium",
+    "pymc",
+    "pytorch_forecasting"
+  ],
+  "paper_journals": [
+    {
+      "deadline": "2026-10-17T10:00:00Z",
+      "decision_id": "2c74318149ae716eb8ae782cfc1c5f5350011b45edfce1f3af408fe18fdc4016",
+      "event": 7,
+      "evidence_mode": "prospective_shadow",
+      "execution_status": "execution_unknown",
+      "frozen_at": "2026-10-13T21:40:25.578543+00:00"
+    }
+  ],
+  "rows": [
+    {
+      "family": "ensemble",
+      "job_id": "41de37bf110e4a64ae7060682cdb2d2c",
+      "projection_run_id": "ensemble-10c76cb67ab8e81ec54f9fef",
+      "recommendation_id": "8d367437-bc02-40ba-8334-aa9659eaea96",
+      "validated_plans": 4,
+      "validation_errors": []
+    }
+  ],
+  "state_fingerprint": "c472ec6ed28a5909b71269c43b42d78c58d13e0fe81b1ae3a40f120dcfcf944c",
+  "story": "retained real sources -> finalized revision -> real fit -> immutable release -> API queued worker -> production browser means -> independent plan validation -> predeadline paper journal",
+  "verified_at": "2026-10-13T21:46:41.722245+00:00"
+}

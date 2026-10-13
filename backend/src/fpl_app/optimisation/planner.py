@@ -181,6 +181,8 @@ def _highs_candidate(
     remaining: float,
     chip: str | None,
     max_moves: int,
+    *,
+    candidate_time_limit: float = 1.0,
 ) -> tuple[list[dict[str, int]], dict[str, Any]]:
     """Frozen ownership candidate with legal XI/captain per event, not a horizon policy."""
     import numpy as np
@@ -197,7 +199,8 @@ def _highs_candidate(
     matrix_rows: list[int] = []
     matrix_columns: list[int] = []
     matrix_values: list[float] = []
-    lower, upper = [], []
+    lower: list[float] = []
+    upper: list[float] = []
 
     def constraint(terms, lo, hi):
         row_index = len(lower)
@@ -257,7 +260,7 @@ def _highs_candidate(
             np.array(lower),
             np.array(upper),
         ),
-        options={"time_limit": max(0.001, min(remaining, 1.0))},
+        options={"time_limit": max(0.001, min(remaining, candidate_time_limit))},
     )
     metadata = {
         "engine": "scipy.milp/HiGHS",

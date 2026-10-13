@@ -1,0 +1,3495 @@
+{
+  "actual_seasons": [
+    "2026/27"
+  ],
+  "distinct_test_paths": 1,
+  "episodes": [
+    {
+      "episode_id": "test-paper-0",
+      "fitted_q": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.019658625009469688,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.00021129200467839837,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.00010437497985549271,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "greedy": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 1.9235817919834517,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 4.2625004425644875e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 2.087498432956636e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "keep": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 2.7831231669988483,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 8.750066626816988e-07,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.2919772416353226e-06,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "menu_planner": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.019192874984582886,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.762501779012382e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.0415998985990882e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "numerical_planner": {
+        "episode_seconds": 0.4560416250023991,
+        "final_state": {
+          "bank_units": 83,
+          "chips": {
+            "bench_boost_1": false,
+            "bench_boost_2": false,
+            "free_hit_1": false,
+            "free_hit_2": false,
+            "triple_captain_1": false,
+            "triple_captain_2": false,
+            "wildcard_1": false,
+            "wildcard_2": false
+          },
+          "club_limit_exception": false,
+          "confirmed_hit_points": 0,
+          "current_chip": null,
+          "current_chip_confirmed": true,
+          "data_mode": "live",
+          "event_start_bank_units": 103,
+          "event_start_picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-277",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 277,
+              "position": 10,
+              "purchase_price_units": 40,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "financial_confirmed_at": null,
+          "financial_provenance": {
+            "all": "paper initial purchase; not actual manager state"
+          },
+          "free_transfers_at_event_start": 1,
+          "next_event": 5,
+          "persistent_picks": null,
+          "picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "c86eec12-3ee7-40a8-8c1b-17e87648bdfb",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 388,
+              "position": 10,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "previous_free_hit_event": null,
+          "public_source_event": null,
+          "season": "2026/27",
+          "snapshot_id": "reconstructed-f4a005f15217-5",
+          "state_version": 1,
+          "team_id": 1,
+          "transfer_ledger": [
+            {
+              "bank_units": 103,
+              "event": 4,
+              "in": 8,
+              "out": 10,
+              "purchase_units": 57,
+              "sale_units": 55
+            },
+            {
+              "bank_units": 83,
+              "event": 5,
+              "in": 388,
+              "out": 277,
+              "purchase_units": 60,
+              "sale_units": 40
+            }
+          ],
+          "transfers_made_this_event": 1,
+          "warnings": []
+        },
+        "forecast_net_points": 103.01080742990895,
+        "legal": true,
+        "limitations": [
+          "Only the first planned event executes; subsequent events replan from their own origins",
+          "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+          "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
+          "Full supplied MatchStats required; missing statistics are not reconstructed",
+          "No rank or realistic historical financial coverage claim"
+        ],
+        "realised_net_points": 101,
+        "rows": [
+          {
+            "actions": [
+              {
+                "bank_units": 103,
+                "event": 4,
+                "in": 8,
+                "out": 10,
+                "purchase_units": 57,
+                "sale_units": 55
+              }
+            ],
+            "bank_units": 103,
+            "deadline": "2026-09-12T12:30:00Z",
+            "event": 4,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 50.51678866354568,
+            "forecast_path_net_points": 50.51678866354568,
+            "hits": 0,
+            "information_available_at": "2026-09-12T12:30:00Z",
+            "plan_input_fingerprint": "7029c238455f35fbf5fab7067a85bbde43584977a5408ea374d768906b6d080f",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-12T12:30:00Z",
+              "simulated_information_origin": "2026-09-12T12:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 64,
+            "scoring": {
+              "effective_captain": 572,
+              "points": 64,
+              "scoring_players": [
+                572,
+                279,
+                277,
+                8,
+                391,
+                115,
+                367,
+                154,
+                15,
+                165,
+                68
+              ],
+              "substitutions": [
+                {
+                  "in": 68,
+                  "out": 123
+                }
+              ]
+            },
+            "transfers": 1
+          },
+          {
+            "actions": [
+              {
+                "bank_units": 83,
+                "event": 5,
+                "in": 388,
+                "out": 277,
+                "purchase_units": 60,
+                "sale_units": 40
+              }
+            ],
+            "bank_units": 83,
+            "deadline": "2026-09-18T17:30:00Z",
+            "event": 5,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 52.49401876636327,
+            "forecast_path_net_points": 52.49401876636327,
+            "hits": 0,
+            "information_available_at": "2026-09-18T17:30:00Z",
+            "plan_input_fingerprint": "f92c2ac18e8103934f53509daf9a21691526e29cadedd128236c9096397e1759",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-18T17:30:00Z",
+              "simulated_information_origin": "2026-09-18T17:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 37,
+            "scoring": {
+              "effective_captain": 391,
+              "points": 37,
+              "scoring_players": [
+                572,
+                391,
+                115,
+                8,
+                388,
+                279,
+                68,
+                154,
+                367,
+                15,
+                26
+              ],
+              "substitutions": [
+                {
+                  "in": 15,
+                  "out": 123
+                },
+                {
+                  "in": 26,
+                  "out": 165
+                }
+              ]
+            },
+            "transfers": 1
+          }
+        ]
+      },
+      "paired_incremental_vs_menu_planner": -2.0,
+      "paired_incremental_vs_numerical_planner": -2.0,
+      "path_id": "official-2026/27-events-4-5",
+      "ppo": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.03172529200674035,
+        "invalid_accepted_actions": 0,
+        "net_points": 99.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.0016389999946113676,
+            "net_points": 59.0,
+            "semantic_action": "0a007780e2b486a7dce8a807e1cdb889835cc23fd9e9e3181db9fd19ff9c03d8"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.0008319159969687462,
+            "net_points": 40.0,
+            "semantic_action": "88ec76c09fd2d0a160a07c3dd5ce08940bc7e5a319f2077456a41837c5ae3400"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 40.0
+      },
+      "seed": 0
+    },
+    {
+      "episode_id": "test-paper-0",
+      "fitted_q": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.01927550000254996,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 9.83749923761934e-05,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 8.533301297575235e-05,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "greedy": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.019261375011410564,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.4834018656983972e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 9.29099041968584e-06,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "keep": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.018795125011820346,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 4.169996827840805e-07,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 3.340246621519327e-07,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "menu_planner": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.02171162498416379,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.300001167692244e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.2790987966582179e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "numerical_planner": {
+        "episode_seconds": 0.4560416250023991,
+        "final_state": {
+          "bank_units": 83,
+          "chips": {
+            "bench_boost_1": false,
+            "bench_boost_2": false,
+            "free_hit_1": false,
+            "free_hit_2": false,
+            "triple_captain_1": false,
+            "triple_captain_2": false,
+            "wildcard_1": false,
+            "wildcard_2": false
+          },
+          "club_limit_exception": false,
+          "confirmed_hit_points": 0,
+          "current_chip": null,
+          "current_chip_confirmed": true,
+          "data_mode": "live",
+          "event_start_bank_units": 103,
+          "event_start_picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-277",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 277,
+              "position": 10,
+              "purchase_price_units": 40,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "financial_confirmed_at": null,
+          "financial_provenance": {
+            "all": "paper initial purchase; not actual manager state"
+          },
+          "free_transfers_at_event_start": 1,
+          "next_event": 5,
+          "persistent_picks": null,
+          "picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "c86eec12-3ee7-40a8-8c1b-17e87648bdfb",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 388,
+              "position": 10,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "previous_free_hit_event": null,
+          "public_source_event": null,
+          "season": "2026/27",
+          "snapshot_id": "reconstructed-f4a005f15217-5",
+          "state_version": 1,
+          "team_id": 1,
+          "transfer_ledger": [
+            {
+              "bank_units": 103,
+              "event": 4,
+              "in": 8,
+              "out": 10,
+              "purchase_units": 57,
+              "sale_units": 55
+            },
+            {
+              "bank_units": 83,
+              "event": 5,
+              "in": 388,
+              "out": 277,
+              "purchase_units": 60,
+              "sale_units": 40
+            }
+          ],
+          "transfers_made_this_event": 1,
+          "warnings": []
+        },
+        "forecast_net_points": 103.01080742990895,
+        "legal": true,
+        "limitations": [
+          "Only the first planned event executes; subsequent events replan from their own origins",
+          "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+          "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
+          "Full supplied MatchStats required; missing statistics are not reconstructed",
+          "No rank or realistic historical financial coverage claim"
+        ],
+        "realised_net_points": 101,
+        "rows": [
+          {
+            "actions": [
+              {
+                "bank_units": 103,
+                "event": 4,
+                "in": 8,
+                "out": 10,
+                "purchase_units": 57,
+                "sale_units": 55
+              }
+            ],
+            "bank_units": 103,
+            "deadline": "2026-09-12T12:30:00Z",
+            "event": 4,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 50.51678866354568,
+            "forecast_path_net_points": 50.51678866354568,
+            "hits": 0,
+            "information_available_at": "2026-09-12T12:30:00Z",
+            "plan_input_fingerprint": "7029c238455f35fbf5fab7067a85bbde43584977a5408ea374d768906b6d080f",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-12T12:30:00Z",
+              "simulated_information_origin": "2026-09-12T12:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 64,
+            "scoring": {
+              "effective_captain": 572,
+              "points": 64,
+              "scoring_players": [
+                572,
+                279,
+                277,
+                8,
+                391,
+                115,
+                367,
+                154,
+                15,
+                165,
+                68
+              ],
+              "substitutions": [
+                {
+                  "in": 68,
+                  "out": 123
+                }
+              ]
+            },
+            "transfers": 1
+          },
+          {
+            "actions": [
+              {
+                "bank_units": 83,
+                "event": 5,
+                "in": 388,
+                "out": 277,
+                "purchase_units": 60,
+                "sale_units": 40
+              }
+            ],
+            "bank_units": 83,
+            "deadline": "2026-09-18T17:30:00Z",
+            "event": 5,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 52.49401876636327,
+            "forecast_path_net_points": 52.49401876636327,
+            "hits": 0,
+            "information_available_at": "2026-09-18T17:30:00Z",
+            "plan_input_fingerprint": "f92c2ac18e8103934f53509daf9a21691526e29cadedd128236c9096397e1759",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-18T17:30:00Z",
+              "simulated_information_origin": "2026-09-18T17:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 37,
+            "scoring": {
+              "effective_captain": 391,
+              "points": 37,
+              "scoring_players": [
+                572,
+                391,
+                115,
+                8,
+                388,
+                279,
+                68,
+                154,
+                367,
+                15,
+                26
+              ],
+              "substitutions": [
+                {
+                  "in": 15,
+                  "out": 123
+                },
+                {
+                  "in": 26,
+                  "out": 165
+                }
+              ]
+            },
+            "transfers": 1
+          }
+        ]
+      },
+      "paired_incremental_vs_menu_planner": -2.0,
+      "paired_incremental_vs_numerical_planner": -2.0,
+      "path_id": "official-2026/27-events-4-5",
+      "ppo": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.02076129100169055,
+        "invalid_accepted_actions": 0,
+        "net_points": 99.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.00044466700637713075,
+            "net_points": 59.0,
+            "semantic_action": "0a007780e2b486a7dce8a807e1cdb889835cc23fd9e9e3181db9fd19ff9c03d8"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.0004463750228751451,
+            "net_points": 40.0,
+            "semantic_action": "88ec76c09fd2d0a160a07c3dd5ce08940bc7e5a319f2077456a41837c5ae3400"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 40.0
+      },
+      "seed": 1
+    },
+    {
+      "episode_id": "test-paper-0",
+      "fitted_q": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.034755917004076764,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.0005129580094944686,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.00019225000869482756,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "greedy": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.03480212498106994,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 3.29169852193445e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 2.5084009394049644e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "keep": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.036165750003419816,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 7.920025382190943e-07,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.2500095181167126e-06,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "menu_planner": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.03101679202518426,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 2.9207993065938354e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 2.6792025892063975e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "numerical_planner": {
+        "episode_seconds": 0.4560416250023991,
+        "final_state": {
+          "bank_units": 83,
+          "chips": {
+            "bench_boost_1": false,
+            "bench_boost_2": false,
+            "free_hit_1": false,
+            "free_hit_2": false,
+            "triple_captain_1": false,
+            "triple_captain_2": false,
+            "wildcard_1": false,
+            "wildcard_2": false
+          },
+          "club_limit_exception": false,
+          "confirmed_hit_points": 0,
+          "current_chip": null,
+          "current_chip_confirmed": true,
+          "data_mode": "live",
+          "event_start_bank_units": 103,
+          "event_start_picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-277",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 277,
+              "position": 10,
+              "purchase_price_units": 40,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "financial_confirmed_at": null,
+          "financial_provenance": {
+            "all": "paper initial purchase; not actual manager state"
+          },
+          "free_transfers_at_event_start": 1,
+          "next_event": 5,
+          "persistent_picks": null,
+          "picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "c86eec12-3ee7-40a8-8c1b-17e87648bdfb",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 388,
+              "position": 10,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "previous_free_hit_event": null,
+          "public_source_event": null,
+          "season": "2026/27",
+          "snapshot_id": "reconstructed-f4a005f15217-5",
+          "state_version": 1,
+          "team_id": 1,
+          "transfer_ledger": [
+            {
+              "bank_units": 103,
+              "event": 4,
+              "in": 8,
+              "out": 10,
+              "purchase_units": 57,
+              "sale_units": 55
+            },
+            {
+              "bank_units": 83,
+              "event": 5,
+              "in": 388,
+              "out": 277,
+              "purchase_units": 60,
+              "sale_units": 40
+            }
+          ],
+          "transfers_made_this_event": 1,
+          "warnings": []
+        },
+        "forecast_net_points": 103.01080742990895,
+        "legal": true,
+        "limitations": [
+          "Only the first planned event executes; subsequent events replan from their own origins",
+          "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+          "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
+          "Full supplied MatchStats required; missing statistics are not reconstructed",
+          "No rank or realistic historical financial coverage claim"
+        ],
+        "realised_net_points": 101,
+        "rows": [
+          {
+            "actions": [
+              {
+                "bank_units": 103,
+                "event": 4,
+                "in": 8,
+                "out": 10,
+                "purchase_units": 57,
+                "sale_units": 55
+              }
+            ],
+            "bank_units": 103,
+            "deadline": "2026-09-12T12:30:00Z",
+            "event": 4,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 50.51678866354568,
+            "forecast_path_net_points": 50.51678866354568,
+            "hits": 0,
+            "information_available_at": "2026-09-12T12:30:00Z",
+            "plan_input_fingerprint": "7029c238455f35fbf5fab7067a85bbde43584977a5408ea374d768906b6d080f",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-12T12:30:00Z",
+              "simulated_information_origin": "2026-09-12T12:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 64,
+            "scoring": {
+              "effective_captain": 572,
+              "points": 64,
+              "scoring_players": [
+                572,
+                279,
+                277,
+                8,
+                391,
+                115,
+                367,
+                154,
+                15,
+                165,
+                68
+              ],
+              "substitutions": [
+                {
+                  "in": 68,
+                  "out": 123
+                }
+              ]
+            },
+            "transfers": 1
+          },
+          {
+            "actions": [
+              {
+                "bank_units": 83,
+                "event": 5,
+                "in": 388,
+                "out": 277,
+                "purchase_units": 60,
+                "sale_units": 40
+              }
+            ],
+            "bank_units": 83,
+            "deadline": "2026-09-18T17:30:00Z",
+            "event": 5,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 52.49401876636327,
+            "forecast_path_net_points": 52.49401876636327,
+            "hits": 0,
+            "information_available_at": "2026-09-18T17:30:00Z",
+            "plan_input_fingerprint": "f92c2ac18e8103934f53509daf9a21691526e29cadedd128236c9096397e1759",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-18T17:30:00Z",
+              "simulated_information_origin": "2026-09-18T17:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 37,
+            "scoring": {
+              "effective_captain": 391,
+              "points": 37,
+              "scoring_players": [
+                572,
+                391,
+                115,
+                8,
+                388,
+                279,
+                68,
+                154,
+                367,
+                15,
+                26
+              ],
+              "substitutions": [
+                {
+                  "in": 15,
+                  "out": 123
+                },
+                {
+                  "in": 26,
+                  "out": 165
+                }
+              ]
+            },
+            "transfers": 1
+          }
+        ]
+      },
+      "paired_incremental_vs_menu_planner": -5.0,
+      "paired_incremental_vs_numerical_planner": -5.0,
+      "path_id": "official-2026/27-events-4-5",
+      "ppo": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.03824449999956414,
+        "invalid_accepted_actions": 0,
+        "net_points": 96.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.0019317499827593565,
+            "net_points": 53.0,
+            "semantic_action": "353d80a29210391f48093a8ff84abdf4306c2e6612c1eea03c5515a78fd287a1"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.0009482089953962713,
+            "net_points": 43.0,
+            "semantic_action": "04b885b2c78e7f254c78c64e330bb94e2ee03084c381480a3e9c9be7c932e890"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 43.0
+      },
+      "seed": 2
+    },
+    {
+      "episode_id": "test-paper-0",
+      "fitted_q": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.022185957990586758,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.00014362498768605292,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.00011137500405311584,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "greedy": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.027627917006611824,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 2.0332983694970608e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 2.1208979887887836e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "keep": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.022873875015648082,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 6.250047590583563e-07,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 7.500057108700275e-07,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "menu_planner": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.02631870799814351,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.812499249354005e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.4209013897925615e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "numerical_planner": {
+        "episode_seconds": 0.4560416250023991,
+        "final_state": {
+          "bank_units": 83,
+          "chips": {
+            "bench_boost_1": false,
+            "bench_boost_2": false,
+            "free_hit_1": false,
+            "free_hit_2": false,
+            "triple_captain_1": false,
+            "triple_captain_2": false,
+            "wildcard_1": false,
+            "wildcard_2": false
+          },
+          "club_limit_exception": false,
+          "confirmed_hit_points": 0,
+          "current_chip": null,
+          "current_chip_confirmed": true,
+          "data_mode": "live",
+          "event_start_bank_units": 103,
+          "event_start_picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-277",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 277,
+              "position": 10,
+              "purchase_price_units": 40,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "financial_confirmed_at": null,
+          "financial_provenance": {
+            "all": "paper initial purchase; not actual manager state"
+          },
+          "free_transfers_at_event_start": 1,
+          "next_event": 5,
+          "persistent_picks": null,
+          "picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "c86eec12-3ee7-40a8-8c1b-17e87648bdfb",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 388,
+              "position": 10,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "previous_free_hit_event": null,
+          "public_source_event": null,
+          "season": "2026/27",
+          "snapshot_id": "reconstructed-f4a005f15217-5",
+          "state_version": 1,
+          "team_id": 1,
+          "transfer_ledger": [
+            {
+              "bank_units": 103,
+              "event": 4,
+              "in": 8,
+              "out": 10,
+              "purchase_units": 57,
+              "sale_units": 55
+            },
+            {
+              "bank_units": 83,
+              "event": 5,
+              "in": 388,
+              "out": 277,
+              "purchase_units": 60,
+              "sale_units": 40
+            }
+          ],
+          "transfers_made_this_event": 1,
+          "warnings": []
+        },
+        "forecast_net_points": 103.01080742990895,
+        "legal": true,
+        "limitations": [
+          "Only the first planned event executes; subsequent events replan from their own origins",
+          "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+          "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
+          "Full supplied MatchStats required; missing statistics are not reconstructed",
+          "No rank or realistic historical financial coverage claim"
+        ],
+        "realised_net_points": 101,
+        "rows": [
+          {
+            "actions": [
+              {
+                "bank_units": 103,
+                "event": 4,
+                "in": 8,
+                "out": 10,
+                "purchase_units": 57,
+                "sale_units": 55
+              }
+            ],
+            "bank_units": 103,
+            "deadline": "2026-09-12T12:30:00Z",
+            "event": 4,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 50.51678866354568,
+            "forecast_path_net_points": 50.51678866354568,
+            "hits": 0,
+            "information_available_at": "2026-09-12T12:30:00Z",
+            "plan_input_fingerprint": "7029c238455f35fbf5fab7067a85bbde43584977a5408ea374d768906b6d080f",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-12T12:30:00Z",
+              "simulated_information_origin": "2026-09-12T12:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 64,
+            "scoring": {
+              "effective_captain": 572,
+              "points": 64,
+              "scoring_players": [
+                572,
+                279,
+                277,
+                8,
+                391,
+                115,
+                367,
+                154,
+                15,
+                165,
+                68
+              ],
+              "substitutions": [
+                {
+                  "in": 68,
+                  "out": 123
+                }
+              ]
+            },
+            "transfers": 1
+          },
+          {
+            "actions": [
+              {
+                "bank_units": 83,
+                "event": 5,
+                "in": 388,
+                "out": 277,
+                "purchase_units": 60,
+                "sale_units": 40
+              }
+            ],
+            "bank_units": 83,
+            "deadline": "2026-09-18T17:30:00Z",
+            "event": 5,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 52.49401876636327,
+            "forecast_path_net_points": 52.49401876636327,
+            "hits": 0,
+            "information_available_at": "2026-09-18T17:30:00Z",
+            "plan_input_fingerprint": "f92c2ac18e8103934f53509daf9a21691526e29cadedd128236c9096397e1759",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-18T17:30:00Z",
+              "simulated_information_origin": "2026-09-18T17:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 37,
+            "scoring": {
+              "effective_captain": 391,
+              "points": 37,
+              "scoring_players": [
+                572,
+                391,
+                115,
+                8,
+                388,
+                279,
+                68,
+                154,
+                367,
+                15,
+                26
+              ],
+              "substitutions": [
+                {
+                  "in": 15,
+                  "out": 123
+                },
+                {
+                  "in": 26,
+                  "out": 165
+                }
+              ]
+            },
+            "transfers": 1
+          }
+        ]
+      },
+      "paired_incremental_vs_menu_planner": -3.0,
+      "paired_incremental_vs_numerical_planner": -3.0,
+      "path_id": "official-2026/27-events-4-5",
+      "ppo": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.020287291990825906,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.0005107499891892076,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.0004416659940034151,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "seed": 3
+    },
+    {
+      "episode_id": "test-paper-0",
+      "fitted_q": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.025107082998147234,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.00013662499259226024,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 9.816698729991913e-05,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "greedy": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.031394499994348735,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.937500201165676e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.8708000425249338e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "keep": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.030705582990776747,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 9.170034900307655e-07,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 8.749775588512421e-07,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "menu_planner": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.026277416007360443,
+        "invalid_accepted_actions": 0,
+        "net_points": 101.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 1.5416997484862804e-05,
+            "net_points": 64.0,
+            "semantic_action": "23d3c24ac9f93b254d91353766a0866c0b6742417c3a52c6c1936e93fe1cd8bc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 1.3499986380338669e-05,
+            "net_points": 37.0,
+            "semantic_action": "1e75358f82be1ccee6e937767a53849782bde5b876025b47beb2342194cffe70"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 37.0
+      },
+      "numerical_planner": {
+        "episode_seconds": 0.4560416250023991,
+        "final_state": {
+          "bank_units": 83,
+          "chips": {
+            "bench_boost_1": false,
+            "bench_boost_2": false,
+            "free_hit_1": false,
+            "free_hit_2": false,
+            "triple_captain_1": false,
+            "triple_captain_2": false,
+            "wildcard_1": false,
+            "wildcard_2": false
+          },
+          "club_limit_exception": false,
+          "confirmed_hit_points": 0,
+          "current_chip": null,
+          "current_chip_confirmed": true,
+          "data_mode": "live",
+          "event_start_bank_units": 103,
+          "event_start_picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-277",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 277,
+              "position": 10,
+              "purchase_price_units": 40,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "financial_confirmed_at": null,
+          "financial_provenance": {
+            "all": "paper initial purchase; not actual manager state"
+          },
+          "free_transfers_at_event_start": 1,
+          "next_event": 5,
+          "persistent_picks": null,
+          "picks": [
+            {
+              "acquisition_id": "567b73a4-6546-4264-a21f-904fea41e39c",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 8,
+              "position": 1,
+              "purchase_price_units": 57,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-15",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 15,
+              "position": 2,
+              "purchase_price_units": 66,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-26",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 26,
+              "position": 3,
+              "purchase_price_units": 75,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-68",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 68,
+              "position": 4,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-115",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 115,
+              "position": 5,
+              "purchase_price_units": 47,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-123",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 123,
+              "position": 6,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-154",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 154,
+              "position": 7,
+              "purchase_price_units": 96,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-165",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 165,
+              "position": 8,
+              "purchase_price_units": 77,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-249",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 249,
+              "position": 9,
+              "purchase_price_units": 55,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "c86eec12-3ee7-40a8-8c1b-17e87648bdfb",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 388,
+              "position": 10,
+              "purchase_price_units": 60,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "planned_acquisition",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-279",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 279,
+              "position": 11,
+              "purchase_price_units": 41,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-367",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 367,
+              "position": 12,
+              "purchase_price_units": 71,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-385",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 385,
+              "position": 13,
+              "purchase_price_units": 50,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-391",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 391,
+              "position": 14,
+              "purchase_price_units": 56,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            },
+            {
+              "acquisition_id": "paper-0-4-572",
+              "confirmed_at": null,
+              "is_captain": false,
+              "is_vice_captain": false,
+              "player_id": 572,
+              "position": 15,
+              "purchase_price_units": 46,
+              "selling_price_market_units": null,
+              "selling_price_provenance": "unknown",
+              "selling_price_units": null
+            }
+          ],
+          "previous_free_hit_event": null,
+          "public_source_event": null,
+          "season": "2026/27",
+          "snapshot_id": "reconstructed-f4a005f15217-5",
+          "state_version": 1,
+          "team_id": 1,
+          "transfer_ledger": [
+            {
+              "bank_units": 103,
+              "event": 4,
+              "in": 8,
+              "out": 10,
+              "purchase_units": 57,
+              "sale_units": 55
+            },
+            {
+              "bank_units": 83,
+              "event": 5,
+              "in": 388,
+              "out": 277,
+              "purchase_units": 60,
+              "sale_units": 40
+            }
+          ],
+          "transfers_made_this_event": 1,
+          "warnings": []
+        },
+        "forecast_net_points": 103.01080742990895,
+        "legal": true,
+        "limitations": [
+          "Only the first planned event executes; subsequent events replan from their own origins",
+          "Retained strict timestamps are local capture evidence, not external timestamp attestation",
+          "Reconstructed, synthetic and legacy assumed origins are not prospective evidence",
+          "Full supplied MatchStats required; missing statistics are not reconstructed",
+          "No rank or realistic historical financial coverage claim"
+        ],
+        "realised_net_points": 101,
+        "rows": [
+          {
+            "actions": [
+              {
+                "bank_units": 103,
+                "event": 4,
+                "in": 8,
+                "out": 10,
+                "purchase_units": 57,
+                "sale_units": 55
+              }
+            ],
+            "bank_units": 103,
+            "deadline": "2026-09-12T12:30:00Z",
+            "event": 4,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 50.51678866354568,
+            "forecast_path_net_points": 50.51678866354568,
+            "hits": 0,
+            "information_available_at": "2026-09-12T12:30:00Z",
+            "plan_input_fingerprint": "7029c238455f35fbf5fab7067a85bbde43584977a5408ea374d768906b6d080f",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-12T12:30:00Z",
+              "simulated_information_origin": "2026-09-12T12:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 64,
+            "scoring": {
+              "effective_captain": 572,
+              "points": 64,
+              "scoring_players": [
+                572,
+                279,
+                277,
+                8,
+                391,
+                115,
+                367,
+                154,
+                15,
+                165,
+                68
+              ],
+              "substitutions": [
+                {
+                  "in": 68,
+                  "out": 123
+                }
+              ]
+            },
+            "transfers": 1
+          },
+          {
+            "actions": [
+              {
+                "bank_units": 83,
+                "event": 5,
+                "in": 388,
+                "out": 277,
+                "purchase_units": 60,
+                "sale_units": 40
+              }
+            ],
+            "bank_units": 83,
+            "deadline": "2026-09-18T17:30:00Z",
+            "event": 5,
+            "evidence_mode": "historical_reconstructed",
+            "financial_coverage": "reconstructed_prior_history_prices_paper_purchase_basis",
+            "forecast_net_points": 52.49401876636327,
+            "forecast_path_net_points": 52.49401876636327,
+            "hits": 0,
+            "information_available_at": "2026-09-18T17:30:00Z",
+            "plan_input_fingerprint": "f92c2ac18e8103934f53509daf9a21691526e29cadedd128236c9096397e1759",
+            "planning_horizon_events": 1,
+            "provenance": {
+              "actual_prediction_origin": "2026-10-13T00:06:18.846079+00:00",
+              "simulated_fitting_labels_available_at": "2026-09-18T17:30:00Z",
+              "simulated_information_origin": "2026-09-18T17:30:00Z",
+              "verified": false
+            },
+            "realised_net_points": 37,
+            "scoring": {
+              "effective_captain": 391,
+              "points": 37,
+              "scoring_players": [
+                572,
+                391,
+                115,
+                8,
+                388,
+                279,
+                68,
+                154,
+                367,
+                15,
+                26
+              ],
+              "substitutions": [
+                {
+                  "in": 15,
+                  "out": 123
+                },
+                {
+                  "in": 26,
+                  "out": 165
+                }
+              ]
+            },
+            "transfers": 1
+          }
+        ]
+      },
+      "paired_incremental_vs_menu_planner": -3.0,
+      "paired_incremental_vs_numerical_planner": -3.0,
+      "path_id": "official-2026/27-events-4-5",
+      "ppo": {
+        "candidate_truncated_events": 2,
+        "episode_seconds": 0.03242050000699237,
+        "invalid_accepted_actions": 0,
+        "net_points": 98.0,
+        "rows": [
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 4,
+            "hits": 0,
+            "inference_seconds": 0.0008713330025784671,
+            "net_points": 59.0,
+            "semantic_action": "d57517a07e8d5c1c31a09959cce4be9c452cb5b1ca142cf48b99bfa79c07c0cc"
+          },
+          {
+            "candidate_count": 8,
+            "candidate_truncated": true,
+            "event": 5,
+            "hits": 0,
+            "inference_seconds": 0.0006597079918719828,
+            "net_points": 39.0,
+            "semantic_action": "61c5b7f0b96396715ba04128bd41b3eeaba2dc21cf955bea35625e111ebb3b08"
+          }
+        ],
+        "total_hits": 0,
+        "worst_event_net_points": 39.0
+      },
+      "seed": 4
+    }
+  ],
+  "independent_actual_seasons": 1,
+  "invalid_accepted_actions": 0,
+  "limitations": [
+    "Synthetic/reconstructed paths are research evidence, not live edge",
+    "Candidate menu and frozen-price hold continuation are bounded",
+    "Numerical planner may choose actions outside the bounded RL menu; same-menu comparator also reported",
+    "No hyperparameter tuning or winning-seed selection on held-out paths",
+    "Repeated starts and training seeds are not independent actual seasons; historical intervals unavailable"
+  ],
+  "paired_event_path_mean": -3.0,
+  "path_block_95_interval": null,
+  "promotion": "retain_champion_insufficient_prospective_evidence",
+  "seed_selection": "first seed preselected; all seeds reported; no test selection",
+  "seeds": [
+    {
+      "mean_incremental": -2.0,
+      "seed": 0
+    },
+    {
+      "mean_incremental": -2.0,
+      "seed": 1
+    },
+    {
+      "mean_incremental": -5.0,
+      "seed": 2
+    },
+    {
+      "mean_incremental": -3.0,
+      "seed": 3
+    },
+    {
+      "mean_incremental": -3.0,
+      "seed": 4
+    }
+  ],
+  "status": "evaluated_research",
+  "worst_paired_event_vs_numerical": -11.0
+}

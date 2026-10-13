@@ -1,31 +1,46 @@
 # Current verification evidence
 
-Updated 2026-10-12. Earlier stage narratives, commands and counts are preserved in [verification history](../history/VERIFICATION_2026-10-12.md). Current feature scope is in [implementation status](IMPLEMENTATION_STATUS.md) and [BUILD_STATUS](../BUILD_STATUS.md).
+Updated 2026-10-13. Read [BUILD_STATUS](../BUILD_STATUS.md), [implementation status](IMPLEMENTATION_STATUS.md) and [the immutable experiment report](../experiments/2026-10-13-real-football-finalized/README.md). Earlier counts are preserved in [verification history](../history/VERIFICATION_2026-10-12.md); they are not fresh results.
 
-## Last application implementation checks
+## Fresh locked verification
 
-| Check | Result |
+Actions run [38323280394](https://github.com/Sambhav255/fpl-agent/actions/runs/38323280394) used reviewed/current initial commit `dbc14d900acb5279586698120302cbf36391b119`. Its 401 backend passes/10 skips and14 CLI passes preceded an optional-Gym metadata annotation failure. The compatible explicit annotation fixed the typing issue. Initial clean-base reproduction passed401/10; the separate RL environment passed410/7. These were new executions, not inherited all-optional results.
+
+After integration and the additional producer/episode/chip regressions:
+
+| Check | Actual final result |
 | --- | --- |
-| Complete backend suite | 414 passed; 3 optional skips |
-| Root operator CLI tests | 14 passed |
-| Backend lint/format/types | Ruff passed; mypy 74 source files |
-| Frontend lint/format/types/build | Passed |
-| Frontend unit suite | 13 passed |
-| Production browser suite | 12 passed; 6 explicit personal-live-state skips |
-| Optional-library absence | API health, demo, baseline worker and strategy status passed with Gym/SB3/Torch/PyMC/ArviZ/Lightning blocked |
+| Clean locked base suite | 413 passed / 11 skips |
+| Clean locked RL suite | 429 passed / 7 skips |
+| Root CLI tests | 14 passed |
+| Ruff lint and format | Passed;120 backend files |
+| Mypy | Passed;78 source files in both environments, separate caches |
+| Frontend format/lint/types | Passed |
+| Frontend unit tests | 13 passed with one worker |
+| Production build | Passed;`.next-real-finalized` |
+| Actual production API/worker/browser | 14 passed / 6 explicit personal-state skips, desktop/mobile |
+| Independent real analysis replay | Four plans validated separately from actual worker publication |
 
-These checks preceded file organisation. The isolated browser flow on production3148/API8128 covered corrections → sequence analysis → visible limitations → save/reload → deadline freeze → journal selection/manual execution reporting, plus registry and shadow gates on desktop/mobile. The final run passed after correcting a test locator, displaying omitted backend warnings and awaiting successful save responses before UI assertions.
+Base skips three whole modules: Gymnasium environment(6 cases), policy learning(2) and historical adapters(7), counted as one skip each. RL enables those15 cases plus one Torch case. Seven shared Bayesian/TFT/opt-in cases remain skipped. Missing optional packages include platformdirs/xarray/pytorch-forecasting; no extras were installed merely to hide mypy. Both fresh environments retain the locked versions. The locked stack emits115 dependency deprecation warnings; no warning filters, mypy suppression or weakened assertions were added.
 
-## Evidence boundaries
+Frontend unit checks first hit two 5-second timeouts during concurrent load; the unchanged suite passed serially. Production browser checks first asserted while actual responses were loading; waits now bind the real workspace responses. The shadow selector is found by its accessible combobox name, avoiding nested option text changing label matching. No artificial response or checkpoint stub is used in the real-flow suite. An attempted stop of a browser PID was rejected by automatic review for insufficient ownership evidence; the run finished naturally. Later research API/worker restarts were authorized after session PID, command, cwd, port and isolated-database evidence established ownership. No personal process was terminated.
 
-- Seventeen advanced-serving contract tests cover API/worker/source/coverage/timing/publication fences, immutable qualification copies, actual authored NetCDF Bayesian sampling and genuinely validation-fitted authored ensemble blending. TFT serving prediction is mocked; separate real-library fit/save/reload tests use authored data.
-- Eleven journal bridge tests cover pre-deadline capture, late/mutated evidence, policy-specific seals, deletion and actual API → worker → freeze → seal → strict paper replay. Finalized outcome components remain caller-supplied; no real prospective benchmark is claimed.
-- A 700-player authored catalogue produced an independently validated two-event financial path. Two-replacement restrictions apply to large catalogues, including chip weeks; no global full-league optimum is certified.
-- Research policy/forecast checks and authored social labels test mechanics and installation, not live accuracy. Independent human review count remains zero.
-- Positive advanced real-data browser inference, personal live-state reconciliation and actual finalized prospective policy evaluation remain unavailable. Six browser tests explicitly require opted-in personal state.
+## Actual football evidence
 
-Local source/review/journal timestamps are consistency evidence, not external attestations. No account action, promotion, live ingestion, paid data or deployment occurred in the final implementation continuation.
+Validated official capture froze all667 bootstrap players and669 source receipts with at least250ms pacing. The first revision excluded667 preliminaryGW6 labels. A later provider check finalizedGW6; new capture completed2026-10-13T21:35:15Z with3,883 final fixture labels overGW1–6. Next official deadline isGW7,2026-10-17T10:00:00Z. Previous source/model/report bytes remain intact.
 
-## File organisation checks
+Chronological current-era CatBoost evaluation compares identical1,334 player-fixture rows overGW5–6 with app baseline, rolling points/minutes and training-only shrinkage comparators. Latest serving fitting is separate and follows evaluation. A real archive experiment registers five football feature groups, evaluates direct leads1–8 with origin-frozen covariates, purges partitions and saves/reloads actual CatBoost payloads. Test data does not select configuration or weights. Archive scoring/timing limitations prevent current-era serving. Current CatBoost supports one lead; six final current-era events do not meet TFT's eight-event chronological minimum.
 
-New organisation checks passed: 13 unchanged original file checksums, 130 maintained local documentation links, offline OpenAPI/TypeScript generation, exact OpenAPI equality to the runtime app, a 266-file source export with private/runtime folders excluded, 14 root CLI tests, generator Ruff lint/format, frontend lint/types/format and 13 frontend unit tests. `git diff --check` passed. The first generation attempt hit the sandboxed uv cache; using a temporary cache allowed the same command to run without environment changes. Domain behavior and runtime source paths did not change; the full numerical/model/browser suites were not rerun solely for these moves.
+Reproducible producers build immutable model/input packets, mappings and source receipts. Baseline/CatBoost ensemble means use genuine earlier held-out weights and later untouched tests. Registration, queued worker inference and the production browser displayed667 CatBoost and667 ensemble forecasts. Actual analysis and separate validation accepted four plans; a pre-deadlineGW7 paper journal was frozen with actual execution still unknown. API and worker ran in a clean base environment with Torch/Gym/PyMC/TFT absent, proving the baseline and real CatBoost path remain usable.
+
+Two planning matrices each cover36 roll/single/funding-pair/hit/Wildcard/Free Hit comparisons overfour/six/eight events. One uses actual current frozen baseline forecasts (future availability conditional); one uses actual evaluated archive multilead forecasts under explicitly different current financial rules. All chosen plans independently validate. Authored chip regressions separately verify full replacements, sale-profit budget, locks/exclusions/caps, inventory and Free Hit restoration. Sparse MILP parity is checked against enumeration; its certificate does not certify the full sequence. Global optimality is not claimed.
+
+Real reconstructed RL uses finalized official totals with explicit price/schedule/missingness coverage. Five fixedCPU seeds, developmentGW2–3/testGW4–5 and common paper starts compare PPO/fitted-Q/greedy/keep/same-menu and unrestricted planners. One actual season,320 training steps and two test events remain weak evidence. PPO loses on mean net points; numerical planner stays champion. No actual team exploration, winning-seed selection or independent-season interval.
+
+Historical label/schedule/role/price times remain assumptions. Actual future shadow capture is separate from strict prospective outcome evaluation, which cannot finish before future results. Bayesian/TFT real calibration/release qualification, independent social review and actual private state reconciliation remain gated. Detailed hashes, partitions, metrics by event/position/lead, uncertainty limits and commands are in [the report](../experiments/2026-10-13-real-football-finalized/README.md).
+
+## Reproduction and retained artifacts
+
+Use `UV_PROJECT_ENVIRONMENT=/private/tmp/fpl-research-base` and `.../fpl-research-rl` with `UV_CACHE_DIR=/private/tmp/fpl-research-uv-cache`; install `uv sync --locked --project backend` and the same command with `--extra rl`. From `backend`, run each interpreter's pytest/mypy, base Ruff and CLI tests as documented in the report. Frontend uses the existing npm scripts, serial Vitest and the final Playwright command with `REAL_SHADOW_TEAM_ID=2000000001` on production3162/API8162. The hypothetical portfolio is required; personal-state browser tests remain explicitly opted out.
+
+Ignored durable stores: `data/research/real-football-finalized-2026-10-13/` and `data/research/real-football-2026-10-13/`. SQLite copies use consistent backups; original personal storage is unchanged. Public report payloads are checksum-bound and contain only public football facts or explicitly hypothetical portfolios. No account actions, paid data, deployment, Git push or champion promotion occurred. Recheck process ownership before reuse; do not rely on past PIDs.

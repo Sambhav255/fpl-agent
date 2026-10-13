@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from uuid import uuid4
 
 import numpy as np
@@ -116,11 +117,14 @@ def fit_value(episodes, settings: Settings, *, k=32, iterations=4, ridge=1.0):
 
 
 def evaluate(env, chooser):
+    started = perf_counter()
     obs, info = env.reset(seed=0)
     rows = []
     while True:
         mask = env.action_masks()
+        decision_started = perf_counter()
         action = int(chooser(obs, mask))
+        inference_seconds = perf_counter() - decision_started
         if not mask[action]:
             raise ValueError("Policy selected an invalid action")
         obs, reward, terminated, truncated, info = env.step(action)
@@ -130,6 +134,9 @@ def evaluate(env, chooser):
                 "net_points": reward,
                 "hits": info["total_hits"],
                 "semantic_action": info["semantic_action"],
+                "candidate_count": len(info["candidate_ids"]),
+                "candidate_truncated": info["candidate_truncated"],
+                "inference_seconds": inference_seconds,
             }
         )
         if terminated or truncated:
@@ -138,6 +145,10 @@ def evaluate(env, chooser):
         "net_points": sum(r["net_points"] for r in rows),
         "rows": rows,
         "invalid_accepted_actions": 0,
+        "episode_seconds": perf_counter() - started,
+        "worst_event_net_points": min(r["net_points"] for r in rows),
+        "total_hits": sum(r["hits"] for r in rows),
+        "candidate_truncated_events": sum(r["candidate_truncated"] for r in rows),
     }
 
 
@@ -154,6 +165,9 @@ def _split_check(train, test):
             [
                 {
                     "deadline": o.deadline,
+                    "official_outcomes": None
+                    if o.official_outcomes is None
+                    else {str(i): vars(row) for i, row in o.official_outcomes.items()},
                     "outcomes": {
                         str(i): [vars(row) for row in rows] for i, rows in o.outcomes.items()
                     },
@@ -171,6 +185,13 @@ def _split_check(train, test):
         raise ValueError(
             "New policy training uses reconstructed/synthetic research paths, not prior deployment claims"
         )
+    if "historical_reconstructed" in modes:
+        from fpl_app.evaluation.provenance import replay_time
+
+        if max(replay_time(o.deadline) for e in train for o in e.origins) >= min(
+            replay_time(o.deadline) for e in test for o in e.origins
+        ):
+            raise ValueError("Reconstructed development/test blocks must be chronological")
     for e in [*train, *test]:
         end = e.initial.next_event + len(e.origins) - 1
         if end < 38 and e.bootstrap_origin is None and e.origins[-1].forecasts.horizon_events < 2:
@@ -210,10 +231,13 @@ def train_challenger(
     seed_rows = []
     from fpl_app.evaluation.strategy import planner_policy, replay_policy
 
-    numerical = {
-        ep.episode_id: replay_policy(ep.initial, list(ep.origins), planner_policy, settings)
-        for ep in test
-    }
+    numerical = {}
+    for ep in test:
+        started = perf_counter()
+        numerical[ep.episode_id] = replay_policy(
+            ep.initial, list(ep.origins), planner_policy, settings
+        )
+        numerical[ep.episode_id]["episode_seconds"] = perf_counter() - started
     for index, seed in enumerate(seeds):
         if progress:
             progress(index / len(seeds))
@@ -299,8 +323,15 @@ def train_challenger(
         )
         for path in sorted({e.path_id for e in test})
     ]
+    actual_seasons = sorted(
+        {
+            e.initial.season
+            for e in test
+            if any(o.evidence_mode == "historical_reconstructed" for o in e.origins)
+        }
+    )
     interval = None
-    if len(path_means) >= 2:
+    if len(path_means) >= 2 and "historical_reconstructed" not in modes:
         from scipy.stats import t
 
         mean = float(np.mean(path_means))
@@ -312,6 +343,14 @@ def train_challenger(
         "seeds": seed_rows,
         "episodes": evaluation,
         "distinct_test_paths": len(path_means),
+        "independent_actual_seasons": len(actual_seasons),
+        "actual_seasons": actual_seasons,
+        "seed_selection": "first seed preselected; all seeds reported; no test selection",
+        "worst_paired_event_vs_numerical": min(
+            p["net_points"] - n["realised_net_points"]
+            for r in evaluation
+            for p, n in zip(r["ppo"]["rows"], r["numerical_planner"]["rows"], strict=True)
+        ),
         "paired_event_path_mean": float(np.mean(path_means)),
         "path_block_95_interval": interval,
         "invalid_accepted_actions": 0,
@@ -321,6 +360,7 @@ def train_challenger(
             "Candidate menu and frozen-price hold continuation are bounded",
             "Numerical planner may choose actions outside the bounded RL menu; same-menu comparator also reported",
             "No hyperparameter tuning or winning-seed selection on held-out paths",
+            "Repeated starts and training seeds are not independent actual seasons; historical intervals unavailable",
         ],
     }
     (output / "evaluation.json").write_text(json.dumps(report, sort_keys=True, indent=2))
@@ -376,6 +416,9 @@ def _episode_payload(e):
             "forecasts": e.bootstrap_origin.forecasts.model_dump(),
             "evidence_mode": e.bootstrap_origin.evidence_mode,
             "fitting_labels_available_at": e.bootstrap_origin.fitting_labels_available_at,
+            "financial_coverage": e.bootstrap_origin.financial_coverage,
+            "outcomes": {},
+            "official_outcomes": {},
         },
         "origins": [
             {
@@ -384,6 +427,9 @@ def _episode_payload(e):
                 "players": [p.model_dump() for p in o.players],
                 "forecasts": o.forecasts.model_dump(),
                 "outcomes": {str(i): [vars(s) for s in stats] for i, stats in o.outcomes.items()},
+                "official_outcomes": None
+                if o.official_outcomes is None
+                else {str(i): vars(row) for i, row in o.official_outcomes.items()},
                 "evidence_mode": o.evidence_mode,
                 "financial_coverage": o.financial_coverage,
                 "fitting_labels_available_at": o.fitting_labels_available_at,

@@ -1,0 +1,256 @@
+{
+  "ablation_training_config": {
+    "depth": 5,
+    "early_stopping_rounds": 25,
+    "iterations": 180,
+    "learning_rate": 0.06,
+    "loss_function": "RMSE",
+    "random_seed": 43,
+    "thread_count": 2
+  },
+  "as_of": "2026-10-12T23:59:37.776718+00:00",
+  "champion_promoted": false,
+  "comparators": {
+    "app_baseline_reconstructed": {
+      "bias": 0.6591480250857058,
+      "mae": 1.870964397013075,
+      "rmse": 2.4457189103455677
+    },
+    "baseline_catboost_mean_blend": {
+      "bias": 0.015744171013437617,
+      "mae": 1.3633519216232763,
+      "rmse": 2.242965122833554
+    },
+    "club_position_shrinkage": {
+      "bias": 0.06535643282301325,
+      "mae": 1.8114222619237603,
+      "rmse": 2.631180113892666
+    },
+    "football_catboost": {
+      "bias": 0.015744171013437537,
+      "mae": 1.3633519216232763,
+      "rmse": 2.242965122833554
+    },
+    "population_train": {
+      "bias": 0.05709160283607157,
+      "mae": 1.818667462305181,
+      "rmse": 2.628165848807415
+    },
+    "position_shrinkage": {
+      "bias": 0.06602439560859938,
+      "mae": 1.814385989580347,
+      "rmse": 2.627847897350206
+    },
+    "rolling_minutes_points": {
+      "bias": -0.11380004442223329,
+      "mae": 1.2062399355877618,
+      "rmse": 2.331210444951913
+    },
+    "rolling_points_5": {
+      "bias": -0.044727636181909045,
+      "mae": 1.224887556221889,
+      "rmse": 2.3298994865711635
+    },
+    "zero": {
+      "bias": -1.4482758620689655,
+      "mae": 1.457271364317841,
+      "rmse": 3.0002498646570777
+    }
+  },
+  "completed_at": "2026-10-13T00:06:26.740545+00:00",
+  "evaluation_kind": "retrospective_assumed",
+  "evaluation_method": "expanding_chronological_event_folds_v1",
+  "feature_ablation_config_sha256": "0e3afb5d694b20c78336947829e85c8cb370a401c6530ab07519817a97318dfa",
+  "feature_ablation_sequence": [
+    {
+      "features": [
+        "position",
+        "rule_era",
+        "history_count",
+        "history_missing",
+        "points_5"
+      ],
+      "metrics": {
+        "bias": 0.0404606734644728,
+        "mae": 1.377339027490501,
+        "rmse": 2.2698389812571174
+      },
+      "name": "points_position"
+    },
+    {
+      "features": [
+        "position",
+        "rule_era",
+        "history_count",
+        "history_missing",
+        "points_5",
+        "minutes_5",
+        "appearance_5",
+        "sixty_5",
+        "starts_5",
+        "starts_missing"
+      ],
+      "metrics": {
+        "bias": -0.06848343455968668,
+        "mae": 1.2805064417470302,
+        "rmse": 2.2106456293025585
+      },
+      "name": "points_minutes_role"
+    },
+    {
+      "features": [
+        "position",
+        "club",
+        "opponent",
+        "home",
+        "rule_era",
+        "history_count",
+        "points_5",
+        "minutes_5",
+        "appearance_5",
+        "sixty_5",
+        "starts_5",
+        "history_missing",
+        "starts_missing"
+      ],
+      "metrics": {
+        "bias": 0.015744171013437537,
+        "mae": 1.3633519216232763,
+        "rmse": 2.242965122833554
+      },
+      "name": "points_minutes_role_fixture"
+    }
+  ],
+  "fold_count": 1,
+  "folds": [
+    {
+      "artifact_id": "20261013T000552-2bab4f36",
+      "artifact_reference": "folds/20261013T000552-2bab4f36",
+      "calibration_events": [
+        4
+      ],
+      "fold": 1,
+      "rows": 667,
+      "test_events": [
+        5
+      ],
+      "train_events": [
+        1,
+        2
+      ],
+      "validation_events": [
+        3
+      ]
+    }
+  ],
+  "held_out_events": [
+    5
+  ],
+  "held_out_predictions_sha256": "2fcb8159ee1a2544b87344d8ca6c188260f85d01a130252ebb0b83034eccc0ad",
+  "held_out_rows": 667,
+  "historical_player_count": 667,
+  "limitations": [
+    "Historical membership and label publication times retain collection assumptions",
+    "Event blocks are few and rows within an event are dependent",
+    "No tuning or promotion is performed on these held-out forecasts"
+  ],
+  "minutes": {
+    "bias": -0.20240581879071431,
+    "mae": 17.81169947221043,
+    "rmse": 25.658413352154724
+  },
+  "per_event": {
+    "5": {
+      "bias": 0.015744171013437537,
+      "mae": 1.3633519216232763,
+      "rmse": 2.242965122833554
+    }
+  },
+  "per_lead": {
+    "1": {
+      "app_baseline_reconstructed": {
+        "bias": 0.6591480250857058,
+        "mae": 1.870964397013075,
+        "rmse": 2.4457189103455677
+      },
+      "baseline_catboost_mean_blend": {
+        "bias": 0.015744171013437617,
+        "mae": 1.3633519216232763,
+        "rmse": 2.242965122833554
+      },
+      "club_position_shrinkage": {
+        "bias": 0.06535643282301325,
+        "mae": 1.8114222619237603,
+        "rmse": 2.631180113892666
+      },
+      "football_catboost": {
+        "bias": 0.015744171013437537,
+        "mae": 1.3633519216232763,
+        "rmse": 2.242965122833554
+      },
+      "population_train": {
+        "bias": 0.05709160283607157,
+        "mae": 1.818667462305181,
+        "rmse": 2.628165848807415
+      },
+      "position_shrinkage": {
+        "bias": 0.06602439560859938,
+        "mae": 1.814385989580347,
+        "rmse": 2.627847897350206
+      },
+      "rolling_minutes_points": {
+        "bias": -0.11380004442223329,
+        "mae": 1.2062399355877618,
+        "rmse": 2.331210444951913
+      },
+      "rolling_points_5": {
+        "bias": -0.044727636181909045,
+        "mae": 1.224887556221889,
+        "rmse": 2.3298994865711635
+      },
+      "zero": {
+        "bias": -1.4482758620689655,
+        "mae": 1.457271364317841,
+        "rmse": 3.0002498646570777
+      }
+    }
+  },
+  "per_position": {
+    "DEF": {
+      "bias": 0.007850787808216148,
+      "mae": 1.6401079382606671,
+      "rmse": 2.4873827775757533
+    },
+    "FWD": {
+      "bias": 0.008175119844570857,
+      "mae": 1.19497453090314,
+      "rmse": 2.255819135510137
+    },
+    "GK": {
+      "bias": -0.05735606250217671,
+      "mae": 1.1352713249951965,
+      "rmse": 1.9692409488368128
+    },
+    "MID": {
+      "bias": 0.04140570203529446,
+      "mae": 1.2623305854166547,
+      "rmse": 2.110944765493577
+    }
+  },
+  "player_universe": {
+    "bootstrap_sha256": "75dc7cef9038d48ad8b9d66d6da9f6bf985203be9d55c3165c63376f6f8da5b1",
+    "bootstrap_snapshot_id": "5299a74d82204b288f46fba8f8553f25",
+    "definition_version": "official-bootstrap-elements-v1",
+    "kind": "full_bootstrap_elements",
+    "member_count": 667,
+    "membership_sha256": "33430df00093c872ea627384ca186ef85595fa6671ebbb4b15bb8d69945609d9",
+    "selected_at": "2026-10-12T23:51:09.477923+00:00"
+  },
+  "probability_brier": {
+    "appearance": 0.13220166787413262,
+    "sixty": 0.09575477932873142
+  },
+  "selected_method": "points_minutes_role_fixture",
+  "source_ref": "f4a005f15217784e5f7ac00e7f8b085a94a33610c8061f3b0024e06d9eadcbaf",
+  "status": "evaluated"
+}

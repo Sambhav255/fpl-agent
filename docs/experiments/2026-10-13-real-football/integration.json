@@ -1,0 +1,28 @@
+{
+  "actual_manager": false,
+  "browser_projects_passed": [
+    "chromium",
+    "mobile"
+  ],
+  "champion_promoted": false,
+  "hypothetical_portfolio": true,
+  "optional_libraries_absent": [
+    "torch",
+    "gymnasium",
+    "pymc",
+    "pytorch_forecasting"
+  ],
+  "rows": [
+    {
+      "family": "ensemble",
+      "job_id": "db7bb752ea8c4b0dbdd8b1e01258d7ed",
+      "projection_run_id": "ensemble-3d3126aa1417ea40e76f50dc",
+      "recommendation_id": "b747c860-e928-4e60-bcf5-5437584dcc47",
+      "validated_plans": 4,
+      "validation_errors": []
+    }
+  ],
+  "state_fingerprint": "b8b92162d4609a8ab37927627da7b048e2b8fda7fd4b06568252c6ed820dbed7",
+  "story": "retained real sources -> real fit -> immutable packet -> registration -> API queued worker -> production browser means -> independent plan validation",
+  "verified_at": "2026-10-13T21:27:50.667251+00:00"
+}

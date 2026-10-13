@@ -122,7 +122,7 @@ def archive_panel(csv_path: str, max_events: int = 16) -> pd.DataFrame:
 
 
 def collection_frames(
-    envelope: dict[str, Any], rules_version: str
+    envelope: dict[str, Any], rules_version: str, *, include_training: bool = True
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Qualified same-season research plus actual-current frozen exposures.
 
@@ -182,7 +182,7 @@ def collection_frames(
         }
 
     panel_rows = []
-    for label in labels:
+    for label in labels if include_training else []:
         e = exposures.get((label["provider_player_id"], label["fixture_id"]))
         if e is None:
             continue  # current club cannot establish missing historical membership

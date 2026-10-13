@@ -1,28 +1,21 @@
 # Current learning upgrade implementation
 
-Updated 2026-10-12. The maintained specifications describe intended scope; this page records implemented behavior and evidence limits. The original supplied package is unchanged under [reference/supplied](../reference/supplied/fpl_learning_upgrade/README.md). Earlier detailed stage records are in [learning history](../history/LEARNING_IMPLEMENTATION_2026-10-12.md).
+Updated2026-10-13. [BUILD_STATUS](../BUILD_STATUS.md) and [the actual experiment report](../experiments/2026-10-13-real-football-finalized/README.md) supersede historical audits. Original supplied specifications are unchanged under [reference/supplied](../reference/supplied/fpl_learning_upgrade/README.md); preceding stage narratives remain in [history](../history/LEARNING_IMPLEMENTATION_2026-10-12.md).
 
-| Stage | Implemented | Remaining or evidence limit |
+| Stage | Implemented and exercised | Evidence limit |
 | --- | --- | --- |
-| D01 | Checkout audit and isolated browser/provider checks | Current private financial/chip state requires actual user inputs; never infer it |
-| D02 | Immutable pre-deadline journal, execution distinction, finalized outcome revisions | Real future event finalization and prospective use |
-| D03 | Expanding chronological CatBoost folds and separately identified latest serving refit | Small current-era sample; no demonstrated model advantage |
-| D04 | Supported-horizon replay, first-action execution, strict provenance checks | Pre-deadline journal seals and strict replay bridge implemented; real finalized prospective policy benchmark unavailable |
-| D05 | Frozen full-bootstrap universe option and common-holdout feature ablations | Broad live capture and ongoing finalized labels |
-| D06 | Financial transition regressions and official-total-points scoring adapter | More real finalized reconciliation evidence |
-| D07 | Future chips/prices, independent validation, exact small-universe and bounded full-catalogue financial dynamic program | 700-player contract verified; large paths cap replacements at two per event/chip week; global full-league optimiser incomplete |
-| D08–D09 | Optional Gymnasium environment, fitted-Q, actual five-seed MaskablePPO, durable training jobs | Retained runs test synthetic mechanics; meaningful real policy evidence unavailable |
-| D10 | Disabled local review schedules, durable ticks, challenger and promotion gates | No personal schedule enabled or challenger promoted |
-| D11 | Authored social benchmark, structured extraction contract, factual reliability | Zero independent human reviews; no semantic model or live Reddit/X collection |
-| D12 | Complete-component Bayesian research scoring, real multilead TFT fitting/evaluation, inactive adapters, validation-fit mean ensemble | Inactive registry, audited shadow registration/worker/UI and immutable qualification copies implemented; real calibration, complete producer release packets and baseline/CatBoost ensemble members remain |
+| D01 | Exact reviewed/HEAD/Actions comparison; annotation repair; clean locked base/RL and full production verification | Actual private finances/chips remain user-confirmed inputs |
+| D02 | Immutable journals, execution/paper distinction, finalized outcome revisions; actual realGW7 paper freeze | FutureGW7 results are not available yet |
+| D03 | Two current chronological test origins and separate six-final-event serving refit | Historical publication/role assumptions; no champion promotion |
+| D04 | Supported-horizon receding replay, official-total scoring and strict pre-deadline seals | Reconstructed research and actual future shadows are distinct from completed strict prospective evaluation |
+| D05 | Paced full667-player official universe,669 retained sources, registered real archive ablations and same-coverage comparators | Missing historical rows, one season, reconstructed timing and calendar uncertainty |
+| D06 | Exact financial transitions and official points/minutes replay with missingness rejection | Historical prices use explicit reconstruction, not verified deadline quotes |
+| D07 | Complete WC/FH ownership/XI/captain candidates, sparse MILP, independent replay, two36-comparison matrices over4/6/8 events | Ordinary large paths remain two-move bounded; no global sequence certificate |
+| D08–D09 | Real official historical episode adapters/serialization; actual fitted-Q and five-seed CPU PPO against same-menu/unrestricted comparators | PPO mean98 vs numerical101 on one short actual-season path; RL remains inactive shadow |
+| D10 | Recoverable jobs, local review controls and promotion gates | No personal schedule enabled; baseline/numerical champions retained |
+| D11 | Authored social benchmark, structured extraction and factual reliability | No independent human review or configured semantic extractor/live account adapters |
+| D12 | Optional Bayesian/TFT research plus real direct-multilead CatBoost; genuine held-out mean ensemble; reproducible baseline/CatBoost/ensemble releases and actual API/worker/UI serving | Current CatBoost one lead; TFT below eight-event minimum; real Bayesian/TFT calibration/release qualification gated |
 
-## Operational contracts
+Read [advanced serving](ADVANCED_SERVING.md), [journal replay](JOURNAL_REPLAY.md), [verification](VERIFICATION_REPORT.md), [backlog](EVALUATION_AND_BACKLOG.md) and [the file map](../FILE_STRUCTURE.md). Local timestamps/checksums are consistency evidence, not independent attestation. Synthetic fixtures still prove mechanics; real historical experiments retain their assumptions. No actual-team exploration, submitted transfer/chip, public deployment, paid data or default promotion.
 
-- [Audited advanced shadow serving](ADVANCED_SERVING.md): reviewed immutable copies, frozen input packets, worker routing and opt-in Models controls.
-- [Journal replay seals](JOURNAL_REPLAY.md): pre-deadline manifest references; no retroactive prospective qualification.
-- [Verification and limits](VERIFICATION_REPORT.md): authored mechanics versus actual live evidence.
-- [Backlog and acceptance](EVALUATION_AND_BACKLOG.md): unfinished product requirements and promotion gates.
-
-The baseline/numerical planner remain champions. Optional dependencies do not break baseline startup. Research artifacts, authored benchmarks and synthetic policy fits do not demonstrate live accuracy. No personal schedule is enabled or policy promoted by this implementation.
-
-Next engineering: audited producer release packets, eligible baseline/CatBoost ensemble members and broader league optimisation. Meaningful future labels, independent social reviewers and confirmed private state are separate prerequisites, not invented inputs. Structure is indexed in [the file map](../FILE_STRUCTURE.md); current checks/status are in [BUILD_STATUS](../BUILD_STATUS.md).
+Next concrete step: score the frozenGW7 shadow/paper journal after official finalization, then advance folds and refit. Private financial/chip reconciliation, independent social review and additional chronological data are separate prerequisites; they are never filled with invented values.

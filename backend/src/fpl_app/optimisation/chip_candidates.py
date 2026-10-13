@@ -41,7 +41,14 @@ def complete_chip_squads(
             update={"horizon_events": settings.horizon_events - offset}
         )
         moves, _ = _highs_candidate(
-            state, players, run, candidate_settings, remaining, chip, maximum
+            state,
+            players,
+            run,
+            candidate_settings,
+            max(0.001, remaining - 0.05),
+            chip,
+            maximum,
+            candidate_time_limit=4.0,
         )
         try:
             changed, _ = apply_transfers(state, players, moves, chip)

@@ -18,6 +18,7 @@ from fpl_app.domain.rules import (
     projection_points,
     readiness,
     score_lineup,
+    score_official_lineup,
 )
 from fpl_app.evaluation.provenance import replay_time
 from fpl_app.evaluation.strategy import ReplayOrigin, _check_provenance, keep_policy
@@ -50,7 +51,7 @@ class FPLEnv(gym.Env):
     def __init__(self, episodes: list[Episode], settings: Settings, *, k: int = DEFAULT_K):
         if not episodes or not 2 <= k <= 128:
             raise ValueError("Episodes and valid candidate count required")
-        self.metadata = {"render_modes": []}
+        self.metadata: dict[str, Any] = {"render_modes": []}
         self._episodes = deepcopy(episodes)
         self.settings = settings.model_copy(deep=True)
         self.k = k
@@ -209,10 +210,19 @@ class FPLEnv(gym.Env):
             raise ValueError("Invalid candidate: " + "; ".join(errors))
         week = candidate.plan.weeks[0]
         changed, _ = apply_candidate(self._state, origin.players, week["actions"], week["chip"])
-        if not {p.player_id for p in changed.picks} <= origin.outcomes.keys():
+        outcomes = (
+            origin.official_outcomes if origin.official_outcomes is not None else origin.outcomes
+        )
+        if not {p.player_id for p in changed.picks} <= outcomes.keys():
             raise ValueError("Missing outcomes cannot be treated as nonappearance")
-        scoring = score_lineup(
-            week["lineup"], changed, origin.players, origin.outcomes, week["chip"]
+        scoring = (
+            score_official_lineup(
+                week["lineup"], changed, origin.players, origin.official_outcomes, week["chip"]
+            )
+            if origin.official_outcomes is not None
+            else score_lineup(
+                week["lineup"], changed, origin.players, origin.outcomes, week["chip"]
+            )
         )
         reward = float(scoring["points"] - week["total_hits"])
         terminated = changed.next_event == 38
@@ -248,6 +258,7 @@ class FPLEnv(gym.Env):
             saved = self._episode
             next_origin = deepcopy(saved.bootstrap_origin or origin)
             next_origin.outcomes = {}
+            next_origin.official_outcomes = None
             if saved.bootstrap_origin is None:
                 next_origin.forecasts.horizon_events -= 1
             self._episode = Episode(

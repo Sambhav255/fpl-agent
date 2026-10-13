@@ -1,33 +1,39 @@
 # Current build status
 
-Updated 2026-10-12. Start with [START_HERE](START_HERE.md), [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md) and [the repository file map](FILE_STRUCTURE.md). Earlier stage narratives are preserved in [history](history/README.md); their old blockers/counts do not override this summary.
+Updated 2026-10-13. Read [START_HERE](START_HERE.md), [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md) and [the real experiment report](experiments/2026-10-13-real-football-finalized/README.md). Earlier audits and checks remain historical; they do not override this status.
 
-## Implemented application
+## Implemented and exercised
 
-The local baseline tool supports public deadline-squad import, explicit private financial/chip corrections, unconditional projections, independently validated planning, manual transfers/chips and versioned saved plans. Baseline forecasts and the numerical planner remain champions.
+Reviewed `dbc14d900acb5279586698120302cbf36391b119` matched the initially clean HEAD. Inspected [Actions run 38323280394](https://github.com/Sambhav255/fpl-agent/actions/runs/38323280394), which used that exact commit, and fixed optional-Gym metadata typing with compatible `dict[str, Any]`. Checks were not suppressed. Separate locked base/RL environments reproduced verification without replacing the existing environment.
 
-Learning infrastructure includes immutable deadline journals, action/execution separation, finalized outcome revisions, chronological CatBoost folds/refit, frozen full-universe collection, strict receding-horizon replay with pre-deadline journal seals, official-points scoring, financial/chip/Free Hit transitions, exact small-universe and bounded full-catalogue sequence planning. Large sequences cap replacements at two per event, including chip weeks; global optimality is not claimed. Optional Gymnasium, fitted-Q and five-seed MaskablePPO research, recoverable training jobs and disabled recurring reviews are implemented.
+The baseline tool, private corrections/gates, manual execution, immutable journals, outcome revisions, recoverable jobs and numerical planner remain intact. New real football commands capture the prospectively defined full official universe, evaluate chronological CatBoost folds, refit separately, produce immutable release/input packets and fit genuine held-out baseline/CatBoost mean weights. Historical assumptions are preserved; future shadow publication has actual timestamps. Source/model/input/mapping/scoring/horizon checksums and mutation fences protect registration, queueing and worker publication. Baseline/CatBoost ensemble members work through serving, including a frozen baseline member.
 
-Social research has authored benchmarks, structured extraction contracts and factual reliability. Bayesian complete-component scoring, actual multilead TFT fitting/evaluation, validation-fitted mean ensembles and inactive registry entries are implemented. Reviewed immutable artifact copies, audited shadow bundles, worker routing and Models controls are implemented; registration/queue/publication reject changed, future or incomplete evidence. Planner shows returned limitations and plan assumptions.
+An initial 667-player capture excluded 667 preliminary GW6 labels. A later actual provider check finalized GW6; the new capture retained 3,883 finalized fixture labels over GW1–6, 669 sources and the same 667-player universe. Captured 2026-10-13T21:35:15Z; next GW7 deadline 2026-10-17T10:00:00Z. Missing historical rows remain missing. The separate current refit follows two untouched evaluation origins, GW5–6: 1,334 common rows, CatBoost RMSE 2.1914 versus reconstructed app baseline 2.3841. Rolling comparators have lower MAE. Six events/two dependent tests do not justify promotion or calibrated confidence.
 
-## Remaining work
+Registered real 2024/25 archive ablations and direct leads 1–8 freeze future features at their original origin, purge partitions by label availability and retain a separate inactive refit. Fixed feature/configuration selection never uses final test results. The archive scoring era and assumed schedule/publication timing prevent current-era serving qualification.
 
-- Complete audited training-to-release packets and baseline/CatBoost ensemble member integration.
-- Global full-league optimisation; current full-catalogue paths are bounded.
-- Independently reviewed social labels and a configured semantic extractor.
-- Genuine chronological calibration and finalized prospective policy benchmarks.
-- Current private financial/chip reconciliation from actual user inputs; unknown state is never inferred.
+Complete Wildcard/Free Hit ownership/XI/captain candidates replace the old two-move chip restriction. Sparse constraints avoid the dense full-catalogue matrix. Finances, selling values, inventory and Free Hit restoration are independently replayed. Ordinary large-catalogue replacements remain capped at two; sequence search remains bounded without a global certificate. Current-season eight-lead baseline forecasts and evaluated archive multilead forecasts each produced 36 four/six/eight-event comparisons; all selected plans passed validation. Current benchmark found 15-player Wildcards and 14-player Free Hits; archive found 15 and 11. These are forecast-path comparisons, not realized strategy gains.
 
-Current-era final labels remain below TFT's eight-event minimum. Research checks do not establish live model accuracy or a strategy advantage. No champion promotion, account actions, paid data or deployment occurred.
+Official-points historical episode adapters and reproducible episode serialization support real Gymnasium/PPO/fitted-Q research without inventing unavailable scoring components. Five fixed 64-step CPU seeds used development GW2–3/test GW4–5, 40 covered players, common paper starts and one actual season path. PPO mean 98 net points versus 101 for same-menu/unrestricted numerical comparators; keep/fitted-Q 98. No winning seed, independent-season confidence claim or live team exploration. Numerical planner remains champion; RL stays inactive shadow.
 
-## File organisation
+## Fresh verification
 
-Current guidance, specifications, operational contracts, history and original reference material now have separate locations. The supplied upgrade package is byte-preserved under `docs/reference/supplied/fpl_learning_upgrade/`; a checksum manifest verifies all 13 files. Older status/verification narratives are retained under `docs/history/` with rebased Markdown links. The original design-only schema moved to `docs/reference/contracts/openapi-design.json`; runtime OpenAPI and TypeScript bindings are generated together offline using an in-memory store. Stale handoff paths were corrected. Operator entrypoints, app modules, ignored data/private notes, dependencies, caches and running builds remain in place.
+| Check | Actual result |
+| --- | --- |
+| Locked base backend | 413 passed / 11 skips |
+| Locked RL backend | 429 passed / 7 skips |
+| Root CLI tests | 14 passed |
+| Ruff lint/format; mypy | Passed; 78 source files in both environments |
+| Frontend lint/format/types/unit/build | Passed; 13 unit tests; final production build |
+| Final production browser/API/worker | 14 passed / 6 explicit personal-state skips |
+| Positive real integration | 667 CatBoost and 667 ensemble forecasts displayed; queued worker analysis; four plans independently validated; pre-deadline GW7 paper journal |
 
-Organisation checks passed: all 13 archived files have identical bytes; 130 maintained local Markdown links resolve; offline API generation matches the actual app; the 266-file source export excludes private/runtime folders; 14 root CLI tests, generator Ruff lint/format, frontend lint/types/format and 13 frontend unit tests passed. `git diff --check` passed. No domain behavior changed in this organisation stage.
+Base skips Gymnasium, learning and historical-adapter modules (one skip per module), plus a Torch case and seven shared Bayesian/TFT/opt-in cases. RL enables 16 additional actual cases; those seven shared cases remain skipped. No optional library was installed to hide typing failures. The locked stack emits 115 deprecation warnings; checks/assertions remain enabled. Browser timing failures were fixed by awaiting actual responses; the shadow selector uses its accessible combobox name. Full evidence and reproduction commands are in [the report](experiments/2026-10-13-real-football-finalized/README.md) and [verification](learning_upgrade/VERIFICATION_REPORT.md). These are newly executed results; older 414/3 and organisation counts are historical.
 
-## Verification and preview
+## Runnable handoff and limits
 
-The preceding implementation passed **414 backend tests / 3 optional skips**, **14 root CLI tests**, Ruff lint/format, mypy **74 source files**, **13 frontend unit tests**, lint/format/types/build and **12 production browser tests / 6 explicit personal-state skips**. Optional-library absence was checked in a fresh process. These are prior application checks, not newly rerun during file organisation; [verification](learning_upgrade/VERIFICATION_REPORT.md) records their exact limits.
+Final verified isolated preview: **http://127.0.0.1:3162**, API8162 and a separate worker, build `.next-real-finalized`, `DATA_DIR=/private/tmp/fpl-real-finalized`. Recheck processes before reuse. Durable ignored copies are `data/research/real-football-finalized-2026-10-13/` and the earlier `data/research/real-football-2026-10-13/`; original personal state, artifacts and existing services are preserved. Standard startup remains `bash scripts/dev.sh`. No account action, paid data, deployment, Git push or champion promotion occurred.
 
-Last verified isolated preview: http://127.0.0.1:3148, API8128 and a separate worker, `.next-learning-final-verified`, temporary data only. Recheck processes before reuse. Normal startup remains `bash scripts/dev.sh` after locked dependency installation. Next engineering step: audited producer training-to-release pipeline without weakening evidence gates.
+TFT stays inactive: six current-era finalized events are below its eight-event chronological minimum. Current CatBoost supports one lead; longer current forecasts remain the labelled conditional baseline. Real Bayesian/TFT calibration and complete release qualification remain gated; their optional research infrastructure is intact. Independently reviewed social labels/configured semantic extraction and actual private financial/chip reconciliation remain unavailable. Personal state is never inferred from research portfolios. Actual execution stays unknown; paper selection is separate.
+
+Next concrete step: after GW7 is officially finalized, score the already frozen shadow forecasts/paper journal before refitting. Capture a new verified revision, advance chronological folds and reassess champions. Do not backdate missed origins or treat reconstructed research as strict prospective evaluation.

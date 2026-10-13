@@ -113,7 +113,17 @@ def validate_release(
         or audit.get("model_payloads")
         != {k: v for k, v in hashes.items() if k != "release_audit.json"}
         or metadata.get("data_mode") != "live"
-        or metadata.get("replay_timing") != "verified"
+        or (
+            metadata.get("replay_timing") != "verified"
+            and not (
+                family == "ensemble"
+                and metadata.get("replay_timing") == "historical_assumed_shadow"
+                and metadata.get("data_evidence_mode") == "retrospective_assumed"
+                and metadata.get("serving_mode") == "shadow_only"
+                and audit.get("evaluation_evidence") == "retrospective_assumed"
+                and {"training_manifest.json", "training_receipts.json"} <= hashes.keys()
+            )
+        )
         or metadata.get("rules_version") != RULES.version
         or metadata.get("model_family") != family
         or (family != "ensemble" and metadata.get("model_status") != "trained")
@@ -421,20 +431,25 @@ def _ensemble_provider(store, state, data, reference, manifest):
         if not identifier:
             raise ValueError("Positive ensemble weight requires a frozen member bundle")
         bundle = store.get("forecast_bundle", identifier)
-        if bundle.get("provider") not in FAMILIES - {"ensemble"}:
-            raise ValueError("Ensemble members must be audited non-ensemble advanced bundles")
-        runs[name] = forecast_job(
-            store,
-            state,
-            data,
-            {
-                "provider": bundle["provider"],
-                "mode": "shadow",
-                "artifact_id": bundle["artifact_id"],
-                "serving_bundle_id": identifier,
-                "horizon_events": manifest.horizon_events,
-            },
-        )
+        if bundle.get("provider") == "baseline":
+            from .release_packets import checked_baseline_member
+
+            runs[name] = checked_baseline_member(store, state, data, bundle)
+        else:
+            if bundle.get("provider") not in FAMILIES - {"ensemble"} | {"football_catboost"}:
+                raise ValueError("Unsupported non-ensemble member provider")
+            runs[name] = forecast_job(
+                store,
+                state,
+                data,
+                {
+                    "provider": bundle["provider"],
+                    "mode": "shadow",
+                    "artifact_id": bundle["artifact_id"],
+                    "serving_bundle_id": identifier,
+                    "horizon_events": manifest.horizon_events,
+                },
+            )
         if runs[name].prediction_origin != manifest.prediction_origin:
             raise ValueError("Ensemble member origin differs from frozen origin")
     return ensemble_run(directory, runs)
@@ -463,11 +478,24 @@ def _checked_members(store, state, data, bundle, manifest):
             raise ValueError("Positive ensemble weight requires a frozen member bundle")
         member = store.get("forecast_bundle", identifier)
         if (
-            member.get("provider") not in FAMILIES - {"ensemble"}
+            member.get("provider")
+            not in FAMILIES - {"ensemble"} | {"baseline", "football_catboost"}
             or fingerprint(member) != bundle.get("member_bindings", {}).get(name)
             or member.get("prediction_origin") != manifest.prediction_origin
             or member.get("horizon_events") != manifest.horizon_events
             or member.get("player_ids") != sorted(manifest.player_map.values())
         ):
             raise ValueError("Frozen ensemble member changed or has incompatible origin/coverage")
-        checked_inputs(store, state, data, {**member, "bundle_fingerprint": fingerprint(member)})
+        if member["provider"] == "baseline":
+            from .release_packets import checked_baseline_member
+
+            checked_baseline_member(store, state, data, member)
+        elif member["provider"] == "football_catboost":
+            from .router import _football_bundle, verify_artifact
+
+            reference = {**member, "bundle_fingerprint": fingerprint(member)}
+            _football_bundle(store, state, data, reference, verify_artifact(reference))
+        else:
+            checked_inputs(
+                store, state, data, {**member, "bundle_fingerprint": fingerprint(member)}
+            )

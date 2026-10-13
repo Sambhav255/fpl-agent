@@ -581,7 +581,9 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
                     },
                 }
                 for row in database.list("forecast_bundle")
-                if row.get("team_id") == team_id and row.get("snapshot_id") == state.snapshot_id
+                if row.get("team_id") == team_id
+                and row.get("snapshot_id") == state.snapshot_id
+                and row.get("provider") != "baseline"
             ]
         }
 

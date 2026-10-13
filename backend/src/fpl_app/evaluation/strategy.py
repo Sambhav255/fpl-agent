@@ -10,7 +10,15 @@ from typing import Any
 
 from fpl_app.contracts import ManagerState, Player, ProjectionRun, Settings
 from fpl_app.domain.plans import _check_inputs, validate_plan
-from fpl_app.domain.rules import MatchStats, advance_event, apply_transfers, readiness, score_lineup
+from fpl_app.domain.rules import (
+    MatchStats,
+    OfficialEventPoints,
+    advance_event,
+    apply_transfers,
+    readiness,
+    score_lineup,
+    score_official_lineup,
+)
 from fpl_app.evaluation.provenance import replay_time, verify_replay_manifest
 from fpl_app.optimisation.planner import recommend
 
@@ -30,6 +38,9 @@ class ReplayOrigin:
     fitting_labels_available_at: str | None = None
     # Set by the journal bridge from immutable retained references.
     journal_reference: dict[str, str] | None = None
+    # Official totals are an alternative to complete reconstructed components.
+    # Neither form is exposed to a policy; missing coverage remains an error.
+    official_outcomes: dict[int, OfficialEventPoints] | None = None
 
 
 Policy = Callable[[ManagerState, list[Player], ProjectionRun, Settings], Any]
@@ -118,10 +129,19 @@ def replay_policy(
         week = plan.weeks[0]
         changed, _ = apply_transfers(current, origin.players, week["actions"], week["chip"])
         ids = {p.player_id for p in changed.picks}
-        if not ids <= origin.outcomes.keys():
+        outcomes = (
+            origin.official_outcomes if origin.official_outcomes is not None else origin.outcomes
+        )
+        if not ids <= outcomes.keys():
             raise ValueError("Missing outcome coverage; absence cannot be assumed")
-        scored = score_lineup(
-            week["lineup"], changed, origin.players, origin.outcomes, week["chip"]
+        scored = (
+            score_official_lineup(
+                week["lineup"], changed, origin.players, origin.official_outcomes, week["chip"]
+            )
+            if origin.official_outcomes is not None
+            else score_lineup(
+                week["lineup"], changed, origin.players, origin.outcomes, week["chip"]
+            )
         )
         rows.append(
             {
