@@ -156,6 +156,9 @@ def collection_frames(
                 "points": label["total_points"],
                 "minutes": label["minutes"],
                 "starts": stats.get("starts"),
+                "goals": stats.get("goals_scored", 0),
+                "assists": stats.get("assists", 0),
+                "clean_sheets": stats.get("clean_sheets", 0),
                 "kickoff": kickoff,
                 "available_at": kickoff + timedelta(days=1),
             }
@@ -184,6 +187,7 @@ def collection_frames(
         if e is None:
             continue  # current club cannot establish missing historical membership
         row = frozen_features(history, exposure_row(e), origins[label["event"]])
+        row.update(reconstructed_comparators(history, exposure_row(e), origins[label["event"]]))
         stats = label["statistics"]
         panel_rows.append(
             {
@@ -234,3 +238,57 @@ def collection_frames(
         ]
     )
     return pd.DataFrame(panel_rows), pd.DataFrame(future_rows), explicit
+
+
+def reconstructed_comparators(
+    history: pd.DataFrame, exposure: dict[str, Any], origin: pd.Timestamp
+) -> dict[str, float]:
+    """Execute the app baseline on origin-usable aggregates, with explicit unknown flags.
+
+    Historical injury flags and fixture difficulty are unavailable: use unknown
+    availability and neutral difficulty. This is a reconstructed baseline variant,
+    not a historically archived app forecast.
+    """
+    from fpl_app.contracts import Fixture, Player
+    from fpl_app.models.baseline import baseline_run
+
+    usable = history[
+        (history.player_key == exposure["player_key"])
+        & (history.available_at <= origin)
+        & (history.event < exposure["event"])
+    ]
+    appearances = int((usable.minutes > 0).sum())
+    points = float(usable.points.sum())
+    position = {"GK": 1, "DEF": 2, "MID": 3, "FWD": 4}[exposure["position"]]
+    player = Player.model_validate(
+        {
+            "player_id": 1,
+            "name": "reconstructed",
+            "club": 1,
+            "position": position,
+            "market_price_units": 0,
+            "points_per_game": points / appearances if appearances else 0,
+            "minutes": int(usable.minutes.sum()),
+            "appearances": appearances,
+            **{
+                name: int(usable[name].sum()) if name in usable else 0
+                for name in ("goals", "assists", "clean_sheets")
+            },
+        }
+    )
+    home = str(exposure["home"]).lower() == "true"
+    fixture = Fixture(
+        fixture_id=int(exposure["fixture_id"]),
+        event=int(exposure["event"]),
+        home_club=1 if home else 2,
+        away_club=2 if home else 1,
+    )
+    run = baseline_run(
+        [player], [fixture], "reconstructed", origin.isoformat(), "live", int(exposure["event"]), 1
+    )
+    recent = usable.tail(5)
+    rate = points / max(float(usable.minutes.sum()), 90)
+    return {
+        "app_baseline_reconstructed": run.projections[0].expected_points,
+        "rolling_minutes_points": float(recent.minutes.mean()) * rate if len(recent) else 0,
+    }

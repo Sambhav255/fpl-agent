@@ -178,12 +178,70 @@ def _fit(
             test[f"ablation_{name}"] = ablation.predict(test[columns])
     population = float(train.target_points.mean())
     test["population_train_mean"] = population
+    for name, keys in [
+        ("position_shrinkage", ["position"]),
+        ("club_position_shrinkage", ["club", "position"]),
+    ]:
+        totals = train.groupby(keys).target_points.agg(["sum", "count"])
+        prior = (totals["sum"] + 20 * population) / (totals["count"] + 20)
+        lookup = prior.to_dict()
+        test[name] = [
+            lookup.get(tuple(row) if len(keys) > 1 else row[0], population)
+            for row in test[keys].itertuples(index=False, name=None)
+        ]
     comparisons = {
         "football_catboost": errors(test.target_points, test.points_mean),
         "rolling_points_5": errors(test.target_points, test.points_5),
         "population_train": errors(test.target_points, np.full(len(test), population)),
         "zero": errors(test.target_points, np.zeros(len(test))),
     }
+    for name in [
+        "app_baseline_reconstructed",
+        "rolling_minutes_points",
+        "position_shrinkage",
+        "club_position_shrinkage",
+    ]:
+        if name in test:
+            comparisons[name] = errors(test.target_points, test[name])
+    if "app_baseline_reconstructed" in calibration and "app_baseline_reconstructed" in test:
+        from fpl_app.evaluation.metrics import fit_ensemble
+
+        weight_rows = calibration.reset_index(drop=True).copy()
+        weight_rows["partition"] = "validation"
+        weight_rows["train_target_end"] = max(
+            train.target_available_at.max(), validation.target_available_at.max()
+        )
+        weight_rows["football_catboost"] = _predict(
+            models, offsets, calibration
+        ).points_mean.to_numpy()
+        # Point heads never use calibration targets. Probability offsets do not
+        # alter point means; these are genuine held-out member predictions.
+        fitted = fit_ensemble(weight_rows, ["app_baseline_reconstructed", "football_catboost"])
+        weights = fitted["weights"]
+        test["baseline_catboost_mean_blend"] = (
+            weights["app_baseline_reconstructed"] * test.app_baseline_reconstructed
+            + weights["football_catboost"] * test.points_mean
+        )
+        test["partition"] = "test"
+        test["train_target_end"] = weight_rows.train_target_end.iloc[0]
+        test["football_catboost"] = test.points_mean
+        comparisons["baseline_catboost_mean_blend"] = errors(
+            test.target_points, test.baseline_catboost_mean_blend
+        )
+        weight_rows.to_parquet(run / "ensemble_validation_predictions.parquet", index=False)
+        write_json(
+            run / "ensemble_weights.json",
+            {
+                "weights": weights,
+                "fit_partition": "calibration",
+                "fitting_label_available_at": calibration.target_available_at.max(),
+                "test_origin_min": test.decision_cutoff.min(),
+                "evaluation_kind": "retrospective_assumed",
+                "validation": fitted,
+                "test": comparisons["baseline_catboost_mean_blend"],
+                "champion_promoted": False,
+            },
+        )
     brier = {
         name: float(((test[col] - (test.target_minutes >= threshold).astype(float)) ** 2).mean())
         for name, col, threshold in [
@@ -417,6 +475,16 @@ def evaluate_chronological(
         "population_train": errors(test.target_points, test.population_train_mean),
         "zero": errors(test.target_points, np.zeros(len(test))),
     }
+    for name in [
+        "app_baseline_reconstructed",
+        "rolling_minutes_points",
+        "position_shrinkage",
+        "club_position_shrinkage",
+        "baseline_catboost_mean_blend",
+    ]:
+        if name in test:
+            comparators[name] = errors(test.target_points, test[name])
+    test.to_parquet(root / "held_out_predictions.parquet", index=False)
     report = {
         "status": "evaluated",
         "completed_at": datetime.now(UTC).isoformat(),
@@ -455,6 +523,14 @@ def evaluate_chronological(
             str(event): errors(group.target_points, group.points_mean)
             for event, group in test.groupby("event")
         },
+        "per_position": {
+            str(position): errors(group.target_points, group.points_mean)
+            for position, group in test.groupby("position")
+        }
+        if "position" in test
+        else {},
+        "per_lead": {"1": comparators},
+        "held_out_predictions_sha256": checksum(root / "held_out_predictions.parquet"),
         "folds": details,
         "champion_promoted": False,
         "limitations": [
