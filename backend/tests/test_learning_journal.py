@@ -238,7 +238,10 @@ def test_finalization_gate_and_exact_official_fixture_join_are_revisioned(tmp_pa
             if player["club"] in (fixture["team_h"], fixture["team_a"])
         )
         if player["player_id"] == 1:
-            stats, explain = {"total_points": 0, "minutes": 0}, []
+            stats, explain = (
+                {"total_points": 0, "minutes": 0, "yellow_cards": 0, "red_cards": 0},
+                [],
+            )
         else:
             stats = {"total_points": 2, "minutes": 90}
             explain = [
@@ -317,7 +320,11 @@ def test_result_revision_idempotence_and_incomplete_coverage_reject(tmp_path, mo
     live = {"elements": []}
     for player in players:
         live["elements"].append(
-            {"id": player["player_id"], "stats": {"total_points": 0, "minutes": 0}, "explain": []}
+            {
+                "id": player["player_id"],
+                "stats": {"total_points": 0, "minutes": 0, "yellow_cards": 0, "red_cards": 0},
+                "explain": [],
+            }
         )
 
     def respond(request):
