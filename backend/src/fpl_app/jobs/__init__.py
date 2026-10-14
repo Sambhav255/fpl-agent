@@ -117,6 +117,18 @@ def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
         frozen = dict(payload["_forecast"])
         frozen.pop("prediction_origin", None)
         value["payload"] = {**payload, "_forecast": frozen}
+        if frozen.get("replay_capture_id"):
+            from fpl_app.learning.packets import checked_capture
+
+            capture = checked_capture(
+                store,
+                frozen["replay_capture_id"],
+                state,
+                data,
+                frozen["replay_capture_sha256"],
+            )
+            if capture["horizon_events"] != horizon:
+                raise Conflict("Queued replay capture horizon changed")
     if kind == "projection" and payload.get("_forecast", {}).get("provider") not in (
         None,
         "baseline",

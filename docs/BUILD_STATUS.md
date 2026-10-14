@@ -2,6 +2,14 @@
 
 Updated 2026-10-13. Read [START_HERE](START_HERE.md), [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md) and [the real experiment report](experiments/2026-10-13-real-football-finalized/README.md). Earlier audits and checks remain historical; they do not override this status.
 
+## Prospective replay continuation — 14 October UTC
+
+Automated evidence capture, queued baseline forecast, analysis, journal production and policy-specific seals now run through `scripts/run_prospective_journal.py`; no manual replay JSON/Parquet is required. Capture completes before prediction, includes retained exact package bytes, and never gives an older forecast newly verified timestamps. Default baseline queue fingerprints are preserved. Replay packets publish atomically and retries preserve immutable artifacts. Backup includes capture/seal references; team deletion removes their private SQLite records.
+
+Finalized outcome ingestion now reconciles exact official totals, duplicates/types, fixture membership and minutes, preserves unknown participation, and excludes changed schedules including former blanks. The strict adapter rederives one explicit revision from retained checked bootstrap, fixture and live-result bytes. `scripts/evaluate_journal_replay.py` stores immutable paper comparisons under ignored DATA_DIR and leaves actual execution/manager state unchanged.
+
+Actual production3163/API8163 integration: 667 players, six forecast events, 4,002 fixture means, five independently validated plans, three seals. Both browser projects displayed the journal; a fresh official status retained GW7 pending and its 17 October 10:00 UTC deadline. Future labels remain absent. Final fresh checks: **464 base/11 skips, 480 RL/7 skips, CLI14, Ruff126 files/mypy81 sources in both environments, frontend format/lint/types/unit13/production build, production browser16/6 personal-state skips**. Optional libraries remain absent from the actual base worker. [Immutable continuation report and commands](experiments/2026-10-14-prospective-replay/README.md). Durable ignored backup: data/research/prospective-replay-2026-10-14/. Initial timing/default-payload failures were fixed; ENOSPC attempts and successful full reruns are recorded. Earlier stage evidence below is preserved rather than described as newly run.
+
 ## Implemented and exercised
 
 Reviewed `dbc14d900acb5279586698120302cbf36391b119` matched the initially clean HEAD. Inspected [Actions run 38323280394](https://github.com/Sambhav255/fpl-agent/actions/runs/38323280394), which used that exact commit, and fixed optional-Gym metadata typing with compatible `dict[str, Any]`. Checks were not suppressed. Separate locked base/RL environments reproduced verification without replacing the existing environment.
@@ -16,7 +24,7 @@ Complete Wildcard/Free Hit ownership/XI/captain candidates replace the old two-m
 
 Official-points historical episode adapters and reproducible episode serialization support real Gymnasium/PPO/fitted-Q research without inventing unavailable scoring components. Five fixed 64-step CPU seeds used development GW2–3/test GW4–5, 40 covered players, common paper starts and one actual season path. PPO mean 98 net points versus 101 for same-menu/unrestricted numerical comparators; keep/fitted-Q 98. No winning seed, independent-season confidence claim or live team exploration. Numerical planner remains champion; RL stays inactive shadow.
 
-## Fresh verification
+## Previous-stage verification (13 October)
 
 | Check | Actual result |
 | --- | --- |

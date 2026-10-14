@@ -101,11 +101,22 @@ test("synthetic demo → replacement and financial corrections → validated pla
     .click();
   expect((await savedPlan).ok()).toBe(true);
   await expect(page.getByRole("status").filter({ hasText: "Plan saved" })).toBeVisible();
+  const restoredForecast = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/v1/projections/runs/") &&
+      response.request().method() === "GET" &&
+      response.ok(),
+  );
   await page.getByRole("link", { name: "Players", exact: true }).click();
+  await restoredForecast;
   await expect(page.getByText("BASELINE PROJECTIONS", { exact: true })).toBeVisible();
   await page.getByLabel("Search players", { exact: true }).fill(replacement.name);
   await expect(page.getByRole("rowheader", { name: replacement.name, exact: true })).toBeVisible();
+  const historyLoaded = page.waitForResponse(
+    (response) => response.url().includes("/api/v1/learning/decisions?team_id=0") && response.ok(),
+  );
   await page.getByRole("link", { name: "Saved plans", exact: true }).click();
+  await historyLoaded;
   await expect(page.locator(".plan-card")).not.toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Recurring learning reviews" })).toBeVisible();
   await expect(

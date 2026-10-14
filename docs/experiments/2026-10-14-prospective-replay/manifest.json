@@ -1,0 +1,17 @@
+{
+  "command_source_sha256": {
+    "scripts/evaluate_journal_replay.py": "390c3e3183fb5184f582cbc3719e3eba9af46be4395f413de75f2a99a6fa8683",
+    "scripts/prepare_journal_replay.py": "efe58848c100e411d5335cd62e31dc6bf43324c5f245824f1e8e53af824a8e87",
+    "scripts/run_prospective_journal.py": "0b285fc5640d4826a5be72fe9bd5200b4b7649708ebc4afa9cfb83fac4ff0cc7"
+  },
+  "completed_prospective_evaluation": false,
+  "contains_private_manager_state": false,
+  "created_at": "2026-10-14T04:06:20.476331+00:00",
+  "evidence": "actual official retained football and fresh prospective capture; hypothetical paper finances",
+  "payloads": {
+    "integration.json": "56ecffbe7578ad9c4ba5acd3cb446cf95d8feac04b15761a3f378d2dafbef3fa",
+    "verification.json": "9b1025fd4fc8221c14d1a805d669f656db5e662cccec30f2b3d68779583ca676"
+  },
+  "previous_immutable_real_experiment": "../2026-10-13-real-football-finalized/manifest.json",
+  "schema_version": 1
+}

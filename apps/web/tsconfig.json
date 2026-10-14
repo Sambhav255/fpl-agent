@@ -46,7 +46,9 @@
     ".next-real-positive/types/**/*.ts",
     ".next-real-positive/dev/types/**/*.ts",
     ".next-real-finalized/types/**/*.ts",
-    ".next-real-finalized/dev/types/**/*.ts"
+    ".next-real-finalized/dev/types/**/*.ts",
+    ".next-prospective-replay/types/**/*.ts",
+    ".next-prospective-replay/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

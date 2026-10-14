@@ -7,7 +7,7 @@ Updated2026-10-13. [BUILD_STATUS](../BUILD_STATUS.md) and [the actual experiment
 | D01 | Exact reviewed/HEAD/Actions comparison; annotation repair; clean locked base/RL and full production verification | Actual private finances/chips remain user-confirmed inputs |
 | D02 | Immutable journals, execution/paper distinction, finalized outcome revisions; actual realGW7 paper freeze | FutureGW7 results are not available yet |
 | D03 | Two current chronological test origins and separate six-final-event serving refit | Historical publication/role assumptions; no champion promotion |
-| D04 | Supported-horizon receding replay, official-total scoring and strict pre-deadline seals | Reconstructed research and actual future shadows are distinct from completed strict prospective evaluation |
+| D04 | Supported-horizon receding replay, official-total scoring and strict pre-deadline seals; automated baseline packet producer and exact official revision scoring | Reconstructed research and actual future shadows are distinct from completed strict prospective evaluation |
 | D05 | Paced full667-player official universe,669 retained sources, registered real archive ablations and same-coverage comparators | Missing historical rows, one season, reconstructed timing and calendar uncertainty |
 | D06 | Exact financial transitions and official points/minutes replay with missingness rejection | Historical prices use explicit reconstruction, not verified deadline quotes |
 | D07 | Complete WC/FH ownership/XI/captain candidates, sparse MILP, independent replay, two36-comparison matrices over4/6/8 events | Ordinary large paths remain two-move bounded; no global sequence certificate |
@@ -19,3 +19,5 @@ Updated2026-10-13. [BUILD_STATUS](../BUILD_STATUS.md) and [the actual experiment
 Read [advanced serving](ADVANCED_SERVING.md), [journal replay](JOURNAL_REPLAY.md), [verification](VERIFICATION_REPORT.md), [backlog](EVALUATION_AND_BACKLOG.md) and [the file map](../FILE_STRUCTURE.md). Local timestamps/checksums are consistency evidence, not independent attestation. Synthetic fixtures still prove mechanics; real historical experiments retain their assumptions. No actual-team exploration, submitted transfer/chip, public deployment, paid data or default promotion.
 
 Next concrete step: score the frozenGW7 shadow/paper journal after official finalization, then advance folds and refit. Private financial/chip reconciliation, independent social review and additional chronological data are separate prerequisites; they are never filled with invented values.
+
+Latest continuation verification: 464 base/11 skips, 480 RL/7 skips, mypy81, browser16/6; see [the immutable prospective producer report](../experiments/2026-10-14-prospective-replay/README.md). Real future capture remains distinct from completed future performance evaluation.

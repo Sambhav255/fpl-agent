@@ -371,7 +371,7 @@ class Store:
                             entities.c.kind == "decision_journal", entities.c.id == row["id"]
                         )
                     )
-            for kind in ("review_schedule", "review_tick", "learning_review"):
+            for kind in ("review_schedule", "review_tick", "learning_review", "replay_capture"):
                 for row in connection.execute(
                     select(entities).where(entities.c.kind == kind)
                 ).mappings():

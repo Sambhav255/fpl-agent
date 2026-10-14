@@ -99,7 +99,25 @@ def resolve_forecast(store: Store, payload: dict[str, Any], state: ManagerState)
     if provider == "baseline":
         if payload.get("artifact_id") or payload.get("serving_bundle_id"):
             raise ValueError("Baseline does not accept advanced artifacts")
+        if payload.get("replay_capture_id"):
+            from fpl_app.learning.packets import checked_capture
+
+            capture_id = payload["replay_capture_id"]
+            binding = store.get("replay_capture", capture_id)
+            capture = checked_capture(
+                store, capture_id, state, store.get("dataset", state.snapshot_id)
+            )
+            if capture["horizon_events"] != payload["horizon_events"] or not (
+                instant(capture["available_at"]) <= instant(reference["prediction_origin"])
+            ):
+                raise ValueError("Replay capture horizon or forecast timing mismatch")
+            reference.update(
+                replay_capture_id=capture_id,
+                replay_capture_sha256=binding["capture_sha256"],
+            )
         return reference
+    if payload.get("replay_capture_id"):
+        raise ValueError("This replay capture producer supports the baseline champion only")
     from .advanced_serving import FAMILIES, checked_inputs
 
     if provider in FAMILIES:
@@ -251,6 +269,19 @@ def forecast_job(
         raise ValueError("Provider output does not match frozen job inputs")
     return run.model_copy(
         update={
+            **(
+                {
+                    "projection_run_id": "baseline-replay-"
+                    + fingerprint(
+                        {
+                            "baseline_run_id": run.projection_run_id,
+                            "capture_sha256": reference["replay_capture_sha256"],
+                        }
+                    )[:24]
+                }
+                if reference.get("replay_capture_id")
+                else {}
+            ),
             "requested_provider": reference["requested_provider"],
             "resolved_provider": reference["provider"],
             "artifact_id": reference["artifact_id"],

@@ -45,3 +45,11 @@ Dependencies, `.next*` builds, caches, test output, private notes, environment f
 ## Real experiment entrypoints
 
 `train_current_football.py` evaluates retained official labels and refits separately; `run_football_experiment.py` runs registered origin-frozen archive ablations/direct leads; `release_football_shadow.py` builds immutable football/baseline/ensemble inputs and release packets; `report_real_experiments.py` publishes checksum-bound public evidence. `run_historical_strategy.py` generates real reconstructed episodes and fits/evaluates five-seed challengers. `benchmark_season_planning.py` and `benchmark_historical_planning.py` compare bounded planners on frozen supported paths. All remain under `scripts/`. Runtime artifacts stay ignored under `data/research/`; reports are in [experiments/2026-10-13-real-football-finalized](experiments/2026-10-13-real-football-finalized/README.md).
+
+## Prospective replay producers
+
+- `scripts/run_prospective_journal.py`: capture → actual local API/worker → analysis → journal → policy seals.
+- `scripts/prepare_journal_replay.py`: separate capture/enqueue and packet/seal stages.
+- `scripts/evaluate_journal_replay.py`: exact finalized official revision → immutable paper comparison.
+- `backend/src/fpl_app/learning/{packets,official_replay,paper}.py`: source/code/mapping evidence, official outcome reconciliation and fenced report publication.
+- Ignored `DATA_DIR/{replay_captures,replay_inputs,replay_reports}`: captured package/source bytes, private journal packets and private financial replay reports. Preserve them with the SQLite database.

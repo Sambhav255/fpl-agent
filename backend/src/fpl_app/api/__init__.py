@@ -43,6 +43,7 @@ class ProjectionRequest(BaseModel):
     mode: Literal["default", "experimental", "shadow"] = "default"
     artifact_id: str | None = None
     serving_bundle_id: str | None = None
+    replay_capture_id: str | None = Field(default=None, pattern=r"^[A-Za-z0-9_-]{1,96}$")
     team_id: int
     horizon_events: int = Field(default=6, ge=1, le=8)
 
@@ -548,7 +549,11 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
 
     @app.post(prefix + "/projections/runs", response_model=JobResponse, status_code=202)
     def project(body: ProjectionRequest) -> JobResponse:
-        return job_response(queue.enqueue("projection", body.model_dump()))
+        payload = body.model_dump()
+        # Keep existing baseline fingerprints when prospective capture is not requested.
+        if body.replay_capture_id is None:
+            payload.pop("replay_capture_id")
+        return job_response(queue.enqueue("projection", payload))
 
     @app.post(prefix + "/projections/bundles", status_code=201)
     def serving_bundle(body: ServingBundleRequest) -> dict[str, Any]:
@@ -759,6 +764,8 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
             "saved_plans": [p.model_dump(mode="json") for p in list_plans()],
             "projections": database.list("projection"),
             "learning_decisions": database.list("decision_journal"),
+            "learning_replay_captures": database.list("replay_capture"),
+            "learning_replay_seals": database.list("decision_replay_seal"),
             "learning_action_history": [
                 record
                 for journal in database.list("decision_journal")

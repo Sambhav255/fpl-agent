@@ -1,0 +1,45 @@
+{
+  "actual_runs": {
+    "backend_ruff_formatted_files": 126,
+    "base": {
+      "passed": 464,
+      "skipped": 11
+    },
+    "frontend_lint_format_types_build": "passed",
+    "frontend_unit": {
+      "passed": 13
+    },
+    "mypy_source_files_both_environments": 81,
+    "production_browser": {
+      "passed": 16,
+      "skipped": 6
+    },
+    "rl": {
+      "passed": 480,
+      "skipped": 7
+    },
+    "root_cli": {
+      "passed": 14
+    }
+  },
+  "coverage_note": "Authored fixtures verify mechanics. Real data verifies prospective capture and actual serving. No finalized GW7 outcome or model/policy performance claim.",
+  "earlier_failures": [
+    "existing 0.3s solver test timed out under concurrent checks; later full RL passed unchanged assertions",
+    "code changed after initial capture; checksum fence rejected it; new actual-time captures preserved old evidence",
+    "CLI/API default payload mismatch repaired and normal baseline fingerprint preservation tested",
+    "browser restored forecast had not loaded before assertion; wait for actual forecast/history responses added",
+    "ENOSPC while writing CatBoost test artifact and closing browser trace; owned uv download cache cleared, installed environments preserved, sequential affected full suites passed"
+  ],
+  "new_authored_cases": {
+    "capture_packets": 15,
+    "official_revisions": 29,
+    "paper_cli": 7
+  },
+  "optional_absence_in_live_base_worker": [
+    "gymnasium",
+    "torch",
+    "pymc",
+    "pytorch_forecasting"
+  ],
+  "warnings": "115 existing locked-stack deprecations; not suppressed"
+}

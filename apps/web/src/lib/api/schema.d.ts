@@ -1038,6 +1038,8 @@ export interface components {
             artifact_id?: string | null;
             /** Serving Bundle Id */
             serving_bundle_id?: string | null;
+            /** Replay Capture Id */
+            replay_capture_id?: string | null;
             /** Team Id */
             team_id: number;
             /**

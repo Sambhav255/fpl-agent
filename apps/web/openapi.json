@@ -2769,6 +2769,18 @@
             ],
             "title": "Serving Bundle Id"
           },
+          "replay_capture_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{1,96}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Replay Capture Id"
+          },
           "team_id": {
             "type": "integer",
             "title": "Team Id"
