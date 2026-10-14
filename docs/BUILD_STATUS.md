@@ -1,6 +1,6 @@
 # Current build status
 
-Updated 2026-10-13. Read [START_HERE](START_HERE.md), [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md) and [the real experiment report](experiments/2026-10-13-real-football-finalized/README.md). Earlier audits and checks remain historical; they do not override this status.
+Updated 2026-10-14 UTC (13 October locally). Read [START_HERE](START_HERE.md), [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md) and [the real experiment report](experiments/2026-10-13-real-football-finalized/README.md). Earlier audits and checks remain historical; they do not override this status.
 
 ## Prospective replay continuation — 14 October UTC
 
@@ -36,11 +36,11 @@ Official-points historical episode adapters and reproducible episode serializati
 | Final production browser/API/worker | 14 passed / 6 explicit personal-state skips |
 | Positive real integration | 667 CatBoost and 667 ensemble forecasts displayed; queued worker analysis; four plans independently validated; pre-deadline GW7 paper journal |
 
-Base skips Gymnasium, learning and historical-adapter modules (one skip per module), plus a Torch case and seven shared Bayesian/TFT/opt-in cases. RL enables 16 additional actual cases; those seven shared cases remain skipped. No optional library was installed to hide typing failures. The locked stack emits 115 deprecation warnings; checks/assertions remain enabled. Browser timing failures were fixed by awaiting actual responses; the shadow selector uses its accessible combobox name. Full evidence and reproduction commands are in [the report](experiments/2026-10-13-real-football-finalized/README.md) and [verification](learning_upgrade/VERIFICATION_REPORT.md). These are newly executed results; older 414/3 and organisation counts are historical.
+Base skips Gymnasium, learning and historical-adapter modules (one skip per module), plus a Torch case and seven shared Bayesian/TFT/opt-in cases. RL enables 16 additional actual cases; those seven shared cases remain skipped. No optional library was installed to hide typing failures. The locked stack emits 115 deprecation warnings; checks/assertions remain enabled. Browser timing failures were fixed by awaiting actual responses; the shadow selector uses its accessible combobox name. Full evidence and reproduction commands are in [the report](experiments/2026-10-13-real-football-finalized/README.md) and [verification](learning_upgrade/VERIFICATION_REPORT.md). These were executed in the previous stage; the continuation results above are fresh. Older 414/3 and organisation counts remain historical.
 
 ## Runnable handoff and limits
 
-Final verified isolated preview: **http://127.0.0.1:3162**, API8162 and a separate worker, build `.next-real-finalized`, `DATA_DIR=/private/tmp/fpl-real-finalized`. Recheck processes before reuse. Durable ignored copies are `data/research/real-football-finalized-2026-10-13/` and the earlier `data/research/real-football-2026-10-13/`; original personal state, artifacts and existing services are preserved. Standard startup remains `bash scripts/dev.sh`. No account action, paid data, deployment, Git push or champion promotion occurred.
+Previous-stage verified isolated preview: **http://127.0.0.1:3162**, API8162 and a separate worker, build `.next-real-finalized`, `DATA_DIR=/private/tmp/fpl-real-finalized`. Recheck processes before reuse. Durable ignored copies are `data/research/real-football-finalized-2026-10-13/` and the earlier `data/research/real-football-2026-10-13/`; original personal state, artifacts and existing services are preserved. Standard startup remains `bash scripts/dev.sh`. No account action, paid data, deployment, Git push or champion promotion occurred.
 
 TFT stays inactive: six current-era finalized events are below its eight-event chronological minimum. Current CatBoost supports one lead; longer current forecasts remain the labelled conditional baseline. Real Bayesian/TFT calibration and complete release qualification remain gated; their optional research infrastructure is intact. Independently reviewed social labels/configured semantic extraction and actual private financial/chip reconciliation remain unavailable. Personal state is never inferred from research portfolios. Actual execution stays unknown; paper selection is separate.
 

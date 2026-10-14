@@ -33,6 +33,17 @@ uv run --locked --project backend python scripts/run_prospective_journal.py \
   --team-id 2000000001 --api-port 8163 --horizon 6 --policy all
 ```
 
+In separate terminals start the same store and the already built production interface:
+
+```sh
+DATA_DIR=/private/tmp/fpl-prospective-replay UV_PROJECT_ENVIRONMENT=/private/tmp/fpl-research-base \
+  uv run --locked --project backend uvicorn fpl_app.api.main:app --host 127.0.0.1 --port 8163
+DATA_DIR=/private/tmp/fpl-prospective-replay UV_PROJECT_ENVIRONMENT=/private/tmp/fpl-research-base \
+  uv run --locked --project backend python -m fpl_app.jobs.worker
+(cd apps/web && BACKEND_URL=http://127.0.0.1:8163 NEXT_BUILD_DIR=.next-prospective-replay \
+  npm run start -- --port 3163)
+```
+
 The example ID is a hypothetical portfolio already present in the isolated research copy. A normal reviewed state retains its existing staleness/financial gates. Separate steps are available through `prepare_journal_replay.py capture --enqueue` and `seal`; see [the complete contract](../../learning_upgrade/JOURNAL_REPLAY.md).
 
 After actual official finalization, request `/api/v1/learning/decisions/<decision-id>/outcomes`, wait for its recoverable worker and retain the exact returned revision. Then:
@@ -44,7 +55,7 @@ uv run --locked --project backend python scripts/evaluate_journal_replay.py \
 
 That command produces an immutable private report, changes no manager/action/model record and does not choose a promotion. Code changes deliberately fail an old seal; use its retained exact package in an isolated checkout for that comparison rather than revising its timestamps or manifest.
 
-Checks from backend use the selected locked environment: `uv run --locked pytest`, `uv run --locked pytest ../tests`, `uv run --locked ruff check .`, `uv run --locked ruff format --check .`, and `uv run --locked mypy src`. Sync `/private/tmp/fpl-research-rl` with `--extra rl` and repeat backend checks for optional RL coverage. Frontend uses `npm run format:check`, `lint`, `typecheck`, `test -- --maxWorkers=1`, and `BACKEND_URL=http://127.0.0.1:8163 NEXT_BUILD_DIR=.next-prospective-replay npm run build`.
+Checks from backend use the selected locked environment: `uv run --locked pytest`, `uv run --locked pytest ../tests`, `uv run --locked ruff check .`, `uv run --locked ruff format --check .`, and `uv run --locked mypy src`. Sync `/private/tmp/fpl-research-rl` with `--extra rl` and use `uv run --locked --extra rl` for **every** backend command in that environment; omitting the extra would prune optional RL packages during synchronization. Frontend uses `npm run format:check`, `lint`, `typecheck`, `test -- --maxWorkers=1`, and `BACKEND_URL=http://127.0.0.1:8163 NEXT_BUILD_DIR=.next-prospective-replay npm run build`.
 
 ```sh
 cd apps/web
