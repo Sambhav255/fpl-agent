@@ -4,7 +4,7 @@ import pytest
 from pydantic import ValidationError
 from test_upgrade_optimisation import funding_fixture
 
-from fpl_app.contracts import Settings
+from fpl_app.contracts import ManagerState, Pick, Player, Projection, ProjectionRun, Settings
 from fpl_app.domain.plans import input_fingerprint, validate_plan
 from fpl_app.domain.rules import advance_event, apply_transfers, sale_value
 from fpl_app.optimisation.oracle import exact_oracle
@@ -237,3 +237,115 @@ def test_restricted_search_never_reports_global_optimality_after_candidate_exhau
     assert result.weeks and result.evaluated_edges == 1
     assert not result.complete
     assert result.status == "bounded_catalogue_incumbent"
+
+
+@pytest.mark.parametrize("reverse_catalogue", [False, True])
+def test_budgeted_sequence_seeds_immediate_upgrade_before_future_subtrees(reverse_catalogue):
+    """Synthetic root budget regression from the GW7 handoff; no real forecast claim."""
+    positions = [1] * 2 + [2] * 5 + [3] * 5 + [4] * 3
+    players = [
+        Player(
+            player_id=i + 1,
+            name=f"Owned{i + 1}",
+            club=i // 3 + 1,
+            position=position,
+            market_price_units=50,
+        )
+        for i, position in enumerate(positions)
+    ]
+    players += [
+        Player(player_id=i, name=f"Candidate{i}", club=i + 10, position=3, market_price_units=50)
+        for i in range(16, 81)
+    ]
+    picks = [
+        Pick(player_id=p.player_id, purchase_price_units=50, position=i + 1)
+        for i, p in enumerate(players[:15])
+    ]
+    state = ManagerState(
+        team_id=1,
+        current_chip_confirmed=True,
+        snapshot_id="probe",
+        next_event=7,
+        bank_units=0,
+        free_transfers_at_event_start=1,
+        transfers_made_this_event=0,
+        confirmed_hit_points=0,
+        picks=picks,
+        event_start_picks=[p.model_copy(deep=True) for p in picks],
+        event_start_bank_units=0,
+    )
+    run = ProjectionRun(
+        projection_run_id="probe",
+        snapshot_id="probe",
+        source_cutoff="2026-10-16T00:00:00Z",
+        data_mode="demo",
+        horizon_events=4,
+        projections=[
+            Projection(
+                player_id=p.player_id,
+                fixture_id=e * 1000 + p.club,
+                event=e,
+                expected_points=25 if p.player_id == 16 else 4 if p.player_id <= 15 else 0,
+                expected_minutes=90,
+                appearance_probability=1,
+            )
+            for e in range(7, 11)
+            for p in players
+        ],
+    )
+    settings = Settings(
+        horizon_events=4,
+        max_additional_hit_points=0,
+        max_transfers_this_event=1,
+        solver_time_limit_seconds=10,
+        planner_mode="sequence",
+    )
+    if reverse_catalogue:
+        players.reverse()
+    result = solve_sequence(state, players, run, settings, max_edges=100)
+    assert result.net_points == 360
+    assert {action["in"] for action in result.weeks[0]["actions"]} == {16}
+    assert result.root_actions_considered > 1
+    assert result.root_actions_seeded > 0
+    assert result.incumbent_source in {"root_seed", "depth_search"}
+    assert result.evaluated_edges <= 100
+    assert not result.complete
+    excluded = settings.model_copy(update={"excluded_player_ids": [16]})
+    without_upgrade = solve_sequence(state, players, run, excluded, max_edges=100)
+    assert all(action["in"] != 16 for week in without_upgrade.weeks for action in week["actions"])
+
+
+def test_budgeted_sequence_seeds_funding_pair_and_keeps_valid_path():
+    state, players, run = funding_fixture()
+    for player_id in range(19, 81):
+        player = Player(
+            player_id=player_id,
+            name=f"Extra{player_id}",
+            club=player_id + 10,
+            position=1 + player_id % 4,
+            market_price_units=50,
+        )
+        players.append(player)
+        run.projections.append(
+            Projection(
+                player_id=player_id,
+                fixture_id=8000 + player.club,
+                event=8,
+                expected_points=0,
+                expected_minutes=90,
+                appearance_probability=1,
+            )
+        )
+    settings = Settings(
+        horizon_events=1,
+        max_additional_hit_points=0,
+        max_transfers_this_event=2,
+        solver_time_limit_seconds=10,
+        planner_mode="sequence",
+    )
+    result = solve_sequence(state, players, run, settings, max_edges=100)
+    assert result.net_points == 101
+    assert {action["in"] for action in result.weeks[0]["actions"]} == {16, 17}
+    assert result.root_actions_seeded > 0
+    assert result.evaluated_edges <= 100
+    assert not result.complete

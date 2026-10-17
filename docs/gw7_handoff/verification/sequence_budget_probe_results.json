@@ -1,0 +1,26 @@
+{
+  "commit": "a3754b39f1a81b05a59b668bfdd363bb89d48d6d",
+  "synthetic": true,
+  "mocked_functions": false,
+  "node_budget": 100,
+  "planner_points": 234.0,
+  "planner_actions_by_event": [
+    [],
+    [],
+    [],
+    [
+      {
+        "event": 10,
+        "out": 8,
+        "in": 16,
+        "sale_units": 50,
+        "purchase_units": 50,
+        "bank_units": 0
+      }
+    ]
+  ],
+  "status": "bounded_catalogue_incumbent",
+  "evaluated_edges": 100,
+  "keep_points": 192.0,
+  "legal_buy_now_hold_points": 360.0
+}

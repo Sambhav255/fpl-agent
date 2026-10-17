@@ -421,9 +421,13 @@ def recommend(
             "search": "financial-state dynamic programming; full declared squad/chip path",
             "status": sequence_result.status,
             "evaluated_edges": sequence_result.evaluated_edges,
+            "root_actions_considered": sequence_result.root_actions_considered,
+            "root_actions_seeded": sequence_result.root_actions_seeded,
+            "incumbent_source": sequence_result.incumbent_source,
             "search_scope": sequence_result.search_scope,
             "optimality_gap": 0 if sequence_result.complete and sequence_result.weeks else None,
             "elapsed_seconds": monotonic() - started,
+            "sequence_elapsed_seconds": sequence_result.elapsed_seconds,
             "scope": "declared deterministic price and forecast path; budget bounded",
         }
         sequence_alternatives: list[Plan] = []

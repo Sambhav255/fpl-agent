@@ -391,9 +391,14 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
         if state.public_source_event is not None:
             state.warnings = list(
                 dict.fromkeys(
-                    state.warnings
+                    [
+                        warning
+                        for warning in state.warnings
+                        if warning
+                        != "Public deadline import corrected by user; current private squad not verified."
+                    ]
                     + [
-                        "Public deadline import corrected by user; current private squad not verified."
+                        "User-reviewed private state; recheck any changes made after this confirmation."
                     ]
                 )
             )

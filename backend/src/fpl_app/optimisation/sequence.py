@@ -16,7 +16,14 @@ from typing import Any
 
 from fpl_app.contracts import ManagerState, Player, ProjectionRun, Settings
 from fpl_app.domain.plans import _check_inputs, _week, allowed_chips, event_players
-from fpl_app.domain.rules import RULES, advance_event, apply_transfers, readiness, validate_chip
+from fpl_app.domain.rules import (
+    RULES,
+    advance_event,
+    apply_transfers,
+    readiness,
+    sale_value,
+    validate_chip,
+)
 from fpl_app.optimisation.chip_candidates import complete_chip_squads
 from fpl_app.optimisation.oracle import funding_moves
 
@@ -29,6 +36,106 @@ class SequenceResult:
     complete: bool
     status: str
     search_scope: str = "all_declared_squads"
+    root_actions_considered: int = 0
+    root_actions_seeded: int = 0
+    incumbent_source: str = "none"
+    elapsed_seconds: float = 0.0
+
+
+def _root_seed_squads(
+    state: ManagerState,
+    players: list[Player],
+    run: ProjectionRun,
+    settings: Settings,
+) -> Iterator[set[int]]:
+    """Prioritise varied immediate singles and funding pairs before deep search.
+
+    This is a bounded incumbent menu, not a claim that these are all legal roots.
+    The normal catalogue remains the source of exhaustive small-universe search.
+    """
+    owned = {pick.player_id for pick in state.picks}
+    locks, exclusions = set(settings.locked_player_ids), set(settings.excluded_player_ids)
+    by_id = {player.player_id: player for player in players}
+    by_pick = {pick.player_id: pick for pick in state.picks}
+    current = dict.fromkeys(by_id, 0.0)
+    future = dict.fromkeys(by_id, 0.0)
+    for row in run.projections:
+        if (
+            row.player_id in by_id
+            and state.next_event <= row.event < state.next_event + settings.horizon_events
+        ):
+            target = current if row.event == state.next_event else future
+            target[row.player_id] += row.expected_points
+    swaps: list[tuple[float, int, int, int]] = []
+    for outgoing in owned - locks:
+        old = by_id[outgoing]
+        try:
+            sale = sale_value(by_pick[outgoing], old)
+        except ValueError:
+            continue
+        for incoming in players:
+            if incoming.position != old.position or incoming.player_id in owned | exclusions:
+                continue
+            gain = (
+                2 * (current[incoming.player_id] - current[outgoing])
+                + future[incoming.player_id]
+                - future[outgoing]
+            )
+            cost = incoming.market_price_units - sale
+            swaps.append((gain, cost, outgoing, incoming.player_id))
+    ranked = sorted(swaps, key=lambda row: (-row[0], row[1], row[2], row[3]))
+    seen: set[frozenset[int]] = set()
+    if locks <= owned and not owned & exclusions:
+        seen.add(frozenset(owned))
+        yield owned
+    maximum = settings.max_transfers_this_event
+    singles = (
+        [frozenset((owned - {outgoing}) | {incoming}) for _, _, outgoing, incoming in ranked[:24]]
+        if maximum is None or maximum >= 1
+        else []
+    )
+    if maximum is not None and maximum < 2:
+        for squad in singles:
+            if squad not in seen:
+                seen.add(squad)
+                yield set(squad)
+        return
+    # A low-scoring reserve downgrade may fund an otherwise unaffordable XI gain.
+    # Include both high-gain and high-saving swaps so this case is seeded early.
+    donors = sorted(swaps, key=lambda row: (row[1], -row[0], row[2], row[3]))[:16]
+    pairs: list[tuple[float, int, frozenset[int]]] = []
+    for first in ranked[:20]:
+        for second in donors:
+            if first[2] == second[2] or first[3] == second[3]:
+                continue
+            squad = frozenset((owned - {first[2], second[2]}) | {first[3], second[3]})
+            if squad not in seen:
+                pairs.append((first[0] + second[0], first[1] + second[1], squad))
+    ranked_pairs = sorted(pairs, key=lambda row: (-row[0], row[1], tuple(sorted(row[2]))))
+    affordable_funding = [
+        row
+        for row in ranked_pairs
+        if row[1] <= (state.bank_units or 0)
+        and any(
+            first[1] > (state.bank_units or 0)
+            and second[1] < 0
+            and frozenset((owned - {first[2], second[2]}) | {first[3], second[3]}) == row[2]
+            for first in ranked[:20]
+            for second in donors
+            if first[2] != second[2] and first[3] != second[3]
+        )
+    ]
+    paired = [squad for _, _, squad in (affordable_funding[:8] + ranked_pairs[:8])]
+    for index in range(max(len(singles), len(paired))):
+        for candidate_squad in (
+            singles[index] if index < len(singles) else None,
+            paired[index] if index < len(paired) else None,
+        ):
+            if candidate_squad is None:
+                continue
+            if candidate_squad not in seen:
+                seen.add(candidate_squad)
+                yield set(candidate_squad)
 
 
 def bounded_squads(
@@ -155,10 +262,13 @@ def solve_sequence(
     )
     locks, exclusions = set(settings.locked_player_ids), set(settings.excluded_player_ids)
     squads = [s for s in squads if locks <= s and not s & exclusions]
-    deadline = monotonic() + settings.solver_time_limit_seconds
+    started = monotonic()
+    deadline = started + settings.solver_time_limit_seconds
     evaluated = 0
     complete = not restricted
     best: SequenceResult = SequenceResult([], float("-inf"), 0, False, "no_legal_path")
+    root_seen: set[tuple[str | None, frozenset[int]]] = set()
+    root_seeded = 0
     # Establish a complete legal roll path before optional solver imports and
     # candidate fitting consume the budget. A requested chip can also keep its
     # squad, with inventory and Free Hit restoration replayed normally.
@@ -188,7 +298,73 @@ def solve_sequence(
                 0,
                 False,
                 "valid_incumbent",
+                incumbent_source="keep_seed",
             )
+            root_seen.add((hold_weeks[0]["chip"], frozenset(p.player_id for p in state.picks)))
+    if restricted and max_edges >= 16 and monotonic() < deadline:
+        # Reserve most of the edge budget for deeper search. Every seeded root is
+        # extended to a complete legal roll continuation before comparison.
+        seed_limit = min(max_edges // 2, 256)
+        catalogue = event_players(players, settings, state.next_event)
+        for chip in allowed_chips(state, settings, 0):
+            if validate_chip(state, chip):
+                continue
+            choices = (
+                complete_chip_squads(state, catalogue, run, settings, deadline, 0, chip)
+                if chip in {"wildcard", "free_hit"}
+                else _root_seed_squads(state, catalogue, run, settings)
+            )
+            for squad in choices:
+                if evaluated + settings.horizon_events > seed_limit or monotonic() >= deadline:
+                    break
+                root = (chip, frozenset(squad))
+                if root in root_seen:
+                    continue
+                root_seen.add(root)
+                evaluated += 1
+                try:
+                    moves = funding_moves(state, catalogue, squad)
+                    if (
+                        settings.max_transfers_this_event is not None
+                        and len(moves) > settings.max_transfers_this_event
+                    ):
+                        continue
+                    changed, ledger = apply_transfers(state, catalogue, moves, chip)
+                    first = _week(changed, catalogue, run, chip, ledger)
+                    extra = max(0, first["total_hits"] - (state.confirmed_hit_points or 0))
+                    if extra > settings.max_additional_hit_points:
+                        continue
+                    weeks = [first]
+                    held = changed
+                    for offset in range(1, settings.horizon_events):
+                        if evaluated >= seed_limit or monotonic() >= deadline:
+                            break
+                        held = advance_event(held)
+                        future_chip = next(
+                            choice
+                            for choice in allowed_chips(held, settings, offset)
+                            if not validate_chip(held, choice)
+                        )
+                        future_players = event_players(players, settings, held.next_event)
+                        held, future_ledger = apply_transfers(held, future_players, [], future_chip)
+                        weeks.append(_week(held, future_players, run, future_chip, future_ledger))
+                        evaluated += 1
+                    if len(weeks) == settings.horizon_events:
+                        root_seeded += 1
+                        score = sum(week["net_points"] for week in weeks)
+                        if score > best.net_points:
+                            best = SequenceResult(
+                                weeks,
+                                score,
+                                evaluated,
+                                False,
+                                "valid_incumbent",
+                                incumbent_source="root_seed",
+                            )
+                except (ValueError, StopIteration):
+                    continue
+            if evaluated + settings.horizon_events > seed_limit or monotonic() >= deadline:
+                break
     # DFS with exact dominance on full financial/chip states. Explore roll first
     # so a complete incumbent exists before the expensive alternatives.
     seen: dict[tuple[Any, ...], float] = {}
@@ -198,7 +374,9 @@ def solve_sequence(
         offset = len(weeks)
         if offset == settings.horizon_events:
             if net > best.net_points:
-                best = SequenceResult(weeks, net, evaluated, False, "valid_incumbent")
+                best = SequenceResult(
+                    weeks, net, evaluated, False, "valid_incumbent", incumbent_source="depth_search"
+                )
             return
         if evaluated >= max_edges or monotonic() >= deadline:
             complete = False
@@ -228,6 +406,8 @@ def solve_sequence(
                 if evaluated >= max_edges or monotonic() >= deadline:
                     complete = False
                     return
+                if offset == 0:
+                    root_seen.add((chip, frozenset(squad)))
                 evaluated += 1
                 try:
                     moves = funding_moves(current, catalogue, squad)
@@ -256,6 +436,9 @@ def solve_sequence(
     visit(state.model_copy(deep=True), [], 0.0, 0)
     best.evaluated_edges = evaluated
     best.complete = complete
+    best.root_actions_considered = len(root_seen)
+    best.root_actions_seeded = root_seeded
+    best.elapsed_seconds = monotonic() - started
     if restricted:
         best.search_scope = "ordinary_events_at_most_two_replacements_complete_chip_milp_candidates"
         best.status = "bounded_no_incumbent"
