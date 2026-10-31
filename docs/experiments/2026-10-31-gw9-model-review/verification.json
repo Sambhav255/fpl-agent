@@ -1,0 +1,44 @@
+{
+  "date_utc": "2026-10-31",
+  "backend": {
+    "passed": 498,
+    "skipped": 3,
+    "warnings": 132,
+    "ruff": "passed",
+    "format": "passed",
+    "mypy_sources": 84
+  },
+  "operator_tests": {
+    "passed": 16
+  },
+  "frontend": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "format": "passed",
+    "unit_passed": 13,
+    "next_version": "16.4.3",
+    "production_build": "passed"
+  },
+  "browser": {
+    "passed": 12,
+    "skipped": 10,
+    "scope": "isolated demo desktop and mobile; personal and real-shadow configuration absent"
+  },
+  "api_worker_smoke": "passed",
+  "npm_audit": {
+    "production": 0,
+    "full_moderate": 18,
+    "full_high": 0,
+    "full_critical": 0
+  },
+  "python_dependency_check": "108 compatible installed packages",
+  "benchmark": {
+    "bundles": 3,
+    "player_mean_streams": 28,
+    "team_goal_streams": 1,
+    "first_check_after": "2026-11-03T12:00:00+00:00",
+    "pre_event_live_check": "pending_finalization",
+    "scored_events": 0
+  },
+  "push_performed": false
+}

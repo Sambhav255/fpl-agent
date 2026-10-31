@@ -10,7 +10,7 @@ A local Fantasy Premier League strategy workspace for squad review, projections,
 - Select a lineup, captain, vice captain, and bench; inspect chip timing and save versioned plans.
 - Track immutable source snapshots, background jobs, and prediction provenance.
 
-The approximate baseline is the default. Football CatBoost can run as an explicit, one-gameweek experiment with immutable source/artifact checks and a declared player universe. Preparation now evaluates expanding chronological event folds, then creates a separate latest-data serving refit; early seasons report insufficient evaluation instead of forcing a split. Earlier small tests did not beat the simple comparison forecast, so no challenger is promoted. Bayesian complete-component research scoring, real multilead TFT fitting/evaluation and eligible mean ensembles are implemented with audited opt-in shadow worker/UI contracts. Real-data qualification and calibration remain gated. The Models page shows actual evaluation status and an experimental comparison flow. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
+The approximate baseline is the default. Football CatBoost can run as an explicit, one-gameweek experiment with immutable source/artifact checks and a declared player universe. Preparation evaluates chronological folds before creating a separate latest-data refit. The [latest model review](docs/experiments/2026-10-31-gw9-model-review/README.md) includes real CatBoost, TFT, Bayesian, ensemble and policy experiments, with honest subgroup and provenance limits. Registered deadline benchmarks preserve predictions for finalized post-event scoring. Bayesian complete player scoring and strict TFT release qualification remain gated; no challenger is automatically promoted. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
 
 ## Quick start
 
@@ -54,7 +54,7 @@ scripts/        Local service launcher and integration checks
 data/           Local database, snapshots and model artifacts (Git ignored)
 ```
 
-Start a coding session with [docs/START_HERE.md](docs/START_HERE.md). Canonical specifications and engineering references are indexed in [docs/README.md](docs/README.md). See [the file map](docs/FILE_STRUCTURE.md) for the layout; unchanged supplied material is archived under `docs/reference/supplied/` and older status narratives under `docs/history/`.
+Start a coding session with [docs/START_HERE.md](docs/START_HERE.md) and [the commit/publishing handoff](docs/HANDOFF.md). Canonical specifications are indexed in [docs/README.md](docs/README.md), commands in [scripts/README.md](scripts/README.md), and locations in [the file map](docs/FILE_STRUCTURE.md). Supplied references remain under `docs/reference/supplied/`; older engineering records are under `docs/history/`. Shared editor settings hide dependencies and local runtime output without deleting them.
 
 ## Development checks
 
@@ -78,7 +78,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting, API generation, optional 
 
 ## Learning research and reviews
 
-Saved Plans supports immutable deadline decisions, manual execution reporting and finalized outcome reviews. Future-chip and financial sequence controls are in Planner. Small-universe exhaustive search is distinguished from bounded full-catalogue paths, which cap replacements at two per event including chip weeks. Frozen journals can seal pre-deadline replay evidence; see [journal replay](docs/learning_upgrade/JOURNAL_REPLAY.md). Baseline and numerical planning remain the default champions.
+Saved Plans supports immutable deadline decisions, manual execution reporting and finalized outcome reviews. Future-chip and financial sequence controls are in Planner. Small-universe exhaustive search is distinguished from bounded large-catalogue ordinary paths, which cap replacements at two per event; Wildcard and Free Hit candidates allow complete ownership replacements. Frozen journals can seal pre-deadline replay evidence; see [journal replay](docs/learning_upgrade/JOURNAL_REPLAY.md). Baseline and numerical planning remain the default champions.
 
 Optional local strategy research:
 
@@ -92,6 +92,6 @@ backend/.venv/bin/python scripts/benchmark_social.py
 
 Use `--episodes path/to/frozen-episodes.json` for explicitly labelled local train/test research episodes. The JSON bytes and implementation are fingerprinted when queued; no arbitrary file path is requested through the API. Optional Bayesian/TFT development requires `uv sync --locked --extra bayes --extra deep --extra rl`. Synthetic PPO fitting checks mechanics and installation; it does not establish a live advantage. Models lists inactive policy evidence separately from football forecasts.
 
-Recurring reviews are disabled until saved in the live team's Saved Plans controls. With API/worker running, launch `backend/.venv/bin/python scripts/review_learning.py --watch` to enqueue due intervals. Enable collection/refitting deliberately in those controls. Closing the scheduler stops new ticks; disabling the schedule fences queued reviews. No private inputs, transfers, chips or champion pointers are changed by a review.
+Recurring reviews are disabled until enabled in Saved Plans controls. The normal worker now polls enabled schedules automatically; collection/refitting remains explicitly opt-in. Disabling a schedule fences its queued reviews. Registered deadline benchmarks are also checked automatically by a worker using the same `DATA_DIR`, after official finalization. [Research commands](scripts/README.md#frozen-deadline-experiments) explain how to freeze forecasts and score them before refitting. A running local worker is required; this is not a hosted scheduler.
 
 The detailed implemented scope, remaining release/data prerequisites and actual verification are recorded in [learning implementation status](docs/learning_upgrade/IMPLEMENTATION_STATUS.md).

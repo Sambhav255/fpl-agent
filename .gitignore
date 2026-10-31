@@ -38,3 +38,7 @@ docs/local/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Shared editor layout; local runtime data stays ignored and on disk.
+!.vscode/
+!.vscode/settings.json

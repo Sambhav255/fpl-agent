@@ -4,6 +4,8 @@ Start with [the coding-agent handoff](START_HERE.md), then [current build status
 
 [Repository file map](FILE_STRUCTURE.md) · [Historical records](history/README.md) · [Preserved originals](reference/README.md)
 
+[Commit and publishing handoff](HANDOFF.md) · [Operator command index](../scripts/README.md)
+
 ## Product and implementation
 
 1. [Product requirements](FPL_PRD.md)

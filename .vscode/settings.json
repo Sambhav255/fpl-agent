@@ -1,0 +1,31 @@
+{
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.ruff_cache": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/.next-*": true,
+    "**/test-results": true,
+    "**/playwright-report": true,
+    "data": true,
+    "dist": true
+  },
+  "search.exclude": {
+    "**/.venv/**": true,
+    "**/node_modules/**": true,
+    "**/.next*/**": true,
+    "data/**": true,
+    "dist/**": true
+  },
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/node_modules/**": true,
+    "**/.next*/**": true,
+    "**/data/**": true
+  }
+}

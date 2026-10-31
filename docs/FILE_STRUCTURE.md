@@ -7,15 +7,19 @@ fpl_build_kit/
 ├── AGENTS.md                 Coding and domain instructions
 ├── README.md                 Setup, commands and capabilities
 ├── CONTRIBUTING.md           Contribution and contract workflows
+├── .vscode/settings.json     Shared Explorer/search exclusions
 ├── apps/web/                 Next.js app, frontend tests and generated API types
 ├── backend/                  Python API, worker, models, domain and backend tests
 ├── scripts/                  Stable operator entrypoints and repository checks
+│   ├── README.md             Command index and research workflow
+│   └── research/             Registered deadline experiments and frozen scoring
 ├── tests/                    Operator CLI integration tests
 ├── docs/
 │   ├── START_HERE.md          Resume guide
 │   ├── BUILD_STATUS.md        Current state and next work
 │   ├── CHATGPT_PROGRESS_REPORT.md
 │   ├── FILE_STRUCTURE.md      This map
+│   ├── HANDOFF.md             Commit/publishing boundary and continuation notes
 │   ├── learning_upgrade/     Maintained learning specs, contracts and verification
 │   ├── intelligence_upgrade/ Maintained earlier strategy specs and audit context
 │   ├── experiments/          Experiment reports and evidence limits
@@ -34,6 +38,8 @@ The product/data/architecture/build specifications stay directly under `docs/` a
 
 Keep operator scripts at their existing paths so README/CI commands remain stable. `scripts/generate_api.py` generates the runtime OpenAPI snapshot; `scripts/dev.sh` launches local services; `scripts/check.sh` runs project checks; `scripts/export_source.py` creates a source-only archive. Football collection/forecast and learning/review commands remain named entrypoints in the same directory.
 
+New deadline research commands live under `scripts/research/`: `deadline_experiments.py` queues the registered ablations, `freeze_review.py` records the retained review means, and `score_forecasts.py` checks finalized outcomes. The corresponding modules are `features/deadline.py`, `models/deadline_experiments.py`, and `learning/forecast_benchmark.py`. The worker handles durable fitting and automatically enqueues due scoring in the same DATA_DIR.
+
 ## Preserved originals and history
 
 The supplied root `fpl_learning_upgrade/` package moved to [reference/supplied/fpl_learning_upgrade/](reference/supplied/fpl_learning_upgrade/). The duplicate combined specification was removed from the maintained directory after verifying the complete original remains in this archive. Every original file retained identical bytes, verified against [its checksum manifest](reference/supplied/fpl_learning_upgrade.sha256.json). Use the maintained `docs/learning_upgrade/` copy for current instructions; the original contains obsolete paths and audit assumptions.
@@ -41,6 +47,8 @@ The supplied root `fpl_learning_upgrade/` package moved to [reference/supplied/f
 [History](history/README.md) retains all preceding status narratives, with Markdown links rebased to their new location. Earlier test counts remain historical evidence and are not newly run checks. A separately described Codex progress tracker is absent from this checkout; its historical description does not imply an implemented package here.
 
 Dependencies, `.next*` builds, caches, test output, private notes, environment files and runtime data are deliberately outside the source organisation. They may be used by running services and were not moved or deleted. Git's existing unrelated edits/deletions remain intact.
+
+The duplicate root GW7 handoff package was moved intact to ignored `docs/local/repository-cleanup-2026-10-31/`, with a SHA256 inventory; the canonical historical package remains under `docs/gw7_handoff/`. Current public status documents are concise; private session originals are retained in that local backup. `dist/fpl-assistant-source.zip` and `dist/publish/fpl-assistant/` are ignored publication artifacts and exclude Git history.
 
 ## Real experiment entrypoints
 

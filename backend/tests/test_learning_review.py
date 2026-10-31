@@ -8,6 +8,40 @@ from fpl_app.learning.promotion import assess_promotion
 from fpl_app.learning.review import configure_review, enqueue_due_reviews
 
 
+def test_normal_worker_polls_enabled_reviews_without_duplicate_reports(tmp_path, monkeypatch):
+    from fpl_app.jobs.__main__ import run_iteration
+
+    store, state, _data, _fixtures = prepare_live(tmp_path, monkeypatch)
+    worker = Worker(Queue(store))
+    worked, next_poll = run_iteration(worker, 0, 0)
+    assert not worked and next_poll == 60
+    assert not store.list("learning_review")
+
+    configure_review(store, state.team_id, enabled=True)
+    assert run_iteration(worker, next_poll, 1) == (False, next_poll)
+    worked, next_poll = run_iteration(worker, next_poll, 60)
+    assert worked and next_poll == 120
+    assert len(store.list("learning_review")) == 1
+    assert run_iteration(worker, next_poll, 120) == (False, 180)
+    assert len(store.list("learning_review")) == 1
+
+
+def test_scheduling_failure_preserves_normal_worker_execution(monkeypatch, caplog):
+    from unittest.mock import Mock
+
+    from fpl_app.jobs import __main__ as loop
+
+    def unavailable(_store):
+        raise RuntimeError("scheduler unavailable")
+
+    monkeypatch.setattr(loop, "enqueue_due_reviews", unavailable)
+    worker = Mock()
+    worker.run_once.return_value = True
+    assert loop.run_iteration(worker, 0, 0) == (True, 60)
+    worker.run_once.assert_called_once()
+    assert "retrying in one minute" in caplog.text
+
+
 def test_review_schedule_tick_idempotency_retry_and_disabled_state(tmp_path, monkeypatch):
     store, state, _data, _fixtures = prepare_live(tmp_path, monkeypatch)
     before = store.get("state", state.team_id)

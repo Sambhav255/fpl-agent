@@ -62,6 +62,15 @@ def projection_players(
 
 
 def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
+    if kind == "deadline_experiment":
+        from fpl_app.models.deadline_experiments import training_input as deadline_training_input
+
+        return deadline_training_input(store, payload)
+    if kind == "forecast_benchmark_score":
+        from fpl_app.learning.forecast_benchmark import checked_benchmark
+
+        benchmark = checked_benchmark(store, payload["benchmark_id"])
+        return fingerprint({"kind": kind, "benchmark": benchmark, "payload": payload})
     if kind == "strategy_training":
         from fpl_app.strategy.jobs import training_input
 
@@ -185,7 +194,7 @@ class Queue:
                             ["queued", "running"]
                             if kind in {"refresh", "collection", "outcome_review"}
                             else ["queued", "running", "succeeded", "cancelled"]
-                            if kind == "learning_review"
+                            if kind in {"learning_review", "forecast_benchmark_score"}
                             else ["queued", "running", "succeeded"]
                         ),
                     )
@@ -414,6 +423,27 @@ class Worker:
         kind, payload = job["kind"], job["payload"]
         if kind in self.handlers:
             return dict(self.handlers[kind](payload))
+        if kind == "deadline_experiment":
+            from fpl_app.models.deadline_experiments import train_job as run_deadline_experiment
+
+            return run_deadline_experiment(self.store, payload)
+        if kind == "forecast_benchmark_score":
+            from fpl_app.learning.forecast_benchmark import score_benchmark
+            from fpl_app.providers import Provider
+
+            result = score_benchmark(
+                self.store, self.provider or Provider(self.store), payload["benchmark_id"]
+            )
+            result["_artifacts"] = []
+            if result.get("revision"):
+                result["_artifacts"] = [
+                    (
+                        "forecast_benchmark_outcome",
+                        payload["benchmark_id"] + ":" + result["revision"],
+                        {k: v for k, v in result.items() if k != "_artifacts"},
+                    )
+                ]
+            return result
         if kind == "strategy_training":
             from fpl_app.strategy.jobs import train_job
 
@@ -519,7 +549,12 @@ class Worker:
                         ),
                     ]
                 )
-            elif job["kind"] in {"outcome_review", "learning_review"}:
+            elif job["kind"] in {
+                "outcome_review",
+                "learning_review",
+                "deadline_experiment",
+                "forecast_benchmark_score",
+            }:
                 artifacts.extend(result.pop("_artifacts"))
             self.queue.publish(job, self.owner, result, artifacts)
         except Exception as exc:  # noqa: BLE001 - worker must persist arbitrary computation failures
