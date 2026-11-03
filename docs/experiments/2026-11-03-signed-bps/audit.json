@@ -1,0 +1,172 @@
+{
+  "bps_only_profile_status": "empirical_signed_research_only_not_calibrated",
+  "bps_only_sampler_support": {
+    "DEF": {
+      "maximum": 59,
+      "minimum": -25,
+      "n": 40000,
+      "negative": 5987
+    },
+    "FWD": {
+      "maximum": 93,
+      "minimum": -9,
+      "n": 40000,
+      "negative": 2925
+    },
+    "GK": {
+      "maximum": 45,
+      "minimum": -20,
+      "n": 40000,
+      "negative": 4291
+    },
+    "MID": {
+      "maximum": 97,
+      "minimum": -10,
+      "n": 40000,
+      "negative": 1731
+    }
+  },
+  "champion_change": false,
+  "component_coverage": {
+    "assists": {
+      "missing_rows": 0,
+      "source_column": "assists"
+    },
+    "blocks": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "bonus": {
+      "missing_rows": 0,
+      "source_column": "bonus"
+    },
+    "bps": {
+      "missing_rows": 0,
+      "source_column": "bps"
+    },
+    "clearances": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "goals": {
+      "missing_rows": 0,
+      "source_column": "goals_scored"
+    },
+    "goals_conceded_after_red": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "goals_conceded_on_pitch": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "interceptions": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "minutes": {
+      "missing_rows": 0,
+      "source_column": "minutes"
+    },
+    "own_goals": {
+      "missing_rows": 0,
+      "source_column": "own_goals"
+    },
+    "penalty_misses": {
+      "missing_rows": 0,
+      "source_column": "penalties_missed"
+    },
+    "penalty_saves": {
+      "missing_rows": 0,
+      "source_column": "penalties_saved"
+    },
+    "recoveries": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "red_cards": {
+      "missing_rows": 0,
+      "source_column": "red_cards"
+    },
+    "saves": {
+      "missing_rows": 0,
+      "source_column": "saves"
+    },
+    "started": {
+      "missing_rows": 0,
+      "source_column": "starts"
+    },
+    "tackles": {
+      "missing_rows": 27283,
+      "source_column": null
+    },
+    "yellow_cards": {
+      "missing_rows": 0,
+      "source_column": "yellow_cards"
+    }
+  },
+  "excluded_nonplayer_rows": 322,
+  "full_player_scoring_qualified": false,
+  "full_scoring_fit": "unavailable; complete explicit domain components and verified publication provenance missing",
+  "limitations": [
+    "2024/25 BPS rules differ from the current era; no modern re-scoring or cross-era pooling",
+    "Archived timestamps do not establish original publication availability",
+    "Sampler support checks are not chronological calibration or held-out prediction",
+    "Signed BPS is not a calibrated joint model with goals, cards or bonus competition"
+  ],
+  "maximum_bps": 97,
+  "minimum_bps": -25,
+  "negative_bps_by_position": {
+    "DEF": 450,
+    "FWD": 94,
+    "GK": 61,
+    "MID": 167
+  },
+  "negative_bps_rows": 772,
+  "ordinary_rows": 27283,
+  "purpose": "historical signed support and component coverage audit; no performance estimate",
+  "schema_version": 1,
+  "season": "2024-25",
+  "source_artifact_sha256": {
+    "club_identity.json": "baa6a920b0610429bb1533df5ff19280f908f7ca22cea82ca354982a22385060",
+    "fixture_revision.parquet": "021e037540ceb1cb15f914665a652687bab80470803c17671098b7e47c72c947",
+    "league_table_snapshot.parquet": "a127b6dafbfc4f7c28d9ca81fc9dfc0dc2da93a4d4b9ca885116803a338261d3",
+    "player_club_interval.json": "2cf71fedaae86ef9105038b5ca196053aff7023ba4fdda3c37e57b0ccb1dfee9",
+    "player_fixture_outcome.parquet": "f8e8c927c7380988e9799a73a15087961a7432fb71cbcc84094c52fd7b3e6923",
+    "player_identity.json": "5d5a03d1c01dcf6f2bf9c3afcd5894bf6650e584504abb41f2c99066ef43a8f5",
+    "quality.json": "5219f6419213acb74ea05ff0d44d4c9f271274835bf1d223b43fa06f3f4433e3",
+    "raw/fixtures.csv": "ce696e187569ca7c45da2562811d3c38f525b58e65575531be37bebd0769ee28",
+    "raw/gws_merged_gw.csv": "5bbbcba6353b4c72ad273adcc8e3aa451946a826564679788f45b1cb3325b84e",
+    "raw/players_raw.csv": "75686051b265cbe7755ac71213ecaad21b26ee1cc46a8bafbba19c39ce894b05",
+    "raw/teams.csv": "d10a6db8feca6db9e44a3ba50b15168396667ea387fee9235d6b211c7f598c3b"
+  },
+  "source_manifest_sha256": "3d23ace2d264a9f99d16b1e281e37ac9b16205cd9c03d88a69590eb9da5d4322",
+  "source_urls": [
+    {
+      "sha256": "5bbbcba6353b4c72ad273adcc8e3aa451946a826564679788f45b1cb3325b84e",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/gws/merged_gw.csv"
+    },
+    {
+      "sha256": "ce696e187569ca7c45da2562811d3c38f525b58e65575531be37bebd0769ee28",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/fixtures.csv"
+    },
+    {
+      "sha256": "d10a6db8feca6db9e44a3ba50b15168396667ea387fee9235d6b211c7f598c3b",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/teams.csv"
+    },
+    {
+      "sha256": "75686051b265cbe7755ac71213ecaad21b26ee1cc46a8bafbba19c39ce894b05",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/players_raw.csv"
+    }
+  ],
+  "unavailable_complete_components": [
+    "goals_conceded_on_pitch",
+    "goals_conceded_after_red",
+    "clearances",
+    "blocks",
+    "interceptions",
+    "tackles",
+    "recoveries"
+  ],
+  "zero_minute_negative_bps_rows": 1
+}

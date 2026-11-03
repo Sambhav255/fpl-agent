@@ -160,12 +160,12 @@ def bayesian_run(
     if "scoring_profiles.json" in manifest["artifacts"]:
         scoring = json.loads((artifact / "scoring_profiles.json").read_text())
         if (
-            scoring.get("version") != "complete-bayesian-player-scoring-v1"
+            scoring.get("version") != "complete-bayesian-player-scoring-v2"
             or utc(scoring["fit_cutoff"]) > utc(manifest["training_cutoff"])
             or not set(player_map) <= set(scoring["profiles"])
         ):
             raise ValueError(
-                "Complete scoring profiles differ from artifact cutoff or canonical mapping"
+                "Complete signed-BPS v2 scoring profiles required; refit legacy profiles or check cutoff/canonical mapping"
             )
         scoring["profiles"] = {str(player_map[key]): scoring["profiles"][key] for key in player_map}
     predictions = []

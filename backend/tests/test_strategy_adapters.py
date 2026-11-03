@@ -186,6 +186,11 @@ def test_leakage_mapping_guards(tmp_path, monkeypatch, kind):
     reason="opt-in optional ArviZ contract check, never training",
 )
 def test_actual_bayesian_sampler_library_shaped_posterior(tmp_path, monkeypatch):
+    platformdirs = pytest.importorskip("platformdirs")
+    monkeypatch.setattr(
+        platformdirs, "user_cache_dir", lambda *args, **kwargs: str(tmp_path / "cache")
+    )
+    monkeypatch.setenv("MPLCONFIGDIR", str(tmp_path / "matplotlib"))
     az = pytest.importorskip("arviz")
     artifact(tmp_path, "bayesian")
     trace = az.from_dict(
@@ -339,6 +344,17 @@ def test_complete_bayesian_adapter_binds_profiles_and_fitted_start_probability(
         for p in run.projections
     )
     assert any("complete-component" in warning for warning in run.warnings)
+    # Retained v1 bytes are not silently reinterpreted as a signed model.
+    original = profile_path.read_bytes()
+    legacy = dict(profile, version="complete-bayesian-player-scoring-v1")
+    profile_path.write_text(json.dumps(legacy))
+    manifest["artifacts"][profile_path.name] = hashlib.sha256(profile_path.read_bytes()).hexdigest()
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="refit legacy profiles"):
+        bayesian_run(artifact=tmp_path, **args)
+    profile_path.write_bytes(original)
+    manifest["artifacts"][profile_path.name] = hashlib.sha256(original).hexdigest()
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
     profile_path.write_text(profile_path.read_text() + " ")
     with pytest.raises(ValueError, match="checksum"):
         bayesian_run(artifact=tmp_path, **args)

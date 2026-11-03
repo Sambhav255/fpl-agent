@@ -83,7 +83,7 @@ def test_complete_scenarios_score_every_sample_with_domain_components():
             "player_id": i,
             "position": pos,
             "started": True,
-            "bps": 24,
+            "bps": -2 * i,
             "available_at": "2026-10-01T00:00:00Z",
             **asdict(
                 MatchStats(
@@ -143,6 +143,8 @@ def test_complete_scenarios_score_every_sample_with_domain_components():
         samples=100,
     )
     np.testing.assert_array_equal(result["points"], again["points"])
+    np.testing.assert_array_equal(result["bps"], again["bps"])
+    assert np.any(result["bps"] < 0)
     for sample in range(100):
         for j, pos in enumerate([1, 2, 3, 4]):
             stats = MatchStats(
@@ -209,3 +211,82 @@ def test_fitted_ensemble_keeps_test_outcomes_out_of_weights_and_verifies_payload
         evaluation_reference="unverified",
     )
     assert len(omitted.projections) == len(first.projections)
+
+
+def signed_profile_frame():
+    return pd.DataFrame(
+        [
+            {
+                "player_id": player,
+                "position": position,
+                "started": True,
+                "bps": -2 * player,
+                "available_at": "2026-10-01T00:00:00Z",
+                **asdict(MatchStats(minutes=90, yellow_cards=1)),
+            }
+            for player, position in enumerate([1, 2, 3, 4], 1)
+        ]
+    )
+
+
+def test_signed_bps_is_separate_from_nonnegative_component_counts_and_future_rows():
+    frame = signed_profile_frame()
+    fitted = fit_scoring_profiles(frame, "2026-10-02T00:00:00Z")
+    assert fitted["version"] == "complete-bayesian-player-scoring-v2"
+    assert not fitted["calibrated"]
+    for profile in fitted["profiles"].values():
+        assert "bps" not in profile["components"]
+        assert profile["bps"]["values_by_category"]["3"][0] < 0
+        assert profile["bps"]["source_by_category"]["3"] == "player_category"
+    changed = frame.copy()
+    changed["available_at"] = "2026-10-03T00:00:00Z"
+    changed["bps"] = -999
+    later = pd.concat([frame, changed], ignore_index=True)
+    assert fit_scoring_profiles(later, "2026-10-02T00:00:00Z") == fitted
+    frame.loc[0, "yellow_cards"] = -1
+    with pytest.raises(ValueError, match="scoring counts"):
+        fit_scoring_profiles(frame, "2026-10-02T00:00:00Z")
+
+
+@pytest.mark.parametrize("invalid", [float("nan"), float("inf"), -2.5])
+def test_signed_bps_rejects_missing_nonfinite_and_fractional_scores(invalid):
+    frame = signed_profile_frame()
+    frame["bps"] = frame.bps.astype(float)
+    frame.loc[0, "bps"] = invalid
+    with pytest.raises(ValueError, match="signed integer BPS"):
+        fit_scoring_profiles(frame, "2026-10-02T00:00:00Z")
+
+
+def test_empirical_bps_sampling_preserves_sign_and_whole_fixture_semantics():
+    import numpy as np
+
+    from fpl_app.models.bayesian_scoring import BPS_MODEL_KIND, sample_signed_bps
+
+    profile = {
+        "kind": BPS_MODEL_KIND,
+        "values_by_category": {"0": [-1], "1": [-9], "2": [3], "3": [-25, 15]},
+    }
+    minutes = np.array([0, 20, 45, 90, 90])
+    starts = np.array([False, False, True, True, True])
+    first = sample_signed_bps(profile, minutes, starts, np.random.default_rng(42))
+    again = sample_signed_bps(profile, minutes, starts, np.random.default_rng(42))
+    np.testing.assert_array_equal(first, again)
+    np.testing.assert_array_equal(first[:3], [-1, -9, 3])
+    assert set(first[3:]) <= {-25, 15}
+    with pytest.raises(ValueError, match="refit legacy"):
+        sample_signed_bps({"kind": "gamma-poisson"}, minutes, starts, np.random.default_rng(42))
+    profile["values_by_category"]["1"] = []
+    with pytest.raises(ValueError, match="Missing active"):
+        sample_signed_bps(profile, minutes, starts, np.random.default_rng(42))
+
+
+def test_legacy_bps_count_profiles_fail_explicitly_without_rewriting():
+    from copy import deepcopy
+
+    from fpl_app.models.bayesian_scoring import complete_scenarios
+
+    legacy = {"version": "complete-bayesian-player-scoring-v1", "profiles": {}}
+    before = deepcopy(legacy)
+    with pytest.raises(ValueError, match="refit signed BPS profiles as v2"):
+        complete_scenarios(None, None, 1, 2, pd.DataFrame(), legacy)
+    assert legacy == before

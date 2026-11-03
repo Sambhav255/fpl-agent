@@ -1,0 +1,24 @@
+{
+  "actual_checks": {
+    "focused": "40 passed,1 optional skip,1 dependency warning in28.99seconds",
+    "focused_command": "PYTHONPATH=backend/src backend/.venv/bin/python -m pytest backend/tests/test_bayesian_scoring.py backend/tests/test_strategy_adapters.py backend/tests/test_advanced_serving.py -q",
+    "historical_audit": "27,283 ordinary rows,772 negative BPS labels,160,000 signed sampler support draws; both audit outputs reproduced byte-for-byte on rerun",
+    "mypy": "2 source modules passed",
+    "optional": "1 passed in25.94seconds with FPL_OPTIONAL_SMOKE=1; ArviZ library-shaped posterior contract only, no fitting",
+    "optional_cache_repair": "Initial isolated optional check failed on existing user-cache writes; test now localizes platformdirs/Matplotlib caches to tmp_path and passed on rerun",
+    "ruff": "5 Python files lint and format passed"
+  },
+  "audit_artifact_sha256": {
+    "audit.json": "dda54652067513bf8acce43123d0a6f4fa742c4b9a66a8e31412a22d7dbf0bbc",
+    "bps-only-profiles.json": "29dfc79a223eb3847daf90a50bb38ec9a830ed53e8a0bc6689d210d6cab22fce"
+  },
+  "base_revision": "f5abfca6e88723668303109cafae3f97838d8c55",
+  "champion_changed": false,
+  "full_player_scoring_qualified": false,
+  "remaining": "Complete component/publication provenance and chronological player-point/joint-scenario evaluation remain unavailable",
+  "source_sha256": {
+    "backend/src/fpl_app/models/bayesian_scoring.py": "0e5ee55c81ecb4d4528f3eb3d9941b671de98e6eac521c5fad70f66f2d5ca4b2",
+    "backend/src/fpl_app/models/strategy_adapters.py": "1771cf7682595bb849aee4c0736c37a1a10c7ef73798d6789357da93054788a8",
+    "docs/experiments/2026-11-03-signed-bps/audit.py": "bc619cd36bd84da7aedcad6ba03044b6cd2bd435659e1e49879ca4ae01f5807f"
+  }
+}

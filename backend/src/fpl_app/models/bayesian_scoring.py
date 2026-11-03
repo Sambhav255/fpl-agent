@@ -17,6 +17,9 @@ from fpl_app.domain.rules import MatchStats, bonus_points, score_match
 from fpl_app.features.pipeline import utc
 from fpl_app.storage import fingerprint
 
+SCORING_PROFILE_VERSION = "complete-bayesian-player-scoring-v2"
+BPS_MODEL_KIND = "empirical-signed-minute-category-v1"
+
 COMPONENTS = [
     f.name
     for f in fields(MatchStats)
@@ -41,13 +44,13 @@ def fit_scoring_profiles(frame: pd.DataFrame, cutoff: str, *, prior_strength=8.0
         "bps",
         *(f.name for f in fields(MatchStats)),
     }
-    if not required <= set(frame) or prior_strength <= 0:
+    if not required <= set(frame) or not np.isfinite(prior_strength) or prior_strength <= 0:
         raise ValueError("Complete explicit player scoring components and starts required")
     data = frame[[utc(t) <= utc(cutoff) for t in frame.available_at]].copy()
     data["available_at"] = [utc(t).isoformat() for t in data.available_at]
     if data.empty:
         raise ValueError("No scoring labels available at fit cutoff")
-    count_columns = ["bps", *(f.name for f in fields(MatchStats))]
+    count_columns = [f.name for f in fields(MatchStats)]
     values = data[count_columns].to_numpy(dtype=float)
     if (
         not np.isfinite(values).all()
@@ -56,6 +59,9 @@ def fit_scoring_profiles(frame: pd.DataFrame, cutoff: str, *, prior_strength=8.0
         or not data.position.isin([1, 2, 3, 4]).all()
     ):
         raise ValueError("Invalid finite scoring counts")
+    signed_bps = data.bps.to_numpy(dtype=float)
+    if not np.isfinite(signed_bps).all() or np.any(signed_bps != np.floor(signed_bps)):
+        raise ValueError("Invalid finite signed integer BPS")
     if (
         not data.started.isin([True, False]).all()
         or (data.minutes > 90).any()
@@ -77,11 +83,13 @@ def fit_scoring_profiles(frame: pd.DataFrame, cutoff: str, *, prior_strength=8.0
             "mixture": (categories / categories.sum() * prior_strength).tolist(),
             "rates": {
                 name: (float(rows[name].sum()) + 0.5) / (float(rows.minutes.sum()) / 90 + 10)
-                for name in [*COMPONENTS, "bps"]
+                for name in COMPONENTS
             },
             "minutes": {
                 c: rows.loc[rows.category == c, "minutes"].astype(int).tolist() for c in range(4)
             },
+            "bps": {c: rows.loc[rows.category == c, "bps"].astype(int).tolist() for c in range(4)},
+            "active_bps": rows.loc[rows.minutes > 0, "bps"].astype(int).tolist(),
         }
     profiles = {}
     for player, rows in data.groupby("player_id"):
@@ -98,16 +106,38 @@ def fit_scoring_profiles(frame: pd.DataFrame, cutoff: str, *, prior_strength=8.0
                 or prior["minutes"][c]
                 for c in range(4)
             },
+            "bps": {
+                "kind": BPS_MODEL_KIND,
+                "label": "signed whole-fixture BPS conditional on minutes/start category",
+                "values_by_category": {
+                    str(c): rows.loc[rows.category == c, "bps"].astype(int).tolist()
+                    or prior["bps"][c]
+                    or (prior["active_bps"] if c > 0 else [])
+                    for c in range(4)
+                },
+                "source_by_category": {
+                    str(c): (
+                        "player_category"
+                        if (rows.category == c).any()
+                        else "position_category"
+                        if prior["bps"][c]
+                        else "position_active_fallback"
+                        if c > 0 and prior["active_bps"]
+                        else "unavailable"
+                    )
+                    for c in range(4)
+                },
+            },
             "components": {
                 name: {
                     "alpha": float(rows[name].sum()) + prior["rates"][name] * prior_strength,
                     "beta": float(rows.minutes.sum()) / 90 + prior_strength,
                 }
-                for name in [*COMPONENTS, "bps"]
+                for name in COMPONENTS
             },
         }
     return {
-        "version": "complete-bayesian-player-scoring-v1",
+        "version": SCORING_PROFILE_VERSION,
         "fit_cutoff": cutoff,
         "data_sha256": fingerprint(data.drop(columns="category").to_dict("records")),
         "profiles": profiles,
@@ -116,10 +146,42 @@ def fit_scoring_profiles(frame: pd.DataFrame, cutoff: str, *, prior_strength=8.0
         "calibrated": False,
         "limitations": [
             "Gamma-Poisson ancillary components and empirical minutes mixtures need chronological calibration",
-            "BPS is a fitted count proxy; bonus ranking uses domain tie rules",
+            "Signed BPS uses empirical category resampling with explicit position fallbacks; no Gamma-Poisson count assumption",
+            "Empirical BPS is not jointly calibrated to simulated goals/cards; bonus ranking uses domain tie rules",
             "On-pitch concessions use a declared temporal allocation assumption",
+            "Minutes-scaled ancillary counts do not model zero-minute disciplinary participation",
         ],
     }
+
+
+def sample_signed_bps(profile, minutes, starts, rng):
+    """Draw actual signed whole-fixture scores, never Poisson rates or abs(BPS).
+
+    Conditioning uses the same observed categories as profile fitting. BPS is not
+    scaled again by minutes. Inactive rows with no observed category have no bonus
+    competition; active rows may use only the declared fitted category fallback.
+    """
+    if profile.get("kind") != BPS_MODEL_KIND:
+        raise ValueError("Signed empirical BPS profile required; refit legacy count profiles")
+    categories = np.where(minutes == 0, 0, np.where(~starts, 1, np.where(minutes < 60, 2, 3)))
+    result = np.zeros(len(minutes), dtype=int)
+    for category in range(4):
+        mask = categories == category
+        if not mask.any():
+            continue
+        observed = np.asarray(profile["values_by_category"][str(category)], dtype=float)
+        if (
+            observed.ndim != 1
+            or not np.isfinite(observed).all()
+            or np.any(observed != np.floor(observed))
+        ):
+            raise ValueError("Invalid signed empirical BPS samples")
+        if observed.size == 0:
+            if category > 0:
+                raise ValueError("Missing active signed BPS observations")
+            continue
+        result[mask] = rng.choice(observed.astype(int), size=int(mask.sum()))
+    return result
 
 
 def complete_scenarios(
@@ -136,6 +198,10 @@ def complete_scenarios(
 ):
     from fpl_app.models.bayesian import shared_scenarios
 
+    if profile_artifact.get("version") != SCORING_PROFILE_VERSION:
+        raise ValueError(
+            "Legacy/unsupported scoring profile: refit signed BPS profiles as v2; old artifacts remain unchanged"
+        )
     profiles = profile_artifact["profiles"]
     rng = np.random.default_rng(seed)
     if not {str(i) for i in players.player_id} <= profiles.keys():
@@ -186,16 +252,14 @@ def complete_scenarios(
     scored_components = {f.name: np.zeros_like(minutes, dtype=int) for f in fields(MatchStats)}
     for j, row in enumerate(players.to_dict("records")):
         profile = profiles[str(row["player_id"])]
-        for name in [*COMPONENTS, "bps"]:
+        for name in COMPONENTS:
             fitted = profile["components"][name]
             rates = rng.gamma(fitted["alpha"], 1 / fitted["beta"], samples)
             value = rng.poisson(rates * minutes[:, j] / 90)
             if name in {"yellow_cards", "red_cards"}:
                 value = np.minimum(value, 1)
-            if name == "bps":
-                bps[:, j] = value
-            else:
-                components[name][:, j] = value
+            components[name][:, j] = value
+        bps[:, j] = sample_signed_bps(profile["bps"], minutes[:, j], starts[:, j], rng)
         if int(row["position"]) != 1:
             components["saves"][:, j] = 0
             components["penalty_saves"][:, j] = 0
@@ -229,6 +293,7 @@ def complete_scenarios(
         "points": points,
         "components": components,
         "scored_components": scored_components,
+        "bps": bps,
         "appearance_probability": (minutes > 0).mean(axis=0),
         "start_probability": starts.mean(axis=0),
         "minutes_60_probability": (minutes >= 60).mean(axis=0),
