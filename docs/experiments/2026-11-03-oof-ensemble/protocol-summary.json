@@ -1,0 +1,20 @@
+{
+  "active": false,
+  "collection_id": "7ad5d2a7c28d4f1497e1f84ad4db4354",
+  "hypothesis": "Earlier OOF-fitted convex blending reduces unconditional point RMSE against same-window fixed individuals",
+  "interpretation": "Exploratory previously inspected history; each reported origin excludes its own labels from weight fitting",
+  "methods": [
+    "ridge",
+    "lightgbm",
+    "opportunity_multiscale"
+  ],
+  "public_copy_note": "Paths rendered relative; exact original registered protocol and checksums retained with ignored artifacts.",
+  "reference_directory": "data/research/gw9-models-2026-10-31/models/rolling_experiments/102edc1f41beeaec690aaa78",
+  "reference_report_sha256": "bd92ce17b9636fd93f783e3dcbc73d82ab286f991a3649e6c800835a4a71dc85",
+  "registered_at": "2026-11-03T13:14:29.743650+00:00",
+  "simple_directory": "data/research/simple-models-2026-11-03/models/simple_experiments/5a03cad65fe2f6bb69bf1936",
+  "simple_report_sha256": "4c1886c0381157c094336504f88b4d7f036184ced81770103ab27f54ede2fad7",
+  "version": "prior-oof-convex-v1",
+  "warmup": "first OOF event is development only, excluded from reported ensemble metrics",
+  "weight_rule": "Expanding prior OOF rows with targets strictly available before current origin; nonnegative weights summing to one, least squares"
+}

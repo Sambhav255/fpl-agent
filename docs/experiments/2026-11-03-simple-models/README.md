@@ -18,7 +18,7 @@ Both methods use the full existing categorical/numeric feature contract. Trainin
 
 The actual final durable worker job `8d18537f829d4feabc16507d424da85b` succeeded in about **4.6 seconds** of queued computation after registration at 13:10:09 UTC. A subsequent retry verified and reused all eight completed fold/method checkpoints; report and prediction hashes were unchanged. The prior run before adding dependency-lock binding is retained separately and gave identical metrics. This was a durability refinement, not a new configuration search.
 
-Artifacts remain ignored under `data/research/simple-models-2026-11-03/models/simple_experiments/5a03cad65fe2f6bb69bf19365`. The research store is a SQLite backup of retained source/evidence, with only its copied pending jobs removed before the experiment; original source stores, frozen forecasts, and personal app state were untouched. Training invokes the shared score-before-label-reuse guard. Only finalized GW1–8 targets were consumed.
+Artifacts remain ignored under `data/research/simple-models-2026-11-03/models/simple_experiments/5a03cad65fe2f6bb69bf1936`. The research store is a SQLite backup of retained source/evidence, with only its copied pending jobs removed before the experiment; original source stores, frozen forecasts, and personal app state were untouched. Training invokes the shared score-before-label-reuse guard. Only finalized GW1–8 targets were consumed.
 
 To queue a fresh registered comparison after installing the optional `research` extra:
 

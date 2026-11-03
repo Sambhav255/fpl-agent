@@ -1,0 +1,116 @@
+{
+  "active": false,
+  "champion_promoted": false,
+  "experiment_id": "cad76fb4930b242979cf9b81d81998a08eb66e7f87eb27e8c4052e5834aeb4dd",
+  "files": {
+    "implementation.py": "c1ba502994c784b676845eb1ab4071d801c6766892e29ebf8939b56f3b624f9c",
+    "outer_predictions.parquet": "299072b65fd7ec168709ccaee639aee4e7374670e1d7f342ce260c86063af2ab",
+    "protocol.json": "f1023bbb7986307e62140d64e445934504c7f5a8afae666f69732620568e3161",
+    "weights.json": "0cbd88dbe05ba2c5ed1c745675391214ae51fec2d4b65c66f856ca3ec62cbedc"
+  },
+  "interpretation": "Exploratory previously inspected history; each reported origin excludes its own labels from weight fitting",
+  "metrics": {
+    "app_baseline_reconstructed": {
+      "event_mean_spearman": 0.567645320187543,
+      "mae": 1.8418664436813672,
+      "n": 2004,
+      "rmse": 2.3388176450621403
+    },
+    "ensemble": {
+      "event_mean_spearman": 0.6732682457990306,
+      "mae": 1.192374211767422,
+      "n": 2004,
+      "rmse": 2.078964191039819
+    },
+    "full_second_seed": {
+      "event_mean_spearman": 0.6715261641050044,
+      "mae": 1.211411618509471,
+      "n": 2004,
+      "rmse": 2.0823532048541558
+    },
+    "lightgbm": {
+      "event_mean_spearman": 0.6769706542802342,
+      "mae": 1.2020852962693798,
+      "n": 2004,
+      "rmse": 2.0771796502255637
+    },
+    "opportunity_multiscale": {
+      "event_mean_spearman": 0.6775081427768009,
+      "mae": 1.2118986145736228,
+      "n": 2004,
+      "rmse": 2.071537931023295
+    },
+    "points_hurdle": {
+      "event_mean_spearman": 0.6791699187737552,
+      "mae": 1.2105434678408757,
+      "n": 2004,
+      "rmse": 2.0881129466630397
+    },
+    "ridge": {
+      "event_mean_spearman": 0.5975147130748962,
+      "mae": 1.3526632073846447,
+      "n": 2004,
+      "rmse": 2.2055767054093955
+    }
+  },
+  "outer_events": [
+    6,
+    7,
+    8
+  ],
+  "outer_rows": 2004,
+  "registered_at": "2026-11-03T13:14:29.743650+00:00",
+  "weights": [
+    {
+      "best_development_individual_mse": 4.582819064852205,
+      "development_events": [
+        5
+      ],
+      "development_mse": 4.512484243871007,
+      "development_rows": 667,
+      "development_target_end": "2026-09-21T15:30:00+00:00",
+      "event": 6,
+      "origin": "2026-10-10T10:00:00+00:00",
+      "weights": {
+        "lightgbm": 0.3616023463113371,
+        "opportunity_multiscale": 0.3576418684905316,
+        "ridge": 0.28075578519813127
+      }
+    },
+    {
+      "best_development_individual_mse": 4.46043027466014,
+      "development_events": [
+        5,
+        6
+      ],
+      "development_mse": 4.43366980469799,
+      "development_rows": 1334,
+      "development_target_end": "2026-10-13T19:00:00+00:00",
+      "event": 7,
+      "origin": "2026-10-17T10:00:00+00:00",
+      "weights": {
+        "lightgbm": 0.5185292736900982,
+        "opportunity_multiscale": 0.44709861444938787,
+        "ridge": 0.03437211186051399
+      }
+    },
+    {
+      "best_development_individual_mse": 4.361449442089573,
+      "development_events": [
+        5,
+        6,
+        7
+      ],
+      "development_mse": 4.3373132627699915,
+      "development_rows": 2002,
+      "development_target_end": "2026-10-20T19:00:00+00:00",
+      "event": 8,
+      "origin": "2026-10-23T17:30:00+00:00",
+      "weights": {
+        "lightgbm": 0.5305863427701049,
+        "opportunity_multiscale": 0.4468752745250847,
+        "ridge": 0.022538382704810497
+      }
+    }
+  ]
+}
