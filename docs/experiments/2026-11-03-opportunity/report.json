@@ -1,0 +1,2238 @@
+{
+  "champion_promoted": false,
+  "methods": {
+    "binary_sigmoid_projected": {
+      "events": {
+        "5": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.11868691646854071,
+                "observed_rate": 0.12779552715654952,
+                "rows": 313
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.27772634604567314,
+                "observed_rate": 0.2571428571428571,
+                "rows": 35
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5087660603472882,
+                "observed_rate": 0.5102040816326531,
+                "rows": 49
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7197873523625034,
+                "observed_rate": 0.7590361445783133,
+                "rows": 83
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9168678239306349,
+                "observed_rate": 0.8823529411764706,
+                "rows": 187
+              }
+            ],
+            "brier": 0.13123048334315054,
+            "log_loss": 0.4240361266393438,
+            "raw_brier": 0.13356091906577164
+          },
+          "minutes": {
+            "bias": -0.47473030310077374,
+            "mae": 17.576699989938525,
+            "rmse": 25.58727916798979
+          },
+          "points": {
+            "bias": 0.015744171013437537,
+            "mae": 1.3633519216232763,
+            "rmse": 2.242965122833554
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.2839376236524472,
+            "minutes_rows": 105,
+            "sixty_rows": 8
+          },
+          "rows": 667,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.046176752354190165,
+                "observed_rate": 0.052763819095477386,
+                "rows": 398
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3023019247825293,
+                "observed_rate": 0.37142857142857144,
+                "rows": 70
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.4941348647525189,
+                "observed_rate": 0.673469387755102,
+                "rows": 49
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6868901515245391,
+                "observed_rate": 0.6521739130434783,
+                "rows": 23
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8832641494017185,
+                "observed_rate": 0.9133858267716536,
+                "rows": 127
+              }
+            ],
+            "brier": 0.0959972454581408,
+            "log_loss": 0.31727333335744684,
+            "raw_brier": 0.09485089769265621
+          }
+        },
+        "6": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.10097407697486706,
+                "observed_rate": 0.09747292418772563,
+                "rows": 277
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.32233183514750025,
+                "observed_rate": 0.41509433962264153,
+                "rows": 53
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.4884375451816927,
+                "observed_rate": 0.5757575757575758,
+                "rows": 66
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6863160958976183,
+                "observed_rate": 0.7307692307692307,
+                "rows": 52
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9141830457549506,
+                "observed_rate": 0.867579908675799,
+                "rows": 219
+              }
+            ],
+            "brier": 0.13171296052539622,
+            "log_loss": 0.41855659667533374,
+            "raw_brier": 0.13211709428878288
+          },
+          "minutes": {
+            "bias": 0.8511961520815136,
+            "mae": 16.810117829307384,
+            "rmse": 24.990174639963097
+          },
+          "points": {
+            "bias": 0.02933974263757032,
+            "mae": 1.222520472507077,
+            "rmse": 2.1386145531857372
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.013220825938267473,
+            "minutes_rows": 3,
+            "sixty_rows": 31
+          },
+          "rows": 667,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.05076287997385074,
+                "observed_rate": 0.046511627906976744,
+                "rows": 387
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.2892449584563323,
+                "observed_rate": 0.36363636363636365,
+                "rows": 33
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5282597359714233,
+                "observed_rate": 0.5303030303030303,
+                "rows": 66
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6822161274136821,
+                "observed_rate": 0.6190476190476191,
+                "rows": 63
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9139814435922051,
+                "observed_rate": 0.864406779661017,
+                "rows": 118
+              }
+            ],
+            "brier": 0.10457469698462156,
+            "log_loss": 0.33426809963057164,
+            "raw_brier": 0.103697382962735
+          }
+        },
+        "7": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.09276198109733683,
+                "observed_rate": 0.0703125,
+                "rows": 256
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.2901904024079933,
+                "observed_rate": 0.4025974025974026,
+                "rows": 77
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5260094946159058,
+                "observed_rate": 0.5483870967741935,
+                "rows": 62
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7048221293553716,
+                "observed_rate": 0.5679012345679012,
+                "rows": 81
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9128218603692454,
+                "observed_rate": 0.9166666666666666,
+                "rows": 192
+              }
+            ],
+            "brier": 0.12778597699652938,
+            "log_loss": 0.3984673067897749,
+            "raw_brier": 0.12782684270956568
+          },
+          "minutes": {
+            "bias": -0.8664207657857198,
+            "mae": 15.829643988407447,
+            "rmse": 23.64373569179444
+          },
+          "points": {
+            "bias": -0.015952823066208984,
+            "mae": 1.1934984143622611,
+            "rmse": 2.0563193618181126
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.08174045241890165,
+            "minutes_rows": 56,
+            "sixty_rows": 4
+          },
+          "rows": 668,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.043708737186449874,
+                "observed_rate": 0.0398936170212766,
+                "rows": 376
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30668575795204994,
+                "observed_rate": 0.17857142857142858,
+                "rows": 56
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5081623759023025,
+                "observed_rate": 0.5116279069767442,
+                "rows": 86
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6775155082586477,
+                "observed_rate": 0.7674418604651163,
+                "rows": 43
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8988443195946135,
+                "observed_rate": 0.9158878504672897,
+                "rows": 107
+              }
+            ],
+            "brier": 0.09076240463919516,
+            "log_loss": 0.3023191364093554,
+            "raw_brier": 0.09112144393973015
+          }
+        },
+        "8": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.08556942436539917,
+                "observed_rate": 0.04905660377358491,
+                "rows": 265
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.300865917587657,
+                "observed_rate": 0.4625,
+                "rows": 80
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5137374249915525,
+                "observed_rate": 0.6290322580645161,
+                "rows": 62
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7131155459203945,
+                "observed_rate": 0.7051282051282052,
+                "rows": 78
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9072957841440237,
+                "observed_rate": 0.8641304347826086,
+                "rows": 184
+              }
+            ],
+            "brier": 0.12891719689052095,
+            "log_loss": 0.4025415808902775,
+            "raw_brier": 0.1294543687956889
+          },
+          "minutes": {
+            "bias": -1.257263414608948,
+            "mae": 17.167940017605286,
+            "rmse": 27.025255320889777
+          },
+          "points": {
+            "bias": -0.027204335573386224,
+            "mae": 1.2775765607284726,
+            "rmse": 2.1200983693207327
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.020862376808698103,
+            "minutes_rows": 12,
+            "sixty_rows": 10
+          },
+          "rows": 669,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.04055678889521565,
+                "observed_rate": 0.08542713567839195,
+                "rows": 398
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.2943481549356315,
+                "observed_rate": 0.39622641509433965,
+                "rows": 53
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5213094679745375,
+                "observed_rate": 0.5116279069767442,
+                "rows": 43
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6822519873697175,
+                "observed_rate": 0.625,
+                "rows": 64
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9020500719847805,
+                "observed_rate": 0.8378378378378378,
+                "rows": 111
+              }
+            ],
+            "brier": 0.12512901640767593,
+            "log_loss": 0.39049532404117276,
+            "raw_brier": 0.12353486536047038
+          }
+        }
+      },
+      "origin_subgroups": {
+        "likely_starters": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.560078249321406,
+                "observed_rate": 0.5,
+                "rows": 2
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7543203628269206,
+                "observed_rate": 0.65625,
+                "rows": 64
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9163507889639164,
+                "observed_rate": 0.886968085106383,
+                "rows": 752
+              }
+            ],
+            "brier": 0.10810507637200366,
+            "log_loss": 0.3651091862642146,
+            "raw_brier": 0.10758573677266772
+          },
+          "minutes": {
+            "bias": 0.005364482889358842,
+            "mae": 23.465557054577577,
+            "rmse": 30.627934151769562
+          },
+          "points": {
+            "bias": -0.038842141321726996,
+            "mae": 2.3731984929445638,
+            "rmse": 3.1083658968484764
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.03314812347173981,
+            "minutes_rows": 23,
+            "sixty_rows": 52
+          },
+          "rows": 818,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5341510493782862,
+                "observed_rate": 0.5662650602409639,
+                "rows": 166
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.681606830699733,
+                "observed_rate": 0.656084656084656,
+                "rows": 189
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8991971004424033,
+                "observed_rate": 0.8833693304535637,
+                "rows": 463
+              }
+            ],
+            "brier": 0.16076699018804716,
+            "log_loss": 0.4915169107734054,
+            "raw_brier": 0.15970280754461452
+          }
+        },
+        "sparse_history": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.1259861203177781,
+                "observed_rate": 0.08823529411764706,
+                "rows": 34
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.25990765612562694,
+                "observed_rate": 0.2222222222222222,
+                "rows": 9
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5190392853711773,
+                "observed_rate": 0.25,
+                "rows": 12
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6940735419928804,
+                "observed_rate": 1.0,
+                "rows": 8
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8780962901640369,
+                "observed_rate": 1.0,
+                "rows": 2
+              }
+            ],
+            "brier": 0.12542411103724682,
+            "log_loss": 0.409382539564207,
+            "raw_brier": 0.12902764746618534
+          },
+          "minutes": {
+            "bias": 3.2953286012397283,
+            "mae": 16.519878169338362,
+            "rmse": 23.389306785175908
+          },
+          "points": {
+            "bias": 0.13834829278031102,
+            "mae": 1.0267222978128039,
+            "rmse": 1.6966011229416793
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.34293835532762135,
+            "minutes_rows": 6,
+            "sixty_rows": 0
+          },
+          "rows": 65,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.0513279288641493,
+                "observed_rate": 0.0425531914893617,
+                "rows": 47
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.2809939415388948,
+                "observed_rate": 0.26666666666666666,
+                "rows": 15
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5194509224720477,
+                "observed_rate": 0.5,
+                "rows": 2
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8552243537111635,
+                "observed_rate": 1.0,
+                "rows": 1
+              }
+            ],
+            "brier": 0.08210517862243662,
+            "log_loss": 0.2810231979918576,
+            "raw_brier": 0.08160291509107019
+          }
+        },
+        "substitute_history": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.14298087267167253,
+                "observed_rate": 0.3793103448275862,
+                "rows": 116
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3028345259786897,
+                "observed_rate": 0.42783505154639173,
+                "rows": 194
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5082224563320574,
+                "observed_rate": 0.5966850828729282,
+                "rows": 181
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6999195322914773,
+                "observed_rate": 0.7155555555555555,
+                "rows": 225
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.869293157556163,
+                "observed_rate": 0.85,
+                "rows": 180
+              }
+            ],
+            "brier": 0.21917181454707735,
+            "log_loss": 0.6347901634769578,
+            "raw_brier": 0.217286063033494
+          },
+          "minutes": {
+            "bias": -5.293315288614529,
+            "mae": 24.640592075958757,
+            "rmse": 31.69476636349573
+          },
+          "points": {
+            "bias": -0.20048838559505547,
+            "mae": 1.323023993175651,
+            "rmse": 2.1487410229916293
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.02265513626915322,
+            "minutes_rows": 15,
+            "sixty_rows": 0
+          },
+          "rows": 896,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.0701034902896254,
+                "observed_rate": 0.13948919449901767,
+                "rows": 509
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30069873819800635,
+                "observed_rate": 0.34,
+                "rows": 150
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5058143507322623,
+                "observed_rate": 0.583941605839416,
+                "rows": 137
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.667728146986894,
+                "observed_rate": 0.7096774193548387,
+                "rows": 93
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8247570970300476,
+                "observed_rate": 0.2857142857142857,
+                "rows": 7
+              }
+            ],
+            "brier": 0.17175815414926854,
+            "log_loss": 0.53517111507787,
+            "raw_brier": 0.1683062696377477
+          }
+        }
+      },
+      "overall": {
+        "appearance": {
+          "bins": [
+            {
+              "lower": 0.0,
+              "mean_probability": 0.10039764967996438,
+              "observed_rate": 0.08820882088208822,
+              "rows": 1111
+            },
+            {
+              "lower": 0.2,
+              "mean_probability": 0.2988487500687515,
+              "observed_rate": 0.40408163265306124,
+              "rows": 245
+            },
+            {
+              "lower": 0.4,
+              "mean_probability": 0.5089151629902563,
+              "observed_rate": 0.5690376569037657,
+              "rows": 239
+            },
+            {
+              "lower": 0.6,
+              "mean_probability": 0.7079741234433327,
+              "observed_rate": 0.6870748299319728,
+              "rows": 294
+            },
+            {
+              "lower": 0.8,
+              "mean_probability": 0.9128703216991796,
+              "observed_rate": 0.8823529411764706,
+              "rows": 782
+            }
+          ],
+          "brier": 0.12991011396995913,
+          "log_loss": 0.41088948895621685,
+          "raw_brier": 0.13073775311186583
+        },
+        "minutes": {
+          "bias": -0.43757977336132287,
+          "mae": 16.84596089160282,
+          "rmse": 25.341409133936637
+        },
+        "points": {
+          "bias": 0.00045480497880915634,
+          "mae": 1.2642203469885003,
+          "rmse": 2.1405046579215896
+        },
+        "projection": {
+          "mean_absolute_minutes_delta": 0.09987429358961139,
+          "minutes_rows": 176,
+          "sixty_rows": 53
+        },
+        "rows": 2671,
+        "sixty": {
+          "bins": [
+            {
+              "lower": 0.0,
+              "mean_probability": 0.04528522716436749,
+              "observed_rate": 0.05644644002565747,
+              "rows": 1559
+            },
+            {
+              "lower": 0.2,
+              "mean_probability": 0.2994390236827325,
+              "observed_rate": 0.32547169811320753,
+              "rows": 212
+            },
+            {
+              "lower": 0.4,
+              "mean_probability": 0.5130984524487316,
+              "observed_rate": 0.5491803278688525,
+              "rows": 244
+            },
+            {
+              "lower": 0.6,
+              "mean_probability": 0.6817377386472029,
+              "observed_rate": 0.6580310880829016,
+              "rows": 193
+            },
+            {
+              "lower": 0.8,
+              "mean_probability": 0.8991971004424033,
+              "observed_rate": 0.8833693304535637,
+              "rows": 463
+            }
+          ],
+          "brier": 0.10412657577126172,
+          "log_loss": 0.33611706877873543,
+          "raw_brier": 0.10331173817859991
+        }
+      },
+      "positions": {
+        "DEF": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.1129982072075039,
+                "observed_rate": 0.08888888888888889,
+                "rows": 315
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.29603543486498546,
+                "observed_rate": 0.3625,
+                "rows": 80
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5129094469655264,
+                "observed_rate": 0.44,
+                "rows": 75
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7069521457626312,
+                "observed_rate": 0.5943396226415094,
+                "rows": 106
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9152752600795742,
+                "observed_rate": 0.8664383561643836,
+                "rows": 292
+              }
+            ],
+            "brier": 0.14020001354959813,
+            "log_loss": 0.44192937347861233,
+            "raw_brier": 0.1411604287835387
+          },
+          "minutes": {
+            "bias": 0.3621175493083197,
+            "mae": 20.34042399100157,
+            "rmse": 28.648573617158878
+          },
+          "points": {
+            "bias": 0.04136433196198307,
+            "mae": 1.4964306442416728,
+            "rmse": 2.3361720257022096
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.1223910756775452,
+            "minutes_rows": 61,
+            "sixty_rows": 3
+          },
+          "rows": 868,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.05371798806037104,
+                "observed_rate": 0.06928406466512702,
+                "rows": 433
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.302665014647724,
+                "observed_rate": 0.24358974358974358,
+                "rows": 78
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.513866065137157,
+                "observed_rate": 0.5420560747663551,
+                "rows": 107
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6795700597987938,
+                "observed_rate": 0.7681159420289855,
+                "rows": 69
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.900533167095598,
+                "observed_rate": 0.850828729281768,
+                "rows": 181
+              }
+            ],
+            "brier": 0.11893312394155334,
+            "log_loss": 0.38170565409412643,
+            "raw_brier": 0.11825955376147354
+          }
+        },
+        "FWD": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.09744355375525225,
+                "observed_rate": 0.08088235294117647,
+                "rows": 136
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.29363793610853073,
+                "observed_rate": 0.45161290322580644,
+                "rows": 31
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5008323458220476,
+                "observed_rate": 0.6410256410256411,
+                "rows": 39
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6830560959174549,
+                "observed_rate": 0.8108108108108109,
+                "rows": 37
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9058677238728808,
+                "observed_rate": 0.8904109589041096,
+                "rows": 73
+              }
+            ],
+            "brier": 0.1293636760980581,
+            "log_loss": 0.4112733194078113,
+            "raw_brier": 0.12968041944134576
+          },
+          "minutes": {
+            "bias": -0.03537640362864105,
+            "mae": 12.850011251335797,
+            "rmse": 20.440310251446434
+          },
+          "points": {
+            "bias": -0.16030487808730332,
+            "mae": 1.1581170000262455,
+            "rmse": 2.218869439130364
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.004577185873393495,
+            "minutes_rows": 13,
+            "sixty_rows": 3
+          },
+          "rows": 316,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.0456997713506688,
+                "observed_rate": 0.028037383177570093,
+                "rows": 214
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.28704271915361673,
+                "observed_rate": 0.3181818181818182,
+                "rows": 22
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5109988353548552,
+                "observed_rate": 0.7,
+                "rows": 20
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6927664996179,
+                "observed_rate": 0.7222222222222222,
+                "rows": 18
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8858838707635412,
+                "observed_rate": 0.8809523809523809,
+                "rows": 42
+              }
+            ],
+            "brier": 0.07415882813995683,
+            "log_loss": 0.25238953677420733,
+            "raw_brier": 0.0737907608888752
+          }
+        },
+        "GK": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.05417849752468349,
+                "observed_rate": 0.024271844660194174,
+                "rows": 206
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.29467162588819906,
+                "observed_rate": 0.16666666666666666,
+                "rows": 6
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5444440415879701,
+                "observed_rate": 0.5,
+                "rows": 2
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7402077630091811,
+                "observed_rate": 0.7142857142857143,
+                "rows": 7
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9228235523730154,
+                "observed_rate": 0.9583333333333334,
+                "rows": 72
+              }
+            ],
+            "brier": 0.03528346062686262,
+            "log_loss": 0.14905606230155147,
+            "raw_brier": 0.036657439457811795
+          },
+          "minutes": {
+            "bias": -0.7076322123047706,
+            "mae": 7.765334404211725,
+            "rmse": 16.17282978830163
+          },
+          "points": {
+            "bias": 0.07849238297403736,
+            "mae": 0.8751158594402797,
+            "rmse": 1.6087144862946974
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.53792718489381,
+            "minutes_rows": 100,
+            "sixty_rows": 35
+          },
+          "rows": 293,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.027106385808007432,
+                "observed_rate": 0.01932367149758454,
+                "rows": 207
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.24968786792121395,
+                "observed_rate": 0.2,
+                "rows": 5
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.49752920776349363,
+                "observed_rate": 0.625,
+                "rows": 8
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6903615147833653,
+                "observed_rate": 0.75,
+                "rows": 4
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9163961683719924,
+                "observed_rate": 0.9710144927536232,
+                "rows": 69
+              }
+            ],
+            "brier": 0.032852067651139544,
+            "log_loss": 0.13423785546712094,
+            "raw_brier": 0.03341674251728192
+          }
+        },
+        "MID": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.11351158529356296,
+                "observed_rate": 0.11894273127753303,
+                "rows": 454
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3020648687730596,
+                "observed_rate": 0.4296875,
+                "rows": 128
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5084647631058616,
+                "observed_rate": 0.6260162601626016,
+                "rows": 123
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7135620482742415,
+                "observed_rate": 0.7222222222222222,
+                "rows": 144
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9102393507592618,
+                "observed_rate": 0.8782608695652174,
+                "rows": 345
+              }
+            ],
+            "brier": 0.14579508127475088,
+            "log_loss": 0.4524751537984897,
+            "raw_brier": 0.1465273400947051
+          },
+          "minutes": {
+            "bias": -1.0591109092929374,
+            "mae": 17.591479883941062,
+            "rmse": 25.790915258334707
+          },
+          "points": {
+            "bias": -0.005888930301848516,
+            "mae": 1.2189755684926438,
+            "rmse": 2.084186404575623
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0012309284588476414,
+            "minutes_rows": 2,
+            "sixty_rows": 12
+          },
+          "rows": 1194,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.04531774097561359,
+                "observed_rate": 0.06808510638297872,
+                "rows": 705
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3019609599741231,
+                "observed_rate": 0.3925233644859813,
+                "rows": 107
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5138728720973361,
+                "observed_rate": 0.5229357798165137,
+                "rows": 109
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6809196703974285,
+                "observed_rate": 0.5686274509803921,
+                "rows": 102
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8941128425192589,
+                "observed_rate": 0.8830409356725146,
+                "rows": 171
+              }
+            ],
+            "brier": 0.11878415979042002,
+            "log_loss": 0.3746745374219302,
+            "raw_brier": 0.11740986098126732
+          }
+        }
+      }
+    },
+    "legacy_regression_offset": {
+      "events": {
+        "5": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.13929022034598737,
+                "observed_rate": 0.11067193675889328,
+                "rows": 253
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.241441485495621,
+                "observed_rate": 0.2111111111111111,
+                "rows": 90
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.49171549997649816,
+                "observed_rate": 0.5254237288135594,
+                "rows": 59
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6997992001653451,
+                "observed_rate": 0.7904761904761904,
+                "rows": 105
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8753163959611119,
+                "observed_rate": 0.88125,
+                "rows": 160
+              }
+            ],
+            "brier": 0.13220166784414764,
+            "log_loss": 0.4460522625339467,
+            "raw_brier": 0.13368128137051252
+          },
+          "minutes": {
+            "bias": -0.20240581879071431,
+            "mae": 17.81169947221043,
+            "rmse": 25.658413352154724
+          },
+          "points": {
+            "bias": 0.015744171013437537,
+            "mae": 1.3633519216232763,
+            "rmse": 2.242965122833554
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 36
+          },
+          "rows": 667,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.05108139192368,
+                "observed_rate": 0.04415584415584416,
+                "rows": 385
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3277433920853428,
+                "observed_rate": 0.33766233766233766,
+                "rows": 77
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.495856419908808,
+                "observed_rate": 0.6825396825396826,
+                "rows": 63
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7504405731858704,
+                "observed_rate": 0.7222222222222222,
+                "rows": 36
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8403876782733539,
+                "observed_rate": 0.9339622641509434,
+                "rows": 106
+              }
+            ],
+            "brier": 0.09575477929874641,
+            "log_loss": 0.34410973555222113,
+            "raw_brier": 0.09520404051017213
+          }
+        },
+        "6": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.11108919515230467,
+                "observed_rate": 0.08148148148148149,
+                "rows": 270
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3254755132807269,
+                "observed_rate": 0.4444444444444444,
+                "rows": 45
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.49286769356328464,
+                "observed_rate": 0.5444444444444444,
+                "rows": 90
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7171304169835444,
+                "observed_rate": 0.7857142857142857,
+                "rows": 56
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9078901498619729,
+                "observed_rate": 0.8737864077669902,
+                "rows": 206
+              }
+            ],
+            "brier": 0.12956484518883757,
+            "log_loss": 0.41480405295747674,
+            "raw_brier": 0.12957995841160186
+          },
+          "minutes": {
+            "bias": 0.864416978019781,
+            "mae": 16.813202316179517,
+            "rmse": 24.979148071175736
+          },
+          "points": {
+            "bias": 0.02933974263757032,
+            "mae": 1.222520472507077,
+            "rmse": 2.1386145531857372
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 16
+          },
+          "rows": 667,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.0645995604518421,
+                "observed_rate": 0.04461942257217848,
+                "rows": 381
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.27815483776586075,
+                "observed_rate": 0.3333333333333333,
+                "rows": 36
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5275271240165383,
+                "observed_rate": 0.5301204819277109,
+                "rows": 83
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6884015304689383,
+                "observed_rate": 0.609375,
+                "rows": 64
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9029004300181679,
+                "observed_rate": 0.912621359223301,
+                "rows": 103
+              }
+            ],
+            "brier": 0.103079635960626,
+            "log_loss": 0.3284154888304134,
+            "raw_brier": 0.10287781843218027
+          }
+        },
+        "7": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.08243934107422542,
+                "observed_rate": 0.06477732793522267,
+                "rows": 247
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3104433078264962,
+                "observed_rate": 0.3625,
+                "rows": 80
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.4978574056427042,
+                "observed_rate": 0.5384615384615384,
+                "rows": 52
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6930417093178564,
+                "observed_rate": 0.5904761904761905,
+                "rows": 105
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9148955224038907,
+                "observed_rate": 0.9239130434782609,
+                "rows": 184
+              }
+            ],
+            "brier": 0.12556525980649993,
+            "log_loss": 0.39348186645116096,
+            "raw_brier": 0.1254667776209216
+          },
+          "minutes": {
+            "bias": -0.9075386493836921,
+            "mae": 15.759584964547145,
+            "rmse": 23.6359142947525
+          },
+          "points": {
+            "bias": -0.015952823066208984,
+            "mae": 1.1934984143622611,
+            "rmse": 2.0563193618181126
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0023645828702635444,
+            "minutes_rows": 12,
+            "sixty_rows": 22
+          },
+          "rows": 668,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.04102940003412121,
+                "observed_rate": 0.03561643835616438,
+                "rows": 365
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30809679982176147,
+                "observed_rate": 0.18181818181818182,
+                "rows": 66
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5261108433355516,
+                "observed_rate": 0.5392156862745098,
+                "rows": 102
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6935016045435463,
+                "observed_rate": 0.8181818181818182,
+                "rows": 33
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8948933815023203,
+                "observed_rate": 0.9117647058823529,
+                "rows": 102
+              }
+            ],
+            "brier": 0.0918289176273438,
+            "log_loss": 0.3029373750486391,
+            "raw_brier": 0.0918332598458992
+          }
+        },
+        "8": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.08844761205806569,
+                "observed_rate": 0.045627376425855515,
+                "rows": 263
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3164292835098158,
+                "observed_rate": 0.4875,
+                "rows": 80
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5163991155903709,
+                "observed_rate": 0.6086956521739131,
+                "rows": 69
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.721456715166875,
+                "observed_rate": 0.6666666666666666,
+                "rows": 81
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9042834154699289,
+                "observed_rate": 0.8863636363636364,
+                "rows": 176
+              }
+            ],
+            "brier": 0.12891178350027643,
+            "log_loss": 0.40094964763936936,
+            "raw_brier": 0.1289734674480876
+          },
+          "minutes": {
+            "bias": -1.23640103780025,
+            "mae": 17.147086507256688,
+            "rmse": 27.021630831672564
+          },
+          "points": {
+            "bias": -0.027204335573386224,
+            "mae": 1.2775765607284726,
+            "rmse": 2.1200983693207327
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 12
+          },
+          "rows": 669,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.045464391295580615,
+                "observed_rate": 0.07672634271099744,
+                "rows": 391
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3002317722718323,
+                "observed_rate": 0.41935483870967744,
+                "rows": 62
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5375567102617281,
+                "observed_rate": 0.5102040816326531,
+                "rows": 49
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6839613472785583,
+                "observed_rate": 0.6666666666666666,
+                "rows": 63
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8933617898897447,
+                "observed_rate": 0.8365384615384616,
+                "rows": 104
+              }
+            ],
+            "brier": 0.12287413242472764,
+            "log_loss": 0.37543074339779076,
+            "raw_brier": 0.12305508918637802
+          }
+        }
+      },
+      "origin_subgroups": {
+        "likely_starters": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5760751869922088,
+                "observed_rate": 0.4444444444444444,
+                "rows": 9
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.771802261083644,
+                "observed_rate": 0.7157894736842105,
+                "rows": 95
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9029156869880686,
+                "observed_rate": 0.8935574229691877,
+                "rows": 714
+              }
+            ],
+            "brier": 0.10743252050640004,
+            "log_loss": 0.3629063143230965,
+            "raw_brier": 0.10728286579346454
+          },
+          "minutes": {
+            "bias": 0.03851260636109867,
+            "mae": 23.432408931105833,
+            "rmse": 30.622361344691715
+          },
+          "points": {
+            "bias": -0.038842141321726996,
+            "mae": 2.3731984929445638,
+            "rmse": 3.1083658968484764
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 40
+          },
+          "rows": 818,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5456794043412175,
+                "observed_rate": 0.5817307692307693,
+                "rows": 208
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6995579173163776,
+                "observed_rate": 0.6820512820512821,
+                "rows": 195
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8825749138569081,
+                "observed_rate": 0.8987951807228916,
+                "rows": 415
+              }
+            ],
+            "brier": 0.16079670995579268,
+            "log_loss": 0.4912706921538466,
+            "raw_brier": 0.1599526513899004
+          }
+        },
+        "sparse_history": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.13403799971585456,
+                "observed_rate": 0.06896551724137931,
+                "rows": 29
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.26393534606208263,
+                "observed_rate": 0.21428571428571427,
+                "rows": 14
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5139323339317545,
+                "observed_rate": 0.35714285714285715,
+                "rows": 14
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6760739493816155,
+                "observed_rate": 1.0,
+                "rows": 7
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8825789185340256,
+                "observed_rate": 1.0,
+                "rows": 1
+              }
+            ],
+            "brier": 0.13088064694056525,
+            "log_loss": 0.41974744255743307,
+            "raw_brier": 0.13220004496969504
+          },
+          "minutes": {
+            "bias": 3.6041991749144633,
+            "mae": 16.759697892643217,
+            "rmse": 23.557069358395164
+          },
+          "points": {
+            "bias": 0.13834829278031102,
+            "mae": 1.0267222978128039,
+            "rmse": 1.6966011229416793
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 3
+          },
+          "rows": 65,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.05581599605389442,
+                "observed_rate": 0.045454545454545456,
+                "rows": 44
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3020019881137558,
+                "observed_rate": 0.17647058823529413,
+                "rows": 17
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.46508014983210694,
+                "observed_rate": 0.6666666666666666,
+                "rows": 3
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": null,
+                "observed_rate": null,
+                "rows": 0
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8100293124363168,
+                "observed_rate": 1.0,
+                "rows": 1
+              }
+            ],
+            "brier": 0.0847102102181299,
+            "log_loss": 0.286521542600931,
+            "raw_brier": 0.08433752628587902
+          }
+        },
+        "substitute_history": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.16200808656531104,
+                "observed_rate": 0.3902439024390244,
+                "rows": 82
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30414198970352824,
+                "observed_rate": 0.4106280193236715,
+                "rows": 207
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5037443607324773,
+                "observed_rate": 0.595,
+                "rows": 200
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6918082198898794,
+                "observed_rate": 0.7181467181467182,
+                "rows": 259
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8643402523347098,
+                "observed_rate": 0.8581081081081081,
+                "rows": 148
+              }
+            ],
+            "brier": 0.21670361028925025,
+            "log_loss": 0.625800730126388,
+            "raw_brier": 0.21454365460117705
+          },
+          "minutes": {
+            "bias": -5.270660152345377,
+            "mae": 24.6537155642168,
+            "rmse": 31.691429434903586
+          },
+          "points": {
+            "bias": -0.20048838559505547,
+            "mae": 1.323023993175651,
+            "rmse": 2.1487410229916293
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 0
+          },
+          "rows": 896,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.08672203601682976,
+                "observed_rate": 0.12916666666666668,
+                "rows": 480
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30507901816873473,
+                "observed_rate": 0.32571428571428573,
+                "rows": 175
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.515589574921662,
+                "observed_rate": 0.6153846153846154,
+                "rows": 169
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6616843883407887,
+                "observed_rate": 0.6619718309859155,
+                "rows": 71
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8172226827003587,
+                "observed_rate": 0.0,
+                "rows": 1
+              }
+            ],
+            "brier": 0.169431993958527,
+            "log_loss": 0.5243019820301067,
+            "raw_brier": 0.16852770703808456
+          }
+        }
+      },
+      "overall": {
+        "appearance": {
+          "bins": [
+            {
+              "lower": 0.0,
+              "mean_probability": 0.10538116907576188,
+              "observed_rate": 0.0755082284607938,
+              "rows": 1033
+            },
+            {
+              "lower": 0.2,
+              "mean_probability": 0.29330826813269,
+              "observed_rate": 0.36271186440677966,
+              "rows": 295
+            },
+            {
+              "lower": 0.4,
+              "mean_probability": 0.4995904851424638,
+              "observed_rate": 0.5555555555555556,
+              "rows": 270
+            },
+            {
+              "lower": 0.6,
+              "mean_probability": 0.7056068956061426,
+              "observed_rate": 0.7002881844380403,
+              "rows": 347
+            },
+            {
+              "lower": 0.8,
+              "mean_probability": 0.9016124675900381,
+              "observed_rate": 0.8911845730027548,
+              "rows": 726
+            }
+          ],
+          "brier": 0.1290594687028933,
+          "log_loss": 0.413804703666377,
+          "raw_brier": 0.12942355077057902
+        },
+        "minutes": {
+          "bias": -0.3713315869977109,
+          "mae": 16.882670581253578,
+          "rmse": 25.353859331644387
+        },
+        "points": {
+          "bias": 0.00045480497880915634,
+          "mae": 1.2642203469885003,
+          "rmse": 2.1405046579215896
+        },
+        "projection": {
+          "mean_absolute_minutes_delta": 0.0005913670375649748,
+          "minutes_rows": 12,
+          "sixty_rows": 86
+        },
+        "rows": 2671,
+        "sixty": {
+          "bins": [
+            {
+              "lower": 0.0,
+              "mean_probability": 0.050611745355975624,
+              "observed_rate": 0.05059132720105125,
+              "rows": 1522
+            },
+            {
+              "lower": 0.2,
+              "mean_probability": 0.30787790049473956,
+              "observed_rate": 0.3153526970954357,
+              "rows": 241
+            },
+            {
+              "lower": 0.4,
+              "mean_probability": 0.5219774093288839,
+              "observed_rate": 0.5622895622895623,
+              "rows": 297
+            },
+            {
+              "lower": 0.6,
+              "mean_probability": 0.6992279408836203,
+              "observed_rate": 0.6836734693877551,
+              "rows": 196
+            },
+            {
+              "lower": 0.8,
+              "mean_probability": 0.8825749138569081,
+              "observed_rate": 0.8987951807228916,
+              "rows": 415
+            }
+          ],
+          "brier": 0.10339463367473227,
+          "log_loss": 0.3377385468097455,
+          "raw_brier": 0.10325311574589913
+        }
+      },
+      "positions": {
+        "DEF": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.12993986392026474,
+                "observed_rate": 0.07692307692307693,
+                "rows": 299
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.2967191870636057,
+                "observed_rate": 0.3488372093023256,
+                "rows": 86
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.500492970886749,
+                "observed_rate": 0.44086021505376344,
+                "rows": 93
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7128104849761386,
+                "observed_rate": 0.6333333333333333,
+                "rows": 120
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9011051441553182,
+                "observed_rate": 0.8740740740740741,
+                "rows": 270
+              }
+            ],
+            "brier": 0.1393935106883276,
+            "log_loss": 0.4390503742293635,
+            "raw_brier": 0.14090825389587328
+          },
+          "minutes": {
+            "bias": 0.48450862498586506,
+            "mae": 20.44842488093578,
+            "rmse": 28.670597851225256
+          },
+          "points": {
+            "bias": 0.04136433196198307,
+            "mae": 1.4964306442416728,
+            "rmse": 2.3361720257022096
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 7
+          },
+          "rows": 868,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.07076280634818875,
+                "observed_rate": 0.06235011990407674,
+                "rows": 417
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3104839102236829,
+                "observed_rate": 0.24444444444444444,
+                "rows": 90
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5206548154267319,
+                "observed_rate": 0.5669291338582677,
+                "rows": 127
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6875817891439884,
+                "observed_rate": 0.7647058823529411,
+                "rows": 68
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8746045097159731,
+                "observed_rate": 0.8554216867469879,
+                "rows": 166
+              }
+            ],
+            "brier": 0.11954748610794896,
+            "log_loss": 0.3811011683154461,
+            "raw_brier": 0.11960664904042109
+          }
+        },
+        "FWD": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.10940324276529974,
+                "observed_rate": 0.07633587786259542,
+                "rows": 131
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30270562842152654,
+                "observed_rate": 0.41935483870967744,
+                "rows": 31
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.4989004918657617,
+                "observed_rate": 0.6097560975609756,
+                "rows": 41
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.675899775693319,
+                "observed_rate": 0.7954545454545454,
+                "rows": 44
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8879374390852638,
+                "observed_rate": 0.8985507246376812,
+                "rows": 69
+              }
+            ],
+            "brier": 0.12865536759211932,
+            "log_loss": 0.40937512259735065,
+            "raw_brier": 0.12778565640687384
+          },
+          "minutes": {
+            "bias": -0.03510258754699751,
+            "mae": 12.85028506741744,
+            "rmse": 20.441734058175463
+          },
+          "points": {
+            "bias": -0.16030487808730332,
+            "mae": 1.1581170000262455,
+            "rmse": 2.218869439130364
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 10
+          },
+          "rows": 316,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.04929574617224471,
+                "observed_rate": 0.023474178403755867,
+                "rows": 213
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.30740949785994703,
+                "observed_rate": 0.3181818181818182,
+                "rows": 22
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5129028571290146,
+                "observed_rate": 0.7272727272727273,
+                "rows": 22
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.6968996194818801,
+                "observed_rate": 0.6818181818181818,
+                "rows": 22
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8695467474612083,
+                "observed_rate": 0.918918918918919,
+                "rows": 37
+              }
+            ],
+            "brier": 0.07461534930739584,
+            "log_loss": 0.2533094904101606,
+            "raw_brier": 0.07430249193819631
+          }
+        },
+        "GK": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.031470011854541916,
+                "observed_rate": 0.01507537688442211,
+                "rows": 199
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.287693657891114,
+                "observed_rate": 0.2,
+                "rows": 10
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.4490900622560702,
+                "observed_rate": 0.4,
+                "rows": 5
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7532432603131909,
+                "observed_rate": 0.7,
+                "rows": 10
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9195536875370207,
+                "observed_rate": 0.9710144927536232,
+                "rows": 69
+              }
+            ],
+            "brier": 0.03458677603915197,
+            "log_loss": 0.18980731439415482,
+            "raw_brier": 0.0348373650684797
+          },
+          "minutes": {
+            "bias": -0.47160082108485574,
+            "mae": 7.776558072469073,
+            "rmse": 16.231867653704075
+          },
+          "points": {
+            "bias": 0.07849238297403736,
+            "mae": 0.8751158594402797,
+            "rmse": 1.6087144862946974
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0053909261342527225,
+            "minutes_rows": 12,
+            "sixty_rows": 63
+          },
+          "rows": 293,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.01793684231837127,
+                "observed_rate": 0.019417475728155338,
+                "rows": 206
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3150374839219113,
+                "observed_rate": 0.16666666666666666,
+                "rows": 6
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5233742209728809,
+                "observed_rate": 0.625,
+                "rows": 8
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.732828407753128,
+                "observed_rate": 0.7142857142857143,
+                "rows": 7
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.906392403024218,
+                "observed_rate": 0.9848484848484849,
+                "rows": 66
+              }
+            ],
+            "brier": 0.032576014918182385,
+            "log_loss": 0.17659858180145724,
+            "raw_brier": 0.0325183162481917
+          }
+        },
+        "MID": {
+          "appearance": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.122307849459888,
+                "observed_rate": 0.10396039603960396,
+                "rows": 404
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.29016236876008933,
+                "observed_rate": 0.36904761904761907,
+                "rows": 168
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.5010932383070303,
+                "observed_rate": 0.6259541984732825,
+                "rows": 131
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7054122071939707,
+                "observed_rate": 0.7225433526011561,
+                "rows": 173
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.9011175308537549,
+                "observed_rate": 0.8867924528301887,
+                "rows": 318
+              }
+            ],
+            "brier": 0.14483689454721813,
+            "log_loss": 0.45159175611688057,
+            "raw_brier": 0.14471886460382066
+          },
+          "minutes": {
+            "bias": -1.0578799808340895,
+            "mae": 17.592260242327225,
+            "rmse": 25.79109611533025
+          },
+          "points": {
+            "bias": -0.005888930301848516,
+            "mae": 1.2189755684926438,
+            "rmse": 2.084186404575623
+          },
+          "projection": {
+            "mean_absolute_minutes_delta": 0.0,
+            "minutes_rows": 0,
+            "sixty_rows": 6
+          },
+          "rows": 1194,
+          "sixty": {
+            "bins": [
+              {
+                "lower": 0.0,
+                "mean_probability": 0.048583094361993574,
+                "observed_rate": 0.061224489795918366,
+                "rows": 686
+              },
+              {
+                "lower": 0.2,
+                "mean_probability": 0.3057055954687031,
+                "observed_rate": 0.37398373983739835,
+                "rows": 123
+              },
+              {
+                "lower": 0.4,
+                "mean_probability": 0.524523374191873,
+                "observed_rate": 0.5285714285714286,
+                "rows": 140
+              },
+              {
+                "lower": 0.6,
+                "mean_probability": 0.7053689320053044,
+                "observed_rate": 0.6262626262626263,
+                "rows": 99
+              },
+              {
+                "lower": 0.8,
+                "mean_probability": 0.8841720026171386,
+                "observed_rate": 0.9041095890410958,
+                "rows": 146
+              }
+            ],
+            "brier": 0.11664709032776015,
+            "log_loss": 0.36810273115040637,
+            "raw_brier": 0.11638446120353507
+          }
+        }
+      }
+    }
+  },
+  "predictions_sha256": "d56d292f8e11cb57310b2384d79253ec4970a71bfce0f8133306f0eaa3e25a9b",
+  "protocol_sha256": "d4f42abde93b5f4331ec8e076a317114efcb56e7a0f619a754eeeaed1a47c935",
+  "rows_per_method": 2671,
+  "runtime_seconds": 21.49905787501484,
+  "unavailable_subgroups": [
+    "known injury",
+    "return from injury",
+    "club changes"
+  ]
+}

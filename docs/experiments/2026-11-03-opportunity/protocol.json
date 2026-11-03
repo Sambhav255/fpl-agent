@@ -1,0 +1,111 @@
+{
+  "champion_promoted": false,
+  "code_revision": "0e43ed8e8ce365a1bcf1aaaa3e1b218a23acba59",
+  "collection_id": "7ad5d2a7c28d4f1497e1f84ad4db4354",
+  "collection_sha256": "61b8cb9807ca9abb8caa809c81924fe34e0ec2e52647c1f528f134974d311596",
+  "evidence_mode": "previously inspected retrospective development; reconstructed membership and availability",
+  "feature_columns": [
+    "position",
+    "club",
+    "opponent",
+    "home",
+    "rule_era",
+    "history_count",
+    "points_5",
+    "minutes_5",
+    "appearance_5",
+    "sixty_5",
+    "starts_5",
+    "history_missing",
+    "starts_missing"
+  ],
+  "folds": [
+    {
+      "calibration": [
+        4
+      ],
+      "test": [
+        5
+      ],
+      "train": [
+        1,
+        2
+      ],
+      "validation": [
+        3
+      ]
+    },
+    {
+      "calibration": [
+        5
+      ],
+      "test": [
+        6
+      ],
+      "train": [
+        1,
+        2,
+        3
+      ],
+      "validation": [
+        4
+      ]
+    },
+    {
+      "calibration": [
+        6
+      ],
+      "test": [
+        7
+      ],
+      "train": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "validation": [
+        5
+      ]
+    },
+    {
+      "calibration": [
+        7
+      ],
+      "test": [
+        8
+      ],
+      "train": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "validation": [
+        6
+      ]
+    }
+  ],
+  "hypothesis": "Binary Logloss plus earlier model-bound sigmoid calibration improves appearance/60-minute probabilities and coherent expected minutes over legacy RMSE heads/additive offsets.",
+  "implementation_sha256": {
+    "backend/src/fpl_app/features/football.py": "8cd1999b778656c8e76d36299995e6f2e4fe4b8d512cf74401347e2ab99ae842",
+    "backend/src/fpl_app/models/football_catboost.py": "976a2636bcaccb2acf242357799a6487dfe9233940e0975fa315b1d6b8c6dfb1",
+    "backend/src/fpl_app/models/opportunity.py": "18dec564ea84c2605606bf8be71480a1da81ef0ec4fb9ccae738cf2d88795273",
+    "backend/src/fpl_app/models/training_eligibility.py": "ef80822f9d9df99ed504f3f78fdf6e0d9a61d39780710092dd3c7ebe09708537",
+    "backend/uv.lock": "cab0cda472b1ac01217615ba82cf8110ea5b4a3360654ab8f8593580f2df7820",
+    "scripts/research/opportunity_comparison.py": "1c1619148fcd0414874bcb3dc0b4597d43056394137c81f912db745659391893"
+  },
+  "methods": [
+    "legacy_regression_offset",
+    "binary_sigmoid_projected"
+  ],
+  "news_treatment": "No historical news in either method; injury/return/club-change subgroups unavailable",
+  "primary_metrics": [
+    "appearance Brier",
+    "sixty Brier",
+    "minutes MAE"
+  ],
+  "registered_at": "2026-11-03T13:04:48.956104+00:00",
+  "serving_design": "latest-data refit explicitly uncalibrated; holdout calibrators never transferred"
+}

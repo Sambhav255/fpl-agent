@@ -13,6 +13,14 @@ import numpy as np
 import pandas as pd
 
 from fpl_app.features.football import CATEGORICAL, FEATURE_VERSION, FEATURES, archive_panel
+from fpl_app.models.opportunity import (
+    BINARY_HEADS,
+    calibrate,
+    fit_head,
+    fit_sigmoid,
+    load_head,
+    probability,
+)
 
 FEATURE_ABLATIONS = {
     "points_position": ["position", "rule_era", "history_count", "history_missing", "points_5"],
@@ -74,6 +82,7 @@ def _fit(
     partitions: dict[str, list[int]],
     rules: str,
     run_feature_ablations: bool = False,
+    binary_opportunity: bool = True,
 ) -> Path:
     from catboost import CatBoostRegressor
 
@@ -114,45 +123,43 @@ def _fit(
         frame["appearance"] = (frame.target_minutes > 0).astype(float)
         frame["sixty"] = (frame.target_minutes >= 60).astype(float)
         frame["start"] = frame.target_start
+    head_metadata = {}
     for head, target in targets.items():
-        if target == "start" and train[target].isna().any():
+        model, metadata = fit_head(head, train, target, validation, binary=binary_opportunity)
+        head_metadata[head] = metadata
+        if model is None:
             continue
-        loss = f"Quantile:alpha={int(head[1:]) / 100}" if head.startswith("q") else "RMSE"
-        model = CatBoostRegressor(
-            iterations=180,
-            depth=5,
-            learning_rate=0.06,
-            loss_function=loss,
-            random_seed=43,
-            thread_count=2,
-            verbose=False,
-            allow_writing_files=False,
-            allow_const_label=True,
-        )
-        model.fit(
-            train[FEATURES],
-            train[target],
-            cat_features=CATEGORICAL,
-            eval_set=(validation[FEATURES], validation[target]),
-            early_stopping_rounds=25,
-        )
-        model.save_model(str(run / f"{head}.cbm"))
-        reloaded = CatBoostRegressor()
-        reloaded.load_model(str(run / f"{head}.cbm"))
-        if not np.array_equal(model.predict(test[FEATURES]), reloaded.predict(test[FEATURES])):
-            raise ValueError("reload changed predictions")
-        models[head] = reloaded
-    # Calibration-only additive reliability adjustment; explicit small-sample limitation.
-    offsets = {
-        head: float(
-            calibration[target].mean()
-            - np.clip(models[head].predict(calibration[FEATURES]), 0, 1).mean()
-        )
-        for head, target in [("appearance", "appearance"), ("sixty", "sixty"), ("start", "start")]
-        if head in models
-    }
+        if metadata["kind"] != "constant_probability":
+            model.save_model(str(run / f"{head}.cbm"))
+            metadata["model_sha256"] = checksum(run / f"{head}.cbm")
+            reloaded = load_head(run / f"{head}.cbm", metadata)
+            if not np.array_equal(
+                probability(model, test[FEATURES]), probability(reloaded, test[FEATURES])
+            ):
+                raise ValueError("reload changed predictions")
+            model = reloaded
+        models[head] = model
+    offsets: dict[str, Any] = {}
+    for head in BINARY_HEADS & models.keys():
+        if binary_opportunity:
+            offsets[head] = fit_sigmoid(
+                probability(models[head], calibration[FEATURES]),
+                calibration[targets[head]],
+                model_sha256=head_metadata[head].get("model_sha256"),
+                model_identity=head_metadata[head],
+                feature_version=FEATURE_VERSION,
+                origin_min=calibration.decision_cutoff.min(),
+                label_available_through=calibration.target_available_at.max(),
+            )
+            head_metadata[head]["calibration"] = offsets[head]["kind"]
+        else:
+            offsets[head] = float(
+                calibration[targets[head]].mean()
+                - np.clip(probability(models[head], calibration[FEATURES]), 0, 1).mean()
+            )
+    write_json(run / "heads.json", head_metadata)
     write_json(run / "calibration.json", offsets)
-    predicted = _predict(models, offsets, test)
+    predicted = _predict(models, offsets, test, coherent=binary_opportunity)
     test = test.reset_index(drop=True)
     test = pd.concat([test, predicted], axis=1)
     if run_feature_ablations:
@@ -334,6 +341,10 @@ def _fit(
         "mapping_version": "season-scoped-explicit-v1",
         "rules_version": rules,
         "partitions": boundaries,
+        "head_schema_version": 1,
+        "opportunity_method": "binary_sigmoid_projected_v1"
+        if binary_opportunity
+        else "legacy_regression_offset_v1",
         "provenance": provenance,
         "evaluation_reference": "evaluation.json",
         "active": False,
@@ -489,6 +500,7 @@ def evaluate_chronological(
         "status": "evaluated",
         "completed_at": datetime.now(UTC).isoformat(),
         "evaluation_method": "expanding_chronological_event_folds_v1",
+        "opportunity_method": "binary_sigmoid_projected_v1",
         "evaluation_kind": "retrospective_assumed",
         "as_of": as_of,
         "source_ref": provenance.get("source_ref"),
@@ -554,8 +566,6 @@ def _fit_serving_refit(
     evaluation_ref: str,
 ) -> Path:
     """Fit a distinct latest-data artifact after eligible test targets were scored."""
-    from catboost import CatBoostRegressor
-
     if evaluation.get("completed_at") and pd.Timestamp(
         evaluation["completed_at"]
     ) > pd.Timestamp.now(tz="UTC"):
@@ -584,29 +594,23 @@ def _fit_serving_refit(
     run = output_root / (datetime.now(UTC).strftime("%Y%m%dT%H%M%S") + "-" + uuid4().hex[:8])
     run.mkdir(parents=True, exist_ok=False)
     models = {}
+    head_metadata = {}
     for head, target in targets.items():
-        if target == "start" and fit[target].isna().all():
+        model, metadata = fit_head(head, fit, target)
+        head_metadata[head] = metadata
+        if model is None:
             continue
-        loss = f"Quantile:alpha={int(head[1:]) / 100}" if head.startswith("q") else "RMSE"
-        model = CatBoostRegressor(
-            iterations=180,
-            depth=5,
-            learning_rate=0.06,
-            loss_function=loss,
-            random_seed=43,
-            thread_count=2,
-            verbose=False,
-            allow_writing_files=False,
-            allow_const_label=True,
-        )
-        valid = fit[target].notna()
-        model.fit(fit.loc[valid, FEATURES], fit.loc[valid, target], cat_features=CATEGORICAL)
-        model.save_model(str(run / f"{head}.cbm"))
-        loaded = CatBoostRegressor()
-        loaded.load_model(str(run / f"{head}.cbm"))
-        if not np.array_equal(model.predict(fit[FEATURES]), loaded.predict(fit[FEATURES])):
-            raise ValueError("serving refit reload changed predictions")
-        models[head] = loaded
+        if metadata["kind"] != "constant_probability":
+            model.save_model(str(run / f"{head}.cbm"))
+            metadata["model_sha256"] = checksum(run / f"{head}.cbm")
+            loaded = load_head(run / f"{head}.cbm", metadata)
+            if not np.array_equal(
+                probability(model, fit[FEATURES]), probability(loaded, fit[FEATURES])
+            ):
+                raise ValueError("serving refit reload changed predictions")
+            model = loaded
+        models[head] = model
+    write_json(run / "heads.json", head_metadata)
     write_json(run / "calibration.json", {})
     write_json(run / "evaluation.json", evaluation)
     fit.to_parquet(run / "features.parquet", index=False)
@@ -628,6 +632,10 @@ def _fit_serving_refit(
         "model_family": "football_catboost",
         "model_status": "trained",
         "artifact_kind": "latest_serving_refit",
+        "head_schema_version": 1,
+        "opportunity_method": "binary_uncalibrated_projected_v1",
+        "probability_calibration_status": "unavailable_latest_data_refit",
+        "probability_method_matches_evaluation": False,
         "data_mode": "live",
         "artifact_id": run.name,
         "mode": "experimental",
@@ -685,20 +693,34 @@ def _fit_serving_refit(
 
 
 def _predict(
-    models: dict[str, Any], offsets: dict[str, float], features: pd.DataFrame
+    models: dict[str, Any],
+    offsets: dict[str, Any],
+    features: pd.DataFrame,
+    *,
+    coherent: bool = True,
 ) -> pd.DataFrame:
-    p = {head: model.predict(features[FEATURES]) for head, model in models.items()}
-    appearance = np.clip(p["appearance"] + offsets.get("appearance", 0.0), 0, 1)
-    sixty = np.minimum(appearance, np.clip(p["sixty"] + offsets.get("sixty", 0.0), 0, 1))
+    p = {head: probability(model, features[FEATURES]) for head, model in models.items()}
+    appearance = calibrate(p["appearance"], offsets.get("appearance", {}))
+    sixty_raw = calibrate(p["sixty"], offsets.get("sixty", {}))
+    sixty = np.minimum(appearance, sixty_raw)
+    # Whole-minute labels, capped at 90: mixture bounds imply simple appearance bound.
+    lower = appearance + 59 * sixty
+    upper = 59 * appearance + 31 * sixty
+    minutes = np.clip(p["minutes"], lower, upper) if coherent else np.clip(p["minutes"], 0, 90)
     quantiles = np.sort(np.stack([p["q10"], p["q50"], p["q90"]]), axis=0)
     return pd.DataFrame(
         {
             "points_mean": p["points"],
-            "minutes_mean": np.clip(p["minutes"], 0, 90),
+            "minutes_mean": minutes,
+            "raw_minutes_mean": p["minutes"],
+            "minutes_projection_delta": minutes - p["minutes"],
+            "raw_appearance_probability": p["appearance"],
+            "raw_sixty_probability": p["sixty"],
+            "sixty_projection_delta": sixty - sixty_raw,
             "appearance_probability": appearance,
             "sixty_probability": sixty,
             "start_probability": np.minimum(
-                appearance, np.clip(p["start"] + offsets.get("start", 0.0), 0, 1)
+                appearance, calibrate(p["start"], offsets.get("start", {}))
             )
             if "start" in p
             else np.nan,
@@ -794,12 +816,37 @@ def forecast_frozen(
     ):
         raise ValueError("cross-season mapping unsupported")
     models = {}
-    for name in manifest["files"]:
-        if name.endswith(".cbm"):
-            model = CatBoostRegressor()
-            model.load_model(str(run_dir / name))
-            models[name[:-4]] = model
-    predictions = _predict(models, json.loads((run_dir / "calibration.json").read_text()), features)
+    if manifest.get("head_schema_version") == 1:
+        metadata = json.loads((run_dir / "heads.json").read_text())
+        for head, description in metadata.items():
+            model = load_head(run_dir / f"{head}.cbm", description)
+            if model is not None:
+                models[head] = model
+    elif "head_schema_version" in manifest:
+        raise ValueError("unsupported head metadata schema")
+    else:
+        # Retained legacy artifacts contain regressors and additive offsets.
+        for name in manifest["files"]:
+            if name.endswith(".cbm"):
+                model = CatBoostRegressor()
+                model.load_model(str(run_dir / name))
+                models[name[:-4]] = model
+    calibration = json.loads((run_dir / "calibration.json").read_text())
+    if manifest.get("head_schema_version") == 1:
+        for head, description in calibration.items():
+            if (
+                isinstance(description, dict)
+                and description.get("kind") == "sigmoid"
+                and (
+                    description.get("model_identity") != metadata[head]
+                    or description.get("model_sha256") != metadata[head].get("model_sha256")
+                    or description.get("feature_version") != FEATURE_VERSION
+                )
+            ):
+                raise ValueError("calibration model or feature binding mismatch")
+    predictions = _predict(
+        models, calibration, features, coherent=manifest.get("head_schema_version") == 1
+    )
     return pd.concat(
         [
             features[["player_id", "player_key", "event", "fixture_id"]].reset_index(drop=True),
