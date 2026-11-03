@@ -21,7 +21,7 @@ The existing app uses an approximate forecast and has useful infrastructure, but
 
 ## Use in a coding session
 
-This is the canonical upgrade specification folder. First read [the current handoff](../START_HERE.md) and [build status](../BUILD_STATUS.md). The audit below describes the original audited commit; several findings have since been fixed. Use `IMPLEMENTATION_BACKLOG.md` for acceptance criteria, checked against current status.
+This is the canonical upgrade specification folder. First read [the current handoff](../../../START_HERE.md) and [build status](../../../BUILD_STATUS.md). The audit below describes the original audited commit; several findings have since been fixed. Use `IMPLEMENTATION_BACKLOG.md` for acceptance criteria, checked against current status.
 
 This kit revises the forecasting, strategy and social scope of the original specifications. Current official rules and existing integrity requirements remain controlling. Compare the current branch with the audited commit before treating a finding as still present. Use the individual files for implementation; the redundant combined copy has been removed.
 

@@ -1,0 +1,874 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-03",
+  "purpose": "Lossless documentation relocation. Reversing recorded link rewrites reconstructs original source bytes. Experiments and supplied originals remain byte-identical. Current instructions are root AGENTS.md and docs/START_HERE.md.",
+  "files": [
+    {
+      "previous_path": "docs/TECH_STACK_AND_ARCHITECTURE.md",
+      "path": "docs/specs/TECH_STACK_AND_ARCHITECTURE.md",
+      "original_sha256": "99f2d5b34d78c71226385d177bfd3b24893739a726f02d4d309148cee7365623",
+      "relocated_sha256": "99f2d5b34d78c71226385d177bfd3b24893739a726f02d4d309148cee7365623",
+      "original_size": 14948,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/CONTRACTS.md",
+      "path": "docs/archive/contracts/CONTRACTS_2026-11-03.md",
+      "original_sha256": "3f14b12bcddc220ada42d73fcb3a8761b55a0ab91533e530e7bef4adb6bf702e",
+      "relocated_sha256": "3f14b12bcddc220ada42d73fcb3a8761b55a0ab91533e530e7bef4adb6bf702e",
+      "original_size": 2308,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/SOURCES.md",
+      "path": "docs/specs/SOURCES.md",
+      "original_sha256": "2d61a09f6ba653ba7624601122202107f4a793e99d4cba9c7024c635a48decb4",
+      "relocated_sha256": "2d61a09f6ba653ba7624601122202107f4a793e99d4cba9c7024c635a48decb4",
+      "original_size": 7917,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/FPL_PRD.md",
+      "path": "docs/specs/FPL_PRD.md",
+      "original_sha256": "142903fc7a6186dfde2831fc1edcadbdc5f8ed740fbc5b5c9a1fdc6d88506015",
+      "relocated_sha256": "142903fc7a6186dfde2831fc1edcadbdc5f8ed740fbc5b5c9a1fdc6d88506015",
+      "original_size": 11916,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/ML_INTEGRATION.md",
+      "path": "docs/specs/ML_INTEGRATION.md",
+      "original_sha256": "f73a4df31846e5321e2dfd5e2ee8188fdef352c110f6ba8a13829957c480c388",
+      "relocated_sha256": "3be097772d73e00b0ee363c6236c5834bd07e447d00eb7469f84d8a3cfbe7c54",
+      "original_size": 3929,
+      "link_rewrites": [
+        {
+          "offset": 3791,
+          "before": "[BUILD_STATUS.md](BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS.md](../BUILD_STATUS.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/DATA_AND_MODEL_SPEC.md",
+      "path": "docs/specs/DATA_AND_MODEL_SPEC.md",
+      "original_sha256": "3f66239bae8ae1eef3d82eaa467332b5763754ac843476e289246f6e6a3a1d87",
+      "relocated_sha256": "3f66239bae8ae1eef3d82eaa467332b5763754ac843476e289246f6e6a3a1d87",
+      "original_size": 18693,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/PLANNER_TRANSFER_CONTROLS_STATUS.md",
+      "path": "docs/specs/PLANNER_TRANSFER_CONTROLS_STATUS.md",
+      "original_sha256": "bae5437275361f90df14e126da5ea6902d3e8fc7cd6c3448e560fb3756743735",
+      "relocated_sha256": "bae5437275361f90df14e126da5ea6902d3e8fc7cd6c3448e560fb3756743735",
+      "original_size": 1144,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/BUILD_PLAN_AND_TESTS.md",
+      "path": "docs/specs/BUILD_PLAN_AND_TESTS.md",
+      "original_sha256": "aaacd523e37f6a705754ccd0350dcd7f3432baac406c0d1ccba56f533047d386",
+      "relocated_sha256": "aaacd523e37f6a705754ccd0350dcd7f3432baac406c0d1ccba56f533047d386",
+      "original_size": 12562,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/HANDOFF.md",
+      "path": "docs/archive/handoffs/HANDOFF_2026-11-03.md",
+      "original_sha256": "e32286b273fa583d5ad633a6a93b08a7616c044c551886f86f77a440c7842fe6",
+      "relocated_sha256": "ac934de1dca54dc8f48af80c98b71d9d05593ea2891debf90df558cc2eb8b999",
+      "original_size": 5046,
+      "link_rewrites": [
+        {
+          "offset": 44,
+          "before": "[START_HERE](START_HERE.md)",
+          "after": "[START_HERE](../../START_HERE.md)"
+        },
+        {
+          "offset": 73,
+          "before": "[BUILD_STATUS](BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 110,
+          "before": "[FILE_STRUCTURE](FILE_STRUCTURE.md)",
+          "after": "[FILE_STRUCTURE](../../FILE_STRUCTURE.md)"
+        },
+        {
+          "offset": 190,
+          "before": "[3 November post-GW9 report](experiments/2026-11-03-gw9-post-event/README.md)",
+          "after": "[3 November post-GW9 report](../../experiments/2026-11-03-gw9-post-event/README.md)"
+        },
+        {
+          "offset": 273,
+          "before": "[31 October report](experiments/2026-10-31-gw9-model-review/README.md)",
+          "after": "[31 October report](../../experiments/2026-10-31-gw9-model-review/README.md)"
+        },
+        {
+          "offset": 1693,
+          "before": "[command index](../scripts/README.md)",
+          "after": "[command index](../../../scripts/README.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/UPGRADE_CONTRACTS.md",
+      "path": "docs/archive/contracts/UPGRADE_CONTRACTS_2026-11-03.md",
+      "original_sha256": "12520fcd7a4a8fabce0fcd31bf86be16f76b0eb8498b24962d9cd021a84a63ed",
+      "relocated_sha256": "12520fcd7a4a8fabce0fcd31bf86be16f76b0eb8498b24962d9cd021a84a63ed",
+      "original_size": 1765,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/REPOSITORY_AUDIT.md",
+      "path": "docs/archive/upgrades/intelligence/REPOSITORY_AUDIT.md",
+      "original_sha256": "fd3f0bdbba05a51c0b5612712bb6aaa1d14c36c582a31138562066ee08c15ab4",
+      "relocated_sha256": "fd3f0bdbba05a51c0b5612712bb6aaa1d14c36c582a31138562066ee08c15ab4",
+      "original_size": 12468,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/CODEX_EXECUTION_PROMPT.md",
+      "path": "docs/archive/upgrades/intelligence/CODEX_EXECUTION_PROMPT.md",
+      "original_sha256": "cb9f4ddfd2e18f4996439aedf118e7304d383a021727c949af3355407562c32b",
+      "relocated_sha256": "cb9f4ddfd2e18f4996439aedf118e7304d383a021727c949af3355407562c32b",
+      "original_size": 5366,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/SOCIAL_INTELLIGENCE_SPEC.md",
+      "path": "docs/specs/strategy/SOCIAL_INTELLIGENCE_SPEC.md",
+      "original_sha256": "d89a24485c7b76456850f9e3d211fb46bf9546595096c3634765e3b2c95488b5",
+      "relocated_sha256": "d89a24485c7b76456850f9e3d211fb46bf9546595096c3634765e3b2c95488b5",
+      "original_size": 17101,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/SOURCES.md",
+      "path": "docs/archive/upgrades/intelligence/SOURCES.md",
+      "original_sha256": "bb1b3001d79c728ab6a335a4f7b47d07d08e6a5ee82daf98b0f8aae4302da15b",
+      "relocated_sha256": "bb1b3001d79c728ab6a335a4f7b47d07d08e6a5ee82daf98b0f8aae4302da15b",
+      "original_size": 8951,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/ML_DATA_AND_PLANNING_SPEC.md",
+      "path": "docs/specs/strategy/ML_DATA_AND_PLANNING_SPEC.md",
+      "original_sha256": "c8f8a3687405f5cb587ee3b5fe8e1d9b23546d13c10d1149a6130af5f3d38368",
+      "relocated_sha256": "c8f8a3687405f5cb587ee3b5fe8e1d9b23546d13c10d1149a6130af5f3d38368",
+      "original_size": 22295,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/FPL_PRD_V2.md",
+      "path": "docs/specs/strategy/FPL_PRD_V2.md",
+      "original_sha256": "fa5c82c6aaba4f6699ebe353bdad2d7cf4b257c384c8b4f8856a848d7ae3aaaa",
+      "relocated_sha256": "fa5c82c6aaba4f6699ebe353bdad2d7cf4b257c384c8b4f8856a848d7ae3aaaa",
+      "original_size": 11861,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/README.md",
+      "path": "docs/archive/upgrades/intelligence/README.md",
+      "original_sha256": "6c33ce0d07444de80a00e44a7ace44c10851d70f5c032ad44dbdba650b17bf1c",
+      "relocated_sha256": "9de1b104b7b6c5128ad046c7dbb5b13f6c314eb030c1772d28ad0c391eec00b0",
+      "original_size": 2601,
+      "link_rewrites": [
+        {
+          "offset": 1259,
+          "before": "[the current handoff](../START_HERE.md)",
+          "after": "[the current handoff](../../../START_HERE.md)"
+        },
+        {
+          "offset": 1303,
+          "before": "[build status](../BUILD_STATUS.md)",
+          "after": "[build status](../../../BUILD_STATUS.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/IMPLEMENTATION_BACKLOG.md",
+      "path": "docs/archive/upgrades/intelligence/IMPLEMENTATION_BACKLOG.md",
+      "original_sha256": "1986ecde431be2ec17292c5b4793965c3afdb0461c2dadec024cd38d64542207",
+      "relocated_sha256": "1986ecde431be2ec17292c5b4793965c3afdb0461c2dadec024cd38d64542207",
+      "original_size": 10486,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/CURRENT_AGENT_PROMPT.md",
+      "path": "docs/archive/handoffs/gw7/CURRENT_AGENT_PROMPT.md",
+      "original_sha256": "13fe0678442d1347dbbadc65b4eef831e035ea4c34df161c5c549d23e1b1f35f",
+      "relocated_sha256": "13fe0678442d1347dbbadc65b4eef831e035ea4c34df161c5c549d23e1b1f35f",
+      "original_size": 7762,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/SOURCES_AND_SCOPE.md",
+      "path": "docs/archive/handoffs/gw7/SOURCES_AND_SCOPE.md",
+      "original_sha256": "913079d4fc98c1946576fb31bc87e6ab00dd25e2d49d3604ccac56c3cb4e1cb6",
+      "relocated_sha256": "913079d4fc98c1946576fb31bc87e6ab00dd25e2d49d3604ccac56c3cb4e1cb6",
+      "original_size": 6681,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/README.md",
+      "path": "docs/archive/handoffs/gw7/README.md",
+      "original_sha256": "d7832394631dfe0df5c3d106ee4f7f7cde91340c2fc66bcbf7847761ef194900",
+      "relocated_sha256": "d7832394631dfe0df5c3d106ee4f7f7cde91340c2fc66bcbf7847761ef194900",
+      "original_size": 1711,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/EXTERNAL_REPOSITORY_REVIEW.md",
+      "path": "docs/archive/handoffs/gw7/EXTERNAL_REPOSITORY_REVIEW.md",
+      "original_sha256": "7e685ee3625eea9defef8c772065e754b33baf2921144b8f882e8662b3053722",
+      "relocated_sha256": "7e685ee3625eea9defef8c772065e754b33baf2921144b8f882e8662b3053722",
+      "original_size": 14837,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/GW7_AGENT_HANDOFF.md",
+      "path": "docs/archive/handoffs/gw7/GW7_AGENT_HANDOFF.md",
+      "original_sha256": "8145d6093af1a24ed17c4b156017cb698c70abfed5c3a407bbd7af556b597120",
+      "relocated_sha256": "8145d6093af1a24ed17c4b156017cb698c70abfed5c3a407bbd7af556b597120",
+      "original_size": 12977,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/IMPLEMENTATION_STATUS.md",
+      "path": "docs/archive/upgrades/learning/IMPLEMENTATION_STATUS.md",
+      "original_sha256": "c4215e9b78bbbd8b9661b180ba4a5718e38393d88187fff30ddde73759754817",
+      "relocated_sha256": "6f9f267dc236a8ff21521ca996959a0951c69b416c3adf946a3869929ac13699",
+      "original_size": 3831,
+      "link_rewrites": [
+        {
+          "offset": 62,
+          "before": "[BUILD_STATUS](../BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 101,
+          "before": "[the actual experiment report](../experiments/2026-10-13-real-football-finalized/README.md)",
+          "after": "[the actual experiment report](../../../experiments/2026-10-13-real-football-finalized/README.md)"
+        },
+        {
+          "offset": 275,
+          "before": "[reference/supplied](../reference/supplied/fpl_learning_upgrade/README.md)",
+          "after": "[reference/supplied](../../reference/supplied/fpl_learning_upgrade/README.md)"
+        },
+        {
+          "offset": 388,
+          "before": "[history](../history/LEARNING_IMPLEMENTATION_2026-10-12.md)",
+          "after": "[history](../../history/LEARNING_IMPLEMENTATION_2026-10-12.md)"
+        },
+        {
+          "offset": 2779,
+          "before": "[advanced serving](ADVANCED_SERVING.md)",
+          "after": "[advanced serving](../../../specs/learning/ADVANCED_SERVING.md)"
+        },
+        {
+          "offset": 2820,
+          "before": "[journal replay](JOURNAL_REPLAY.md)",
+          "after": "[journal replay](../../../specs/learning/JOURNAL_REPLAY.md)"
+        },
+        {
+          "offset": 2938,
+          "before": "[the file map](../FILE_STRUCTURE.md)",
+          "after": "[the file map](../../../FILE_STRUCTURE.md)"
+        },
+        {
+          "offset": 3645,
+          "before": "[the immutable prospective producer report](../experiments/2026-10-14-prospective-replay/README.md)",
+          "after": "[the immutable prospective producer report](../../../experiments/2026-10-14-prospective-replay/README.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/learning_upgrade/SOURCES.md",
+      "path": "docs/archive/upgrades/learning/SOURCES.md",
+      "original_sha256": "40ed040561250adf7c8c8a2c89a350e50968683831a175c4938bbb385b85bef2",
+      "relocated_sha256": "40ed040561250adf7c8c8a2c89a350e50968683831a175c4938bbb385b85bef2",
+      "original_size": 4612,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/GAMEWEEK_REVIEW_PROMPT.md",
+      "path": "docs/archive/upgrades/learning/GAMEWEEK_REVIEW_PROMPT.md",
+      "original_sha256": "3debdfc46dc5c42bb4b8f9a83900ed0ee4d197b5f75906fdc72c50d3cc360a59",
+      "relocated_sha256": "3debdfc46dc5c42bb4b8f9a83900ed0ee4d197b5f75906fdc72c50d3cc360a59",
+      "original_size": 2448,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/LATEST_REPOSITORY_AUDIT.md",
+      "path": "docs/archive/upgrades/learning/LATEST_REPOSITORY_AUDIT.md",
+      "original_sha256": "a6831eef122112f36cd2af579c27ee059ff25dc152662aa276cb714d20143d28",
+      "relocated_sha256": "a6831eef122112f36cd2af579c27ee059ff25dc152662aa276cb714d20143d28",
+      "original_size": 11341,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/ADVANCED_SERVING.md",
+      "path": "docs/specs/learning/ADVANCED_SERVING.md",
+      "original_sha256": "dd7c1eec7f8d68f544e327990e660b14e324ca4902b070930ba259734c1a3fcf",
+      "relocated_sha256": "565f39cd1bd53f131b28813265f299af3ce5ceb0590ed11e0c6eec3f218a89ac",
+      "original_size": 8240,
+      "link_rewrites": [
+        {
+          "offset": 5928,
+          "before": "[the finalized experiment report](../experiments/2026-10-13-real-football-finalized/README.md)",
+          "after": "[the finalized experiment report](../../experiments/2026-10-13-real-football-finalized/README.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/learning_upgrade/CODEX_MASTER_PROMPT.md",
+      "path": "docs/archive/upgrades/learning/CODEX_MASTER_PROMPT.md",
+      "original_sha256": "71fc4217052a16c93bff2281f45bd124761e1c6c1255289e4b8c95be19a93eec",
+      "relocated_sha256": "71fc4217052a16c93bff2281f45bd124761e1c6c1255289e4b8c95be19a93eec",
+      "original_size": 9199,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/README.md",
+      "path": "docs/archive/upgrades/learning/README.md",
+      "original_sha256": "0c58cd3e5bfe367b9d3adb7817f492ce913b73943d9f63a1b366628e09885923",
+      "relocated_sha256": "b87f7dd12af5a06c0d291725201650d18a651174c279381f63ccec4c3ec43268",
+      "original_size": 2561,
+      "link_rewrites": [
+        {
+          "offset": 165,
+          "before": "[project status](../BUILD_STATUS.md)",
+          "after": "[project status](../../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 206,
+          "before": "[the ChatGPT report](../CHATGPT_PROGRESS_REPORT.md)",
+          "after": "[the ChatGPT report](../../../CHATGPT_PROGRESS_REPORT.md)"
+        },
+        {
+          "offset": 389,
+          "before": "[PRD V3](PRD_V3.md)",
+          "after": "[PRD V3](../../../specs/learning/PRD_V3.md)"
+        },
+        {
+          "offset": 456,
+          "before": "[RL and learning specification](RL_AND_LEARNING_SPEC.md)",
+          "after": "[RL and learning specification](../../../specs/learning/RL_AND_LEARNING_SPEC.md)"
+        },
+        {
+          "offset": 651,
+          "before": "[Social next stage](SOCIAL_NEXT_STAGE.md)",
+          "after": "[Social next stage](../../../specs/learning/SOCIAL_NEXT_STAGE.md)"
+        },
+        {
+          "offset": 834,
+          "before": "[Advanced shadow serving](ADVANCED_SERVING.md)",
+          "after": "[Advanced shadow serving](../../../specs/learning/ADVANCED_SERVING.md)"
+        },
+        {
+          "offset": 953,
+          "before": "[Journal replay seals](JOURNAL_REPLAY.md)",
+          "after": "[Journal replay seals](../../../specs/learning/JOURNAL_REPLAY.md)"
+        },
+        {
+          "offset": 1835,
+          "before": "[docs/reference/supplied/fpl_learning_upgrade](../reference/supplied/fpl_learning_upgrade/README.md)",
+          "after": "[docs/reference/supplied/fpl_learning_upgrade](../../reference/supplied/fpl_learning_upgrade/README.md)"
+        },
+        {
+          "offset": 2093,
+          "before": "[history](../history/README.md)",
+          "after": "[history](../../history/README.md)"
+        },
+        {
+          "offset": 2205,
+          "before": "[the file map](../FILE_STRUCTURE.md)",
+          "after": "[the file map](../../../FILE_STRUCTURE.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/learning_upgrade/EVALUATION_AND_BACKLOG.md",
+      "path": "docs/archive/upgrades/learning/EVALUATION_AND_BACKLOG.md",
+      "original_sha256": "dd5877514db5965d990b2cd421a226603b8b25b80b86b465b076e830fdbeb376",
+      "relocated_sha256": "dd5877514db5965d990b2cd421a226603b8b25b80b86b465b076e830fdbeb376",
+      "original_size": 10940,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/JOURNAL_REPLAY.md",
+      "path": "docs/specs/learning/JOURNAL_REPLAY.md",
+      "original_sha256": "cfed4ddd9e1eedd4a61167f561c9a880156e65d7178be80e31f6b2df5463db91",
+      "relocated_sha256": "cfed4ddd9e1eedd4a61167f561c9a880156e65d7178be80e31f6b2df5463db91",
+      "original_size": 5897,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/RL_AND_LEARNING_SPEC.md",
+      "path": "docs/specs/learning/RL_AND_LEARNING_SPEC.md",
+      "original_sha256": "afd3577b71234f22d6d6692bcabccbfa325ad954704a5bc002cf209af3f6f9ae",
+      "relocated_sha256": "afd3577b71234f22d6d6692bcabccbfa325ad954704a5bc002cf209af3f6f9ae",
+      "original_size": 17731,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/SOCIAL_NEXT_STAGE.md",
+      "path": "docs/specs/learning/SOCIAL_NEXT_STAGE.md",
+      "original_sha256": "5b2bfaf43eae86b21a8a3243dc5bc4c8d61e683fb0972041ba006c3593de6d2b",
+      "relocated_sha256": "5b2bfaf43eae86b21a8a3243dc5bc4c8d61e683fb0972041ba006c3593de6d2b",
+      "original_size": 5658,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/PRD_V3.md",
+      "path": "docs/specs/learning/PRD_V3.md",
+      "original_sha256": "6b541688933fcc96a8835f279a48928922c64974c83e20609429922c3e0a1ba4",
+      "relocated_sha256": "6b541688933fcc96a8835f279a48928922c64974c83e20609429922c3e0a1ba4",
+      "original_size": 10309,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/VERIFICATION_REPORT.md",
+      "path": "docs/archive/upgrades/learning/VERIFICATION_REPORT.md",
+      "original_sha256": "94e503b6bf8e4bdbf321121b7221097facc20f9a6b444fd918eda657b555b0e5",
+      "relocated_sha256": "021abf0a50917ddee4831822e89666d65d022462847b50e07eb0d9d789948644",
+      "original_size": 8471,
+      "link_rewrites": [
+        {
+          "offset": 58,
+          "before": "[BUILD_STATUS](../BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 148,
+          "before": "[the immutable experiment report](../experiments/2026-10-13-real-football-finalized/README.md)",
+          "after": "[the immutable experiment report](../../../experiments/2026-10-13-real-football-finalized/README.md)"
+        },
+        {
+          "offset": 276,
+          "before": "[verification history](../history/VERIFICATION_2026-10-12.md)",
+          "after": "[verification history](../../history/VERIFICATION_2026-10-12.md)"
+        },
+        {
+          "offset": 6079,
+          "before": "[the report](../experiments/2026-10-13-real-football-finalized/README.md)",
+          "after": "[the report](../../../experiments/2026-10-13-real-football-finalized/README.md)"
+        },
+        {
+          "offset": 8076,
+          "before": "[the continuation report](../experiments/2026-10-14-prospective-replay/README.md)",
+          "after": "[the continuation report](../../../experiments/2026-10-14-prospective-replay/README.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/history/BUILD_STATUS_2026-10-30.md",
+      "path": "docs/archive/history/BUILD_STATUS_2026-10-30.md",
+      "original_sha256": "1bf98b6c688dab696fc67aa7ab1f7da9e70519a8cd57ecf252cd311cbfdeb58e",
+      "relocated_sha256": "e0039fefdc9bc6ce226e71de748e90ea525d362605a91018fd5bf4dcb0ad9b59",
+      "original_size": 9679,
+      "link_rewrites": [
+        {
+          "offset": 114,
+          "before": "[BUILD_STATUS](../BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 1886,
+          "before": "[Immutable continuation report and commands](../experiments/2026-10-14-prospective-replay/README.md)",
+          "after": "[Immutable continuation report and commands](../../experiments/2026-10-14-prospective-replay/README.md)"
+        },
+        {
+          "offset": 7905,
+          "before": "[the report](../experiments/2026-10-13-real-football-finalized/README.md)",
+          "after": "[the report](../../experiments/2026-10-13-real-football-finalized/README.md)"
+        },
+        {
+          "offset": 7983,
+          "before": "[verification](../learning_upgrade/VERIFICATION_REPORT.md)",
+          "after": "[verification](../upgrades/learning/VERIFICATION_REPORT.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/history/LEARNING_IMPLEMENTATION_2026-10-12.md",
+      "path": "docs/archive/history/LEARNING_IMPLEMENTATION_2026-10-12.md",
+      "original_sha256": "2b5517e0feef26c93c404880d686bb6a9667fa3d36803f46a1f17d4a5fdbea69",
+      "relocated_sha256": "74d562e951d7f589d9c56b0b8dfb4c87fd45dc1603c48a73113184f94a756839",
+      "original_size": 27863,
+      "link_rewrites": [
+        {
+          "offset": 74,
+          "before": "[build status](../BUILD_STATUS.md)",
+          "after": "[build status](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 1114,
+          "before": "[journal replay contract](../learning_upgrade/JOURNAL_REPLAY.md)",
+          "after": "[journal replay contract](../../specs/learning/JOURNAL_REPLAY.md)"
+        },
+        {
+          "offset": 5139,
+          "before": "[advanced serving contract](../learning_upgrade/ADVANCED_SERVING.md)",
+          "after": "[advanced serving contract](../../specs/learning/ADVANCED_SERVING.md)"
+        },
+        {
+          "offset": 8278,
+          "before": "[ChatGPT progress report](../CHATGPT_PROGRESS_REPORT.md)",
+          "after": "[ChatGPT progress report](../../CHATGPT_PROGRESS_REPORT.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/history/VERIFICATION_2026-10-12.md",
+      "path": "docs/archive/history/VERIFICATION_2026-10-12.md",
+      "original_sha256": "ca92dc742e3a6e4cde703a8bfa0359fe0ff18c81211465081f3044849b67f27c",
+      "relocated_sha256": "1121777e3de89a963de3847c69d7b905e4864b4a366c809fb48cca67bbd53e49",
+      "original_size": 12829,
+      "link_rewrites": [
+        {
+          "offset": 74,
+          "before": "[build status](../BUILD_STATUS.md)",
+          "after": "[build status](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 7781,
+          "before": "[advanced serving contract](../learning_upgrade/ADVANCED_SERVING.md)",
+          "after": "[advanced serving contract](../../specs/learning/ADVANCED_SERVING.md)"
+        },
+        {
+          "offset": 9986,
+          "before": "[journal replay contract](../learning_upgrade/JOURNAL_REPLAY.md)",
+          "after": "[journal replay contract](../../specs/learning/JOURNAL_REPLAY.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/history/README.md",
+      "path": "docs/archive/history/README.md",
+      "original_sha256": "abc199c24a5d33894c28d84db5a0f51b98c0c36cd62f12650e3a6b3ab30d772c",
+      "relocated_sha256": "0096d9f22f1f1ce7abc844bee1b79b5c8aca06f2e294b29488d4eb2152a7966d",
+      "original_size": 1003,
+      "link_rewrites": [
+        {
+          "offset": 173,
+          "before": "[BUILD_STATUS](../BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 319,
+          "before": "[BUILD_STATUS](../BUILD_STATUS.md)",
+          "after": "[BUILD_STATUS](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 384,
+          "before": "[the verification report](../learning_upgrade/VERIFICATION_REPORT.md)",
+          "after": "[the verification report](../upgrades/learning/VERIFICATION_REPORT.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/history/BUILD_STATUS_2026-10-12.md",
+      "path": "docs/archive/history/BUILD_STATUS_2026-10-12.md",
+      "original_sha256": "dcceb002adbc7c16d7c8dfd0963f10c9ac8026dfe9d39a3fdda39e798d2f5ef6",
+      "relocated_sha256": "48e226c8951b3b9789550c7690d04edbc39a3f209eea922109547380c47ca18b",
+      "original_size": 32569,
+      "link_rewrites": [
+        {
+          "offset": 74,
+          "before": "[build status](../BUILD_STATUS.md)",
+          "after": "[build status](../../BUILD_STATUS.md)"
+        },
+        {
+          "offset": 988,
+          "before": "[START_HERE.md](../START_HERE.md)",
+          "after": "[START_HERE.md](../../START_HERE.md)"
+        },
+        {
+          "offset": 1731,
+          "before": "[journal replay contract](../learning_upgrade/JOURNAL_REPLAY.md)",
+          "after": "[journal replay contract](../../specs/learning/JOURNAL_REPLAY.md)"
+        },
+        {
+          "offset": 5756,
+          "before": "[advanced serving contract](../learning_upgrade/ADVANCED_SERVING.md)",
+          "after": "[advanced serving contract](../../specs/learning/ADVANCED_SERVING.md)"
+        },
+        {
+          "offset": 8895,
+          "before": "[ChatGPT progress report](../CHATGPT_PROGRESS_REPORT.md)",
+          "after": "[ChatGPT progress report](../../CHATGPT_PROGRESS_REPORT.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/reference/ORIGINAL_BUILD_PROMPTS.md",
+      "path": "docs/archive/reference/ORIGINAL_BUILD_PROMPTS.md",
+      "original_sha256": "e1a08c151a0b88fb808862f735d7efec64db3a4bd23f6065dc50464a500349e1",
+      "relocated_sha256": "e1a08c151a0b88fb808862f735d7efec64db3a4bd23f6065dc50464a500349e1",
+      "original_size": 8987,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/README.md",
+      "path": "docs/archive/reference/README.md",
+      "original_sha256": "7caf639663fff6100f768d7018e33c4dbfcd0bee2ced90d135f42025e4857393",
+      "relocated_sha256": "31cb2e196fbdbb8f5c169e4f164abab340d7f97224df4ba78261997ee413b083",
+      "original_size": 813,
+      "link_rewrites": [
+        {
+          "offset": 233,
+          "before": "[the maintained learning specifications](../learning_upgrade/README.md)",
+          "after": "[the maintained learning specifications](../upgrades/learning/README.md)"
+        },
+        {
+          "offset": 662,
+          "before": "[START_HERE](../START_HERE.md)",
+          "after": "[START_HERE](../../START_HERE.md)"
+        }
+      ]
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade.sha256.json",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade.sha256.json",
+      "original_sha256": "802e1424f5101efe61f356f5297f7ee49e8f1b8306ea9beab3b3b7f0debea3cc",
+      "relocated_sha256": "802e1424f5101efe61f356f5297f7ee49e8f1b8306ea9beab3b3b7f0debea3cc",
+      "original_size": 1415,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/contracts/openapi-design.json",
+      "path": "docs/archive/reference/contracts/openapi-design.json",
+      "original_sha256": "110069733c11bd917076b0f33d52459c0bd9aeb844e4c19f66449f611e926de7",
+      "relocated_sha256": "110069733c11bd917076b0f33d52459c0bd9aeb844e4c19f66449f611e926de7",
+      "original_size": 11526,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/SOURCES.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/SOURCES.md",
+      "original_sha256": "40ed040561250adf7c8c8a2c89a350e50968683831a175c4938bbb385b85bef2",
+      "relocated_sha256": "40ed040561250adf7c8c8a2c89a350e50968683831a175c4938bbb385b85bef2",
+      "original_size": 4612,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/GAMEWEEK_REVIEW_PROMPT.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/GAMEWEEK_REVIEW_PROMPT.md",
+      "original_sha256": "3debdfc46dc5c42bb4b8f9a83900ed0ee4d197b5f75906fdc72c50d3cc360a59",
+      "relocated_sha256": "3debdfc46dc5c42bb4b8f9a83900ed0ee4d197b5f75906fdc72c50d3cc360a59",
+      "original_size": 2448,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/LATEST_REPOSITORY_AUDIT.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/LATEST_REPOSITORY_AUDIT.md",
+      "original_sha256": "a6831eef122112f36cd2af579c27ee059ff25dc152662aa276cb714d20143d28",
+      "relocated_sha256": "a6831eef122112f36cd2af579c27ee059ff25dc152662aa276cb714d20143d28",
+      "original_size": 11341,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/CODEX_MASTER_PROMPT.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/CODEX_MASTER_PROMPT.md",
+      "original_sha256": "b5408fa7e897d24888ed975ce48d44d4d6724f0f6207b2f48e7ab3e68e20a301",
+      "relocated_sha256": "b5408fa7e897d24888ed975ce48d44d4d6724f0f6207b2f48e7ab3e68e20a301",
+      "original_size": 9203,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/README.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/README.md",
+      "original_sha256": "a8c71db7650ca817cde8b01599159233e176058e035303e377eaaaca2aca3d4b",
+      "relocated_sha256": "a8c71db7650ca817cde8b01599159233e176058e035303e377eaaaca2aca3d4b",
+      "original_size": 3810,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/FPL_COMPLETE_LEARNING_UPGRADE.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/FPL_COMPLETE_LEARNING_UPGRADE.md",
+      "original_sha256": "9bc6eb6ccdec0a15d93e132f17b5927c7142233f5aabaab39492066c086ddf3d",
+      "relocated_sha256": "9bc6eb6ccdec0a15d93e132f17b5927c7142233f5aabaab39492066c086ddf3d",
+      "original_size": 76238,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/EVALUATION_AND_BACKLOG.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/EVALUATION_AND_BACKLOG.md",
+      "original_sha256": "dd5877514db5965d990b2cd421a226603b8b25b80b86b465b076e830fdbeb376",
+      "relocated_sha256": "dd5877514db5965d990b2cd421a226603b8b25b80b86b465b076e830fdbeb376",
+      "original_size": 10940,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/RL_AND_LEARNING_SPEC.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/RL_AND_LEARNING_SPEC.md",
+      "original_sha256": "afd3577b71234f22d6d6692bcabccbfa325ad954704a5bc002cf209af3f6f9ae",
+      "relocated_sha256": "afd3577b71234f22d6d6692bcabccbfa325ad954704a5bc002cf209af3f6f9ae",
+      "original_size": 17731,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/SOCIAL_NEXT_STAGE.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/SOCIAL_NEXT_STAGE.md",
+      "original_sha256": "5b2bfaf43eae86b21a8a3243dc5bc4c8d61e683fb0972041ba006c3593de6d2b",
+      "relocated_sha256": "5b2bfaf43eae86b21a8a3243dc5bc4c8d61e683fb0972041ba006c3593de6d2b",
+      "original_size": 5658,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/PRD_V3.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/PRD_V3.md",
+      "original_sha256": "6b541688933fcc96a8835f279a48928922c64974c83e20609429922c3e0a1ba4",
+      "relocated_sha256": "6b541688933fcc96a8835f279a48928922c64974c83e20609429922c3e0a1ba4",
+      "original_size": 10309,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/verification/latest_probes.py",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/verification/latest_probes.py",
+      "original_sha256": "a1e2509b3ed7fcbde66fb3350b428b0ab0d41c0a71daa8ec9ed823493b0549e0",
+      "relocated_sha256": "a1e2509b3ed7fcbde66fb3350b428b0ab0d41c0a71daa8ec9ed823493b0549e0",
+      "original_size": 5510,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/verification/latest_probe_results.json",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/verification/latest_probe_results.json",
+      "original_sha256": "6bfa3dd43b18f5bdce36b0629c7d8d6d97f35ada58db53d76c7120c91ada17e8",
+      "relocated_sha256": "6bfa3dd43b18f5bdce36b0629c7d8d6d97f35ada58db53d76c7120c91ada17e8",
+      "original_size": 2120,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/reference/supplied/fpl_learning_upgrade/verification/README.md",
+      "path": "docs/archive/reference/supplied/fpl_learning_upgrade/verification/README.md",
+      "original_sha256": "8f0538c1dc5c6d71b443efec388ef50f5cc648b5f7403be88de986ceb121a927",
+      "relocated_sha256": "8f0538c1dc5c6d71b443efec388ef50f5cc648b5f7403be88de986ceb121a927",
+      "original_size": 1431,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/verification/replay_upgrade_probe_results.json",
+      "path": "docs/archive/upgrades/learning/verification/replay_upgrade_probe_results.json",
+      "original_sha256": "4650d001ba882321398b956fad31fe5d0e12a6f8b57b05635a58747d165a94cc",
+      "relocated_sha256": "4650d001ba882321398b956fad31fe5d0e12a6f8b57b05635a58747d165a94cc",
+      "original_size": 2168,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/verification/latest_probes.py",
+      "path": "docs/archive/upgrades/learning/verification/latest_probes.py",
+      "original_sha256": "36fa0a8704eb7f3cba652310ced9c678601f6297d1a6185299127fc89341ca6c",
+      "relocated_sha256": "36fa0a8704eb7f3cba652310ced9c678601f6297d1a6185299127fc89341ca6c",
+      "original_size": 6048,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/verification/latest_probe_results.json",
+      "path": "docs/archive/upgrades/learning/verification/latest_probe_results.json",
+      "original_sha256": "6bfa3dd43b18f5bdce36b0629c7d8d6d97f35ada58db53d76c7120c91ada17e8",
+      "relocated_sha256": "6bfa3dd43b18f5bdce36b0629c7d8d6d97f35ada58db53d76c7120c91ada17e8",
+      "original_size": 2120,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/learning_upgrade/verification/README.md",
+      "path": "docs/archive/upgrades/learning/verification/README.md",
+      "original_sha256": "a5337ea5b59fbbaf2241bae20188e56537b03515c0cacdd85fa5d2f3b259f7fc",
+      "relocated_sha256": "a5337ea5b59fbbaf2241bae20188e56537b03515c0cacdd85fa5d2f3b259f7fc",
+      "original_size": 1776,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/verification/sequence_budget_probe_results.json",
+      "path": "docs/archive/handoffs/gw7/verification/sequence_budget_probe_results.json",
+      "original_sha256": "02b4f278d0ec53f481480b282b30b30110f9eead500243710baa9a34ed09fbb0",
+      "relocated_sha256": "02b4f278d0ec53f481480b282b30b30110f9eead500243710baa9a34ed09fbb0",
+      "original_size": 515,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/gw7_handoff/verification/sequence_budget_probe.py",
+      "path": "docs/archive/handoffs/gw7/verification/sequence_budget_probe.py",
+      "original_sha256": "4687e2ff3d0346aa0f5bd9c18b312e6b649698180f8232f2a89576d16da07b0b",
+      "relocated_sha256": "4687e2ff3d0346aa0f5bd9c18b312e6b649698180f8232f2a89576d16da07b0b",
+      "original_size": 3262,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/verification/audit_probes.py",
+      "path": "docs/archive/upgrades/intelligence/verification/audit_probes.py",
+      "original_sha256": "75bb7c66df42daa54112704af56b3d2302ab42fcbee029bce428b97fc74084f1",
+      "relocated_sha256": "75bb7c66df42daa54112704af56b3d2302ab42fcbee029bce428b97fc74084f1",
+      "original_size": 4225,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/verification/audit_probe_results.json",
+      "path": "docs/archive/upgrades/intelligence/verification/audit_probe_results.json",
+      "original_sha256": "3ae820534975993235d05d374ab213f4e67ab02c302ec710fa7f8a2e54972de4",
+      "relocated_sha256": "3ae820534975993235d05d374ab213f4e67ab02c302ec710fa7f8a2e54972de4",
+      "original_size": 2344,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/intelligence_upgrade/verification/README.md",
+      "path": "docs/archive/upgrades/intelligence/verification/README.md",
+      "original_sha256": "b754d26a2f4d6d0dfbe2c6cf685d98d9c429ceaf023e8f1a63b0e21900e3b217",
+      "relocated_sha256": "b754d26a2f4d6d0dfbe2c6cf685d98d9c429ceaf023e8f1a63b0e21900e3b217",
+      "original_size": 1367,
+      "link_rewrites": []
+    }
+  ],
+  "link_rewrite_offset_unit": "Unicode code points in the original UTF-8 decoded Markdown; apply substitutions in descending offset order.",
+  "immutable_report_reference_redirects": [
+    {
+      "report": "docs/experiments/2026-10-14-prospective-replay/README.md",
+      "previous_path": "docs/learning_upgrade/JOURNAL_REPLAY.md",
+      "path": "docs/specs/learning/JOURNAL_REPLAY.md"
+    },
+    {
+      "report": "docs/experiments/2026-10-31-gw9-model-review/README.md",
+      "previous_path": "docs/HANDOFF.md",
+      "path": "docs/archive/handoffs/HANDOFF_2026-11-03.md"
+    }
+  ],
+  "preserved_experiment_sha256": {
+    "docs/experiments/2026-10-13-real-football/README.md": "916bd0f0331db1f718d3e5dfdf5e06fdc95e567ddae92fc77360e7d01143fb23",
+    "docs/experiments/2026-10-13-real-football/archive-evaluation.json": "2c7df663f405f2a5eb59cae30602863356b1fdd43cbff8301b25602cec65eac1",
+    "docs/experiments/2026-10-13-real-football/archive-protocol.json": "5e46a399b4c52a8c2e0450add2a28ef7810d63bd6e46fcd0d13bf514c2a30d4c",
+    "docs/experiments/2026-10-13-real-football/current-evaluation.json": "1a14326c896612a5bf30eee839b15dffa25b1b5f019668c1f6792c09c7daa610",
+    "docs/experiments/2026-10-13-real-football/integration.json": "3f5f10b8fa7aac5d5b12e5b681ada171d3f51cc7914f04a5a88f8862117a6da0",
+    "docs/experiments/2026-10-13-real-football/manifest.json": "e09ccb4b1f0ac4163f2df5ba4a49005767c03e4d890e68fdcc74b81686f65beb",
+    "docs/experiments/2026-10-13-real-football/planning.json": "059ab69eac8f2f5216788edf612a91aa4cd1f3b79d053d6e219357ff3bb497c1",
+    "docs/experiments/2026-10-13-real-football/rl-evaluation.json": "9a0de399041980165632ea31476cf74f8dc107dbc7ca332000fede6b058cb595",
+    "docs/experiments/2026-10-13-real-football/sources.json": "02aa50e178ce22230cbc3e2611deb8fcbe1f573e3e9341ef7a6eb98afc18f675",
+    "docs/experiments/2026-10-13-real-football-finalized/README.md": "70e4a4615f561de2c9936e758d0e80fb341c22b21d1bca14d09b55634e5fb9ef",
+    "docs/experiments/2026-10-13-real-football-finalized/archive-evaluation.json": "2c7df663f405f2a5eb59cae30602863356b1fdd43cbff8301b25602cec65eac1",
+    "docs/experiments/2026-10-13-real-football-finalized/archive-protocol.json": "5e46a399b4c52a8c2e0450add2a28ef7810d63bd6e46fcd0d13bf514c2a30d4c",
+    "docs/experiments/2026-10-13-real-football-finalized/current-evaluation.json": "7383b12e673fe4c5b760031c596a41823f4115e28a3a154f83e18b9aaffb045b",
+    "docs/experiments/2026-10-13-real-football-finalized/current-planning.json": "0b88d38911cabf9a4b760013e0c2ebc6110bbc5019e139870749aa945190acdc",
+    "docs/experiments/2026-10-13-real-football-finalized/integration.json": "ca4482ca4aff00d0202777709b26df209a84c7fb727a7a33b7e3fb1db82e2005",
+    "docs/experiments/2026-10-13-real-football-finalized/manifest.json": "2f3bad6e2299c8c19848148e7cb0b1a8a991c3d96209fcbf940a4473b6816cd4",
+    "docs/experiments/2026-10-13-real-football-finalized/planning.json": "059ab69eac8f2f5216788edf612a91aa4cd1f3b79d053d6e219357ff3bb497c1",
+    "docs/experiments/2026-10-13-real-football-finalized/rl-evaluation.json": "9a0de399041980165632ea31476cf74f8dc107dbc7ca332000fede6b058cb595",
+    "docs/experiments/2026-10-13-real-football-finalized/serving-ensemble-evaluation.json": "5b9a7dd00162c1597b11c2ac4232aeef56ce1189291ef7164350efda5a00fb00",
+    "docs/experiments/2026-10-13-real-football-finalized/serving-ensemble-weights.json": "bf703d65daaece25003c9d15ef3ce580a169cf46f351f26e829c103a6bba15c8",
+    "docs/experiments/2026-10-13-real-football-finalized/sources.json": "b349fa02e23c939546edf257dc29f425e290b48d1cf3ee5e3463776e31f38876",
+    "docs/experiments/2026-10-14-prospective-replay/README.md": "b3895604cc306aca1d04a88f7ec0ea2a16f2c2809c77af373b26b0e17b4aa3e2",
+    "docs/experiments/2026-10-14-prospective-replay/integration.json": "56ecffbe7578ad9c4ba5acd3cb446cf95d8feac04b15761a3f378d2dafbef3fa",
+    "docs/experiments/2026-10-14-prospective-replay/manifest.json": "849a5efd6bd8d487bb63ec636559ab57929c1dc0a150b292ac67f4ff691e1afc",
+    "docs/experiments/2026-10-14-prospective-replay/verification.json": "9b1025fd4fc8221c14d1a805d669f656db5e662cccec30f2b3d68779583ca676",
+    "docs/experiments/2026-10-31-gw9-model-review/README.md": "fa46c73f2a873afec0063b6cb9a9a06c506c6e047f025bc02246171f296b5ca1",
+    "docs/experiments/2026-10-31-gw9-model-review/verification.json": "0f19c3476cd964a728a47da56f51e9f44204d62738c9d0299428ef6ccd385113",
+    "docs/experiments/2026-11-03-gw9-post-event/README.md": "e6a648b0fb30f5b8e4f426a5894a458bb46a5e928c6a924e4efa82884282c4c6",
+    "docs/experiments/2026-11-03-gw9-post-event/metrics.json": "f86d9c8f14e8c92363c78d2a346fc912501060d975194b1febd1a10efbcfc93c",
+    "docs/experiments/2026-11-03-gw9-post-event/verification.json": "377f79d9288ef2d1edc6cb9f59f3cdad3b01a46e535cf3dbe695adcb07a5c600",
+    "docs/experiments/CATBOOST_FOOTBALL.md": "4bc6aa572de4f3e30c1116d30ac416dda05000e0f2d5c664a0cb1b89addb573d",
+    "docs/experiments/COLLECTION.md": "22549bef74c93ff443d8fa8c77da817b233c66d91cc28a33d4f8574b42bcd806",
+    "docs/experiments/SOCIAL.md": "aa8c7626a1769f615d5b248c14049fbbf1ee4073e6ac2879b158ea1a0f61b4ea"
+  }
+}

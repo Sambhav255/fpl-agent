@@ -9,7 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "backend/src"))
 
 from fpl_app.jobs import Queue, Worker
-from fpl_app.models.deadline_experiments import protocol
+from fpl_app.models.deadline_experiments import advancing_protocol, protocol
+from fpl_app.providers.collection import load_collection
 from fpl_app.storage import Store, fingerprint
 
 
@@ -17,11 +18,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--collection-id", required=True)
     parser.add_argument(
+        "--advance",
+        action="store_true",
+        help="Advance final-event folds and register multiscale/hurdle challengers",
+    )
+    parser.add_argument(
         "--work-once", action="store_true", help="Process one durable job locally"
     )
     args = parser.parse_args()
     store = Store()
-    specification = protocol(args.collection_id)
+    specification = (
+        advancing_protocol(load_collection(store, args.collection_id))
+        if args.advance
+        else protocol(args.collection_id)
+    )
     store.put(
         "deadline_experiment_protocol",
         fingerprint(specification),

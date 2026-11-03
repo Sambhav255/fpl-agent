@@ -21,6 +21,7 @@ CONTEXT = [
     "club_goals_prior",
     "opponent_conceded_prior",
 ]
+OPPORTUNITY = ["appearance_3", "sixty_3", "minutes_ewm", "points_10", "xg_10", "xa_10"]
 
 
 def lag_features(history: list[dict[str, Any]], cutoff: str, event: int) -> dict[str, float]:
@@ -74,6 +75,32 @@ def lag_features(history: list[dict[str, Any]], cutoff: str, event: int) -> dict
     return result
 
 
+def opportunity_features(
+    history: list[dict[str, Any]], cutoff: str, event: int
+) -> dict[str, float]:
+    """Short opportunity and longer attacking history; no current/future outcomes."""
+    usable = sorted(
+        [r for r in history if r["event"] < event and utc(r["available_at"]) <= utc(cutoff)],
+        key=lambda r: utc(r["kickoff"]),
+    )[-10:]
+    result = {}
+    for field, name in (
+        ("total_points", "points_10"),
+        ("expected_goals", "xg_10"),
+        ("expected_assists", "xa_10"),
+    ):
+        values = [float(r["stats"][field]) for r in usable if known_number(r["stats"].get(field))]
+        result[name] = float(np.mean(values)) if values else float("nan")
+    minutes = [
+        float(r["stats"]["minutes"]) for r in usable if known_number(r["stats"].get("minutes"))
+    ]
+    result["appearance_3"] = float(np.mean(np.array(minutes[-3:]) > 0)) if minutes else float("nan")
+    result["sixty_3"] = float(np.mean(np.array(minutes[-3:]) >= 60)) if minutes else float("nan")
+    weights = 0.7 ** np.arange(len(minutes) - 1, -1, -1)
+    result["minutes_ewm"] = float(np.average(minutes, weights=weights)) if minutes else float("nan")
+    return result
+
+
 def enriched_panels(collection: dict[str, Any], fixtures: list[dict[str, Any]]):
     rules = "fpl-" + collection["season"].replace("/", "-")
     historical, future, mappings = collection_frames(collection, rules)
@@ -99,6 +126,7 @@ def enriched_panels(collection: dict[str, Any], fixtures: list[dict[str, Any]]):
             if actual_origin:
                 history = [{**h, "available_at": h["actual_available_at"]} for h in history]
             features = lag_features(history, row["decision_cutoff"], row["event"])
+            features.update(opportunity_features(history, row["decision_cutoff"], row["event"]))
             fixture = by_fixture[row["fixture_id"]]
             home = row["home"] == "True"
             club, opponent = (
@@ -133,6 +161,6 @@ def enriched_panels(collection: dict[str, Any], fixtures: list[dict[str, Any]]):
                 ]
                 features[name] = (sum(values) + 3 * 1.3) / (len(values) + 3)
             extras.append(features)
-        for column in ATTACK + DEFENCE + CONTEXT:
+        for column in ATTACK + DEFENCE + CONTEXT + OPPORTUNITY:
             frame[column] = [value[column] for value in extras]
     return historical, future, mappings

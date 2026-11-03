@@ -13,14 +13,18 @@
     "**/test-results": true,
     "**/playwright-report": true,
     "data": true,
-    "dist": true
+    "dist": true,
+    "docs/archive": true,
+    "docs/local": true
   },
   "search.exclude": {
     "**/.venv/**": true,
     "**/node_modules/**": true,
     "**/.next*/**": true,
     "data/**": true,
-    "dist/**": true
+    "dist/**": true,
+    "docs/archive/**": true,
+    "docs/local/**": true
   },
   "files.watcherExclude": {
     "**/.venv/**": true,

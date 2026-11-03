@@ -1,36 +1,26 @@
-# Documentation
+# Documentation index
 
-Start with [the coding-agent handoff](START_HERE.md), then [current build status](BUILD_STATUS.md). These describe the implemented application; specification documents also describe unfinished goals.
+Begin with [START_HERE](START_HERE.md). [BUILD_STATUS](BUILD_STATUS.md) is the authoritative record of current implementation, checks and remaining limits; [CHATGPT_PROGRESS_REPORT](CHATGPT_PROGRESS_REPORT.md) is its concise continuation summary.
 
-[Repository file map](FILE_STRUCTURE.md) · [Historical records](history/README.md) · [Preserved originals](reference/README.md)
+| Reference | Purpose |
+| --- | --- |
+| [Improvement roadmap](ROADMAP.md) | Season strategy, ordered model work and acceptance criteria |
+| [Specifications](specs/README.md) | Product, data, architecture, rules sources, learning and serving contracts |
+| [File map](FILE_STRUCTURE.md) | Source locations, runtime data and generated artifacts |
+| [Decisions](DECISIONS.md) | Recorded design choices and resolved specification conflicts |
+| [Operator commands](../scripts/README.md) | Startup, research, scoring and worker operation |
+| [Contributing](../CONTRIBUTING.md) | Formatting, verification, contract generation and source exports |
+| [Archive](archive/README.md) | Superseded prompts, status, audits, original packages and relocation checksums |
 
-[Commit and publishing handoff](HANDOFF.md) · [Operator command index](../scripts/README.md)
+## Measured evidence
 
-## Product and implementation
+Reports under `experiments/` are retained evidence with their original dates, source assumptions and limitations. They do not imply promotion or newly executed checks.
 
-1. [Product requirements](FPL_PRD.md)
-2. [Data and model specification](DATA_AND_MODEL_SPEC.md)
-3. [Stack and architecture](TECH_STACK_AND_ARCHITECTURE.md)
-4. [Build plan and tests](BUILD_PLAN_AND_TESTS.md)
-5. [Sources](SOURCES.md)
+- [3 November: GW9 post-event review and GW10 freeze](experiments/2026-11-03-gw9-post-event/README.md)
+- [3 November: rolling model evaluation and frozen selection diagnostics](experiments/2026-11-03-decision-quality/README.md)
+- [31 October: deadline model review](experiments/2026-10-31-gw9-model-review/README.md)
+- [14 October: prospective replay producers](experiments/2026-10-14-prospective-replay/README.md)
+- [13 October: finalized real-football experiments](experiments/2026-10-13-real-football-finalized/README.md)
+- Earlier capability reports: [collection](experiments/COLLECTION.md), [CatBoost](experiments/CATBOOST_FOOTBALL.md), [social](experiments/SOCIAL.md), [initial real-football run](experiments/2026-10-13-real-football/README.md).
 
-## Current engineering state
-
-- [ChatGPT progress report and file map](CHATGPT_PROGRESS_REPORT.md)
-- [Build status and next steps](BUILD_STATUS.md)
-- [Shared contracts](CONTRACTS.md)
-- [Implementation decisions](DECISIONS.md)
-- [Machine learning integration](ML_INTEGRATION.md)
-- [Planner controls](PLANNER_TRANSFER_CONTROLS_STATUS.md)
-- [Continuation handoff](START_HERE.md)
-
-Session-specific manager details and historical working notes are retained locally under ignored `local/`; they are not project documentation for publication.
-
-## Strategy upgrade and research
-
-- [Advanced shadow serving](learning_upgrade/ADVANCED_SERVING.md) and [journal replay seals](learning_upgrade/JOURNAL_REPLAY.md)
-- [Learning upgrade specifications](learning_upgrade/README.md) and [implementation status](learning_upgrade/IMPLEMENTATION_STATUS.md)
-- [Strategy upgrade specifications and backlog](intelligence_upgrade/README.md)
-- [Upgrade contracts](UPGRADE_CONTRACTS.md)
-- `experiments/`: retained real experiment reports and their limitations
-- `reference/ORIGINAL_BUILD_PROMPTS.md`: original milestone prompts, historical reference only
+Immutable reports may mention old documentation locations. Resolve those through the [archive relocation manifest](archive/relocations.json); their bytes were preserved. Private working notes and personal state remain in ignored `docs/local/` and `data/`.

@@ -62,6 +62,10 @@ def projection_players(
 
 
 def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
+    if kind == "rolling_experiment":
+        from fpl_app.models.rolling_experiments import training_input as rolling_training_input
+
+        return rolling_training_input(store, payload)
     if kind == "deadline_experiment":
         from fpl_app.models.deadline_experiments import training_input as deadline_training_input
 
@@ -70,7 +74,31 @@ def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
         from fpl_app.learning.forecast_benchmark import checked_benchmark
 
         benchmark = checked_benchmark(store, payload["benchmark_id"])
-        return fingerprint({"kind": kind, "benchmark": benchmark, "payload": payload})
+        plans = sorted(
+            [
+                r
+                for r in store.list("forecast_analysis_plan")
+                if payload["benchmark_id"] in r["plan"]["benchmark_ids"]
+            ],
+            key=lambda r: r["plan_sha256"],
+        )
+        selection_plans = sorted(
+            [
+                r
+                for r in store.list("forecast_selection_plan")
+                if payload["benchmark_id"] in r["benchmark_hashes"]
+            ],
+            key=lambda r: r["plan_id"],
+        )
+        return fingerprint(
+            {
+                "kind": kind,
+                "benchmark": benchmark,
+                "payload": payload,
+                "analysis_plans": plans,
+                "selection_plans": selection_plans,
+            }
+        )
     if kind == "strategy_training":
         from fpl_app.strategy.jobs import training_input
 
@@ -423,6 +451,10 @@ class Worker:
         kind, payload = job["kind"], job["payload"]
         if kind in self.handlers:
             return dict(self.handlers[kind](payload))
+        if kind == "rolling_experiment":
+            from fpl_app.models.rolling_experiments import train_job as rolling_train_job
+
+            return rolling_train_job(self.store, payload)
         if kind == "deadline_experiment":
             from fpl_app.models.deadline_experiments import train_job as run_deadline_experiment
 
@@ -443,6 +475,12 @@ class Worker:
                         {k: v for k, v in result.items() if k != "_artifacts"},
                     )
                 ]
+                from fpl_app.learning.post_event import registered_reviews
+
+                result["_artifacts"].extend(registered_reviews(self.store, result))
+                from fpl_app.learning.selection_review import registered_selection_reviews
+
+                result["_artifacts"].extend(registered_selection_reviews(self.store, result))
             return result
         if kind == "strategy_training":
             from fpl_app.strategy.jobs import train_job
@@ -553,6 +591,7 @@ class Worker:
                 "outcome_review",
                 "learning_review",
                 "deadline_experiment",
+                "rolling_experiment",
                 "forecast_benchmark_score",
             }:
                 artifacts.extend(result.pop("_artifacts"))

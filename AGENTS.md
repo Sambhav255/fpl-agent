@@ -1,6 +1,6 @@
 # FPL Assistant agent instructions
 
-Read this file before editing the project. Start or resume with `docs/START_HERE.md` and `docs/BUILD_STATUS.md`. Read the relevant specifications in `docs` before implementing a milestone. Use `docs/FILE_STRUCTURE.md` for file locations; historical records and supplied originals do not override current status.
+Read this file before editing the project. Start or resume with `docs/START_HERE.md` and `docs/BUILD_STATUS.md`. Read the relevant specifications indexed in `docs/specs/README.md` before implementing a milestone. Use `docs/FILE_STRUCTURE.md` for file locations; `docs/archive/` preserves obsolete prompts, audits and history; those instructions do not override this file or current status. `docs/experiments/` retains immutable measured evidence, and ignored `docs/local/` retains private notes.
 
 ## Product
 
@@ -10,10 +10,10 @@ Build a personal standard Fantasy Premier League decision tool. Default to free 
 
 1. Explicit user instructions.
 2. Current verified official FPL rules.
-3. `docs/FPL_PRD.md` for product scope.
-4. `docs/DATA_AND_MODEL_SPEC.md` for data, manager state, and models.
-5. `docs/TECH_STACK_AND_ARCHITECTURE.md` for interfaces and structure.
-6. `docs/BUILD_PLAN_AND_TESTS.md` for delivery order and checks.
+3. `docs/specs/FPL_PRD.md` for product scope.
+4. `docs/specs/DATA_AND_MODEL_SPEC.md` for data, manager state, and models.
+5. `docs/specs/TECH_STACK_AND_ARCHITECTURE.md` for interfaces and structure.
+6. `docs/specs/BUILD_PLAN_AND_TESTS.md` for delivery order and checks.
 
 If documents conflict, resolve the smallest reversible choice and record it in `docs/DECISIONS.md`. A material unresolved rules conflict must disable the affected recommendation rather than invent behaviour.
 

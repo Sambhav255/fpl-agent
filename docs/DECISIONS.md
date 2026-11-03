@@ -100,3 +100,10 @@ Move the original design-only OpenAPI snapshot to `docs/reference/contracts/`. G
 ## 2026-10-13: zero-minute historical participation coverage
 
 The new historical episode adapter v2 requires explicit yellow/red-card statistics for zero-minute rows. Card-only or nonzero-point zero-minute outcomes are excluded until participation is reconciled; missing card fields are not silently treated as zero. The official [FPL rules](https://www.premierleague.com/es/news/4661029) count card recipients as playing for automatic substitutions, so minutes alone is insufficient. The existing domain engine is preserved. The original real RL experiment used adapter v1; a retained-source audit found 14 zero-minute rows among its covered training/test players, complete card evidence and no card-only rows. Its actual reported rewards are unaffected and its original hashes/version remain intact; it is not relabelled as a v2 fit. No policy is promoted.
+
+
+## 2026-11-03: Documentation authority and reversible archive
+
+Use `docs/START_HERE.md` as the common entry point for users and agents, root `AGENTS.md` for editing instructions, and `docs/BUILD_STATUS.md` for current implementation and actual checks. Maintained requirements and serving/replay contracts live under `docs/specs/`. Obsolete execution prompts, audits, backlogs, status narratives, handoffs and supplied originals live under `docs/archive/` and do not request new work or agent delegation.
+
+Archive relocation preserves original content through SHA256-bound reversible Markdown link substitutions in `docs/archive/relocations.json`. Supplied-original bytes and immutable experiment reports remain unchanged. Two immutable reports reference former documentation paths; resolve them through that manifest rather than modifying measured evidence or adding obsolete-path stubs. Ignored private notes, runtime data and research artifacts are preserved in place. Current publication guidance is in CONTRIBUTING; archived prepared exports do not represent the current source.

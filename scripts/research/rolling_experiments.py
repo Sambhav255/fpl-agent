@@ -1,0 +1,48 @@
+"""Register and enqueue expanding enriched-model evaluation without serving refits."""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "backend/src"))
+
+from fpl_app.jobs import Queue, Worker
+from fpl_app.models.rolling_experiments import protocol
+from fpl_app.providers.collection import load_collection
+from fpl_app.storage import Store, fingerprint
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--collection-id", required=True)
+    parser.add_argument("--work-once", action="store_true", help="Process one durable queued job")
+    args = parser.parse_args()
+    store = Store()
+    specification = protocol(load_collection(store, args.collection_id))
+    key = fingerprint(specification)
+    store.put("rolling_experiment_protocol", key, specification, expected=0)
+    queue = Queue(store)
+    job = queue.enqueue("rolling_experiment", {"protocol": specification})
+    print(json.dumps({"job_id": job["id"], "status": job["status"]}), flush=True)
+    if args.work_once:
+        Worker(queue).run_once()
+        result = queue.get(job["id"])
+        print(
+            json.dumps(
+                {
+                    "job_id": job["id"],
+                    "status": result["status"],
+                    "error": result.get("error"),
+                    "result": result.get("result"),
+                }
+            ),
+            flush=True,
+        )
+        if result["status"] == "failed":
+            raise SystemExit(1)
+
+
+if __name__ == "__main__":
+    main()

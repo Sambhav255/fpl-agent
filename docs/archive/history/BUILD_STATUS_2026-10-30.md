@@ -1,6 +1,6 @@
 # Engineering status retained before the 31 October review
 
-Historical engineering evidence; current status is in [BUILD_STATUS](../BUILD_STATUS.md). Personal decision notes are retained only in ignored local backups.
+Historical engineering evidence; current status is in [BUILD_STATUS](../../BUILD_STATUS.md). Personal decision notes are retained only in ignored local backups.
 
 ## Prospective replay continuation — 14 October UTC
 
@@ -8,7 +8,7 @@ Automated evidence capture, queued baseline forecast, analysis, journal producti
 
 Finalized outcome ingestion now reconciles exact official totals, duplicates/types, fixture membership and minutes, preserves unknown participation, and excludes changed schedules including former blanks. The strict adapter rederives one explicit revision from retained checked bootstrap, fixture and live-result bytes. `scripts/evaluate_journal_replay.py` stores immutable paper comparisons under ignored DATA_DIR and leaves actual execution/manager state unchanged.
 
-Actual production3163/API8163 integration: 667 players, six forecast events, 4,002 fixture means, five independently validated plans, three seals. Both browser projects displayed the journal; a fresh official status retained GW7 pending and its 17 October 10:00 UTC deadline. Future labels remain absent. Final fresh checks: **464 base/11 skips, 480 RL/7 skips, CLI14, Ruff126 files/mypy81 sources in both environments, frontend format/lint/types/unit13/production build, production browser16/6 personal-state skips**. Optional libraries remain absent from the actual base worker. [Immutable continuation report and commands](../experiments/2026-10-14-prospective-replay/README.md). Durable ignored backup: data/research/prospective-replay-2026-10-14/. Initial timing/default-payload failures were fixed; ENOSPC attempts and successful full reruns are recorded. Earlier stage evidence below is preserved rather than described as newly run.
+Actual production3163/API8163 integration: 667 players, six forecast events, 4,002 fixture means, five independently validated plans, three seals. Both browser projects displayed the journal; a fresh official status retained GW7 pending and its 17 October 10:00 UTC deadline. Future labels remain absent. Final fresh checks: **464 base/11 skips, 480 RL/7 skips, CLI14, Ruff126 files/mypy81 sources in both environments, frontend format/lint/types/unit13/production build, production browser16/6 personal-state skips**. Optional libraries remain absent from the actual base worker. [Immutable continuation report and commands](../../experiments/2026-10-14-prospective-replay/README.md). Durable ignored backup: data/research/prospective-replay-2026-10-14/. Initial timing/default-payload failures were fixed; ENOSPC attempts and successful full reruns are recorded. Earlier stage evidence below is preserved rather than described as newly run.
 
 ## Implemented and exercised
 
@@ -36,7 +36,7 @@ Official-points historical episode adapters and reproducible episode serializati
 | Final production browser/API/worker   | 14 passed / 6 explicit personal-state skips                                                                                                   |
 | Positive real integration             | 667 CatBoost and 667 ensemble forecasts displayed; queued worker analysis; four plans independently validated; pre-deadline GW7 paper journal |
 
-Base skips Gymnasium, learning and historical-adapter modules (one skip per module), plus a Torch case and seven shared Bayesian/TFT/opt-in cases. RL enables 16 additional actual cases; those seven shared cases remain skipped. No optional library was installed to hide typing failures. The locked stack emits 115 deprecation warnings; checks/assertions remain enabled. Browser timing failures were fixed by awaiting actual responses; the shadow selector uses its accessible combobox name. Full evidence and reproduction commands are in [the report](../experiments/2026-10-13-real-football-finalized/README.md) and [verification](../learning_upgrade/VERIFICATION_REPORT.md). These were executed in the previous stage; the continuation results above are fresh. Older 414/3 and organisation counts remain historical.
+Base skips Gymnasium, learning and historical-adapter modules (one skip per module), plus a Torch case and seven shared Bayesian/TFT/opt-in cases. RL enables 16 additional actual cases; those seven shared cases remain skipped. No optional library was installed to hide typing failures. The locked stack emits 115 deprecation warnings; checks/assertions remain enabled. Browser timing failures were fixed by awaiting actual responses; the shadow selector uses its accessible combobox name. Full evidence and reproduction commands are in [the report](../../experiments/2026-10-13-real-football-finalized/README.md) and [verification](../upgrades/learning/VERIFICATION_REPORT.md). These were executed in the previous stage; the continuation results above are fresh. Older 414/3 and organisation counts remain historical.
 
 ## Runnable handoff and limits
 

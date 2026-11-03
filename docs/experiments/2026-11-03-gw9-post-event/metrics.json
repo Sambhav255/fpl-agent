@@ -1,0 +1,5153 @@
+{
+  "event": 9,
+  "status": "provisional",
+  "source_refs": [
+    {
+      "id": "1f6471378c0543b5946a8f02a99ac8ec",
+      "resource": "bootstrap-static/",
+      "payload_sha256": "d750deb9e5d7011388d37644e15bad6f064d63cc76b324270c677da73fe0e761",
+      "available_at": "2026-11-03T08:57:58.409435+00:00"
+    },
+    {
+      "id": "14309e4a3dc345498907a801565cbd84",
+      "resource": "fixtures/",
+      "payload_sha256": "64deed95fb1761e3c7a20ea3fcfbdb7b3c3d164f22ecf2ddbce3fb967a48c08e",
+      "available_at": "2026-11-03T08:57:58.590922+00:00"
+    },
+    {
+      "id": "408f77fde7c04fefadf5e0ddf7dbf361",
+      "resource": "event/9/live/",
+      "payload_sha256": "b0eb4a7d88ebaa7d4dfafcf7d76f519ba6f2360692709858fd527fd31f42e0e3",
+      "available_at": "2026-11-03T08:57:58.694897+00:00"
+    }
+  ],
+  "frozen_benchmark_hashes": {
+    "119d5ac93dcbeb0477b3363cba6cfa6afd9ebc710eded454379cb2594ae7822b": "e0ec9e2be30b8079455788fe0c162cc87bedad5da3c8ee53ed016c14354cab6f",
+    "5f19095eebef30ee41af0c796cebf4f513d553a06a189cf57a9182c6cdfc5392": "64279203bf0aef2af7149e4b69600533c7d2d159fec806159e645b187f0871b3",
+    "97d18c714f68163e0078a918d5f8763930babeb3c98b288dd03c7e515061aa6a": "5ad058a9f89a5fb587636a2d440f68f5ed22238cd91cd3d479a24116b0018b89"
+  },
+  "comparisons": {
+    "points_position": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1594441471294754,
+        "rmse": 1.9051251128893485,
+        "bias": 0.07725876984415618,
+        "spearman": 0.6934524038925298
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.2044156969311979,
+          "rmse": 1.970215347258931,
+          "bias": 0.035401469326843286,
+          "spearman": 0.7005932301666107
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.2933205971114001,
+          "rmse": 2.357258982578219,
+          "bias": -0.013251705067745756,
+          "spearman": 0.7573336780318616
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1373863827030606,
+          "rmse": 2.819443245630666,
+          "bias": -0.29203404729933186,
+          "spearman": 0.3296457086873057
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.067650529134032,
+          "rmse": 3.987721961398524,
+          "bias": -1.2010026339345963,
+          "spearman": 0.16406249533432893
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9059525204267238,
+          "rmse": 1.6513159536977342,
+          "bias": 0.0054816151821483,
+          "spearman": 0.8663362674431969
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.3865093504934172,
+          "rmse": 2.2215116119995906,
+          "bias": -0.06269980493447315,
+          "spearman": 0.693951194321301
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.1175651636964095,
+          "rmse": 1.708886039435551,
+          "bias": 0.1300759818614906,
+          "spearman": 0.6982945639879302
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.2933205971114001,
+          "rmse": 2.357258982578219,
+          "bias": -0.013251705067745756,
+          "spearman": 0.7573336780318616
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.6343897386644038,
+          "rmse": 0.9883927086182093,
+          "bias": 0.6343897386644038,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.1861726112733195,
+          "rmse": 3.0501470918476374,
+          "bias": -1.1501082887534058,
+          "spearman": 0.1206546218076836
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.2881055634333123,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.711894436566688
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.5040127195232187,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.49598728047678
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.007399462198382,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.992600537801618
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.0442644110941792,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.95573558890582
+        },
+        {
+          "player_id": 492,
+          "predicted": 0.2506348865481798,
+          "actual": 9,
+          "minutes": 71,
+          "error": -8.74936511345182
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.678984625689491,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.321015374310509
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.8894415513727609,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.1105584486272395
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.974313359291634,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.025686640708366
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.0442644110941792,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.955735588905821
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.280879704078771,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.719120295921229
+        }
+      ]
+    },
+    "opportunity_fixture": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1110391576808967,
+        "rmse": 1.863982002711538,
+        "bias": 0.0409853848091116,
+        "spearman": 0.7084786991631873
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1570884452418675,
+          "rmse": 1.9296236918777065,
+          "bias": 0.008660140438464282,
+          "spearman": 0.7163950037521936
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1199749071318228,
+          "rmse": 2.1384233707887645,
+          "bias": -0.1250764143257854,
+          "spearman": 0.8176468249469276
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.226418318473057,
+          "rmse": 2.7821904816687395,
+          "bias": 0.005002926448466317,
+          "spearman": 0.3329400778210629
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.997666763547314,
+          "rmse": 3.7391036043600328,
+          "bias": -0.9765286589230322,
+          "spearman": 0.45237872911161625
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8783703783343507,
+          "rmse": 1.6634567175227701,
+          "bias": 0.07391046214363214,
+          "spearman": 0.6930292570165153
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.406252747716109,
+          "rmse": 2.235762244130008,
+          "bias": -0.020704753489347322,
+          "spearman": 0.6705469103065953
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0490743022009719,
+          "rmse": 1.664338323707979,
+          "bias": 0.05090904162115815,
+          "spearman": 0.7067290363988655
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1199749071318228,
+          "rmse": 2.1384233707887645,
+          "bias": -0.1250764143257854,
+          "spearman": 0.8176468249469276
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5209503958354446,
+          "rmse": 0.8790705859501967,
+          "bias": 0.5209503958354446,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2662292728958033,
+          "rmse": 3.025653690565738,
+          "bias": -0.9810143762501444,
+          "spearman": 0.07875558449731479
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.430125918154566,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.569874081845434
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.328330798367805,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.671669201632195
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.364802224043929,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.63519777595607
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.9001478765730506,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.099852123426949
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.224235021832767,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.775764978167233
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5486061501433264,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.451393849856673
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.7562734570383274,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.243726542961673
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8371845707204755,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.162815429279524
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.150404864597863,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.8495951354021365
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.1526420824190362,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.847357917580964
+        }
+      ]
+    },
+    "plus_xg_xa": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1480973342124523,
+        "rmse": 1.880877229169482,
+        "bias": 0.05972566966889427,
+        "spearman": 0.7040764773705833
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1918442020558537,
+          "rmse": 1.9451735457402928,
+          "bias": 0.024220217868936193,
+          "spearman": 0.7129180150513938
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1678451037365654,
+          "rmse": 2.1457849222673273,
+          "bias": -0.06329810530998234,
+          "spearman": 0.8121131511722574
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.235839973103215,
+          "rmse": 2.815745272580753,
+          "bias": -0.08820294200168816,
+          "spearman": 0.28556004007846053
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.0153342466519035,
+          "rmse": 3.7187535800249703,
+          "bias": -0.8871303161803155,
+          "spearman": 0.4253514511048133
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9297676423332855,
+          "rmse": 1.6461027685608018,
+          "bias": 0.06359066439929621,
+          "spearman": 0.7064814911098104
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4287414860640824,
+          "rmse": 2.2646248288906126,
+          "bias": -0.05407792190840289,
+          "spearman": 0.6610006841640517
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0853435017165178,
+          "rmse": 1.6778043764475783,
+          "bias": 0.09723231454635925,
+          "spearman": 0.704639129520584
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1678451037365654,
+          "rmse": 2.1457849222673273,
+          "bias": -0.06329810530998234,
+          "spearman": 0.8121131511722574
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5718411080935288,
+          "rmse": 0.8865842029860062,
+          "bias": 0.5718411080935288,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.272086315369252,
+          "rmse": 3.0492694941363863,
+          "bias": -1.0395622209320727,
+          "spearman": 0.056498362249637356
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.619800930882522,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.380199069117477
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.4502200221804462,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.549779977819554
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.5424702069980074,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.457529793001992
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.657672879898855,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.342327120101146
+        },
+        {
+          "player_id": 492,
+          "predicted": 0.9933393235142604,
+          "actual": 9,
+          "minutes": 71,
+          "error": -8.00666067648574
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.571132674350764,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.428867325649236
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.583877187380627,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.416122812619372
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8672831149505342,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.132716885049466
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.151678495925292,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.848321504074708
+        },
+        {
+          "player_id": 230,
+          "predicted": 2.5056194255866195,
+          "actual": 9,
+          "minutes": 81,
+          "error": -6.4943805744133805
+        }
+      ]
+    },
+    "plus_defensive_actions": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1288103061443344,
+        "rmse": 1.8714081656760417,
+        "bias": 0.05725275080620104,
+        "spearman": 0.7069525697074261
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1738062151517976,
+          "rmse": 1.9364714434785912,
+          "bias": 0.024357255312986673,
+          "spearman": 0.7137682134101135
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.15192593272454,
+          "rmse": 2.1301927323745447,
+          "bias": -0.06549255115601434,
+          "spearman": 0.8042967581613167
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.255992781002881,
+          "rmse": 2.812807544495326,
+          "bias": -0.019647125644647805,
+          "spearman": 0.27644318020485564
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.052055585814005,
+          "rmse": 3.696594948959778,
+          "bias": -0.7807600959596765,
+          "spearman": 0.43316630716185717
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8980736190634858,
+          "rmse": 1.6449747174636526,
+          "bias": 0.0684340219184385,
+          "spearman": 0.698615783233606
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4214547591377535,
+          "rmse": 2.2608547520192754,
+          "bias": -0.03637714072306899,
+          "spearman": 0.6601830341367593
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0620388221291992,
+          "rmse": 1.6643593814373183,
+          "bias": 0.08358949601804284,
+          "spearman": 0.710126808652219
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.15192593272454,
+          "rmse": 2.1301927323745447,
+          "bias": -0.06549255115601434,
+          "spearman": 0.8042967581613167
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5365053400138957,
+          "rmse": 0.8891324435462923,
+          "bias": 0.5365053400138957,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.269891776012547,
+          "rmse": 3.0277424629229346,
+          "bias": -0.985772876891239,
+          "spearman": 0.06340723991900286
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.876118506257027,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.123881493742973
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.535438312035222,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.464561687964778
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.6954587977535436,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.304541202246456
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.9052398601507132,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.094760139849287
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.0991162404853851,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.900883759514615
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5945883438619293,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.405411656138071
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.6810625612440884,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.318937438755912
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8133813176360944,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.186618682363905
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.2051537415595754,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.794846258440424
+        },
+        {
+          "player_id": 230,
+          "predicted": 2.6444465420486534,
+          "actual": 9,
+          "minutes": 81,
+          "error": -6.355553457951347
+        }
+      ]
+    },
+    "full_context": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1005963145099171,
+        "rmse": 1.8461760097415554,
+        "bias": 0.0621255186346618,
+        "spearman": 0.7315982412786192
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1485583115392635,
+          "rmse": 1.9167412962997632,
+          "bias": 0.03567722617028703,
+          "spearman": 0.7364796917047395
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1269891188278958,
+          "rmse": 2.1672914909748724,
+          "bias": -0.12659741449309994,
+          "spearman": 0.8078019022991125
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.2108368990933958,
+          "rmse": 2.812519162830516,
+          "bias": -0.13103965765534592,
+          "spearman": 0.29409429847885904
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.933503734294916,
+          "rmse": 3.7526330493254227,
+          "bias": -1.0477215893336749,
+          "spearman": 0.516896907773041
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8941742561044435,
+          "rmse": 1.5883748137791924,
+          "bias": 0.06257468724993456,
+          "spearman": 0.6993012685870629
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.3820876734874028,
+          "rmse": 2.2328670733274794,
+          "bias": -0.029235701843549372,
+          "spearman": 0.6883771923213952
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0420111162726164,
+          "rmse": 1.6413932986211062,
+          "bias": 0.12208144383777161,
+          "spearman": 0.7382026926112881
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1269891188278958,
+          "rmse": 2.1672914909748724,
+          "bias": -0.12659741449309994,
+          "spearman": 0.8078019022991125
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.4765574475838253,
+          "rmse": 0.7751627044544231,
+          "bias": 0.4765574475838253,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.257927502743672,
+          "rmse": 3.0176537509498185,
+          "bias": -0.850501163538301,
+          "spearman": 0.031915468669283104
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9470738595912946,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.052926140408704
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.917331449735606,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.082668550264394
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.7533199030751105,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.246680096924889
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.219973026206929,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.7800269737930705
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.387812360961713,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.612187639038287
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.4304357357468196,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.569564264253181
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.523384806291224,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.476615193708776
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.5541870957049966,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.445812904295003
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.6936830337172133,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.306316966282787
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.7976037169733537,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.202396283026646
+        }
+      ]
+    },
+    "full_shallow_regularized": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1142603769965524,
+        "rmse": 1.8408432118009554,
+        "bias": 0.07672101492518316,
+        "spearman": 0.7330948163974764
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1614846844386049,
+          "rmse": 1.9107295379596412,
+          "bias": 0.0486095205435212,
+          "spearman": 0.7395993824188466
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1472569881541423,
+          "rmse": 2.181317838017524,
+          "bias": -0.12248676738589036,
+          "spearman": 0.8074847175842872
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1839399086412477,
+          "rmse": 2.801149325842765,
+          "bias": -0.17390523593107304,
+          "spearman": 0.33665711447433444
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.894628024659139,
+          "rmse": 3.7696664667397384,
+          "bias": -1.1623128621571561,
+          "spearman": 0.5046164196834007
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9352971004917124,
+          "rmse": 1.5973982082788674,
+          "bias": 0.07951218057206051,
+          "spearman": 0.7200389764160601
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.3920755232407216,
+          "rmse": 2.222679390351386,
+          "bias": -0.01194199923469598,
+          "spearman": 0.6947285480845239
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0481034923310668,
+          "rmse": 1.6285610287685022,
+          "bias": 0.13312801976790478,
+          "spearman": 0.7407635497859713
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1472569881541423,
+          "rmse": 2.181317838017524,
+          "bias": -0.12248676738589036,
+          "spearman": 0.8074847175842872
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5250827300056035,
+          "rmse": 0.7752355268885884,
+          "bias": 0.5250827300056035,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2340785058769623,
+          "rmse": 3.0098657436967455,
+          "bias": -0.8872770401640456,
+          "spearman": 0.05832133574866447
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.71385967332239,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.28614032667761
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.084573591250087,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.915426408749912
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.712892946510216,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.287107053489784
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1644470485051353,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.835552951494865
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.38088674795706,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.61911325204294
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.5316587801549377,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.468341219845062
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5407632237376746,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.459236776262325
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.5531602708394194,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.446839729160581
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.614579644595592,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.385420355404408
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.9309721386574072,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.069027861342593
+        }
+      ]
+    },
+    "full_deeper_regularized": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.093645555512097,
+        "rmse": 1.8390948047402733,
+        "bias": 0.05905864098614859,
+        "spearman": 0.7343292577427365
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.141801952624414,
+          "rmse": 1.9091503558350056,
+          "bias": 0.0335853061381946,
+          "spearman": 0.7387987545416755
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1178848168748918,
+          "rmse": 2.157572091203655,
+          "bias": -0.13985889067198648,
+          "spearman": 0.8036653028077806
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.204064699350091,
+          "rmse": 2.800795099315298,
+          "bias": -0.13083299837994947,
+          "spearman": 0.31542994447985545
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9059874125943614,
+          "rmse": 3.73045042647321,
+          "bias": -1.0708170807414303,
+          "spearman": 0.5325266198871286
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8680436050458324,
+          "rmse": 1.5777167779303374,
+          "bias": 0.049618253846614384,
+          "spearman": 0.7122384901920488
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.3768212698965447,
+          "rmse": 2.227843091054696,
+          "bias": -0.03739292362466318,
+          "spearman": 0.6867269664881078
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.039614856014376,
+          "rmse": 1.6324356306875558,
+          "bias": 0.13031971390974817,
+          "spearman": 0.7410883493282081
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1178848168748918,
+          "rmse": 2.157572091203655,
+          "bias": -0.13985889067198648,
+          "spearman": 0.8036653028077806
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.4666989122616536,
+          "rmse": 0.7649284555847978,
+          "bias": 0.4666989122616536,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2522862886619763,
+          "rmse": 3.0049594915276274,
+          "bias": -0.842914642955459,
+          "spearman": 0.041385720050755324
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9434251097516,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.056574890248399
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0063862110495614,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.993613788950439
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.813905737949288,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.186094262050712
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.252361942449627,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.747638057550373
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.4331440227625274,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.566855977237473
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.4742505796678119,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.525749420332188
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5031078002070783,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.496892199792922
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.7029188664763626,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.297081133523637
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.7388891613153934,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.261110838684607
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8723067887964423,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.127693211203558
+        }
+      ]
+    },
+    "full_second_seed": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1091577033243711,
+        "rmse": 1.841749347707143,
+        "bias": 0.07528757080051422,
+        "spearman": 0.7353605673537174
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1572908577876755,
+          "rmse": 1.9122162057328886,
+          "bias": 0.04817031905434337,
+          "spearman": 0.7396143625573334
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1434549552313134,
+          "rmse": 2.166426133713992,
+          "bias": -0.10943834566483233,
+          "spearman": 0.8041904392058231
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.2057765721446088,
+          "rmse": 2.810375338561389,
+          "bias": -0.11430173895895501,
+          "spearman": 0.3083424391102014
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.911527211734758,
+          "rmse": 3.750554165817839,
+          "bias": -1.093699343847324,
+          "spearman": 0.5068492356996989
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9265236167140459,
+          "rmse": 1.5936756113323944,
+          "bias": 0.08721369645291344,
+          "spearman": 0.7183304314310646
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.379442794653595,
+          "rmse": 2.217384608498992,
+          "bias": -0.008622335498757492,
+          "spearman": 0.6960713027034047
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0513085249206309,
+          "rmse": 1.6442239677530837,
+          "bias": 0.12414659688464927,
+          "spearman": 0.7409776988371382
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1434549552313134,
+          "rmse": 2.166426133713992,
+          "bias": -0.10943834566483233,
+          "spearman": 0.8041904392058231
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5068438976080853,
+          "rmse": 0.7796765124626138,
+          "bias": 0.5068438976080853,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.250354481655465,
+          "rmse": 3.013706650280589,
+          "bias": -0.857388801202233,
+          "spearman": 0.04091980640279345
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.7011028182211194,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.29889718177888
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0057710059705105,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.99422899402949
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.7183834399438442,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.281616560056156
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1895419267178657,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.810458073282135
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.333176727348231,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.666823272651769
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.530375250813078,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.469624749186922
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5947653775322043,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.405234622467796
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.720058749047443,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.279941250952557
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.7707886172323675,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.229211382767632
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8017635914733067,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.198236408526693
+        }
+      ]
+    },
+    "validation_fit_ensemble": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1058131289655482,
+        "rmse": 1.8420678289722592,
+        "bias": 0.07068782067956851,
+        "spearman": 0.7337616862017665
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1535644350504612,
+          "rmse": 1.9122945716576254,
+          "bias": 0.04243637085085573,
+          "spearman": 0.7382730555074213
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1463783704622168,
+          "rmse": 2.1785801104341984,
+          "bias": -0.10668718114153439,
+          "spearman": 0.8046276953424985
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.195641832181427,
+          "rmse": 2.8044972920964324,
+          "bias": -0.1369930657086086,
+          "spearman": 0.3152861223588548
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9329832392438586,
+          "rmse": 3.7672814603997984,
+          "bias": -1.0870146927168243,
+          "spearman": 0.5448071079767688
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9113775403539032,
+          "rmse": 1.5931045163172208,
+          "bias": 0.07062106491630933,
+          "spearman": 0.7033009439687569
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.3760782222074681,
+          "rmse": 2.216361600877526,
+          "bias": -0.02116768213923937,
+          "spearman": 0.6948285812176012
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0483529412217143,
+          "rmse": 1.6412324014184012,
+          "bias": 0.12395004061599849,
+          "spearman": 0.7391817906374798
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1463783704622168,
+          "rmse": 2.1785801104341984,
+          "bias": -0.10668718114153439,
+          "spearman": 0.8046276953424985
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5077539905474189,
+          "rmse": 0.7906002191142297,
+          "bias": 0.5077539905474189,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2369577038533697,
+          "rmse": 3.0114629323131257,
+          "bias": -0.8822377136470694,
+          "spearman": 0.04567719155941242
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.7519133073072366,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.248086692692763
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0201830942217192,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.97981690577828
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.664645772750387,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.335354227249614
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1128691064189558,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.887130893581045
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.4001646866473925,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.5998353133526075
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.434623695024451,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.565376304975549
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5470803969398619,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.452919603060138
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.7342301912654994,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.2657698087345
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.7672313949077263,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.232768605092273
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8450212438337297,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.154978756166271
+        }
+      ]
+    },
+    "points_position_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0298031521863122,
+        "rmse": 1.8594447485390337,
+        "bias": -0.052382225099007,
+        "spearman": 0.7448663509503672
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0673128474837343,
+          "rmse": 1.9241933192811005,
+          "bias": -0.10170138012062005,
+          "spearman": 0.7536336896408274
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.129169385838842,
+          "rmse": 2.3062058756769,
+          "bias": -0.17740291634030386,
+          "spearman": 0.8160202125036657
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.0864519952164007,
+          "rmse": 2.7930867004877853,
+          "bias": -0.34296843478599187,
+          "spearman": 0.35593677070564594
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.067650529134032,
+          "rmse": 3.987721961398524,
+          "bias": -1.2010026339345963,
+          "spearman": 0.16406249533432893
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8213768047512914,
+          "rmse": 1.6085188898251221,
+          "bias": -0.07909410049328414,
+          "spearman": 0.7901483354540397
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2375928259698568,
+          "rmse": 2.183282556314348,
+          "bias": -0.21161632945803338,
+          "spearman": 0.7289945003876762
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9836025187858022,
+          "rmse": 1.6549914448702827,
+          "bias": -0.0038866630491165965,
+          "spearman": 0.7437737408467334
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.129169385838842,
+          "rmse": 2.3062058756769,
+          "bias": -0.17740291634030386,
+          "spearman": 0.8160202125036657
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.37139370670543326,
+          "rmse": 0.7956864248344496,
+          "bias": 0.37139370670543326,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.1861726112733195,
+          "rmse": 3.0501470918476374,
+          "bias": -1.1501082887534058,
+          "spearman": 0.1206546218076836
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.2881055634333123,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.711894436566688
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.5040127195232187,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.49598728047678
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.007399462198382,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.992600537801618
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.0442644110941792,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.95573558890582
+        },
+        {
+          "player_id": 492,
+          "predicted": 0.2506348865481798,
+          "actual": 9,
+          "minutes": 71,
+          "error": -8.74936511345182
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.678984625689491,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.321015374310509
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.8894415513727609,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.1105584486272395
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.974313359291634,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.025686640708366
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.0442644110941792,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.955735588905821
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.280879704078771,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.719120295921229
+        }
+      ]
+    },
+    "opportunity_fixture_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0109442260234438,
+        "rmse": 1.8338910104209976,
+        "bias": -0.05910954684834117,
+        "spearman": 0.748704360855403
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0509815953394814,
+          "rmse": 1.8990794501883264,
+          "bias": -0.0974467094639217,
+          "spearman": 0.7582233721140598
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0151768724639483,
+          "rmse": 2.1164717283754864,
+          "bias": -0.22987444899366005,
+          "spearman": 0.8552754583274643
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1805414758854544,
+          "rmse": 2.7604917566755205,
+          "bias": -0.0408739161391359,
+          "spearman": 0.34409444439500486
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.997666763547314,
+          "rmse": 3.7391036043600328,
+          "bias": -0.9765286589230322,
+          "spearman": 0.45237872911161625
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8232482270070771,
+          "rmse": 1.6339898572385825,
+          "bias": 0.018788310816358705,
+          "spearman": 0.7277219954472195
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.276545512722164,
+          "rmse": 2.2049241148166847,
+          "bias": -0.15041198848329243,
+          "spearman": 0.7156538102083083
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9476531219696422,
+          "rmse": 1.6299669921839375,
+          "bias": -0.0505121386101717,
+          "spearman": 0.748994885873152
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0151768724639483,
+          "rmse": 2.1164717283754864,
+          "bias": -0.22987444899366005,
+          "spearman": 0.8552754583274643
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.31741209885288024,
+          "rmse": 0.7405652936407214,
+          "bias": 0.31741209885288024,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2662292728958033,
+          "rmse": 3.025653690565738,
+          "bias": -0.9810143762501444,
+          "spearman": 0.07875558449731479
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.430125918154566,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.569874081845434
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.328330798367805,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.671669201632195
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.364802224043929,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.63519777595607
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.9001478765730506,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.099852123426949
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.224235021832767,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.775764978167233
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5486061501433264,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.451393849856673
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.7562734570383274,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.243726542961673
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8371845707204755,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.162815429279524
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.150404864597863,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.8495951354021365
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.1526420824190362,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.847357917580964
+        }
+      ]
+    },
+    "plus_xg_xa_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0341876068123452,
+        "rmse": 1.8483590341753877,
+        "bias": -0.054184057731212605,
+        "spearman": 0.7449896052382893
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0710391293306232,
+          "rmse": 1.9121724339773585,
+          "bias": -0.0965848548562945,
+          "spearman": 0.7551606596306994
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0444591469556956,
+          "rmse": 2.12262721526931,
+          "bias": -0.1866840620908521,
+          "spearman": 0.8492460470257471
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1879104699462553,
+          "rmse": 2.7922094332606306,
+          "bias": -0.13613244515864736,
+          "spearman": 0.3036238521032135
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.0153342466519035,
+          "rmse": 3.7187535800249703,
+          "bias": -0.8871303161803155,
+          "spearman": 0.4253514511048133
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8502563516317655,
+          "rmse": 1.6162385217650361,
+          "bias": -0.015920626302223736,
+          "spearman": 0.7332070182054842
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.285540108246348,
+          "rmse": 2.2320331380584513,
+          "bias": -0.19727929972613747,
+          "spearman": 0.7040242813127258
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9717987826075515,
+          "rmse": 1.6392158538861963,
+          "bias": -0.01631240456260708,
+          "spearman": 0.7484825965308289
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0444591469556956,
+          "rmse": 2.12262721526931,
+          "bias": -0.1866840620908521,
+          "spearman": 0.8492460470257471
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3401081069539354,
+          "rmse": 0.7361019251276892,
+          "bias": 0.3401081069539354,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.272086315369252,
+          "rmse": 3.0492694941363863,
+          "bias": -1.0395622209320727,
+          "spearman": 0.056498362249637356
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.619800930882522,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.380199069117477
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.4502200221804462,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.549779977819554
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.5424702069980074,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.457529793001992
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.657672879898855,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.342327120101146
+        },
+        {
+          "player_id": 492,
+          "predicted": 0.9933393235142604,
+          "actual": 9,
+          "minutes": 71,
+          "error": -8.00666067648574
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.571132674350764,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.428867325649236
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.583877187380627,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.416122812619372
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8672831149505342,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.132716885049466
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.151678495925292,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.848321504074708
+        },
+        {
+          "player_id": 230,
+          "predicted": 2.5056194255866195,
+          "actual": 9,
+          "minutes": 81,
+          "error": -6.4943805744133805
+        }
+      ]
+    },
+    "plus_defensive_actions_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.025969237015274,
+        "rmse": 1.8391380628792873,
+        "bias": -0.04558831832285954,
+        "spearman": 0.7477765013898378
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0646504734399367,
+          "rmse": 1.903515075606482,
+          "bias": -0.08479848639887431,
+          "spearman": 0.7567227028542263
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0467219186881487,
+          "rmse": 2.1094895847377266,
+          "bias": -0.17069656519240559,
+          "spearman": 0.8434418723531175
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.2073728227762337,
+          "rmse": 2.7885713860309855,
+          "bias": -0.06826708387129578,
+          "spearman": 0.29480558479171765
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.052055585814005,
+          "rmse": 3.696594948959778,
+          "bias": -0.7807600959596765,
+          "spearman": 0.43316630716185717
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8329685692399817,
+          "rmse": 1.6165735800056054,
+          "bias": 0.0033289720949344396,
+          "spearman": 0.7311376972029086
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2867015207803396,
+          "rmse": 2.225976549331997,
+          "bias": -0.1711303790804833,
+          "spearman": 0.7055820862735804
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9600876395426089,
+          "rmse": 1.6269802625098366,
+          "bias": -0.018361686568547433,
+          "spearman": 0.7539045144726431
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0467219186881487,
+          "rmse": 2.1094895847377266,
+          "bias": -0.17069656519240559,
+          "spearman": 0.8434418723531175
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3271185398747912,
+          "rmse": 0.7401347884157056,
+          "bias": 0.3271185398747912,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.269891776012547,
+          "rmse": 3.0277424629229346,
+          "bias": -0.985772876891239,
+          "spearman": 0.06340723991900286
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.876118506257027,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.123881493742973
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.535438312035222,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.464561687964778
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.6954587977535436,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.304541202246456
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.9052398601507132,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.094760139849287
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.0991162404853851,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.900883759514615
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5945883438619293,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.405411656138071
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.6810625612440884,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.318937438755912
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.8133813176360944,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.186618682363905
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.2051537415595754,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.794846258440424
+        },
+        {
+          "player_id": 230,
+          "predicted": 2.6444465420486534,
+          "actual": 9,
+          "minutes": 81,
+          "error": -6.355553457951347
+        }
+      ]
+    },
+    "full_context_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.012642084676314,
+        "rmse": 1.826702696722132,
+        "bias": -0.025828711198941177,
+        "spearman": 0.7633995204360031
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0547123964056189,
+          "rmse": 1.89666338144787,
+          "bias": -0.0581686889633575,
+          "spearman": 0.7696098866671643
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.036414795716408,
+          "rmse": 2.1570290626132524,
+          "bias": -0.21717173760458788,
+          "spearman": 0.8436916691541613
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1748107285374574,
+          "rmse": 2.797400014745573,
+          "bias": -0.1670658282112849,
+          "spearman": 0.30651127093679115
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.933503734294916,
+          "rmse": 3.7526330493254227,
+          "bias": -1.0477215893336749,
+          "spearman": 0.516896907773041
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8339040726416251,
+          "rmse": 1.5767314909269048,
+          "bias": 0.0023045037871163134,
+          "spearman": 0.731630503299022
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2620557536608104,
+          "rmse": 2.2039507848939603,
+          "bias": -0.14926762167014207,
+          "spearman": 0.7251503432021047
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9586173381106613,
+          "rmse": 1.6241620827286114,
+          "bias": 0.038687665675816295,
+          "spearman": 0.7679578508926614
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.036414795716408,
+          "rmse": 2.1570290626132524,
+          "bias": -0.21717173760458788,
+          "spearman": 0.8436916691541613
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.29653855377400395,
+          "rmse": 0.6738002957280571,
+          "bias": 0.29653855377400395,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.257927502743672,
+          "rmse": 3.0176537509498185,
+          "bias": -0.850501163538301,
+          "spearman": 0.031915468669283104
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9470738595912946,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.052926140408704
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.917331449735606,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.082668550264394
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.7533199030751105,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.246680096924889
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.219973026206929,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.7800269737930705
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.387812360961713,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.612187639038287
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.4304357357468196,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.569564264253181
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.523384806291224,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.476615193708776
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.5541870957049966,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.445812904295003
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.6936830337172133,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.306316966282787
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.7976037169733537,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.202396283026646
+        }
+      ]
+    },
+    "full_shallow_regularized_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0115613286279734,
+        "rmse": 1.8198684419878381,
+        "bias": -0.02597803344339596,
+        "spearman": 0.7653934396615705
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0520828566710145,
+          "rmse": 1.8892593208527422,
+          "bias": -0.06079230722406901,
+          "spearman": 0.7726785767204065
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.030181559531762,
+          "rmse": 2.168998648605363,
+          "bias": -0.23956219600827056,
+          "spearman": 0.8442634050944058
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.149254740899932,
+          "rmse": 2.787115982013099,
+          "bias": -0.20859040367238846,
+          "spearman": 0.34591375133016233
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.894628024659139,
+          "rmse": 3.7696664667397384,
+          "bias": -1.1623128621571561,
+          "spearman": 0.5046164196834007
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8576660841504317,
+          "rmse": 1.5841359262091586,
+          "bias": 0.001881164230779654,
+          "spearman": 0.747032040550373
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2570426662608598,
+          "rmse": 2.1924105409874772,
+          "bias": -0.14697485621455814,
+          "spearman": 0.7297745920864736
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9521680690325658,
+          "rmse": 1.6100885569701129,
+          "bias": 0.03719259646940364,
+          "spearman": 0.7709480071039324
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.030181559531762,
+          "rmse": 2.168998648605363,
+          "bias": -0.23956219600827056,
+          "spearman": 0.8442634050944058
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3152238779985909,
+          "rmse": 0.6666989964745331,
+          "bias": 0.3152238779985909,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2340785058769623,
+          "rmse": 3.0098657436967455,
+          "bias": -0.8872770401640456,
+          "spearman": 0.05832133574866447
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.71385967332239,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.28614032667761
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.084573591250087,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.915426408749912
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.712892946510216,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.287107053489784
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1644470485051353,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.835552951494865
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.38088674795706,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.61911325204294
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.5316587801549377,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.468341219845062
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5407632237376746,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.459236776262325
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.5531602708394194,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.446839729160581
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.614579644595592,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.385420355404408
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.9309721386574072,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.069027861342593
+        }
+      ]
+    },
+    "full_deeper_regularized_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0085683029448143,
+        "rmse": 1.819932081076332,
+        "bias": -0.026018611581134055,
+        "spearman": 0.7653700380847037
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0509589610750831,
+          "rmse": 1.8893562920758005,
+          "bias": -0.05725768541113656,
+          "spearman": 0.771482756989995
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0307339541760274,
+          "rmse": 2.1473378383366373,
+          "bias": -0.22700975337085072,
+          "spearman": 0.8385113950289155
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1674441212896642,
+          "rmse": 2.784999313028948,
+          "bias": -0.16745357644037562,
+          "spearman": 0.3280444193254848
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9059874125943614,
+          "rmse": 3.73045042647321,
+          "bias": -1.0708170807414303,
+          "spearman": 0.5325266198871286
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8170724695405785,
+          "rmse": 1.5681948429486674,
+          "bias": -0.001352881658639598,
+          "spearman": 0.7411722134357841
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.259752919798068,
+          "rmse": 2.1994252239958705,
+          "bias": -0.15446127372314006,
+          "spearman": 0.7233826315709402
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9575650833676205,
+          "rmse": 1.6149392010740908,
+          "bias": 0.04826994126299233,
+          "spearman": 0.7700705964958635
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0307339541760274,
+          "rmse": 2.1473378383366373,
+          "bias": -0.22700975337085072,
+          "spearman": 0.8385113950289155
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.2924403435663957,
+          "rmse": 0.6639933836741553,
+          "bias": 0.2924403435663957,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2522862886619763,
+          "rmse": 3.0049594915276274,
+          "bias": -0.842914642955459,
+          "spearman": 0.041385720050755324
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9434251097516,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.056574890248399
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0063862110495614,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.993613788950439
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.813905737949288,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.186094262050712
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.252361942449627,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.747638057550373
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.4331440227625274,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.566855977237473
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.4742505796678119,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.525749420332188
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5031078002070783,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.496892199792922
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.7029188664763626,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.297081133523637
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.7388891613153934,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.261110838684607
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8723067887964423,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.127693211203558
+        }
+      ]
+    },
+    "full_second_seed_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0129656508931475,
+        "rmse": 1.821226204036928,
+        "bias": -0.02090448163070961,
+        "spearman": 0.7666792036721227
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0546703924423597,
+          "rmse": 1.8910819368792469,
+          "bias": -0.054450146290972626,
+          "spearman": 0.7727214042594215
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0318879169559514,
+          "rmse": 2.154227926068629,
+          "bias": -0.22100538394019426,
+          "spearman": 0.8399667228768106
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.168260845254648,
+          "rmse": 2.7940933535679116,
+          "bias": -0.1518174658489157,
+          "spearman": 0.32129085758768255
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.911527211734758,
+          "rmse": 3.750554165817839,
+          "bias": -1.093699343847324,
+          "spearman": 0.5068492356996989
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8522892550861411,
+          "rmse": 1.5801857956200636,
+          "bias": 0.012979334825008735,
+          "spearman": 0.7472600232886663
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.253040840034502,
+          "rmse": 2.1876017921519333,
+          "bias": -0.13502429011785036,
+          "spearman": 0.7321237586479723
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9619533271429631,
+          "rmse": 1.6261802038569002,
+          "bias": 0.03479139910698168,
+          "spearman": 0.7708162136390961
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0318879169559514,
+          "rmse": 2.154227926068629,
+          "bias": -0.22100538394019426,
+          "spearman": 0.8399667228768106
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.30999331942996355,
+          "rmse": 0.6735781741752339,
+          "bias": 0.30999331942996355,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.250354481655465,
+          "rmse": 3.013706650280589,
+          "bias": -0.857388801202233,
+          "spearman": 0.04091980640279345
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.7011028182211194,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.29889718177888
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0057710059705105,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.99422899402949
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.7183834399438442,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.281616560056156
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1895419267178657,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.810458073282135
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.333176727348231,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.666823272651769
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.530375250813078,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.469624749186922
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5947653775322043,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.405234622467796
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.720058749047443,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.279941250952557
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.7707886172323675,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.229211382767632
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8017635914733067,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.198236408526693
+        }
+      ]
+    },
+    "validation_fit_ensemble_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.0094896956025359,
+        "rmse": 1.8202995827423492,
+        "bias": -0.02563561268344391,
+        "spearman": 0.7661134578157872
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0509111034243654,
+          "rmse": 1.8899396807784488,
+          "bias": -0.06021696077524005,
+          "spearman": 0.7720105073105481
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0375278698666672,
+          "rmse": 2.164834432028115,
+          "bias": -0.21553768173708368,
+          "spearman": 0.8413700747301381
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1574136386801546,
+          "rmse": 2.7880047008282443,
+          "bias": -0.17522125920988152,
+          "spearman": 0.32827843554162955
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9329832392438586,
+          "rmse": 3.7672814603997984,
+          "bias": -1.0870146927168243,
+          "spearman": 0.5448071079767688
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8412523484969702,
+          "rmse": 1.578476678733673,
+          "bias": 0.0004958730593763279,
+          "spearman": 0.7356559122629686
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2498877423173005,
+          "rmse": 2.186254671035431,
+          "bias": -0.147358162029407,
+          "spearman": 0.731371560673971
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9569962958627034,
+          "rmse": 1.6210935494471723,
+          "bias": 0.0325933952569876,
+          "spearman": 0.7700844516733637
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0375278698666672,
+          "rmse": 2.164834432028115,
+          "bias": -0.21553768173708368,
+          "spearman": 0.8413700747301381
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3108403669879271,
+          "rmse": 0.6797067075855865,
+          "bias": 0.3108403669879271,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2369577038533697,
+          "rmse": 3.0114629323131257,
+          "bias": -0.8822377136470694,
+          "spearman": 0.04567719155941242
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.7519133073072366,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.248086692692763
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.0201830942217192,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.97981690577828
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.664645772750387,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.335354227249614
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1128691064189558,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.887130893581045
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.4001646866473925,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.5998353133526075
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.434623695024451,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.565376304975549
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.5470803969398619,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.452919603060138
+        },
+        {
+          "player_id": 26,
+          "predicted": 1.7342301912654994,
+          "actual": 9,
+          "minutes": 83,
+          "error": -7.2657698087345
+        },
+        {
+          "player_id": 230,
+          "predicted": 1.7672313949077263,
+          "actual": 9,
+          "minutes": 81,
+          "error": -7.232768605092273
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8450212438337297,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.154978756166271
+        }
+      ]
+    },
+    "baseline": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.2689146676417111,
+        "rmse": 1.9471203603634213,
+        "bias": 0.2698803484432765,
+        "spearman": 0.6910393182237962
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.2827099672064377,
+          "rmse": 2.0000590676028094,
+          "bias": 0.19792193191657306,
+          "spearman": 0.7055966272058463
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.2002858291776093,
+          "rmse": 2.2744213314871633,
+          "bias": -0.07286905759160724,
+          "spearman": 0.7902622816125574
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.129151650630052,
+          "rmse": 2.7927529178212036,
+          "bias": -0.23697241016761852,
+          "spearman": 0.31467216586036156
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9525788183752075,
+          "rmse": 3.947857290974142,
+          "bias": -1.2833810581322562,
+          "spearman": 0.3907428028521908
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 1.3829153930228473,
+          "rmse": 1.858586038291425,
+          "bias": 0.55756289246593,
+          "spearman": 0.7180623424442811
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4877933617754837,
+          "rmse": 2.268796917114853,
+          "bias": 0.16943095652992696,
+          "spearman": 0.6746476995305422
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.1255321793088928,
+          "rmse": 1.7183079093534217,
+          "bias": 0.20324646514565065,
+          "spearman": 0.7265786191157487
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.2002858291776093,
+          "rmse": 2.2744213314871633,
+          "bias": -0.07286905759160724,
+          "spearman": 0.7902622816125574
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.7478582320858508,
+          "rmse": 1.1449465536612142,
+          "bias": 0.7478582320858508,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2140825045219534,
+          "rmse": 3.0185823904146205,
+          "bias": -0.9344313007142191,
+          "spearman": 0.02133455469769473
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.2515,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.7485
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.8877901540154016,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.112209845984598
+        },
+        {
+          "player_id": 295,
+          "predicted": 2.9429476096582263,
+          "actual": 12,
+          "minutes": 90,
+          "error": -9.057052390341774
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.6500831586303284,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.349916841369671
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.4625922995780591,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.537407700421941
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.6135,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.3865
+        },
+        {
+          "player_id": 129,
+          "predicted": 3.011876121287502,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.988123878712498
+        },
+        {
+          "player_id": 151,
+          "predicted": 2.2013130707990523,
+          "actual": 9,
+          "minutes": 90,
+          "error": -6.798686929200947
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.252221601489758,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.747778398510242
+        },
+        {
+          "player_id": 77,
+          "predicted": 1.3238010601547936,
+          "actual": 8,
+          "minutes": 2,
+          "error": -6.676198939845206
+        }
+      ]
+    },
+    "football_catboost": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.1272254720332728,
+        "rmse": 1.8631315840531841,
+        "bias": 0.07911414129104596,
+        "spearman": 0.7086210089538264
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1748262773881473,
+          "rmse": 1.9288249662059525,
+          "bias": 0.049178133151761214,
+          "spearman": 0.7163355798940758
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1507166106397617,
+          "rmse": 2.0996019682033005,
+          "bias": -0.032913070068792814,
+          "spearman": 0.8181027900887904
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.2379342528604735,
+          "rmse": 2.7774079925242843,
+          "bias": 0.03864763299512577,
+          "spearman": 0.3157155299146215
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.0274458277713743,
+          "rmse": 3.626018879789444,
+          "bias": -0.7355056701067385,
+          "spearman": 0.5406205059012895
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8804338599532531,
+          "rmse": 1.7011572840338722,
+          "bias": 0.07078674789381376,
+          "spearman": 0.7195349248434697
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4327466347953348,
+          "rmse": 2.2364794656167986,
+          "bias": 0.025862969460700987,
+          "spearman": 0.6703385112877174
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0605889096438121,
+          "rmse": 1.6654407027131075,
+          "bias": 0.0837100126777952,
+          "spearman": 0.7119952633194154
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1507166106397617,
+          "rmse": 2.0996019682033005,
+          "bias": -0.032913070068792814,
+          "spearman": 0.8181027900887904
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5495448542714059,
+          "rmse": 0.8978494663224715,
+          "bias": 0.54502689940943,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2607807706289695,
+          "rmse": 3.012151762973224,
+          "bias": -0.9252338586105896,
+          "spearman": 0.08028381311154184
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.812025353826606,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.187974646173394
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.3700762570664227,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.629923742933578
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.4494365450333913,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.550563454966609
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1931151844139183,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.8068848155860815
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5787775162871465,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.421222483712853
+        },
+        {
+          "player_id": 295,
+          "predicted": 4.581635373180189,
+          "actual": 12,
+          "minutes": 90,
+          "error": -7.418364626819811
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.6384156763674893,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.361584323632511
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.7235942032695237,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.276405796730476
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.0516688290648397,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.948331170935161
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.2752931768906524,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.724706823109347
+        }
+      ]
+    },
+    "tft_research": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.263173509034954,
+        "rmse": 2.036668143635011,
+        "bias": 0.020561620739639783,
+        "spearman": 0.7252804732672322
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.263173509034954,
+          "rmse": 2.036668143635011,
+          "bias": 0.020561620739639783,
+          "spearman": 0.7252804732672322
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.3025499892561403,
+          "rmse": 2.285983329365091,
+          "bias": -0.16900806639292468,
+          "spearman": 0.7958049997254548
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.3028221695046676,
+          "rmse": 2.895414313410311,
+          "bias": 0.011888709681773047,
+          "spearman": 0.30184972352909273
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.1166053215662637,
+          "rmse": 3.8503628245741686,
+          "bias": -0.9564996427959866,
+          "spearman": 0.3784623147625505
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.9627230525461595,
+          "rmse": 1.742900919023045,
+          "bias": -0.20017112124322065,
+          "spearman": 0.760796752342657
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4253238134713162,
+          "rmse": 2.3122517503678814,
+          "bias": -0.09591860691140784,
+          "spearman": 0.6677077184721832
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.2053426733351689,
+          "rmse": 1.7968589028808848,
+          "bias": 0.2151761239450147,
+          "spearman": 0.7265318500520435
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.3025499892561403,
+          "rmse": 2.285983329365091,
+          "bias": -0.16900806639292468,
+          "spearman": 0.7958049997254548
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5594632257619556,
+          "rmse": 1.0464530994136245,
+          "bias": 0.269229415511279,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2813682368770243,
+          "rmse": 3.0422694924652176,
+          "bias": -0.7136716556921602,
+          "spearman": 0.10569792239306469
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.3791441917419434,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.620855808258057
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.6384164690971375,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.361583530902863
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.408850908279419,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.591149091720581
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.3938870429992676,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.606112957000732
+        },
+        {
+          "player_id": 119,
+          "predicted": 0.4523472785949707,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.547652721405029
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.6112734079360962,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.388726592063904
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8241914510726929,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.175808548927307
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.921326220035553,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.078673779964447
+        },
+        {
+          "player_id": 85,
+          "predicted": 3.195500373840332,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.804499626159668
+        },
+        {
+          "player_id": 31,
+          "predicted": 3.405564308166504,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.594435691833496
+        }
+      ]
+    },
+    "baseline_catboost_blend": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.1748830591945973,
+        "rmse": 1.9252031449549531,
+        "bias": 0.05439319201745234,
+        "spearman": 0.7207089973266763
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1748830591945973,
+          "rmse": 1.9252031449549531,
+          "bias": 0.05439319201745234,
+          "spearman": 0.7207089973266763
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1515894976598602,
+          "rmse": 2.101504780688974,
+          "bias": -0.034313954197735835,
+          "spearman": 0.8190803726002046
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.230749744793114,
+          "rmse": 2.773509346366058,
+          "bias": 0.02898420660966145,
+          "spearman": 0.32681992516419206
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.024820939444322,
+          "rmse": 3.632690857417308,
+          "bias": -0.754714554264217,
+          "spearman": 0.5403414759441724
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8844858500851069,
+          "rmse": 1.6947963577961096,
+          "bias": 0.08785345097278835,
+          "spearman": 0.7241163336458739
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4324181703833039,
+          "rmse": 2.2320886097674366,
+          "bias": 0.030896560844087907,
+          "spearman": 0.6759189197737616
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0597149642030035,
+          "rmse": 1.661304619086934,
+          "bias": 0.08790104209476901,
+          "spearman": 0.716752400785936
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1515894976598602,
+          "rmse": 2.101504780688974,
+          "bias": -0.034313954197735835,
+          "spearman": 0.8190803726002046
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.5538035228027606,
+          "rmse": 0.8923837672812789,
+          "bias": 0.5521383040427531,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2545520614863204,
+          "rmse": 3.0089843967593026,
+          "bias": -0.9255563271933643,
+          "spearman": 0.08115954774447615
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.792372953254665,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.207627046745335
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.3882276588095253,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.611772341190475
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.4564713519281924,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.543528648071808
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.202563235560976,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.7974367644390234
+        },
+        {
+          "player_id": 295,
+          "predicted": 4.5241818643938005,
+          "actual": 12,
+          "minutes": 90,
+          "error": -7.4758181356061995
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5799949102089723,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.420005089791028
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.6624457546081743,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.337554245391826
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.7403433520482035,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.259656647951797
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.0827494099292272,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.917250590070773
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.2744842717474527,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.725515728252548
+        }
+      ]
+    },
+    "three_family_research_blend": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.1490980612100035,
+        "rmse": 1.9559556060488545,
+        "bias": 0.0344652915853569,
+        "spearman": 0.7332171653450149
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1490980612100035,
+          "rmse": 1.9559556060488545,
+          "bias": 0.0344652915853569,
+          "spearman": 0.7332171653450149
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1596595976679338,
+          "rmse": 2.1827089439940823,
+          "bias": -0.11082643766724375,
+          "spearman": 0.8029122102660662
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.267425256121016,
+          "rmse": 2.8265456842919736,
+          "bias": 0.020482967568946173,
+          "spearman": 0.33538831084754
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.077415239344529,
+          "rmse": 3.7422337963458068,
+          "bias": -0.8671555820319846,
+          "spearman": 0.5213625398056373
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8977063608815139,
+          "rmse": 1.7072207404488546,
+          "bias": -0.07831656248734968,
+          "spearman": 0.7672864236538309
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.347297812306,
+          "rmse": 2.2432188876232595,
+          "bias": -0.041950517671886615,
+          "spearman": 0.6797285584273843
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.0596797852368265,
+          "rmse": 1.6996251223252945,
+          "bias": 0.15983347788488822,
+          "spearman": 0.7371675806992682
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1596595976679338,
+          "rmse": 2.1827089439940823,
+          "bias": -0.11082643766724375,
+          "spearman": 0.8029122102660662
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.4432862252875162,
+          "rmse": 0.9459906438344906,
+          "bias": 0.3901507169296682,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.226949393688204,
+          "rmse": 2.9945683307736264,
+          "bias": -0.8048738498531379,
+          "spearman": 0.07837097396680648
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9902255233190504,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.009774476680949
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.958990604987203,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.041009395012797
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.896470457026289,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.10352954297371
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.4340666528558943,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.565933347144106
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.445729803282791,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.554270196717209
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.4738749033062306,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.52612509669377
+        },
+        {
+          "player_id": 119,
+          "predicted": 0.8064850707855358,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.193514929214464
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.8067804383051556,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.193219561694844
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.9315695563934293,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.06843044360657
+        },
+        {
+          "player_id": 129,
+          "predicted": 3.360997983509907,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.6390020164900925
+        }
+      ]
+    },
+    "baseline_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.2689146676417111,
+        "rmse": 1.9471203603634213,
+        "bias": 0.2698803484432765,
+        "spearman": 0.6910393182237962
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.2827099672064377,
+          "rmse": 2.0000590676028094,
+          "bias": 0.19792193191657306,
+          "spearman": 0.7055966272058463
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.2002858291776093,
+          "rmse": 2.2744213314871633,
+          "bias": -0.07286905759160724,
+          "spearman": 0.7902622816125574
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.129151650630052,
+          "rmse": 2.7927529178212036,
+          "bias": -0.23697241016761852,
+          "spearman": 0.31467216586036156
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 2.9525788183752075,
+          "rmse": 3.947857290974142,
+          "bias": -1.2833810581322562,
+          "spearman": 0.3907428028521908
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 1.3829153930228473,
+          "rmse": 1.858586038291425,
+          "bias": 0.55756289246593,
+          "spearman": 0.7180623424442811
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.4877933617754837,
+          "rmse": 2.268796917114853,
+          "bias": 0.16943095652992696,
+          "spearman": 0.6746476995305422
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.1255321793088928,
+          "rmse": 1.7183079093534217,
+          "bias": 0.20324646514565065,
+          "spearman": 0.7265786191157487
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.2002858291776093,
+          "rmse": 2.2744213314871633,
+          "bias": -0.07286905759160724,
+          "spearman": 0.7902622816125574
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.7478582320858508,
+          "rmse": 1.1449465536612142,
+          "bias": 0.7478582320858508,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2140825045219534,
+          "rmse": 3.0185823904146205,
+          "bias": -0.9344313007142191,
+          "spearman": 0.02133455469769473
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.2515,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.7485
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.8877901540154016,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.112209845984598
+        },
+        {
+          "player_id": 295,
+          "predicted": 2.9429476096582263,
+          "actual": 12,
+          "minutes": 90,
+          "error": -9.057052390341774
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.6500831586303284,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.349916841369671
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.4625922995780591,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.537407700421941
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.6135,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.3865
+        },
+        {
+          "player_id": 129,
+          "predicted": 3.011876121287502,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.988123878712498
+        },
+        {
+          "player_id": 151,
+          "predicted": 2.2013130707990523,
+          "actual": 9,
+          "minutes": 90,
+          "error": -6.798686929200947
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.252221601489758,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.747778398510242
+        },
+        {
+          "player_id": 77,
+          "predicted": 1.3238010601547936,
+          "actual": 8,
+          "minutes": 2,
+          "error": -6.676198939845206
+        }
+      ]
+    },
+    "football_catboost_news_zero": {
+      "full_coverage": {
+        "n": 669,
+        "mae": 1.020650588974659,
+        "rmse": 1.8312707146127891,
+        "bias": -0.026640442556523408,
+        "spearman": 0.7461165400919042
+      },
+      "forecast_n": 669,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0616471951729383,
+          "rmse": 1.8963447044783983,
+          "bias": -0.06310130943690899,
+          "spearman": 0.7549319842165028
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0386527723004386,
+          "rmse": 2.0755510496540492,
+          "bias": -0.14497690840811606,
+          "spearman": 0.8578570166146936
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.1933078232159513,
+          "rmse": 2.756761527801133,
+          "bias": -0.0059787966493965545,
+          "spearman": 0.3259520717007011
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.0274458277713743,
+          "rmse": 3.626018879789444,
+          "bias": -0.7355056701067385,
+          "spearman": 0.5406205059012895
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8300203850030444,
+          "rmse": 1.6749041199321202,
+          "bias": 0.028564021782242814,
+          "spearman": 0.7143501441698329
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2931615474442297,
+          "rmse": 2.2023025262654063,
+          "bias": -0.113722117890404,
+          "spearman": 0.7151222863346687
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9513176802187385,
+          "rmse": 1.629342276462181,
+          "bias": -0.025561216747278487,
+          "spearman": 0.7541691896645333
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0386527723004386,
+          "rmse": 2.0755510496540492,
+          "bias": -0.14497690840811606,
+          "spearman": 0.8578570166146936
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.33244032549380353,
+          "rmse": 0.7535295832765343,
+          "bias": 0.32964809444374205,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2607807706289695,
+          "rmse": 3.012151762973224,
+          "bias": -0.9252338586105896,
+          "spearman": 0.08028381311154184
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.812025353826606,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.187974646173394
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.3700762570664227,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.629923742933578
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.4494365450333913,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.550563454966609
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.1931151844139183,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.8068848155860815
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5787775162871465,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.421222483712853
+        },
+        {
+          "player_id": 295,
+          "predicted": 4.581635373180189,
+          "actual": 12,
+          "minutes": 90,
+          "error": -7.418364626819811
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.6384156763674893,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.361584323632511
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.7235942032695237,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.276405796730476
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.0516688290648397,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.948331170935161
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.2752931768906524,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.724706823109347
+        }
+      ]
+    },
+    "tft_research_news_zero": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.1567456642623808,
+        "rmse": 1.9987584682809179,
+        "bias": 0.005330227486422805,
+        "spearman": 0.7333207553717428
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.1567456642623808,
+          "rmse": 1.9987584682809179,
+          "bias": 0.005330227486422805,
+          "spearman": 0.7333207553717428
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.1854734367703739,
+          "rmse": 2.252296316626218,
+          "bias": -0.1575689050432754,
+          "spearman": 0.8336015541625357
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.2447670795764143,
+          "rmse": 2.8620255310752536,
+          "bias": -0.04616638024648031,
+          "spearman": 0.3429361387466122
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.1166053215662637,
+          "rmse": 3.8503628245741686,
+          "bias": -0.9564996427959866,
+          "spearman": 0.3784623147625505
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8724635029906658,
+          "rmse": 1.6941665357170623,
+          "bias": -0.20755859097438073,
+          "spearman": 0.7440237755727911
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.307911166958142,
+          "rmse": 2.275235012218028,
+          "bias": -0.1208168467930933,
+          "spearman": 0.6905493083196884
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 1.1060529249622972,
+          "rmse": 1.7584112361670126,
+          "bias": 0.19800521448643796,
+          "spearman": 0.7255019586412813
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.1854734367703739,
+          "rmse": 2.252296316626218,
+          "bias": -0.1575689050432754,
+          "spearman": 0.8336015541625357
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3553091839026168,
+          "rmse": 0.895325975556703,
+          "bias": 0.24001196304441624,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2813682368770243,
+          "rmse": 3.0422694924652176,
+          "bias": -0.7136716556921602,
+          "spearman": 0.10569792239306469
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.3791441917419434,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.620855808258057
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.6384164690971375,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.361583530902863
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.408850908279419,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.591149091720581
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.3938870429992676,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.606112957000732
+        },
+        {
+          "player_id": 119,
+          "predicted": 0.4523472785949707,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.547652721405029
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.6112734079360962,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.388726592063904
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.8241914510726929,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.175808548927307
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.921326220035553,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.078673779964447
+        },
+        {
+          "player_id": 85,
+          "predicted": 3.195500373840332,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.804499626159668
+        },
+        {
+          "player_id": 31,
+          "predicted": 3.405564308166504,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.594435691833496
+        }
+      ]
+    },
+    "baseline_catboost_blend_news_zero": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.0656721126665134,
+        "rmse": 1.8949205698799712,
+        "bias": -0.053949656861971805,
+        "spearman": 0.7593956043827343
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.0656721126665134,
+          "rmse": 1.8949205698799712,
+          "bias": -0.053949656861971805,
+          "spearman": 0.7593956043827343
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0434546937979938,
+          "rmse": 2.0791401988630533,
+          "bias": -0.14244875805960205,
+          "spearman": 0.8580406304170018
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.187687948158468,
+          "rmse": 2.7542630125871623,
+          "bias": -0.01407759002498476,
+          "spearman": 0.3337583152696856
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.024820939444322,
+          "rmse": 3.632690857417308,
+          "bias": -0.754714554264217,
+          "spearman": 0.5403414759441724
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8358399058936431,
+          "rmse": 1.6702719737026537,
+          "bias": 0.047111082388524905,
+          "spearman": 0.7426457707907683
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2977270312394764,
+          "rmse": 2.2002197132273076,
+          "bias": -0.10379457829973981,
+          "spearman": 0.7156287288686572
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9542748584853408,
+          "rmse": 1.627633356182832,
+          "bias": -0.017539063622893893,
+          "spearman": 0.7556108675252096
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0434546937979938,
+          "rmse": 2.0791401988630533,
+          "bias": -0.14244875805960205,
+          "spearman": 0.8580406304170018
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.3443108266325368,
+          "rmse": 0.7579187259826057,
+          "bias": 0.3443108266325368,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.2545520614863204,
+          "rmse": 3.0089843967593026,
+          "bias": -0.9255563271933643,
+          "spearman": 0.08115954774447615
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 4.792372953254665,
+          "actual": 15,
+          "minutes": 90,
+          "error": -10.207627046745335
+        },
+        {
+          "player_id": 145,
+          "predicted": 1.3882276588095253,
+          "actual": 11,
+          "minutes": 90,
+          "error": -9.611772341190475
+        },
+        {
+          "player_id": 85,
+          "predicted": 1.4564713519281924,
+          "actual": 10,
+          "minutes": 90,
+          "error": -8.543528648071808
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.202563235560976,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.7974367644390234
+        },
+        {
+          "player_id": 295,
+          "predicted": 4.5241818643938005,
+          "actual": 12,
+          "minutes": 90,
+          "error": -7.4758181356061995
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.5799949102089723,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.420005089791028
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.6624457546081743,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.337554245391826
+        },
+        {
+          "player_id": 151,
+          "predicted": 1.7403433520482035,
+          "actual": 9,
+          "minutes": 90,
+          "error": -7.259656647951797
+        },
+        {
+          "player_id": 161,
+          "predicted": 1.0827494099292272,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.917250590070773
+        },
+        {
+          "player_id": 119,
+          "predicted": 1.2744842717474527,
+          "actual": 8,
+          "minutes": 90,
+          "error": -6.725515728252548
+        }
+      ]
+    },
+    "three_family_research_blend_news_zero": {
+      "full_coverage": {
+        "n": 610,
+        "mae": 1.077042039809807,
+        "rmse": 1.9243512479964027,
+        "bias": -0.02136450732836176,
+        "spearman": 0.7619179970759496
+      },
+      "forecast_n": 610,
+      "missing_or_invalid_ids": [],
+      "groups": {
+        "all_common_players": {
+          "n": 610,
+          "mae": 1.077042039809807,
+          "rmse": 1.9243512479964027,
+          "bias": -0.02136450732836176,
+          "spearman": 0.7619179970759496
+        },
+        "all_forwards": {
+          "n": 73,
+          "mae": 1.0920650648494958,
+          "rmse": 2.1570412368129364,
+          "bias": -0.15138019664316774,
+          "spearman": 0.844152595344807
+        },
+        "prior_five_match_minutes_at_least_60": {
+          "n": 171,
+          "mae": 2.215627134633152,
+          "rmse": 2.7993058844022323,
+          "bias": -0.03131515391891769,
+          "spearman": 0.3468851623940548
+        },
+        "forwards_with_prior_minutes_at_least_60": {
+          "n": 18,
+          "mae": 3.077415239344529,
+          "rmse": 3.7422337963458068,
+          "bias": -0.8671555820319846,
+          "spearman": 0.5213625398056373
+        },
+        "position_GK": {
+          "n": 67,
+          "mae": 0.8337459414590592,
+          "rmse": 1.6699616171424545,
+          "bias": -0.10025636622935703,
+          "spearman": 0.7762224870678436
+        },
+        "position_DEF": {
+          "n": 202,
+          "mae": 1.2633763146826797,
+          "rmse": 2.2123187421437205,
+          "bias": -0.11475274876050594,
+          "spearman": 0.7155106198657118
+        },
+        "position_MID": {
+          "n": 268,
+          "mae": 0.9933279884563836,
+          "rmse": 1.665882723479116,
+          "bias": 0.10416282340164054,
+          "spearman": 0.762638353704372
+        },
+        "position_FWD": {
+          "n": 73,
+          "mae": 1.0920650648494958,
+          "rmse": 2.1570412368129364,
+          "bias": -0.15138019664316774,
+          "spearman": 0.844152595344807
+        },
+        "realized_minutes_zero_diagnostic": {
+          "n": 318,
+          "mae": 0.30506555530600743,
+          "rmse": 0.8121919802442853,
+          "bias": 0.28305581964234616,
+          "spearman": null
+        },
+        "realized_minutes_60_plus_diagnostic": {
+          "n": 200,
+          "mae": 2.226949393688204,
+          "rmse": 2.9945683307736264,
+          "bias": -0.8048738498531379,
+          "spearman": 0.07837097396680648
+        }
+      },
+      "largest_errors": [
+        {
+          "player_id": 112,
+          "predicted": 3.9902255233190504,
+          "actual": 15,
+          "minutes": 90,
+          "error": -11.009774476680949
+        },
+        {
+          "player_id": 145,
+          "predicted": 0.958990604987203,
+          "actual": 11,
+          "minutes": 90,
+          "error": -10.041009395012797
+        },
+        {
+          "player_id": 295,
+          "predicted": 3.896470457026289,
+          "actual": 12,
+          "minutes": 90,
+          "error": -8.10352954297371
+        },
+        {
+          "player_id": 492,
+          "predicted": 1.4340666528558943,
+          "actual": 9,
+          "minutes": 71,
+          "error": -7.565933347144106
+        },
+        {
+          "player_id": 85,
+          "predicted": 2.445729803282791,
+          "actual": 10,
+          "minutes": 90,
+          "error": -7.554270196717209
+        },
+        {
+          "player_id": 109,
+          "predicted": 3.4738749033062306,
+          "actual": 11,
+          "minutes": 90,
+          "error": -7.52612509669377
+        },
+        {
+          "player_id": 119,
+          "predicted": 0.8064850707855358,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.193514929214464
+        },
+        {
+          "player_id": 77,
+          "predicted": 0.8067804383051556,
+          "actual": 8,
+          "minutes": 2,
+          "error": -7.193219561694844
+        },
+        {
+          "player_id": 161,
+          "predicted": 0.9315695563934293,
+          "actual": 8,
+          "minutes": 90,
+          "error": -7.06843044360657
+        },
+        {
+          "player_id": 129,
+          "predicted": 3.360997983509907,
+          "actual": 10,
+          "minutes": 90,
+          "error": -6.6390020164900925
+        }
+      ]
+    }
+  },
+  "team_goal_metrics": {
+    "bayesian_team_goals": {
+      "n": 20,
+      "mae": 0.7702746452542069,
+      "rmse": 0.9165255430640004,
+      "bias": 0.2422111751403409,
+      "spearman": 0.33743397740370956,
+      "expected_n": 20
+    }
+  },
+  "common_player_count": 610,
+  "analysis_plan_sha256": "13949fb557ca12fa7416dc0a0fa36f60255259152b36fabf649f6aba12913e42",
+  "subgroups_predeclared": true,
+  "new_experiment": {
+    "experiment_id": "4311d66fc448e607c94278a3332601846dd42f7e6413b87a25f5de92e12bdf11",
+    "collection_id": "7ad5d2a7c28d4f1497e1f84ad4db4354",
+    "collection_sha256": "61b8cb9807ca9abb8caa809c81924fe34e0ec2e52647c1f528f134974d311596",
+    "fit_events": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "fit_rows": 5195,
+    "future_event": 10,
+    "future_fixture_rows": 670,
+    "implementation_sha256": {
+      "deadline.py": "2b02c4c78aa002ce10c716e3ca296b652fe5071e9ebd0bbd41a9c617f3f9ffce",
+      "deadline_experiments.py": "79d1d6581e609a7b33b57556eafeac065f8a4776952da60abe3c0d93d247a538",
+      "football.py": "8cd1999b778656c8e76d36299995e6f2e4fe4b8d512cf74401347e2ab99ae842",
+      "points_hurdle.py": "a3d0c04c9716036c13fde3308c1740421ef03ef99d03fb14d5fb82e87778ad0e"
+    },
+    "status": "evaluated_research",
+    "active": false,
+    "selected_by_validation": "points_hurdle",
+    "variants": [
+      {
+        "name": "points_position",
+        "features": [
+          "position",
+          "rule_era",
+          "history_count",
+          "points_5"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 94,
+        "validation": {
+          "mae": 1.2734856561352996,
+          "rmse": 2.1780404869983574,
+          "bias": 0.04955783985810286
+        },
+        "exploratory_test": {
+          "mae": 1.3034844554245193,
+          "rmse": 2.126262760727762,
+          "bias": 0.07661072378242088
+        }
+      },
+      {
+        "name": "opportunity_fixture",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 189,
+        "validation": {
+          "mae": 1.2343517772622825,
+          "rmse": 2.1494267730096874,
+          "bias": -0.012041803324181389
+        },
+        "exploratory_test": {
+          "mae": 1.2363618367186677,
+          "rmse": 2.080854580692405,
+          "bias": -0.006848754179453623
+        }
+      },
+      {
+        "name": "plus_xg_xa",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 78,
+        "validation": {
+          "mae": 1.2558599057924302,
+          "rmse": 2.154885693446167,
+          "bias": 0.004058626057861661
+        },
+        "exploratory_test": {
+          "mae": 1.267543148678295,
+          "rmse": 2.088919383900044,
+          "bias": 0.029693849340629522
+        }
+      },
+      {
+        "name": "plus_defensive_actions",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 130,
+        "validation": {
+          "mae": 1.2315859699789438,
+          "rmse": 2.155812408464582,
+          "bias": -0.025063179228360297
+        },
+        "exploratory_test": {
+          "mae": 1.2465744789963986,
+          "rmse": 2.0878375751038574,
+          "bias": 0.005358850282371961
+        }
+      },
+      {
+        "name": "full_context",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 113,
+        "validation": {
+          "mae": 1.1995244224097696,
+          "rmse": 2.117458733347471,
+          "bias": 0.002664435224652191
+        },
+        "exploratory_test": {
+          "mae": 1.2225743444016064,
+          "rmse": 2.059183773289059,
+          "bias": 0.05054667906246642
+        }
+      },
+      {
+        "name": "full_shallow_regularized",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior"
+        ],
+        "depth": 3,
+        "l2_leaf_reg": 30,
+        "seed": 43,
+        "selected_iterations": 84,
+        "validation": {
+          "mae": 1.2294765697291807,
+          "rmse": 2.1283188606849404,
+          "bias": 0.004748017404060477
+        },
+        "exploratory_test": {
+          "mae": 1.2447564348118605,
+          "rmse": 2.069910595582189,
+          "bias": 0.0355053372787028
+        }
+      },
+      {
+        "name": "full_deeper_regularized",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior"
+        ],
+        "depth": 5,
+        "l2_leaf_reg": 30,
+        "seed": 43,
+        "selected_iterations": 108,
+        "validation": {
+          "mae": 1.1899550329241086,
+          "rmse": 2.1246129515411227,
+          "bias": -0.05776006078321895
+        },
+        "exploratory_test": {
+          "mae": 1.1984214621235414,
+          "rmse": 2.0551453889901286,
+          "bias": -0.0310218725521756
+        }
+      },
+      {
+        "name": "full_second_seed",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 47,
+        "selected_iterations": 98,
+        "validation": {
+          "mae": 1.2061750939699654,
+          "rmse": 2.11595147439796,
+          "bias": -0.005951788846642775
+        },
+        "exploratory_test": {
+          "mae": 1.2268400780055808,
+          "rmse": 2.055086346501108,
+          "bias": 0.047931739703479095
+        }
+      },
+      {
+        "name": "opportunity_multiscale",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior",
+          "appearance_3",
+          "sixty_3",
+          "minutes_ewm",
+          "points_10",
+          "xg_10",
+          "xa_10"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "selected_iterations": 134,
+        "validation": {
+          "mae": 1.1918738986920794,
+          "rmse": 2.115964391406646,
+          "bias": -0.007337204114910918
+        },
+        "exploratory_test": {
+          "mae": 1.214179692654659,
+          "rmse": 2.0606523279558897,
+          "bias": 0.032595396591349
+        }
+      },
+      {
+        "name": "points_hurdle",
+        "features": [
+          "position",
+          "club",
+          "opponent",
+          "home",
+          "rule_era",
+          "history_count",
+          "points_5",
+          "minutes_5",
+          "appearance_5",
+          "sixty_5",
+          "starts_5",
+          "history_missing",
+          "starts_missing",
+          "xg_5",
+          "xa_5",
+          "xg90_shrunk",
+          "xa90_shrunk",
+          "xg_missing",
+          "xa_missing",
+          "defcon_5",
+          "defcon_missing",
+          "minutes_std5",
+          "minutes_last",
+          "starts_last",
+          "rest_days",
+          "club_goals_prior",
+          "opponent_conceded_prior",
+          "appearance_3",
+          "sixty_3",
+          "minutes_ewm",
+          "points_10",
+          "xg_10",
+          "xa_10"
+        ],
+        "depth": 4,
+        "l2_leaf_reg": 10,
+        "seed": 43,
+        "method": "points_hurdle",
+        "selected_iterations": {
+          "gate": 238,
+          "conditional": 76
+        },
+        "validation": {
+          "mae": 1.1876028743984959,
+          "rmse": 2.1148550298261166,
+          "bias": -0.016956438954023125
+        },
+        "exploratory_test": {
+          "mae": 1.2008475009066448,
+          "rmse": 2.0535974339517145,
+          "bias": 0.028814202256684393
+        }
+      }
+    ],
+    "ensemble_weights": {
+      "points_position": 0.05982970248812481,
+      "opportunity_fixture": 4.656828853613345e-18,
+      "plus_xg_xa": 0.0,
+      "plus_defensive_actions": 0.0,
+      "full_context": 2.220340827766998e-17,
+      "full_shallow_regularized": 0.0,
+      "full_deeper_regularized": 0.0,
+      "full_second_seed": 0.08432584956489342,
+      "opportunity_multiscale": 0.3767280742980492,
+      "points_hurdle": 0.47911637364893256
+    },
+    "ensemble_exploratory_test": {
+      "mae": 1.208790450404301,
+      "rmse": 2.0516775024073075,
+      "bias": 0.034710438566571036
+    },
+    "benchmark_id": "619b2b90f8eb2d3fbf08c7ada6de53576e7b91f89f10cf5245d4562f271d6381",
+    "limitations": [
+      "Historical timing and schedule assumptions remain explicit",
+      "Previously inspected historical test blocks are exploratory",
+      "Prospective event is not scored or used to choose settings",
+      "No automatic production promotion"
+    ]
+  },
+  "next_event_analysis_plan": {
+    "registered_at": "2026-11-03T09:11:54.995091+00:00",
+    "event": 10,
+    "benchmark_ids": [
+      "619b2b90f8eb2d3fbf08c7ada6de53576e7b91f89f10cf5245d4562f271d6381",
+      "8a448b009ce2970c24856affa922b6d07a916a888dfb0e4270d314bd495417de"
+    ],
+    "subgroups": {
+      "all_forwards": [
+        25,
+        26,
+        27,
+        55,
+        56,
+        79,
+        80,
+        81,
+        106,
+        107,
+        108,
+        125,
+        136,
+        137,
+        138,
+        139,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        193,
+        194,
+        195,
+        196,
+        197,
+        222,
+        223,
+        224,
+        225,
+        248,
+        249,
+        271,
+        272,
+        295,
+        298,
+        299,
+        316,
+        317,
+        320,
+        321,
+        322,
+        346,
+        347,
+        348,
+        349,
+        379,
+        380,
+        382,
+        401,
+        411,
+        439,
+        440,
+        441,
+        463,
+        464,
+        465,
+        466,
+        490,
+        491,
+        492,
+        493,
+        526,
+        527,
+        528,
+        552,
+        553,
+        569,
+        582,
+        594,
+        599,
+        608,
+        632,
+        634,
+        637,
+        640,
+        651,
+        664
+      ],
+      "prior_five_match_minutes_at_least_60": [
+        1,
+        4,
+        8,
+        12,
+        13,
+        15,
+        26,
+        28,
+        31,
+        32,
+        33,
+        37,
+        40,
+        41,
+        43,
+        45,
+        47,
+        53,
+        54,
+        57,
+        60,
+        61,
+        64,
+        67,
+        68,
+        73,
+        79,
+        82,
+        86,
+        87,
+        88,
+        91,
+        94,
+        98,
+        101,
+        105,
+        106,
+        109,
+        110,
+        112,
+        113,
+        114,
+        115,
+        124,
+        127,
+        129,
+        138,
+        149,
+        154,
+        155,
+        156,
+        166,
+        167,
+        173,
+        175,
+        176,
+        183,
+        184,
+        194,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        210,
+        211,
+        214,
+        222,
+        226,
+        229,
+        230,
+        233,
+        236,
+        237,
+        239,
+        244,
+        249,
+        250,
+        254,
+        257,
+        258,
+        259,
+        261,
+        264,
+        265,
+        268,
+        277,
+        279,
+        280,
+        282,
+        286,
+        290,
+        295,
+        300,
+        304,
+        305,
+        316,
+        330,
+        331,
+        332,
+        334,
+        335,
+        336,
+        338,
+        345,
+        346,
+        350,
+        356,
+        358,
+        362,
+        366,
+        372,
+        379,
+        384,
+        385,
+        388,
+        389,
+        390,
+        391,
+        401,
+        411,
+        412,
+        417,
+        418,
+        419,
+        426,
+        427,
+        428,
+        445,
+        447,
+        449,
+        453,
+        455,
+        459,
+        460,
+        464,
+        467,
+        469,
+        472,
+        480,
+        481,
+        483,
+        486,
+        496,
+        502,
+        503,
+        504,
+        512,
+        522,
+        526,
+        529,
+        533,
+        536,
+        542,
+        544,
+        545,
+        558,
+        566,
+        567,
+        569,
+        572,
+        575,
+        579,
+        580,
+        581,
+        588,
+        591,
+        592,
+        597,
+        598,
+        619,
+        627,
+        639,
+        644,
+        650
+      ],
+      "forwards_with_prior_minutes_at_least_60": [
+        26,
+        79,
+        106,
+        138,
+        166,
+        167,
+        194,
+        222,
+        249,
+        295,
+        316,
+        346,
+        379,
+        401,
+        411,
+        464,
+        526,
+        569
+      ]
+    },
+    "comparison": "Canonical final-source experiment only; matched player IDs; no retrospective GW10 selection",
+    "source": "immutable final experiment future_features.parquet; train labels finalized GW1-8 only"
+  }
+}

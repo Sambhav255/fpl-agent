@@ -50,4 +50,4 @@ Returned status remains `trained`, never `active` or `evaluated`.
 
 Adapter contract tests use synthetic fixtures; optional library tests exercise real PyMC sampling and TFT fit/reload with synthetic data. No advanced model is active. New training publication records actual artifact availability and fitting/model-selection input cutoffs, including validation outcomes used by early stopping. Existing artifacts are not backdated.
 
-Latest executed checks are recorded in [BUILD_STATUS.md](BUILD_STATUS.md). Strict historical-data, evaluation, mapping, and promotion requirements above remain outstanding.
+Latest executed checks are recorded in [BUILD_STATUS.md](../BUILD_STATUS.md). Strict historical-data, evaluation, mapping, and promotion requirements above remain outstanding.

@@ -1,0 +1,27 @@
+{
+  "backend": {
+    "passed": 533,
+    "skipped": 3,
+    "warnings": 132,
+    "ruff": "passed",
+    "format_files": 140,
+    "mypy_source_files": 89
+  },
+  "operator_tests_passed": 18,
+  "docs": {
+    "relocations_verified": 67,
+    "archived_originals_verified": 52,
+    "preserved_prior_experiment_files": 33,
+    "broken_active_links": 0
+  },
+  "preservation": {
+    "manager_states_unchanged": true,
+    "prior_forecast_bundles_unchanged": 7
+  },
+  "rolling_job": "succeeded",
+  "gw10_selection_registration": "prospective_selection",
+  "gw9_selection_review": "retrospective_and_provisional",
+  "promotion": false,
+  "frontend": "unchanged; not rerun",
+  "research_worker": "restarted with current implementation; local process requires computer on"
+}

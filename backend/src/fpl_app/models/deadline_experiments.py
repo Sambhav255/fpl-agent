@@ -10,7 +10,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from fpl_app.features.deadline import ATTACK, CONTEXT, DEFENCE, enriched_panels
+from fpl_app.features.deadline import ATTACK, CONTEXT, DEFENCE, OPPORTUNITY, enriched_panels
 from fpl_app.features.football import CATEGORICAL, FEATURES
 from fpl_app.features.pipeline import utc
 from fpl_app.learning.forecast_benchmark import make_benchmark
@@ -57,16 +57,89 @@ def protocol(collection_id: str) -> dict[str, Any]:
     }
 
 
+def advancing_protocol(collection: dict[str, Any]) -> dict[str, Any]:
+    """Keep two validation and two exploratory test events, advancing with final labels."""
+    events = sorted(
+        {r["event"] for r in collection["labels"] if r["label_status"] == "final_revision"}
+    )
+    if len(events) < 8:
+        raise ValueError("Eight finalized events required")
+    spec = protocol(collection["collection_id"])
+    spec.update(
+        version="deadline-ablation-v2",
+        train_events=events[:-4],
+        validation_events=events[-4:-2],
+        test_events=events[-2:],
+        finalized_events=events,
+        future_interpretation="Next-event forecasts prospective only if published before actual deadline",
+    )
+    full = FEATURES + ATTACK + DEFENCE + CONTEXT + OPPORTUNITY
+    spec["configurations"] += [
+        {
+            "name": "opportunity_multiscale",
+            "features": full,
+            "depth": 4,
+            "l2_leaf_reg": 10,
+            "seed": 43,
+        },
+        {
+            "name": "points_hurdle",
+            "features": full,
+            "depth": 4,
+            "l2_leaf_reg": 10,
+            "seed": 43,
+            "method": "points_hurdle",
+        },
+    ]
+    return spec
+
+
+def event_means(future: pd.DataFrame, predictions: Any) -> list[dict[str, Any]]:
+    """Sum fixture means; doubles retain both exposures at the common origin."""
+    if len(predictions) != len(future) or not np.isfinite(np.asarray(predictions)).all():
+        raise ValueError("Finite complete fixture means required")
+    values = future[["player_id"]].copy()
+    values["expected_points"] = np.asarray(predictions)
+    return [
+        {"player_id": int(p), "expected_points": float(v)}
+        for p, v in values.groupby("player_id", sort=True, as_index=False)
+        .expected_points.sum()
+        .itertuples(index=False, name=None)
+    ]
+
+
 def training_input(store: Store, payload: dict[str, Any]) -> str:
     spec = payload["protocol"]
     collection = load_collection(store, spec["collection_id"])
     code = {
         p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-        for p in (Path(__file__), Path(__file__).parents[1] / "features/deadline.py")
+        for p in (
+            Path(__file__),
+            Path(__file__).with_name("points_hurdle.py"),
+            Path(__file__).parents[1] / "features/deadline.py",
+            Path(__file__).parents[1] / "features/football.py",
+        )
     }
-    expected = protocol(spec["collection_id"])
+    expected = (
+        advancing_protocol(collection)
+        if spec.get("version") == "deadline-ablation-v2"
+        else protocol(spec["collection_id"])
+    )
     if any(spec.get(k) != v for k, v in expected.items() if k != "registered_at"):
         raise ValueError("Unknown benchmark protocol")
+    # A refit may consume a completed prospective event only after all its
+    # retained benchmark bundles have been scored, never before.
+    if spec.get("version") == "deadline-ablation-v2":
+        scored = {
+            r["benchmark_id"]
+            for r in store.list("forecast_benchmark_outcome")
+            if r["status"] == "final"
+        }
+        if any(
+            b["event"] in spec["finalized_events"] and b["benchmark_id"] not in scored
+            for b in store.list("forecast_benchmark")
+        ):
+            raise ValueError("Score finalized frozen benchmarks before refitting their labels")
     return fingerprint(
         {"protocol": spec, "collection_sha256": collection["envelope_sha256"], "code": code}
     )
@@ -81,13 +154,24 @@ def train_job(store: Store, payload: dict[str, Any]) -> dict[str, Any]:
     identity = training_input(store, payload)
     root = data_dir() / "models/deadline_experiments" / identity[:24]
     root.mkdir(parents=True, exist_ok=True)
+    implementation = root / "implementation"
+    implementation.mkdir(exist_ok=True)
+    for path in (
+        Path(__file__),
+        Path(__file__).with_name("points_hurdle.py"),
+        Path(__file__).parents[1] / "features/deadline.py",
+        Path(__file__).parents[1] / "features/football.py",
+    ):
+        (implementation / path.name).write_bytes(path.read_bytes())
     (root / "protocol.json").write_text(json.dumps(spec, sort_keys=True, indent=2))
     collection = load_collection(store, spec["collection_id"])
     sources = {s["resource"]: s for s in collection["sources"][:2]}
     fixtures = json.loads(store.snapshot(sources["fixtures/"]["id"])["raw"])
     panel, future, _ = enriched_panels(collection, fixtures)
-    if not set(range(1, 9)) <= set(panel.event):
-        raise ValueError("Eight explicit finalized current-era events required")
+    if not set(spec["train_events"] + spec["validation_events"] + spec["test_events"]) <= set(
+        panel.event
+    ):
+        raise ValueError("Explicit finalized partition events required")
     train = panel[panel.event.isin(spec["train_events"])].copy()
     validation = panel[panel.event.isin(spec["validation_events"])].copy()
     test = panel[panel.event.isin(spec["test_events"])].copy()
@@ -125,34 +209,59 @@ def train_job(store: Store, payload: dict[str, Any]) -> dict[str, Any]:
             "allow_writing_files": False,
             "allow_const_label": True,
         }
-        selection = CatBoostRegressor(iterations=spec["iterations"], **kwargs)
-        selection.fit(
-            train[columns],
-            train.target_points,
-            cat_features=categories,
-            eval_set=(validation[columns], validation.target_points),
-            early_stopping_rounds=spec["early_stopping_rounds"],
-        )
-        iterations = max(1, selection.get_best_iteration() + 1)
-        selection.save_model(str(directory / "selection.cbm"))
-        val_predictions[name] = selection.predict(validation[columns])
-        test_predictions[name] = selection.predict(test[columns])
-        latest = CatBoostRegressor(iterations=iterations, **kwargs)
-        latest.fit(current[columns], current.target_points, cat_features=categories)
-        latest.save_model(str(directory / "current.cbm"))
-        reloaded = CatBoostRegressor()
-        reloaded.load_model(str(directory / "current.cbm"))
-        predictions = reloaded.predict(future[columns])
-        if not np.array_equal(predictions, latest.predict(future[columns])):
-            raise ValueError("Checkpoint reload changed future predictions")
+        if config.get("method") == "points_hurdle":
+            from fpl_app.models.points_hurdle import fit_hurdle, predict_hurdle
+
+            iterations = fit_hurdle(
+                train,
+                validation,
+                columns,
+                categories,
+                kwargs,
+                spec["iterations"],
+                spec["early_stopping_rounds"],
+                directory / "selection",
+            )
+            val_predictions[name] = predict_hurdle(directory / "selection", validation, columns)
+            test_predictions[name] = predict_hurdle(directory / "selection", test, columns)
+            fit_hurdle(
+                current,
+                None,
+                columns,
+                categories,
+                kwargs,
+                iterations,
+                spec["early_stopping_rounds"],
+                directory / "current",
+            )
+            predictions = predict_hurdle(directory / "current", future, columns)
+        else:
+            selection = CatBoostRegressor(iterations=spec["iterations"], **kwargs)
+            selection.fit(
+                train[columns],
+                train.target_points,
+                cat_features=categories,
+                eval_set=(validation[columns], validation.target_points),
+                early_stopping_rounds=spec["early_stopping_rounds"],
+            )
+            iterations = max(1, selection.get_best_iteration() + 1)
+            selection.save_model(str(directory / "selection.cbm"))
+            val_predictions[name] = selection.predict(validation[columns])
+            test_predictions[name] = selection.predict(test[columns])
+            latest = CatBoostRegressor(iterations=iterations, **kwargs)
+            latest.fit(current[columns], current.target_points, cat_features=categories)
+            latest.save_model(str(directory / "current.cbm"))
+            reloaded = CatBoostRegressor()
+            reloaded.load_model(str(directory / "current.cbm"))
+            predictions = reloaded.predict(future[columns])
+            if not np.array_equal(predictions, latest.predict(future[columns])):
+                raise ValueError("Checkpoint reload changed future predictions")
         models[name] = {
             "published_at": utcnow(),
-            "scope": "unconditional fixture mean; one fixture in this event",
-            "predictions": [
-                {"player_id": int(p), "expected_points": float(v)}
-                for p, v in zip(future.player_id, predictions)
-            ],
+            "scope": "unconditional event mean; summed scheduled fixture means; no additional availability multiplier",
+            "predictions": event_means(future, predictions),
         }
+        future[name] = predictions
         summaries.append(
             {
                 **config,
@@ -172,16 +281,11 @@ def train_job(store: Store, payload: dict[str, Any]) -> dict[str, Any]:
     test_blend, latest_blend = np.zeros(len(test)), np.zeros(len(future))
     for name in names:
         test_blend += weights[name] * test_predictions[name].to_numpy()
-        latest_blend += weights[name] * np.array(
-            [r["expected_points"] for r in models[name]["predictions"]]
-        )
+        latest_blend += weights[name] * future[name].to_numpy()
     models["validation_fit_ensemble"] = {
         "published_at": utcnow(),
         "weights": weights,
-        "predictions": [
-            {"player_id": int(p), "expected_points": float(v)}
-            for p, v in zip(future.player_id, latest_blend)
-        ],
+        "predictions": event_means(future, latest_blend),
     }
     winner = min(summaries, key=lambda r: r["validation"]["rmse"])["name"]
     val_predictions.to_parquet(root / "validation_predictions.parquet", index=False)
@@ -197,6 +301,16 @@ def train_job(store: Store, payload: dict[str, Any]) -> dict[str, Any]:
     )
     report = {
         "experiment_id": identity,
+        "collection_id": collection["collection_id"],
+        "collection_sha256": collection["envelope_sha256"],
+        "fit_events": sorted(int(e) for e in current.event.unique()),
+        "fit_rows": len(current),
+        "future_event": int(future.event.iloc[0]),
+        "future_fixture_rows": len(future),
+        "implementation_sha256": {
+            p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(implementation.iterdir())
+        },
         "status": "evaluated_research",
         "active": False,
         "selected_by_validation": winner,

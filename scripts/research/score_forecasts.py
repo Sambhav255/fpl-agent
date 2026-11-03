@@ -62,11 +62,38 @@ def main():
         if args.benchmark_id is None or r["benchmark_id"] == args.benchmark_id
     ]
     if args.export:
+        event_reviews = [
+            r
+            for r in store.list("forecast_event_review")
+            if args.benchmark_id is None or args.benchmark_id in r["benchmarks"]
+        ]
         args.export.parent.mkdir(parents=True, exist_ok=True)
-        args.export.write_text(json.dumps({"scorecards": scorecards}, indent=2) + "\n")
+        selection_reviews = [
+            r
+            for r in store.list("forecast_selection_review")
+            if args.benchmark_id is None
+            or args.benchmark_id
+            in store.get("forecast_selection_plan", r["plan_id"])["benchmark_hashes"]
+        ]
+        args.export.write_text(
+            json.dumps(
+                {
+                    "scorecards": scorecards,
+                    "event_reviews": event_reviews,
+                    "selection_reviews": selection_reviews,
+                },
+                indent=2,
+            )
+            + "\n"
+        )
         print(
             json.dumps(
-                {"exported_scorecards": len(scorecards), "output": str(args.export)}
+                {
+                    "exported_scorecards": len(scorecards),
+                    "exported_event_reviews": len(event_reviews),
+                    "exported_selection_reviews": len(selection_reviews),
+                    "output": str(args.export),
+                }
             )
         )
 

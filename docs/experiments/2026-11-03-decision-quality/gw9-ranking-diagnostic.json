@@ -1,0 +1,2928 @@
+{
+  "plan_id": "a31e1248107184e096536c3a60d5b9050a7068b9c543b7d8e5421b64bcb57140",
+  "study_id": "gw9-retrospective-selection-review",
+  "method_regime": "1aa25a92760ce3c6f5791fe058053040ec884d1f4519bd8123196169cd5ffbd2",
+  "season": "2026/27",
+  "event": 9,
+  "evidence_mode": "retrospective_frozen_forecast_diagnostic",
+  "protocol_sha256": "55b6b03c1313b90cefa854ce4bc7a812f349e340a9bb9c33428a99db67b99925",
+  "comparison_contract": {
+    "comparator": "baseline",
+    "challenger": "full_second_seed_news_zero",
+    "primary_group": "attacking_top1",
+    "metric": "selected_sum"
+  },
+  "comparator": "baseline",
+  "status": "provisional",
+  "selections": {
+    "points_position": {
+      "position_GK": {
+        "selected_ids": [
+          1,
+          109,
+          250,
+          496,
+          350
+        ],
+        "predicted_sum": 18.412474136659124,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 11,
+        "paired_selected_sum_delta": 10
+      },
+      "position_DEF": {
+        "selected_ids": [
+          4,
+          115,
+          31,
+          504,
+          257
+        ],
+        "predicted_sum": 18.39809482668804,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 32,
+        "selected_mean": 6.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": -5
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          53,
+          68,
+          45,
+          129
+        ],
+        "predicted_sum": 16.917270625293725,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          138,
+          79,
+          166,
+          379
+        ],
+        "predicted_sum": 18.61061801559474,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.033985307262835,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "opportunity_fixture": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          385,
+          1,
+          110,
+          572
+        ],
+        "predicted_sum": 20.64424331780186,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 16,
+        "selected_mean": 3.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 21,
+        "paired_selected_sum_delta": 0
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          176,
+          334,
+          332,
+          330
+        ],
+        "predicted_sum": 20.963169240661678,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          183,
+          124,
+          338,
+          236
+        ],
+        "predicted_sum": 19.603052338585698,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 21,
+        "selected_mean": 4.2,
+        "hindsight_best_sum": 44,
+        "selection_regret": 23,
+        "paired_selected_sum_delta": 2
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          411,
+          79,
+          295,
+          106
+        ],
+        "predicted_sum": 20.01055398105916,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.285854915336664,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "plus_xg_xa": {
+      "position_GK": {
+        "selected_ids": [
+          1,
+          109,
+          250,
+          385,
+          226
+        ],
+        "predicted_sum": 17.708645385199706,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 27,
+        "selected_mean": 5.4,
+        "hindsight_best_sum": 37,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 11
+      },
+      "position_DEF": {
+        "selected_ids": [
+          4,
+          566,
+          31,
+          305,
+          469
+        ],
+        "predicted_sum": 19.901153032889383,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 51,
+        "selection_regret": 25,
+        "paired_selected_sum_delta": -11
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          427,
+          453,
+          236,
+          67
+        ],
+        "predicted_sum": 20.313901389583123,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 32,
+        "paired_selected_sum_delta": -7
+      },
+      "position_FWD": {
+        "selected_ids": [
+          106,
+          79,
+          411,
+          569,
+          167
+        ],
+        "predicted_sum": 19.832926487606827,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          106
+        ],
+        "predicted_sum": 4.151395175986477,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 9,
+        "selected_mean": 9.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 3,
+        "paired_selected_sum_delta": 7
+      }
+    },
+    "plus_defensive_actions": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          1,
+          109,
+          250
+        ],
+        "predicted_sum": 19.165117202557745,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 11,
+        "paired_selected_sum_delta": 10
+      },
+      "position_DEF": {
+        "selected_ids": [
+          334,
+          330,
+          305,
+          4,
+          469
+        ],
+        "predicted_sum": 20.60309614491571,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 39,
+        "paired_selected_sum_delta": -25
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          183,
+          236,
+          453,
+          15
+        ],
+        "predicted_sum": 20.42928994130882,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 20,
+        "selected_mean": 4.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 1
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          79,
+          106,
+          346,
+          295
+        ],
+        "predicted_sum": 20.953657864214627,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.448316689733758,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_context": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          385,
+          110,
+          226
+        ],
+        "predicted_sum": 18.729892008219934,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 18,
+        "paired_selected_sum_delta": 3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          390,
+          330,
+          305,
+          112,
+          201
+        ],
+        "predicted_sum": 20.52054285091376,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 51,
+        "selection_regret": 32,
+        "paired_selected_sum_delta": -18
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          183,
+          427,
+          591,
+          124
+        ],
+        "predicted_sum": 20.162790767875176,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 44,
+        "selection_regret": 20,
+        "paired_selected_sum_delta": 5
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          346
+        ],
+        "predicted_sum": 20.93420273734179,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.853083714249254,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_shallow_regularized": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          226,
+          110,
+          385,
+          109
+        ],
+        "predicted_sum": 17.176615752196998,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 28,
+        "selected_mean": 5.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 9,
+        "paired_selected_sum_delta": 12
+      },
+      "position_DEF": {
+        "selected_ids": [
+          305,
+          330,
+          201,
+          504,
+          4
+        ],
+        "predicted_sum": 19.28754119546577,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 14,
+        "selected_mean": 2.8,
+        "hindsight_best_sum": 51,
+        "selection_regret": 37,
+        "paired_selected_sum_delta": -23
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          236,
+          183,
+          427,
+          40
+        ],
+        "predicted_sum": 20.092691924986617,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 25,
+        "selected_mean": 5.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          249,
+          79,
+          346
+        ],
+        "predicted_sum": 19.50757037893586,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          124
+        ],
+        "predicted_sum": 4.148934863889005,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_deeper_regularized": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          385,
+          226,
+          110,
+          529
+        ],
+        "predicted_sum": 18.78330224963913,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          469,
+          201,
+          305,
+          330,
+          112
+        ],
+        "predicted_sum": 20.270435986699933,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 33,
+        "paired_selected_sum_delta": -19
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          156,
+          427,
+          591,
+          40
+        ],
+        "predicted_sum": 20.26090862184271,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 25,
+        "selected_mean": 5.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          79,
+          249,
+          106,
+          295
+        ],
+        "predicted_sum": 20.143622246496264,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 41,
+        "selected_mean": 8.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 7,
+        "paired_selected_sum_delta": 17
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.221586271666283,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_second_seed": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          110,
+          226,
+          250
+        ],
+        "predicted_sum": 17.745802090458028,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 18,
+        "paired_selected_sum_delta": 3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          305,
+          390,
+          469,
+          201,
+          566
+        ],
+        "predicted_sum": 19.774636952116154,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 39,
+        "paired_selected_sum_delta": -25
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          427,
+          124,
+          67,
+          156
+        ],
+        "predicted_sum": 20.002217623825747,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 13,
+        "selected_mean": 2.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 31,
+        "paired_selected_sum_delta": -6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          167
+        ],
+        "predicted_sum": 20.130946634121504,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.416801814847735,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "validation_fit_ensemble": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          385,
+          110,
+          250
+        ],
+        "predicted_sum": 18.038127127019624,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 14,
+        "selected_mean": 2.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 23,
+        "paired_selected_sum_delta": -2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          390,
+          305,
+          330,
+          201,
+          469
+        ],
+        "predicted_sum": 19.52455455423656,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 5,
+        "selected_mean": 1.0,
+        "hindsight_best_sum": 51,
+        "selection_regret": 46,
+        "paired_selected_sum_delta": -32
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          124,
+          427,
+          183,
+          453
+        ],
+        "predicted_sum": 19.66611452095211,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 26,
+        "paired_selected_sum_delta": -1
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          346
+        ],
+        "predicted_sum": 20.163032358979937,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.53960376124364,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "points_position_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          1,
+          109,
+          250,
+          496,
+          350
+        ],
+        "predicted_sum": 18.412474136659124,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 11,
+        "paired_selected_sum_delta": 10
+      },
+      "position_DEF": {
+        "selected_ids": [
+          4,
+          115,
+          31,
+          504,
+          257
+        ],
+        "predicted_sum": 18.39809482668804,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 32,
+        "selected_mean": 6.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": -5
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          53,
+          68,
+          45,
+          129
+        ],
+        "predicted_sum": 16.917270625293725,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          138,
+          79,
+          166,
+          379
+        ],
+        "predicted_sum": 18.61061801559474,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.033985307262835,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "opportunity_fixture_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          385,
+          1,
+          110,
+          572
+        ],
+        "predicted_sum": 20.64424331780186,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 16,
+        "selected_mean": 3.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 21,
+        "paired_selected_sum_delta": 0
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          176,
+          334,
+          332,
+          330
+        ],
+        "predicted_sum": 20.963169240661678,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          183,
+          124,
+          338,
+          236
+        ],
+        "predicted_sum": 19.603052338585698,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 21,
+        "selected_mean": 4.2,
+        "hindsight_best_sum": 44,
+        "selection_regret": 23,
+        "paired_selected_sum_delta": 2
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          411,
+          79,
+          295,
+          106
+        ],
+        "predicted_sum": 20.01055398105916,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.285854915336664,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "plus_xg_xa_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          1,
+          109,
+          250,
+          385,
+          226
+        ],
+        "predicted_sum": 17.708645385199706,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 27,
+        "selected_mean": 5.4,
+        "hindsight_best_sum": 37,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 11
+      },
+      "position_DEF": {
+        "selected_ids": [
+          4,
+          566,
+          31,
+          305,
+          469
+        ],
+        "predicted_sum": 19.901153032889383,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 51,
+        "selection_regret": 25,
+        "paired_selected_sum_delta": -11
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          427,
+          453,
+          236,
+          67
+        ],
+        "predicted_sum": 20.313901389583123,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 32,
+        "paired_selected_sum_delta": -7
+      },
+      "position_FWD": {
+        "selected_ids": [
+          106,
+          79,
+          411,
+          569,
+          167
+        ],
+        "predicted_sum": 19.832926487606827,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          106
+        ],
+        "predicted_sum": 4.151395175986477,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 9,
+        "selected_mean": 9.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 3,
+        "paired_selected_sum_delta": 7
+      }
+    },
+    "plus_defensive_actions_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          1,
+          109,
+          250
+        ],
+        "predicted_sum": 19.165117202557745,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 11,
+        "paired_selected_sum_delta": 10
+      },
+      "position_DEF": {
+        "selected_ids": [
+          334,
+          330,
+          305,
+          4,
+          469
+        ],
+        "predicted_sum": 20.60309614491571,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 39,
+        "paired_selected_sum_delta": -25
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          183,
+          236,
+          453,
+          15
+        ],
+        "predicted_sum": 20.42928994130882,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 20,
+        "selected_mean": 4.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 1
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          79,
+          106,
+          346,
+          295
+        ],
+        "predicted_sum": 20.953657864214627,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.448316689733758,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_context_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          385,
+          110,
+          226
+        ],
+        "predicted_sum": 18.729892008219934,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 18,
+        "paired_selected_sum_delta": 3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          390,
+          330,
+          305,
+          112,
+          201
+        ],
+        "predicted_sum": 20.52054285091376,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 51,
+        "selection_regret": 32,
+        "paired_selected_sum_delta": -18
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          183,
+          427,
+          591,
+          124
+        ],
+        "predicted_sum": 20.162790767875176,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 44,
+        "selection_regret": 20,
+        "paired_selected_sum_delta": 5
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          346
+        ],
+        "predicted_sum": 20.93420273734179,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.853083714249254,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_shallow_regularized_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          226,
+          110,
+          385,
+          109
+        ],
+        "predicted_sum": 17.176615752196998,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 28,
+        "selected_mean": 5.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 9,
+        "paired_selected_sum_delta": 12
+      },
+      "position_DEF": {
+        "selected_ids": [
+          305,
+          330,
+          201,
+          504,
+          4
+        ],
+        "predicted_sum": 19.28754119546577,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 14,
+        "selected_mean": 2.8,
+        "hindsight_best_sum": 51,
+        "selection_regret": 37,
+        "paired_selected_sum_delta": -23
+      },
+      "position_MID": {
+        "selected_ids": [
+          124,
+          236,
+          183,
+          427,
+          40
+        ],
+        "predicted_sum": 20.092691924986617,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 25,
+        "selected_mean": 5.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          249,
+          79,
+          346
+        ],
+        "predicted_sum": 19.50757037893586,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          124
+        ],
+        "predicted_sum": 4.148934863889005,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_deeper_regularized_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          496,
+          385,
+          226,
+          110,
+          529
+        ],
+        "predicted_sum": 18.78330224963913,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          469,
+          201,
+          305,
+          330,
+          112
+        ],
+        "predicted_sum": 20.270435986699933,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 33,
+        "paired_selected_sum_delta": -19
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          156,
+          427,
+          591,
+          40
+        ],
+        "predicted_sum": 20.26090862184271,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 25,
+        "selected_mean": 5.0,
+        "hindsight_best_sum": 44,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          79,
+          249,
+          106,
+          295
+        ],
+        "predicted_sum": 20.143622246496264,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 41,
+        "selected_mean": 8.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 7,
+        "paired_selected_sum_delta": 17
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.221586271666283,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "full_second_seed_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          110,
+          226,
+          250
+        ],
+        "predicted_sum": 17.745802090458028,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 18,
+        "paired_selected_sum_delta": 3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          305,
+          390,
+          469,
+          201,
+          566
+        ],
+        "predicted_sum": 19.774636952116154,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 12,
+        "selected_mean": 2.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 39,
+        "paired_selected_sum_delta": -25
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          427,
+          124,
+          67,
+          156
+        ],
+        "predicted_sum": 20.002217623825747,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 13,
+        "selected_mean": 2.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 31,
+        "paired_selected_sum_delta": -6
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          167
+        ],
+        "predicted_sum": 20.130946634121504,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.416801814847735,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "validation_fit_ensemble_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          384,
+          496,
+          385,
+          110,
+          250
+        ],
+        "predicted_sum": 18.038127127019624,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 14,
+        "selected_mean": 2.8,
+        "hindsight_best_sum": 37,
+        "selection_regret": 23,
+        "paired_selected_sum_delta": -2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          390,
+          305,
+          330,
+          201,
+          469
+        ],
+        "predicted_sum": 19.52455455423656,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 5,
+        "selected_mean": 1.0,
+        "hindsight_best_sum": 51,
+        "selection_regret": 46,
+        "paired_selected_sum_delta": -32
+      },
+      "position_MID": {
+        "selected_ids": [
+          236,
+          124,
+          427,
+          183,
+          453
+        ],
+        "predicted_sum": 19.66611452095211,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 26,
+        "paired_selected_sum_delta": -1
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          106,
+          79,
+          249,
+          346
+        ],
+        "predicted_sum": 20.163032358979937,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 31,
+        "selected_mean": 6.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 17,
+        "paired_selected_sum_delta": 7
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 4.53960376124364,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "baseline": {
+      "position_GK": {
+        "selected_ids": [
+          572,
+          1,
+          385,
+          496,
+          350
+        ],
+        "predicted_sum": 19.793277777777778,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 16,
+        "selected_mean": 3.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 21,
+        "paired_selected_sum_delta": 0
+      },
+      "position_DEF": {
+        "selected_ids": [
+          115,
+          330,
+          4,
+          229,
+          112
+        ],
+        "predicted_sum": 22.22568178364764,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 37,
+        "selected_mean": 7.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 0
+      },
+      "position_MID": {
+        "selected_ids": [
+          68,
+          124,
+          286,
+          53,
+          453
+        ],
+        "predicted_sum": 20.748238666104427,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 44,
+        "selection_regret": 25,
+        "paired_selected_sum_delta": 0
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          379,
+          79,
+          166,
+          346
+        ],
+        "predicted_sum": 20.48109476477554,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 5.336938980388094,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "football_catboost": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          226
+        ],
+        "predicted_sum": 22.80803152668061,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          331
+        ],
+        "predicted_sum": 23.562480387180603,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          338,
+          183,
+          236,
+          239
+        ],
+        "predicted_sum": 20.17345483795619,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 22.070288938482086,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.943328480869083,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "tft_research": {
+      "position_GK": {
+        "selected_ids": [
+          572,
+          110,
+          82,
+          109,
+          597
+        ],
+        "predicted_sum": 17.021583557128906,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 37,
+        "selection_regret": 15,
+        "paired_selected_sum_delta": 6
+      },
+      "position_DEF": {
+        "selected_ids": [
+          200,
+          87,
+          91,
+          31,
+          175
+        ],
+        "predicted_sum": 17.063726663589478,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 51,
+        "selection_regret": 25,
+        "paired_selected_sum_delta": -11
+      },
+      "position_MID": {
+        "selected_ids": [
+          86,
+          183,
+          67,
+          68,
+          129
+        ],
+        "predicted_sum": 17.11836075782776,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 28,
+        "selected_mean": 5.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 16,
+        "paired_selected_sum_delta": 9
+      },
+      "position_FWD": {
+        "selected_ids": [
+          138,
+          194,
+          401,
+          79,
+          295
+        ],
+        "predicted_sum": 17.069689989089966,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 2
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          86
+        ],
+        "predicted_sum": 3.4345576763153076,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 3,
+        "selected_mean": 3.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 9,
+        "paired_selected_sum_delta": 1
+      }
+    },
+    "baseline_catboost_blend": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          226
+        ],
+        "predicted_sum": 22.64447234489306,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          331
+        ],
+        "predicted_sum": 23.43868743697911,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          338,
+          183,
+          236,
+          239
+        ],
+        "predicted_sum": 19.980680756742508,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 21.90734779171362,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.884810642077209,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "three_family_research_blend": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          250
+        ],
+        "predicted_sum": 19.358180976317655,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 13,
+        "selected_mean": 2.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": -3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          176
+        ],
+        "predicted_sum": 19.620882458272423,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          183,
+          236,
+          239,
+          338
+        ],
+        "predicted_sum": 18.209583891186597,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 19.068821929899975,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 3.9861196275199458,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "baseline_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          572,
+          1,
+          385,
+          496,
+          350
+        ],
+        "predicted_sum": 19.793277777777778,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 16,
+        "selected_mean": 3.2,
+        "hindsight_best_sum": 37,
+        "selection_regret": 21,
+        "paired_selected_sum_delta": 0
+      },
+      "position_DEF": {
+        "selected_ids": [
+          115,
+          330,
+          4,
+          229,
+          112
+        ],
+        "predicted_sum": 22.22568178364764,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 37,
+        "selected_mean": 7.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 0
+      },
+      "position_MID": {
+        "selected_ids": [
+          68,
+          124,
+          286,
+          53,
+          453
+        ],
+        "predicted_sum": 20.748238666104427,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 19,
+        "selected_mean": 3.8,
+        "hindsight_best_sum": 44,
+        "selection_regret": 25,
+        "paired_selected_sum_delta": 0
+      },
+      "position_FWD": {
+        "selected_ids": [
+          411,
+          379,
+          79,
+          166,
+          346
+        ],
+        "predicted_sum": 20.48109476477554,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 24,
+        "selected_mean": 4.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": 0
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          411
+        ],
+        "predicted_sum": 5.336938980388094,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "football_catboost_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          226
+        ],
+        "predicted_sum": 22.80803152668061,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          331
+        ],
+        "predicted_sum": 23.562480387180603,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          338,
+          183,
+          236,
+          239
+        ],
+        "predicted_sum": 20.17345483795619,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 22.070288938482086,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.943328480869083,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "tft_research_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          572,
+          110,
+          82,
+          109,
+          597
+        ],
+        "predicted_sum": 17.021583557128906,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 37,
+        "selection_regret": 15,
+        "paired_selected_sum_delta": 6
+      },
+      "position_DEF": {
+        "selected_ids": [
+          87,
+          91,
+          31,
+          175,
+          149
+        ],
+        "predicted_sum": 17.03827977180481,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 32,
+        "selected_mean": 6.4,
+        "hindsight_best_sum": 51,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": -5
+      },
+      "position_MID": {
+        "selected_ids": [
+          86,
+          183,
+          67,
+          68,
+          129
+        ],
+        "predicted_sum": 17.11836075782776,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 28,
+        "selected_mean": 5.6,
+        "hindsight_best_sum": 44,
+        "selection_regret": 16,
+        "paired_selected_sum_delta": 9
+      },
+      "position_FWD": {
+        "selected_ids": [
+          138,
+          194,
+          401,
+          79,
+          295
+        ],
+        "predicted_sum": 17.069689989089966,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 26,
+        "selected_mean": 5.2,
+        "hindsight_best_sum": 48,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 2
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          86
+        ],
+        "predicted_sum": 3.4345576763153076,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 3,
+        "selected_mean": 3.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 9,
+        "paired_selected_sum_delta": 1
+      }
+    },
+    "baseline_catboost_blend_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          226
+        ],
+        "predicted_sum": 22.64447234489306,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 18,
+        "selected_mean": 3.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 19,
+        "paired_selected_sum_delta": 2
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          331
+        ],
+        "predicted_sum": 23.43868743697911,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          338,
+          183,
+          236,
+          239
+        ],
+        "predicted_sum": 19.980680756742508,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 21.90734779171362,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 4.884810642077209,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    },
+    "three_family_research_blend_news_zero": {
+      "position_GK": {
+        "selected_ids": [
+          385,
+          496,
+          572,
+          110,
+          250
+        ],
+        "predicted_sum": 19.358180976317655,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 20,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 13,
+        "selected_mean": 2.6,
+        "hindsight_best_sum": 37,
+        "selection_regret": 24,
+        "paired_selected_sum_delta": -3
+      },
+      "position_DEF": {
+        "selected_ids": [
+          112,
+          332,
+          334,
+          330,
+          176
+        ],
+        "predicted_sum": 19.620882458272423,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 68,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 23,
+        "selected_mean": 4.6,
+        "hindsight_best_sum": 51,
+        "selection_regret": 28,
+        "paired_selected_sum_delta": -14
+      },
+      "position_MID": {
+        "selected_ids": [
+          455,
+          183,
+          236,
+          239,
+          338
+        ],
+        "predicted_sum": 18.209583891186597,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 65,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 22,
+        "selected_mean": 4.4,
+        "hindsight_best_sum": 44,
+        "selection_regret": 22,
+        "paired_selected_sum_delta": 3
+      },
+      "position_FWD": {
+        "selected_ids": [
+          346,
+          295,
+          411,
+          106,
+          249
+        ],
+        "predicted_sum": 19.068821929899975,
+        "requested_k": 5,
+        "effective_k": 5,
+        "eligible_n": 18,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 34,
+        "selected_mean": 6.8,
+        "hindsight_best_sum": 48,
+        "selection_regret": 14,
+        "paired_selected_sum_delta": 10
+      },
+      "attacking_top1": {
+        "selected_ids": [
+          346
+        ],
+        "predicted_sum": 3.9861196275199458,
+        "requested_k": 1,
+        "effective_k": 1,
+        "eligible_n": 83,
+        "missing_selected_ids": [],
+        "missing_eligible_ids": [],
+        "status": "complete_selection",
+        "selected_sum": 2,
+        "selected_mean": 2.0,
+        "hindsight_best_sum": 12,
+        "selection_regret": 10,
+        "paired_selected_sum_delta": 0
+      }
+    }
+  },
+  "source_refs": [
+    {
+      "id": "0be1008e90554a1fa9129e87e26d17a0",
+      "resource": "bootstrap-static/",
+      "available_at": "2026-11-03T09:23:01.481174+00:00",
+      "payload_sha256": "1c4d18851e83be5d7bb268abfaa5b33143c9648b06da46237c0ec2ebd5f6d8ef"
+    },
+    {
+      "id": "14309e4a3dc345498907a801565cbd84",
+      "resource": "fixtures/",
+      "available_at": "2026-11-03T08:57:58.590922+00:00",
+      "payload_sha256": "64deed95fb1761e3c7a20ea3fcfbdb7b3c3d164f22ecf2ddbce3fb967a48c08e"
+    },
+    {
+      "id": "408f77fde7c04fefadf5e0ddf7dbf361",
+      "resource": "event/9/live/",
+      "available_at": "2026-11-03T08:57:58.694897+00:00",
+      "payload_sha256": "b0eb4a7d88ebaa7d4dfafcf7d76f519ba6f2360692709858fd527fd31f42e0e3"
+    }
+  ],
+  "interpretation": "Unconstrained ranking diagnostics; no ownership, prices, formation, hits, autosubs or captain/vice fallback",
+  "promotion": false,
+  "registration_sha256": "94b2a95b59dfc87e1a6628a05eaf7d8e45351f7ca3ba5bd00360a834741dd681",
+  "revision": "f3d50fbea1415bfb836d58c2a4dd807348742c2dd6615a87bd22988ad3017e7c",
+  "scored_at": "2026-11-03T09:39:40.756606+00:00"
+}

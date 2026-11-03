@@ -1,63 +1,52 @@
 # Repository file map
 
-Start with [START_HERE](START_HERE.md), [current status](BUILD_STATUS.md) and [the ChatGPT report](CHATGPT_PROGRESS_REPORT.md). Specifications describe intended scope; status documents describe implemented and checked behavior.
+Begin with [START_HERE](START_HERE.md). [BUILD_STATUS](BUILD_STATUS.md) describes current implementation and checks; [specifications](specs/README.md) describe requirements.
 
 ```text
 fpl_build_kit/
-├── AGENTS.md                 Coding and domain instructions
-├── README.md                 Setup, commands and capabilities
-├── CONTRIBUTING.md           Contribution and contract workflows
+├── AGENTS.md                 Shared coding and domain instructions
+├── README.md                 Local setup and project overview
+├── CONTRIBUTING.md           Verification, contracts and source exports
 ├── .vscode/settings.json     Shared Explorer/search exclusions
-├── apps/web/                 Next.js app, frontend tests and generated API types
-├── backend/                  Python API, worker, models, domain and backend tests
-├── scripts/                  Stable operator entrypoints and repository checks
-│   ├── README.md             Command index and research workflow
-│   └── research/             Registered deadline experiments and frozen scoring
+├── apps/web/                 Next.js interface and frontend tests
+├── backend/                  FastAPI, worker, models, rules and backend tests
+├── scripts/                  Stable operator commands; README.md is the index
+│   └── research/             Deadline experiments, frozen scoring and reviews
 ├── tests/                    Operator CLI integration tests
 ├── docs/
-│   ├── START_HERE.md          Resume guide
-│   ├── BUILD_STATUS.md        Current state and next work
+│   ├── START_HERE.md         Single entry point for users and agents
+│   ├── BUILD_STATUS.md       Current state, checks and next work
 │   ├── CHATGPT_PROGRESS_REPORT.md
-│   ├── FILE_STRUCTURE.md      This map
-│   ├── HANDOFF.md             Commit/publishing boundary and continuation notes
-│   ├── learning_upgrade/     Maintained learning specs, contracts and verification
-│   ├── intelligence_upgrade/ Maintained earlier strategy specs and audit context
-│   ├── experiments/          Experiment reports and evidence limits
-│   ├── history/              Superseded build/implementation/verification narratives
-│   ├── reference/            Original prompts, supplied packages and design contracts
+│   ├── DECISIONS.md          Design choices and resolved conflicts
+│   ├── ROADMAP.md            Ordered model and decision improvements
+│   ├── specs/                Maintained requirements and contracts
+│   │   ├── strategy/         Forecasting, planning and social extensions
+│   │   └── learning/         Learning, shadow serving and replay contracts
+│   ├── experiments/          Immutable dated experiment evidence
+│   ├── archive/              Historical instructions, audits and supplied originals
 │   └── local/                Ignored private working notes
-├── data/                     Ignored SQLite state, sources, features and model artifacts
-└── dist/                     Ignored generated exports
+├── data/                     Ignored runtime and research evidence
+└── dist/                     Ignored generated source exports
 ```
 
-The product/data/architecture/build specifications stay directly under `docs/` at the paths used by AGENTS.md. Active backend modules stay under `backend/src/fpl_app/`: `api`, `jobs`, `providers`, `storage`, `domain`, `features`, `models`, `optimisation`, `evaluation`, `learning`, `strategy` and `social`. Frontend routes live under `apps/web/src/app/`, UI components under `src/components/`, and API bindings under `src/lib/api/`.
+## Application and generated contracts
 
-## Contracts and commands
+Backend code is under `backend/src/fpl_app/`: `api`, `jobs`, `providers`, `storage`, `domain`, `features`, `models`, `optimisation`, `evaluation`, `learning`, `strategy` and `social`. Frontend routes are in `apps/web/src/app/`, components in `src/components/` and API bindings in `src/lib/api/`.
 
-`backend/src/fpl_app/contracts.py` and the API's Pydantic request/response models define the runtime contract. `apps/web/openapi.json` and `apps/web/src/lib/api/schema.d.ts` are generated from the current app. Run `npm run generate:api` from `apps/web` after installing the locked backend dependencies; it generates offline using an in-memory store. The original design-only JSON is preserved at `docs/reference/contracts/openapi-design.json`.
+`backend/src/fpl_app/contracts.py` and API Pydantic models define the runtime contract. `scripts/generate_api.py` generates `apps/web/openapi.json` and `apps/web/src/lib/api/schema.d.ts` offline from the actual app. Run `npm run generate:api` from `apps/web` after installing locked backend dependencies. The original design snapshot is [archived](archive/reference/contracts/openapi-design.json).
 
-Keep operator scripts at their existing paths so README/CI commands remain stable. `scripts/generate_api.py` generates the runtime OpenAPI snapshot; `scripts/dev.sh` launches local services; `scripts/check.sh` runs project checks; `scripts/export_source.py` creates a source-only archive. Football collection/forecast and learning/review commands remain named entrypoints in the same directory.
+`scripts/dev.sh` launches the local services, `scripts/check.sh` runs project checks and `scripts/export_source.py` produces a source-only archive. Keep operator entrypoint paths stable; [scripts/README](../scripts/README.md) documents available commands.
 
-New deadline research commands live under `scripts/research/`: `deadline_experiments.py` queues the registered ablations, `freeze_review.py` records the retained review means, and `score_forecasts.py` checks finalized outcomes. The corresponding modules are `features/deadline.py`, `models/deadline_experiments.py`, and `learning/forecast_benchmark.py`. The worker handles durable fitting and automatically enqueues due scoring in the same DATA_DIR.
+## Research and immutable evidence
 
-## Preserved originals and history
+Deadline research uses `scripts/research/deadline_experiments.py`, `freeze_review.py`, `score_forecasts.py` and `post_event_review.py`. Backend modules include `features/deadline.py`, `models/deadline_experiments.py`, `models/points_hurdle.py`, `learning/forecast_benchmark.py` and `learning/post_event.py`. The worker performs durable fitting, finalized scoring and registered final reviews in its matching `DATA_DIR`.
 
-The supplied root `fpl_learning_upgrade/` package moved to [reference/supplied/fpl_learning_upgrade/](reference/supplied/fpl_learning_upgrade/). The duplicate combined specification was removed from the maintained directory after verifying the complete original remains in this archive. Every original file retained identical bytes, verified against [its checksum manifest](reference/supplied/fpl_learning_upgrade.sha256.json). Use the maintained `docs/learning_upgrade/` copy for current instructions; the original contains obsolete paths and audit assumptions.
+`research/rolling_experiments.py` queues expanding evaluation through `models/rolling_experiments.py`. `research/selection_review.py` registers source-bound shortlists through `evaluation/selection.py` and `learning/selection_review.py`; the worker attaches final selection reviews. `scripts/check_docs.py` verifies archive checksums and local documentation links.
 
-[History](history/README.md) retains all preceding status narratives, with Markdown links rebased to their new location. Earlier test counts remain historical evidence and are not newly run checks. A separately described Codex progress tracker is absent from this checkout; its historical description does not imply an implemented package here.
+Real-data producers and policy/planning benchmarks remain named entrypoints under `scripts/`; the operator index describes their scopes and evidence modes. Prospective replay uses `run_prospective_journal.py`, `prepare_journal_replay.py`, `evaluate_journal_replay.py` and `learning/{packets,official_replay,paper}.py`.
 
-Dependencies, `.next*` builds, caches, test output, private notes, environment files and runtime data are deliberately outside the source organisation. They may be used by running services and were not moved or deleted. Git's existing unrelated edits/deletions remain intact.
+Preserve ignored `DATA_DIR/{replay_captures,replay_inputs,replay_reports}`, SQLite state and `data/research/` together. They contain source bytes, checkpoints, frozen forecasts, journals and private financial replay reports. Personal screenshots and execution reconciliation remain only in ignored local records. Dependencies, caches and `.next*` builds may be used by running services and are not archival source.
 
-The duplicate root GW7 handoff package was moved intact to ignored `docs/local/repository-cleanup-2026-10-31/`, with a SHA256 inventory; the canonical historical package remains under `docs/gw7_handoff/`. Current public status documents are concise; private session originals are retained in that local backup. `dist/fpl-assistant-source.zip` and `dist/publish/fpl-assistant/` are ignored publication artifacts and exclude Git history.
+## Documentation boundaries
 
-## Real experiment entrypoints
-
-`train_current_football.py` evaluates retained official labels and refits separately; `run_football_experiment.py` runs registered origin-frozen archive ablations/direct leads; `release_football_shadow.py` builds immutable football/baseline/ensemble inputs and release packets; `report_real_experiments.py` publishes checksum-bound public evidence. `run_historical_strategy.py` generates real reconstructed episodes and fits/evaluates five-seed challengers. `benchmark_season_planning.py` and `benchmark_historical_planning.py` compare bounded planners on frozen supported paths. All remain under `scripts/`. Runtime artifacts stay ignored under `data/research/`; reports are in [experiments/2026-10-13-real-football-finalized](experiments/2026-10-13-real-football-finalized/README.md).
-
-## Prospective replay producers
-
-- `scripts/run_prospective_journal.py`: capture → actual local API/worker → analysis → journal → policy seals.
-- `scripts/prepare_journal_replay.py`: separate capture/enqueue and packet/seal stages.
-- `scripts/evaluate_journal_replay.py`: exact finalized official revision → immutable paper comparison.
-- `backend/src/fpl_app/learning/{packets,official_replay,paper}.py`: source/code/mapping evidence, official outcome reconciliation and fenced report publication.
-- Ignored `DATA_DIR/{replay_captures,replay_inputs,replay_reports}`: captured package/source bytes, private journal packets and private financial replay reports. Preserve them with the SQLite database.
+Active product/data/architecture/build contracts are under `docs/specs/`; essential advanced serving and replay contracts are in `docs/specs/learning/`. Historical status, prompts, audits, old backlogs and handoffs are under `docs/archive/`. [The archive index](archive/README.md) explains authority, supplied-original checksums and the reversible relocation manifest. Experiment reports retain their original bytes and dated assumptions. Neither archived instructions nor earlier test counts override BUILD_STATUS.

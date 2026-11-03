@@ -1,20 +1,12 @@
 # FPL Assistant
 
-A local Fantasy Premier League strategy workspace for squad review, projections, legal transfer comparisons, chip planning, and saved plans. Built with Next.js, TypeScript, FastAPI, SQLite, and a recoverable Python worker.
+A local Fantasy Premier League decision tool for squad review, legal transfer comparisons, lineups, captaincy, chip scenarios and saved plans. Built with Next.js, TypeScript, FastAPI, SQLite and a recoverable Python worker. Transfers and chips are executed manually on the official FPL site.
 
-## Capabilities
+**[Start here](docs/START_HERE.md)** for users and coding agents. [Current build status](docs/BUILD_STATUS.md) records what works, what was actually checked and what remains gated.
 
-- Import published public team picks or explore a clearly labelled synthetic demo.
-- Correct manager state, distinguish purchase/current/selling prices, and preserve unknown finances.
-- Compare keeping the squad with legal transfers across up to eight gameweeks.
-- Select a lineup, captain, vice captain, and bench; inspect chip timing and save versioned plans.
-- Track immutable source snapshots, background jobs, and prediction provenance.
+## Run locally
 
-The approximate baseline is the default. Football CatBoost can run as an explicit, one-gameweek experiment with immutable source/artifact checks and a declared player universe. Preparation evaluates chronological folds before creating a separate latest-data refit. The [latest model review](docs/experiments/2026-10-31-gw9-model-review/README.md) includes real CatBoost, TFT, Bayesian, ensemble and policy experiments, with honest subgroup and provenance limits. Registered deadline benchmarks preserve predictions for finalized post-event scoring. Bayesian complete player scoring and strict TFT release qualification remain gated; no challenger is automatically promoted. See [model integration](docs/ML_INTEGRATION.md) and [build status](docs/BUILD_STATUS.md). Transfers and chips are executed manually on the official FPL site.
-
-## Quick start
-
-Requires Node.js 22, Python 3.12, npm, and [uv](https://docs.astral.sh/uv/).
+Requires Node.js 22, Python 3.12, npm and [uv](https://docs.astral.sh/uv/).
 
 ```sh
 (cd backend && uv sync --locked)
@@ -22,41 +14,30 @@ Requires Node.js 22, Python 3.12, npm, and [uv](https://docs.astral.sh/uv/).
 bash scripts/dev.sh
 ```
 
-- Interface: http://127.0.0.1:3000
-- API documentation: http://127.0.0.1:8000/docs
+Open the interface at http://127.0.0.1:3000 and API documentation at http://127.0.0.1:8000/docs. The launcher starts the interface, API and worker; Ctrl-C stops all three. Default local use needs no credentials. See [.env.example](.env.example) for configuration. To choose a personal default, set `NEXT_PUBLIC_DEFAULT_TEAM_ID=YOUR_PUBLIC_TEAM_ID` in ignored `apps/web/.env.local`; Python services read exported environment variables.
 
-The launcher starts the interface, API, and worker. Ctrl-C stops all three. For a personal default, set `NEXT_PUBLIC_DEFAULT_TEAM_ID=YOUR_PUBLIC_TEAM_ID` in ignored `apps/web/.env.local`. The app loads saved state rather than reimporting it, and a deliberate demo selection remains available. Local defaults work without an environment file; [.env.example](.env.example) documents configuration. Store runtime environment values in the service's `.env.local` or export them in the shell as appropriate; the Python services use exported environment variables.
+Import a public team ID or load the labelled synthetic demo. Review the squad, prices, bank, free transfers and chips before analysis. A public import represents deadline data and may miss recent changes. Unknown or stale private financial state blocks affected transfer recommendations while lineup analysis remains available. Review private state again when the gameweek changes; refreshing official data preserves saved corrections.
 
-Import a public team ID or load the demo, review the state, generate projections, compare alternatives, and save a plan. Public picks may reflect the last deadline rather than a manager's current private squad. Unconfirmed selling prices, bank, free transfers, or chip state block affected transfer recommendations while lineup analysis remains available.
+## Models and research
 
-After a gameweek changes, review the squad and private state in Settings. Changing the gameweek clears draft financial and selling-price confirmations; populated new-event values require an explicit review checkbox before saving. Refreshing official data preserves saved private state and blocks analysis when that state is stale.
+The approximate baseline and numerical planner remain champions. Real CatBoost, Bayesian, TFT, ensemble and policy experiments are retained with source provenance, chronological evaluation and honest coverage limits. Research fitting does not automatically qualify a model for serving or promotion. Bayesian complete player scoring and strict TFT qualification remain gated. Social points adjustment is zero; live Reddit/X collection is disabled.
 
-## Football research workflow
-
-From the repository root, after installing backend dependencies:
-
-```sh
-backend/.venv/bin/python scripts/collect_football.py --help
-backend/.venv/bin/python scripts/prepare_football_forecast.py --help
-```
-
-Capture with `--include-owned` and optional `--from-collection COLLECTION_ID`; use `--include-all` for a deadline-frozen full bootstrap player universe (bounded at 1,000 players). The collector prints a new immutable collection ID without changing manager state. Prepare a qualified experiment with `prepare_football_forecast.py --collection-id COLLECTION_ID --team-id YOUR_PUBLIC_TEAM_ID`. Add `--register` only after reviewing the current manager state and matching retained catalogue sources. The Models page can then validate a serving bundle and request an experimental forecast through the worker. Preliminary event outcomes are excluded from the current experiment's fitting and lag features.
-
-Collection jobs are also available through `POST /api/v1/data/collections`; progress and failures use the existing jobs API. Reddit/X live collection is disabled; `/api/v1/social/status` reports capabilities honestly and social points adjustment is zero. Future baseline availability is an explicit conditional planning scenario, not a calibrated recovery forecast or a repeated current injury flag.
+[The latest post-GW9 review](docs/experiments/2026-11-03-gw9-post-event/README.md) records provisional measurements and frozen GW10 challengers. [Operator commands](scripts/README.md) cover collection, research, immutable forecasts, finalized scoring and optional model dependencies. Score retained forecasts before refitting on their outcomes. Registered reviews and enabled schedules require a running worker using the matching `DATA_DIR`; this is not a hosted scheduler.
 
 ## Repository
 
-```text
-apps/web/       Next.js interface, generated API types, unit and browser tests
-backend/        FastAPI, providers, rules, optimiser, models, worker and tests
-docs/           Specifications, contracts, decisions and current build status
-scripts/        Local service launcher and integration checks
-data/           Local database, snapshots and model artifacts (Git ignored)
-```
+| Location | Purpose |
+| --- | --- |
+| `apps/web/` | Next.js interface, generated API bindings and frontend tests |
+| `backend/` | FastAPI, worker, rules, forecasts, optimiser and backend tests |
+| `scripts/` | Stable operator commands and research entrypoints |
+| `tests/` | Operator integration tests |
+| `docs/` | Current guide/status, maintained specs, immutable experiments and archive |
+| `data/` | Ignored private state, source snapshots and model artifacts |
 
-Start a coding session with [docs/START_HERE.md](docs/START_HERE.md) and [the commit/publishing handoff](docs/HANDOFF.md). Canonical specifications are indexed in [docs/README.md](docs/README.md), commands in [scripts/README.md](scripts/README.md), and locations in [the file map](docs/FILE_STRUCTURE.md). Supplied references remain under `docs/reference/supplied/`; older engineering records are under `docs/history/`. Shared editor settings hide dependencies and local runtime output without deleting them.
+Use the [file map](docs/FILE_STRUCTURE.md) for detailed locations, [specifications](docs/specs/README.md) for behavioral contracts and [CONTRIBUTING](CONTRIBUTING.md) for formatting, API generation, optional dependencies and source exports. Obsolete prompts, audits and handoffs are preserved in [docs/archive](docs/archive/README.md); private local records stay ignored.
 
-## Development checks
+## Verify changes
 
 ```sh
 (cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check . && uv run mypy src)
@@ -66,32 +47,6 @@ python3 scripts/smoke.py
 backend/.venv/bin/python -m pytest tests
 ```
 
-Browser and integration tests require the API and worker to be running. Demo tests use synthetic team 0. The optional live check preserves existing local corrections:
+Browser and integration checks require the API and worker. Demo tests use synthetic team 0; normal CI uses offline fixtures. The optional live check is `python3 scripts/live_smoke.py --team-id YOUR_PUBLIC_TEAM_ID` and preserves private corrections. For production-build and browser-target commands, see [the operator index](scripts/README.md).
 
-```sh
-python3 scripts/live_smoke.py --team-id YOUR_PUBLIC_TEAM_ID
-```
-
-For a separate production build, use `NEXT_BUILD_DIR=.next-production npm run build`, then `NEXT_BUILD_DIR=.next-production npm run start -- --port 3001` from `apps/web`. Browser tests can target it with `E2E_BASE_URL=http://127.0.0.1:3001 npm run test:e2e`.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting, API generation, optional model dependencies, and Git preparation. Latest checks and remaining work are recorded in [docs/BUILD_STATUS.md](docs/BUILD_STATUS.md).
-
-## Learning research and reviews
-
-Saved Plans supports immutable deadline decisions, manual execution reporting and finalized outcome reviews. Future-chip and financial sequence controls are in Planner. Small-universe exhaustive search is distinguished from bounded large-catalogue ordinary paths, which cap replacements at two per event; Wildcard and Free Hit candidates allow complete ownership replacements. Frozen journals can seal pre-deadline replay evidence; see [journal replay](docs/learning_upgrade/JOURNAL_REPLAY.md). Baseline and numerical planning remain the default champions.
-
-Optional local strategy research:
-
-```sh
-(cd backend && uv sync --locked --extra rl)
-backend/.venv/bin/python scripts/train_strategy.py --synthetic-smoke --timesteps 128
-# Run the normal worker to process the returned durable job ID:
-(cd backend && uv run --extra rl python -m fpl_app.jobs.worker)
-backend/.venv/bin/python scripts/benchmark_social.py
-```
-
-Use `--episodes path/to/frozen-episodes.json` for explicitly labelled local train/test research episodes. The JSON bytes and implementation are fingerprinted when queued; no arbitrary file path is requested through the API. Optional Bayesian/TFT development requires `uv sync --locked --extra bayes --extra deep --extra rl`. Synthetic PPO fitting checks mechanics and installation; it does not establish a live advantage. Models lists inactive policy evidence separately from football forecasts.
-
-Recurring reviews are disabled until enabled in Saved Plans controls. The normal worker now polls enabled schedules automatically; collection/refitting remains explicitly opt-in. Disabling a schedule fences its queued reviews. Registered deadline benchmarks are also checked automatically by a worker using the same `DATA_DIR`, after official finalization. [Research commands](scripts/README.md#frozen-deadline-experiments) explain how to freeze forecasts and score them before refitting. A running local worker is required; this is not a hosted scheduler.
-
-The detailed implemented scope, remaining release/data prerequisites and actual verification are recorded in [learning implementation status](docs/learning_upgrade/IMPLEMENTATION_STATUS.md).
+Keep credentials, databases, manager notes, screenshots and model artifacts out of Git. Existing history contains earlier personal notes; publication requires a fresh inspected source export. Nothing in this setup authorizes transfer submission, a Git push or public deployment.

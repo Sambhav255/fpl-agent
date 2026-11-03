@@ -1,6 +1,6 @@
 # Current verification evidence
 
-Updated 2026-10-13. Read [BUILD_STATUS](../BUILD_STATUS.md), [implementation status](IMPLEMENTATION_STATUS.md) and [the immutable experiment report](../experiments/2026-10-13-real-football-finalized/README.md). Earlier counts are preserved in [verification history](../history/VERIFICATION_2026-10-12.md); they are not fresh results.
+Updated 2026-10-13. Read [BUILD_STATUS](../../../BUILD_STATUS.md), [implementation status](IMPLEMENTATION_STATUS.md) and [the immutable experiment report](../../../experiments/2026-10-13-real-football-finalized/README.md). Earlier counts are preserved in [verification history](../../history/VERIFICATION_2026-10-12.md); they are not fresh results.
 
 ## Fresh locked verification
 
@@ -37,7 +37,7 @@ Two planning matrices each cover36 roll/single/funding-pair/hit/Wildcard/Free Hi
 
 Real reconstructed RL uses finalized official totals with explicit price/schedule/missingness coverage. Five fixedCPU seeds, developmentGW2–3/testGW4–5 and common paper starts compare PPO/fitted-Q/greedy/keep/same-menu and unrestricted planners. One actual season,320 training steps and two test events remain weak evidence. PPO loses on mean net points; numerical planner stays champion. No actual team exploration, winning-seed selection or independent-season interval.
 
-Historical label/schedule/role/price times remain assumptions. Actual future shadow capture is separate from strict prospective outcome evaluation, which cannot finish before future results. Bayesian/TFT real calibration/release qualification, independent social review and actual private state reconciliation remain gated. Detailed hashes, partitions, metrics by event/position/lead, uncertainty limits and commands are in [the report](../experiments/2026-10-13-real-football-finalized/README.md).
+Historical label/schedule/role/price times remain assumptions. Actual future shadow capture is separate from strict prospective outcome evaluation, which cannot finish before future results. Bayesian/TFT real calibration/release qualification, independent social review and actual private state reconciliation remain gated. Detailed hashes, partitions, metrics by event/position/lead, uncertainty limits and commands are in [the report](../../../experiments/2026-10-13-real-football-finalized/README.md).
 
 ## Reproduction and retained artifacts
 
@@ -49,4 +49,4 @@ Ignored durable stores: `data/research/real-football-finalized-2026-10-13/` and 
 
 Final locked base: 464 passed/11 skips; RL: 480/7; root CLI14; Ruff126 files; mypy81 in both environments. Frontend format/lint/types, unit13, production build, and full browser16/6 personal-state skips passed. Actual optional-free base API/worker produced 667-player/six-event baseline forecasts (4,002 means), five independently validated plans and three pre-deadline policy seals. Desktop/mobile also reverified existing real CatBoost/ensemble serving. Official GW7 status is pending; zero finalized revisions exist for the new journal.
 
-Fifty-one new authored cases cover v2 outcome integrity, capture/atomic packet publication and CLI report flows. Initial solver-load, CLI default-payload, browser response timing and ENOSPC failures are retained honestly in [the continuation report](../experiments/2026-10-14-prospective-replay/README.md). Last affected full suites passed; assertions/checks were not weakened. Only owned expendable download cache was cleared, with installed environments and all source/model/private artifacts preserved. No new real football refit, policy promotion or completed prospective performance result is claimed.
+Fifty-one new authored cases cover v2 outcome integrity, capture/atomic packet publication and CLI report flows. Initial solver-load, CLI default-payload, browser response timing and ENOSPC failures are retained honestly in [the continuation report](../../../experiments/2026-10-14-prospective-replay/README.md). Last affected full suites passed; assertions/checks were not weakened. Only owned expendable download cache was cleared, with installed environments and all source/model/private artifacts preserved. No new real football refit, policy promotion or completed prospective performance result is claimed.
