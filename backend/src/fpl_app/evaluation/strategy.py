@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -21,6 +21,7 @@ from fpl_app.domain.rules import (
 )
 from fpl_app.evaluation.provenance import replay_time, verify_replay_manifest
 from fpl_app.optimisation.planner import recommend
+from fpl_app.storage import fingerprint
 
 
 @dataclass
@@ -126,6 +127,7 @@ def replay_policy(
         )
         if errors:
             raise ValueError("Invalid policy plan: " + "; ".join(errors))
+        state_before = current.model_dump(mode="json")
         week = plan.weeks[0]
         changed, _ = apply_transfers(current, origin.players, week["actions"], week["chip"])
         ids = {p.player_id for p in changed.picks}
@@ -151,6 +153,11 @@ def replay_policy(
                 "hits": week["total_hits"],
                 "transfers": len(week["actions"]),
                 "actions": week["actions"],
+                "chip": week["chip"],
+                "lineup": week["lineup"],
+                "state_before": state_before,
+                "state_after_actions": changed.model_dump(mode="json"),
+                "forecast_fingerprint": fingerprint(origin.forecasts.model_dump(mode="json")),
                 "bank_units": changed.bank_units,
                 "scoring": scored,
                 "deadline": origin.deadline,
@@ -164,6 +171,9 @@ def replay_policy(
             }
         )
         current = advance_event(changed) if offset + 1 < len(origins) else changed
+        rows[-1]["next_origin_state"] = (
+            current.model_dump(mode="json") if offset + 1 < len(origins) else None
+        )
     return {
         "rows": rows,
         "realised_net_points": sum(r["realised_net_points"] for r in rows),
@@ -249,3 +259,84 @@ def compare_policies(
             }
         )
     return {"comparator": "keep", "starts": results}
+
+
+@dataclass(frozen=True)
+class ForecastPolicy:
+    """One predeclared forecast/planner combination; outcomes stay in replay only."""
+
+    origins: list[ReplayOrigin]
+    policy: Policy
+
+
+def _comparison_origin(origin: ReplayOrigin) -> dict[str, Any]:
+    # Forecast values and method identities may differ. All other experimental
+    # inputs, including financial quotes and labels, must remain identical.
+    return {
+        "deadline": origin.deadline,
+        "information_available_at": origin.information_available_at,
+        "players": [
+            p.model_dump(mode="json") for p in sorted(origin.players, key=lambda p: p.player_id)
+        ],
+        "outcomes": {key: [asdict(row) for row in rows] for key, rows in origin.outcomes.items()},
+        "official_outcomes": (
+            {key: asdict(row) for key, row in origin.official_outcomes.items()}
+            if origin.official_outcomes is not None
+            else None
+        ),
+        "evidence_mode": origin.evidence_mode,
+        "financial_coverage": origin.financial_coverage,
+        "snapshot_id": origin.forecasts.snapshot_id,
+        "source_cutoff": origin.forecasts.source_cutoff,
+        "horizon_events": origin.forecasts.horizon_events,
+        "fixtures": [f.model_dump(mode="json") for f in origin.forecasts.fixtures],
+        "rules_version": origin.forecasts.rules_version,
+    }
+
+
+def compare_forecast_policies(
+    initial: ManagerState,
+    candidates: dict[str, ForecastPolicy],
+    settings: Settings,
+    *,
+    comparator: str = "keep",
+) -> dict[str, Any]:
+    """Replay fixed methods from identical finances, origins, universe and labels.
+
+    Supply keep/roll using ``keep_policy`` and the declared reference forecasts;
+    changing only forecasts while retaining ``planner_policy`` isolates forecast
+    benefit. Changing only the policy isolates planner benefit. This function
+    performs no candidate selection, fitting, promotion or personal state edits.
+    Strict candidates still require their own exact sealed policy/forecast packet.
+    """
+    if comparator not in candidates or not candidates:
+        raise ValueError("A named comparator is required")
+    reference = candidates[comparator]
+    identity = fingerprint([_comparison_origin(origin) for origin in reference.origins])
+    for candidate in candidates.values():
+        if fingerprint([_comparison_origin(origin) for origin in candidate.origins]) != identity:
+            raise ValueError("Comparison requires identical origin inputs, prices and outcomes")
+    reports = {
+        name: replay_policy(initial, candidate.origins, candidate.policy, settings)
+        for name, candidate in candidates.items()
+    }
+    base = reports[comparator]["realised_net_points"]
+    return {
+        "schema_version": 1,
+        "comparator": comparator,
+        "initial_state_fingerprint": fingerprint(initial.model_dump(mode="json")),
+        "shared_origins_fingerprint": identity,
+        "settings_fingerprint": fingerprint(settings.model_dump(mode="json")),
+        "covered_events": len(reference.origins),
+        "distinct_season_paths": 1,
+        "reports": reports,
+        "paired_incremental_points": {
+            name: report["realised_net_points"] - base for name, report in reports.items()
+        },
+        "limitations": [
+            "Repeated policies and starts do not create independent event blocks",
+            "Keep and roll coincide when both retain the squad and optimize the same lineup",
+            "Financial and timing coverage retains each supplied origin's declared limitations",
+            "Historical and synthetic comparisons are not prospective evidence",
+        ],
+    }

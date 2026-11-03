@@ -71,3 +71,29 @@ The review reports provisional metrics while official gates are pending, and nev
 Selection reviews are exported as `selection_reviews` too. To register a new comparison, pass `selection_review.py` an existing `--analysis-plan`, its actual `--method-manifest`, `--comparator`, `--challenger`, a fixed `--study-id` and ignored `--output` directory. Optional `--score --offline` evaluates a past event from retained sources. Late registration remains retrospective. Eligibility is reconstructed from the checksum-verified collection referenced by the frozen forecasts; arbitrary feature panels are not accepted. A study fixes its method, comparator and primary hypothesis, with one canonical plan per event. Reuse an existing plan for later outcome revisions rather than registering a new origin. Final reviews publish through the matching worker.
 
 Rolling evaluation preserves implementation bytes and checksum-verified per-fold checkpoints. It runs as a recoverable `rolling_experiment` job. Historical results remain exploratory; there is no serving refit, outer-driven tuning or automatic promotion. See [the roadmap](../docs/ROADMAP.md) for current priorities.
+
+
+## Same-state forecast and policy comparison
+
+`research/compare_paper_policies.py --input INPUT.json --output NEW_REPORT.json`
+extends legal replay across declared forecast streams. The JSON contains a fixed
+`initial_state`, `settings`, and named `candidates`; each candidate supplies `policy`
+(`keep` or `planner`) and `origins` following the existing `ReplayOrigin` contract.
+Keep and roll use the same `keep` policy and coincide under identical forecasts.
+Use the same `planner` with different forecast runs to isolate model benefit.
+
+The comparison rejects mismatched catalogue/prices, schedules, deadlines, origin
+information, outcome coverage or outcome values before running any policy.
+Each policy is independently validated; reports retain lineup/captain/bench,
+committed and incremental hits, state before/after transfers and the next origin's
+financial inventory. Private state and trajectories stay in ignored data. Output
+creation is exclusive and never overwrites earlier reports. Unknown finances remain
+unavailable; reconstructed or synthetic inputs do not become prospective evidence.
+Strict inputs retain the existing manifest/seal requirements. This command neither
+trains nor selects/promotes a winning model.
+
+Sequence search now seeds bounded larger restructures when at least three free
+transfers remain, and its lazy ordinary menu permits up to the remaining inventory
+(at most five), or two replacements for lower inventory. Current-event transfer
+limits and independent financial/chip validation still apply. Search reports remain
+bounded: a small synthetic exact-oracle match does not certify a full real catalogue.

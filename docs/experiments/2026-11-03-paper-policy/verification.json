@@ -1,0 +1,29 @@
+{
+  "base_revision": "0e43ed8e8ce365a1bcf1aaaa3e1b218a23acba59",
+  "covered_events": 2,
+  "evidence_mode": "synthetic_mechanics",
+  "new_checks": {
+    "cli": "two-event four-policy run completed with atomic publication; output overwrite refused in subprocess integration test",
+    "focused_replay_suite": "83 passed, 1 dependency deprecation warning in 39.91 seconds",
+    "mypy": "2 changed source modules passed",
+    "ruff": "5 changed Python files lint and format passed"
+  },
+  "promotion": false,
+  "real_model_policy_comparison": "unavailable: new frozen opportunity candidate, finalized outcomes and origin-bound same-state financial evidence required",
+  "realised_synthetic_points": {
+    "baseline_planner": 62,
+    "challenger_planner": 104,
+    "keep": 48,
+    "roll": 48
+  },
+  "retained_artifacts": {
+    "input.json": "cb8eb8bdb5d998b44349f774a3fbbec3e45223a7169bb85b8a289d2c0dbae168",
+    "protocol.json": "71ead43d1e33ca925ff89094ff90581f62ac4c3fa57e815c4c3889e53e1b64c4",
+    "report-atomic.json": "277642c88c0b8bbc25647be7861d84f7867d36f972913712d9dbf4c7f1205a64"
+  },
+  "source_sha256": {
+    "backend/src/fpl_app/evaluation/strategy.py": "c258481be810d26da6a1da25204ea7c02c80ad3172e9f57f5b26a69aec7fa4e7",
+    "backend/src/fpl_app/optimisation/sequence.py": "0ee0155824e1ec0f518fe92fcda40537deb5737ea5f57f21605a264620c20395",
+    "scripts/research/compare_paper_policies.py": "fb656832d7202a9eb1f6e4ee151085a47c6f84aecd23ad97c0f91afef9f6563a"
+  }
+}

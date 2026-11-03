@@ -126,6 +126,37 @@ def _root_seed_squads(
         )
     ]
     paired = [squad for _, _, squad in (affordable_funding[:8] + ranked_pairs[:8])]
+    # Seed wider free-transfer restructures before depth-first traversal can
+    # exhaust its budget on single/pair continuations. This is a small bounded
+    # beam, not an optimality certificate or an expansion of the hit allowance.
+    free = min(
+        RULES.max_free_transfers,
+        (state.free_transfers_at_event_start or 0) - (state.transfers_made_this_event or 0),
+    )
+    limit = min(free, maximum) if maximum is not None else free
+    beam: list[tuple[float, int, frozenset[int], frozenset[int]]] = [
+        (0.0, 0, frozenset(), frozenset())
+    ]
+    for number in range(1, limit + 1):
+        expanded = {}
+        for gain, cost, sold, bought in beam:
+            for improvement, price, outgoing_id, incoming_id in ranked[:24] + donors:
+                if outgoing_id in sold or incoming_id in bought:
+                    continue
+                leaving, arriving = sold | {outgoing_id}, bought | {incoming_id}
+                key = (leaving, arriving)
+                expanded[key] = (gain + improvement, cost + price, leaving, arriving)
+        beam = sorted(
+            expanded.values(),
+            key=lambda row: (-row[0], row[1], tuple(sorted(row[2])), tuple(sorted(row[3]))),
+        )[:16]
+        if number >= 3:
+            for _, cost, sold, bought in beam:
+                squad = frozenset((owned - sold) | bought)
+                if cost <= (state.bank_units or 0) and squad not in seen:
+                    seen.add(squad)
+                    yield set(squad)
+
     for index in range(max(len(singles), len(paired))):
         for candidate_squad in (
             singles[index] if index < len(singles) else None,
@@ -138,6 +169,24 @@ def _root_seed_squads(
                 yield set(candidate_squad)
 
 
+def _purchase_groups(
+    incoming: dict[int, list[int]],
+    counts: dict[int, int],
+    positions: list[int],
+    deadline: float,
+    index: int = 0,
+) -> Iterator[tuple[tuple[int, ...], ...]]:
+    if index == len(positions):
+        yield ()
+        return
+    pos = positions[index]
+    for group in combinations(incoming[pos], counts[pos]):
+        if monotonic() >= deadline:
+            return
+        for suffix in _purchase_groups(incoming, counts, positions, deadline, index + 1):
+            yield (group, *suffix)
+
+
 def bounded_squads(
     current: ManagerState,
     players: list[Player],
@@ -146,9 +195,10 @@ def bounded_squads(
     deadline: float,
     offset: int,
 ) -> Iterator[set[int]]:
-    """Lazy roll/one/two-replacement edges over the entire supplied catalogue.
+    """Lazy roll and replacement edges over the entire supplied catalogue.
 
-    The two-replacement cap applies to this local menu. Chip weeks also receive
+    Ordinary edges allow at least two moves and up to remaining free inventory
+    (at most five under current rules). Chip weeks also receive
     independently generated complete ownership/XI/captain replacement squads.
     Ranking uses unconditional forecast means only; legality/finances are checked
     by the existing transition engine. No Cartesian full-squad materialization.
@@ -162,7 +212,13 @@ def bounded_squads(
             value[row.player_id] += row.expected_points
     if locks <= owned and not owned & exclusions:
         yield owned
-    maximum = 2
+    maximum = max(
+        2,
+        min(
+            RULES.max_free_transfers,
+            (current.free_transfers_at_event_start or 0) - (current.transfers_made_this_event or 0),
+        ),
+    )
     if offset == 0 and settings.max_transfers_this_event is not None:
         maximum = min(maximum, settings.max_transfers_this_event)
     outgoing = sorted(owned - locks, key=lambda i: (value[i], i))
@@ -179,15 +235,15 @@ def bounded_squads(
     }
     for number in range(1, maximum + 1):
         for sold in combinations(outgoing, number):
+            if monotonic() >= deadline:
+                return
             counts = {pos: sum(by_id[i].position == pos for i in sold) for pos in range(1, 5)}
             positions = [pos for pos, n in counts.items() if n]
-            # Keep same-position pairs lazy; product pools only single-player
-            # lists when the two outgoing positions differ.
-            bought_sets = (
-                ((group,) for group in combinations(incoming[positions[0]], number))
-                if len(positions) == 1
-                else product(*(combinations(incoming[pos], 1) for pos in positions))
-            )
+
+            # itertools.product caches its input iterators; for four or five
+            # moves that would materialize enormous same-position pools. Walk
+            # those combinations recursively so time limits bound memory too.
+            bought_sets = _purchase_groups(incoming, counts, positions, deadline)
             for bought in bought_sets:
                 if monotonic() >= deadline:
                     return
@@ -440,7 +496,9 @@ def solve_sequence(
     best.root_actions_seeded = root_seeded
     best.elapsed_seconds = monotonic() - started
     if restricted:
-        best.search_scope = "ordinary_events_at_most_two_replacements_complete_chip_milp_candidates"
+        best.search_scope = (
+            "ordinary_events_up_to_free_inventory_or_two_replacements_complete_chip_milp_candidates"
+        )
         best.status = "bounded_no_incumbent"
     if best.weeks:
         best.status = (

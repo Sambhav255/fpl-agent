@@ -202,7 +202,7 @@ def test_full_catalogue_returns_independently_validated_bounded_sequence():
     assert plan.solver["optimality_gap"] is None
     assert (
         plan.solver["search_scope"]
-        == "ordinary_events_at_most_two_replacements_complete_chip_milp_candidates"
+        == "ordinary_events_up_to_free_inventory_or_two_replacements_complete_chip_milp_candidates"
     )
     assert not validate_plan(plan, state, players, run, settings, result.baseline_plan)
 
@@ -349,3 +349,123 @@ def test_budgeted_sequence_seeds_funding_pair_and_keeps_valid_path():
     assert result.root_actions_seeded > 0
     assert result.evaluated_edges <= 100
     assert not result.complete
+
+
+def test_three_free_transfer_restructure_matches_exact_small_oracle_when_budgeted():
+    """A two-move cap misses the third independent no-hit upgrade."""
+    from time import monotonic
+
+    from fpl_app.domain.plans import _week
+    from fpl_app.domain.rules import apply_transfers
+    from fpl_app.optimisation.oracle import funding_moves
+
+    state, players, run = funding_fixture(1)
+    players = players[:15] + [players[17]]
+    for identifier, position in [(19, 2), (20, 4)]:
+        players.append(
+            Player(
+                player_id=identifier,
+                name=f"Upgrade {identifier}",
+                club=identifier,
+                position=position,
+                market_price_units=50,
+            )
+        )
+    allowed = {p.player_id for p in players}
+    run.projections = [p for p in run.projections if p.player_id in allowed]
+    for row in run.projections:
+        if row.player_id == 18:
+            row.expected_points = 30
+    for player in players[-2:]:
+        run.projections.append(
+            Projection(
+                player_id=player.player_id,
+                fixture_id=800 + player.club,
+                event=8,
+                expected_points=30,
+                expected_minutes=90,
+                appearance_probability=1,
+            )
+        )
+    state.free_transfers_at_event_start = 3
+    settings = Settings(
+        horizon_events=1,
+        planner_mode="sequence",
+        max_additional_hit_points=0,
+        max_transfers_this_event=3,
+        solver_time_limit_seconds=10,
+    )
+    oracle = exact_oracle(state, players, run, settings)
+    # Force bounded search over a universe of 72 squads and just 40 edges.
+    bounded = solve_sequence(state, players, run, settings, max_edges=40)
+    assert not bounded.complete
+    assert bounded.net_points == oracle.net_points
+    assert len(bounded.weeks[0]["actions"]) == 3
+    assert bounded.weeks[0]["total_hits"] == 0
+    assert {move["in"] for move in bounded.weeks[0]["actions"]} == {18, 19, 20}
+    old_scores = []
+    for squad in bounded_squads(state, players, run, settings, monotonic() + 10, 0):
+        moves = funding_moves(state, players, squad)
+        if len(moves) <= 2:
+            changed, ledger = apply_transfers(state, players, moves)
+            old_scores.append(_week(changed, players, run, None, ledger)["net_points"])
+    assert max(old_scores) < oracle.net_points
+    assert bounded.root_actions_seeded > 0
+
+
+def test_three_moves_in_same_position_and_mixed_positions_preserve_quotas():
+    from time import monotonic
+
+    state, players, run = funding_fixture(1)
+    for identifier in [19, 20, 21]:
+        players.append(
+            Player(
+                player_id=identifier,
+                name=f"MID {identifier}",
+                club=identifier,
+                position=3,
+                market_price_units=50,
+            )
+        )
+    state.free_transfers_at_event_start = 3
+    settings = Settings(horizon_events=1, max_transfers_this_event=3)
+    owned = {p.player_id for p in state.picks}
+    squads = list(bounded_squads(state, players, run, settings, monotonic() + 10, 0))
+    assert (owned - {8, 9, 10}) | {19, 20, 21} in squads
+    assert (owned - {1, 8, 9}) | {16, 19, 20} in squads
+    by_id = {p.player_id: p for p in players}
+    assert len(squads) == len({frozenset(s) for s in squads})
+    assert all(
+        [sum(by_id[i].position == pos for i in squad) for pos in range(1, 5)] == [2, 5, 5, 3]
+        for squad in squads
+    )
+
+
+@pytest.mark.parametrize("inventory", [3, 4, 5])
+def test_banked_inventory_can_restructure_up_to_five_without_expanding_hit_menu(inventory):
+    from time import monotonic
+
+    state, players, run = funding_fixture(1)
+    players = players[:15]
+    for identifier in range(19, 24):
+        players.append(
+            Player(
+                player_id=identifier,
+                name=f"MID {identifier}",
+                club=identifier,
+                position=3,
+                market_price_units=50,
+            )
+        )
+    state.free_transfers_at_event_start = inventory
+    owned = {p.player_id for p in state.picks}
+    mids = {p.player_id for p in players[:15] if p.position == 3}
+    settings = Settings(horizon_events=1, locked_player_ids=sorted(owned - mids))
+    squads = list(bounded_squads(state, players, run, settings, monotonic() + 10, 0))
+    desired = (owned - set(sorted(mids)[:inventory])) | set(range(19, 19 + inventory))
+    assert desired in squads
+    assert max(len(squad - owned) for squad in squads) == inventory
+    # Already used inventory must not be offered a second time.
+    state.transfers_made_this_event = inventory - 1
+    squads = list(bounded_squads(state, players, run, settings, monotonic() + 10, 0))
+    assert max(len(squad - owned) for squad in squads) == 2
