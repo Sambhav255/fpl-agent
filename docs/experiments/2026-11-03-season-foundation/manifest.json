@@ -1,0 +1,126 @@
+{
+  "allowed_use": "research audit only; source licence must be reviewed before redistribution",
+  "artifact_sha256": {
+    "club_identity.json": "baa6a920b0610429bb1533df5ff19280f908f7ca22cea82ca354982a22385060",
+    "fixture_revision.parquet": "021e037540ceb1cb15f914665a652687bab80470803c17671098b7e47c72c947",
+    "league_table_snapshot.parquet": "a127b6dafbfc4f7c28d9ca81fc9dfc0dc2da93a4d4b9ca885116803a338261d3",
+    "player_club_interval.json": "2cf71fedaae86ef9105038b5ca196053aff7023ba4fdda3c37e57b0ccb1dfee9",
+    "player_fixture_outcome.parquet": "f8e8c927c7380988e9799a73a15087961a7432fb71cbcc84094c52fd7b3e6923",
+    "player_identity.json": "5d5a03d1c01dcf6f2bf9c3afcd5894bf6650e584504abb41f2c99066ef43a8f5",
+    "quality.json": "5219f6419213acb74ea05ff0d44d4c9f271274835bf1d223b43fa06f3f4433e3",
+    "raw/fixtures.csv": "ce696e187569ca7c45da2562811d3c38f525b58e65575531be37bebd0769ee28",
+    "raw/gws_merged_gw.csv": "5bbbcba6353b4c72ad273adcc8e3aa451946a826564679788f45b1cb3325b84e",
+    "raw/players_raw.csv": "75686051b265cbe7755ac71213ecaad21b26ee1cc46a8bafbba19c39ce894b05",
+    "raw/teams.csv": "d10a6db8feca6db9e44a3ba50b15168396667ea387fee9235d6b211c7f598c3b"
+  },
+  "available_at": "2026-11-03T13:01:44.610097+00:00",
+  "feature_contract": {
+    "excluded": [
+      "final league position",
+      "xP",
+      "current club",
+      "current price",
+      "injuries",
+      "unverified role"
+    ],
+    "strict_replay_eligible": false,
+    "table_inputs": [
+      "earlier finished scores available under declared lag"
+    ]
+  },
+  "provider": "vaastav/Fantasy-Premier-League",
+  "quality": {
+    "clubs": 20,
+    "duplicates": 0,
+    "events": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38
+    ],
+    "fixtures_covered": 380,
+    "fixtures_in_source": 380,
+    "membership_spans": 815,
+    "missing_archive_rows": "unknown; never filled with zero",
+    "missing_statistic_rows": {
+      "assists": 0,
+      "bps": 0,
+      "defensive_contribution": 27283,
+      "expected_assists": 0,
+      "expected_goals": 0,
+      "goals_scored": 0,
+      "starts": 0
+    },
+    "negative_point_rows": 115,
+    "players": 784,
+    "players_absent_from_final_metadata": 0,
+    "rows": 27283,
+    "source_coverage": "all archive-listed ordinary player fixture rows; includes departed players where retained",
+    "zero_minute_negative_point_rows": 1
+  },
+  "retrieved_at": "2026-11-03T13:01:44.610097+00:00",
+  "schema_version": "season-archive-v1",
+  "scoring_reconstruction": false,
+  "scoring_rules_version": "official-archive:2024-25",
+  "season": "2024-25",
+  "source_published_at": null,
+  "source_revision": "a59a43a8343d960a58cbe7a1f9fba2d2ce431856",
+  "sources": [
+    {
+      "sha256": "5bbbcba6353b4c72ad273adcc8e3aa451946a826564679788f45b1cb3325b84e",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/gws/merged_gw.csv"
+    },
+    {
+      "sha256": "ce696e187569ca7c45da2562811d3c38f525b58e65575531be37bebd0769ee28",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/fixtures.csv"
+    },
+    {
+      "sha256": "d10a6db8feca6db9e44a3ba50b15168396667ea387fee9235d6b211c7f598c3b",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/teams.csv"
+    },
+    {
+      "sha256": "75686051b265cbe7755ac71213ecaad21b26ee1cc46a8bafbba19c39ce894b05",
+      "url": "https://raw.githubusercontent.com/vaastav/Fantasy-Premier-League/a59a43a8343d960a58cbe7a1f9fba2d2ce431856/data/2024-25/players_raw.csv"
+    }
+  ],
+  "timing": {
+    "deadline": "assumed earliest event kickoff-48 hours",
+    "fixture_schedule": "final revision; targets only, not historical future schedule",
+    "statistics_available_at": "assumed kickoff+7 days",
+    "verified": false
+  }
+}
