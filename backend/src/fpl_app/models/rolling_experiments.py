@@ -187,16 +187,9 @@ def training_input(store: Store, payload: dict[str, Any]) -> str:
         raise ValueError("Unknown rolling evaluation protocol")
     if store.get("rolling_experiment_protocol", fingerprint(spec)) != spec:
         raise ValueError("Register rolling evaluation protocol before fitting")
-    scored = {
-        row["benchmark_id"]
-        for row in store.list("forecast_benchmark_outcome")
-        if row["status"] == "final"
-    }
-    if any(
-        benchmark["event"] in spec["finalized_events"] and benchmark["benchmark_id"] not in scored
-        for benchmark in store.list("forecast_benchmark")
-    ):
-        raise ValueError("Score finalized frozen benchmarks before refitting their labels")
+    from .training_eligibility import require_scored_collection
+
+    require_scored_collection(store, collection)
     return fingerprint(
         {
             "protocol": spec,

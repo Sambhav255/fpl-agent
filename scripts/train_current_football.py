@@ -36,6 +36,7 @@ def main():
         artifact_path("football_catboost", "placeholder").parent,
         "fpl-" + collection["season"].replace("/", "-"),
         bootstrap,
+        store=store,
     )
     metadata = json.loads((directory / "manifest.json").read_text())
     report = {

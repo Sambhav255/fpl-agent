@@ -3,6 +3,7 @@ import math
 import pytest
 
 from fpl_app.features.deadline import lag_features, opportunity_features
+from fpl_app.storage import Store
 
 
 def row(event, kickoff, available, **stats):
@@ -60,13 +61,21 @@ def test_experiment_registration_rejects_test_targets_in_validation(monkeypatch)
     from fpl_app.models import deadline_experiments as experiment
 
     monkeypatch.setattr(
-        experiment, "load_collection", lambda _store, _id: {"envelope_sha256": "a" * 64}
+        experiment,
+        "load_collection",
+        lambda _store, _id: {"envelope_sha256": "a" * 64, "labels": []},
     )
     spec = experiment.protocol("fixture-collection")
-    assert experiment.training_input(None, {"protocol": spec})
+    assert experiment.training_input(
+        Store("sqlite:///:memory:"),
+        {"protocol": spec},
+    )
     spec["validation_events"] = [5, 6, 7]
     with pytest.raises(ValueError, match="protocol"):
-        experiment.training_input(None, {"protocol": spec})
+        experiment.training_input(
+            Store("sqlite:///:memory:"),
+            {"protocol": spec},
+        )
 
 
 def test_multiscale_opportunity_excludes_current_event_and_late_revisions():

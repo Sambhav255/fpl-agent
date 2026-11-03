@@ -127,19 +127,9 @@ def training_input(store: Store, payload: dict[str, Any]) -> str:
     )
     if any(spec.get(k) != v for k, v in expected.items() if k != "registered_at"):
         raise ValueError("Unknown benchmark protocol")
-    # A refit may consume a completed prospective event only after all its
-    # retained benchmark bundles have been scored, never before.
-    if spec.get("version") == "deadline-ablation-v2":
-        scored = {
-            r["benchmark_id"]
-            for r in store.list("forecast_benchmark_outcome")
-            if r["status"] == "final"
-        }
-        if any(
-            b["event"] in spec["finalized_events"] and b["benchmark_id"] not in scored
-            for b in store.list("forecast_benchmark")
-        ):
-            raise ValueError("Score finalized frozen benchmarks before refitting their labels")
+    from .training_eligibility import require_scored_collection
+
+    require_scored_collection(store, collection)
     return fingerprint(
         {"protocol": spec, "collection_sha256": collection["envelope_sha256"], "code": code}
     )

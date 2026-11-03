@@ -168,24 +168,37 @@ def run_review(store: Store, provider, tick_id: str) -> dict[str, Any]:
             store, provider=provider, include_all=config["include_all"], force=True
         )
     if config["train"] and collection is not None:
+        import hashlib
         import json
+
+        from fpl_app.learning.refit_cache import cached_refit, refit_identity
 
         bootstrap_source = next(
             s for s in collection["sources"] if s["resource"] == "bootstrap-static/"
         )
         bootstrap = json.loads(store.snapshot(bootstrap_source["id"])["raw"])
         try:
-            path = train_collection_experiment(
-                collection,
-                data_dir() / "models" / "football_catboost",
-                "fpl-" + collection["season"].replace("/", "-"),
-                bootstrap,
-            )
-            challenger = {
-                "artifact_directory": str(path),
-                "mode": "experimental",
-                "promoted": False,
-            }
+            identity = refit_identity(collection, implementation_digest())
+            challenger = cached_refit(store, identity)
+            if challenger is None:
+                path = train_collection_experiment(
+                    collection,
+                    data_dir() / "models" / "football_catboost",
+                    "fpl-" + collection["season"].replace("/", "-"),
+                    bootstrap,
+                    store=store,
+                )
+                challenger = {
+                    "artifact_directory": str(path),
+                    "manifest_sha256": hashlib.sha256(
+                        (path / "manifest.json").read_bytes()
+                    ).hexdigest(),
+                    "input_identity": identity,
+                    "mode": "experimental",
+                    "promoted": False,
+                    "reused_unchanged_inputs": False,
+                }
+                artifacts.append(("learning_refit", identity, challenger))
         except (ValueError, ImportError) as exc:
             challenger = {
                 "status": "unavailable_or_insufficient_data",

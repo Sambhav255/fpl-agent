@@ -814,6 +814,8 @@ def train_collection_experiment(
     output_root: Path,
     rules_version: str,
     bootstrap: dict[str, Any] | None = None,
+    *,
+    store: Any = None,
 ) -> Path:
     """Small current-era diagnostic; no claim of broad evaluation or promotion."""
     from fpl_app.features.football import collection_frames
@@ -839,6 +841,16 @@ def train_collection_experiment(
                 for i in envelope["player_ids"]
             ],
         }
+    from fpl_app.storage import Store
+
+    from .training_eligibility import require_scored_collection
+
+    active_store = store if store is not None else Store()
+    # Refuse a detached envelope: eligibility must inspect its actual source store.
+    retained = active_store.get("football_collection", envelope["collection_id"])
+    if retained["envelope_sha256"] != envelope["envelope_sha256"]:
+        raise ValueError("Retained collection identity changed")
+    require_scored_collection(active_store, envelope)
     panel, future, mappings = collection_frames(envelope, rules_version)
     provenance = {
         "season": envelope["season"],

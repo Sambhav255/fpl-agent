@@ -4,6 +4,7 @@ import logging
 import time
 
 from fpl_app.jobs import Queue, Worker
+from fpl_app.jobs.health import process_heartbeat
 from fpl_app.learning.forecast_benchmark import enqueue_due_benchmarks
 from fpl_app.learning.review import enqueue_due_reviews
 from fpl_app.storage import Store
@@ -27,10 +28,11 @@ def run_iteration(worker: Worker, next_review_at: float, now: float) -> tuple[bo
 def main() -> None:
     worker = Worker(Queue(Store()))
     next_review_at = 0.0
-    while True:
-        worked, next_review_at = run_iteration(worker, next_review_at, time.monotonic())
-        if not worked:
-            time.sleep(0.5)
+    with process_heartbeat(worker.store, worker.owner):
+        while True:
+            worked, next_review_at = run_iteration(worker, next_review_at, time.monotonic())
+            if not worked:
+                time.sleep(0.5)
 
 
 if __name__ == "__main__":

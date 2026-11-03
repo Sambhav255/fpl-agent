@@ -44,6 +44,7 @@ def prepare_forecast(
             artifact_path("football_catboost", "placeholder").parent,
             rules_version,
             bootstrap,
+            store=store,
         )
     else:
         run = artifact_path("football_catboost", artifact_id)

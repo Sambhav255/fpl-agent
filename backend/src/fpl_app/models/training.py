@@ -53,6 +53,11 @@ def audited_panel(
     from .panel_audit import bind_panel_audit, filter_targets
 
     bind_panel_audit(frame, audit, hashlib.sha256(dataset.read_bytes()).hexdigest())
+    from fpl_app.storage import Store
+
+    from .training_eligibility import require_scored_panel
+
+    require_scored_panel(Store(), frame)
     return filter_targets(frame, drop_missing_targets), audit
 
 

@@ -121,7 +121,7 @@ def configured(tmp_path, monkeypatch, request):
     )
     store.put("state", 1, state.model_dump(mode="json"))
     directory = train_collection_experiment(
-        collection, tmp_path / "models" / "football_catboost", "fpl-2026-27"
+        collection, tmp_path / "models" / "football_catboost", "fpl-2026-27", store=store
     )
     # Exercise the earlier immutable manifest dialect without changing real local artifacts.
     manifest = json.loads((directory / "manifest.json").read_text())

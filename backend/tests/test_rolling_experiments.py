@@ -151,7 +151,16 @@ def test_retained_prospective_forecasts_must_be_scored_before_label_reuse(monkey
     )
     with pytest.raises(ValueError, match="Score finalized frozen benchmarks"):
         rolling.training_input(store, {"protocol": spec})
-    store.put("forecast_benchmark_outcome", "frozen", {"benchmark_id": "frozen", "status": "final"})
+    store.put(
+        "forecast_benchmark_outcome",
+        "frozen",
+        {
+            "benchmark_id": "frozen",
+            "status": "final",
+            "forecast_sha256": fingerprint(store.get("forecast_benchmark", "frozen")),
+            "source_refs": [{"resource": "event/8/live/", "available_at": captured["captured_at"]}],
+        },
+    )
     assert rolling.training_input(store, {"protocol": spec})
     # A still-preliminary event is not consumed and does not block historical folds.
     store.put("forecast_benchmark", "future", {"benchmark_id": "future", "event": 9})
