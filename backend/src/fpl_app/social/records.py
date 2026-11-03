@@ -51,6 +51,7 @@ class SocialPost(Record):
     query: str
     language: str = "en"
     capability_reference: str
+    source_reference: str | None = None
     synthetic: bool = False
 
 
@@ -76,6 +77,9 @@ class Claim(Record):
     abstention: str | None = None
     extractor_version: str = "deterministic-v1"
     kind: Literal["opinion", "report"] = "opinion"
+    assertion: Literal["out", "available", "starts", "trained", "uncertain"] | None = None
+    reviewed_by: str | None = None
+    reviewed_at: AwareDatetime | None = None
 
 
 class Coverage(Record):

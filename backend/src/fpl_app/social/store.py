@@ -1,11 +1,17 @@
 """Dedicated deletable SQLite store; never uses the application's private database."""
 
 import sqlite3
+from collections.abc import Iterator
+from contextlib import contextmanager
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Protocol
 
-from .extraction import Extractor
 from .records import Capability, Claim, Group, SocialPost, SourceProfile, Topic
+
+
+class ClaimExtractor(Protocol):
+    def extract(self, post: SocialPost, capability: Capability) -> list[Claim]: ...
 
 
 class SocialStore:
@@ -18,7 +24,25 @@ class SocialStore:
             CREATE TABLE IF NOT EXISTS social_reviews
                 (author TEXT, version INTEGER, payload TEXT NOT NULL, PRIMARY KEY(author, version));
             CREATE TABLE IF NOT EXISTS social_tombstones (id TEXT PRIMARY KEY);
+            CREATE TABLE IF NOT EXISTS social_manual_receipts
+                (digest TEXT PRIMARY KEY, payload TEXT NOT NULL);
         """)
+
+    @contextmanager
+    def transaction(self) -> Iterator[None]:
+        """Compose store operations atomically, including a whole manual import."""
+        outer = not self.db.in_transaction
+        if outer:
+            self.db.execute("BEGIN")
+        try:
+            yield
+        except BaseException:
+            if outer:
+                self.db.rollback()
+            raise
+        else:
+            if outer:
+                self.db.commit()
 
     def close(self) -> None:
         self.db.close()
@@ -28,7 +52,7 @@ class SocialStore:
             raise ValueError("Manual review requires evidence and reviewer")
         if profile.expires_at <= profile.effective_at:
             raise ValueError("Review window must be nonempty")
-        with self.db:
+        with self.transaction():
             self.db.execute(
                 "INSERT INTO social_reviews VALUES (?, ?, ?)",
                 (profile.author_id, profile.version, profile.model_dump_json()),
@@ -46,7 +70,7 @@ class SocialStore:
         return review.group if topic in review.topics else "unknown"
 
     def ingest(
-        self, post: SocialPost, capability: Capability, extractor: Extractor, now: datetime
+        self, post: SocialPost, capability: Capability, extractor: ClaimExtractor, now: datetime
     ) -> list[Claim]:
         if not post.post_id.startswith(post.provider + ":"):
             raise ValueError("Post IDs must be provider namespaced")
@@ -70,7 +94,7 @@ class SocialStore:
             if post.observed_at < previous.observed_at:
                 raise ValueError("Stale post edit")
         claims = extractor.extract(post, capability)
-        with self.db:
+        with self.transaction():
             self.db.execute("DELETE FROM social_claims WHERE post_id=?", (post.post_id,))
             self.db.execute(
                 "INSERT OR REPLACE INTO social_posts VALUES (?, ?, ?)",
@@ -98,7 +122,7 @@ class SocialStore:
             if expanded == doomed:
                 break
             doomed = expanded
-        with self.db:
+        with self.transaction():
             for key in doomed:
                 self.db.execute("DELETE FROM social_claims WHERE post_id=?", (key,))
                 self.db.execute("DELETE FROM social_posts WHERE id=?", (key,))
@@ -126,6 +150,7 @@ class SocialStore:
         for key in expired:
             self.delete(key)
         return [
-            Claim.model_validate_json(r[0])
-            for r in self.db.execute("SELECT payload FROM social_claims ORDER BY id")
+            claim
+            for row in self.db.execute("SELECT payload FROM social_claims ORDER BY id")
+            if (claim := Claim.model_validate_json(row[0])).observed_at <= as_of
         ]
