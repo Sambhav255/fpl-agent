@@ -1,52 +1,65 @@
-# Repository file map
+# Repository structure
 
-Begin with [START_HERE](START_HERE.md). [BUILD_STATUS](BUILD_STATUS.md) describes current implementation and checks; [specifications](specs/README.md) describe requirements.
+The layout separates application source, operator commands, maintained guidance,
+measured evidence and private runtime state. Start with [documentation](README.md).
 
 ```text
 fpl_build_kit/
-├── AGENTS.md                 Shared coding and domain instructions
-├── README.md                 Local setup and project overview
-├── CONTRIBUTING.md           Verification, contracts and source exports
-├── .vscode/settings.json     Shared Explorer/search exclusions
-├── apps/web/                 Next.js interface and frontend tests
-├── backend/                  FastAPI, worker, models, rules and backend tests
-├── scripts/                  Stable operator commands; README.md is the index
-│   └── research/             Deadline experiments, frozen scoring and reviews
-├── tests/                    Operator CLI integration tests
+├── README.md                   Product overview and quick start
+├── AGENTS.md                   Shared agent instructions
+├── CONTRIBUTING.md             Development and Git preparation
+├── .github/workflows/          Offline CI and browser checks
+├── apps/web/                   Next.js interface and frontend tests
+├── backend/
+│   ├── README.md               Backend module and dependency guide
+│   ├── pyproject.toml          Python dependencies and checks
+│   ├── uv.lock                 Resolved dependency versions
+│   ├── src/fpl_app/             API, domain, models, worker and storage
+│   └── tests/                  Backend unit/integration tests
+├── scripts/
+│   ├── README.md               Stable operator command reference
+│   ├── research/               Forecast and evaluation entrypoints
+│   └── …                       Launch, verification and export commands
+├── tests/                      Operator and repository integration tests
 ├── docs/
-│   ├── START_HERE.md         Single entry point for users and agents
-│   ├── BUILD_STATUS.md       Current state, checks and next work
-│   ├── CHATGPT_PROGRESS_REPORT.md
-│   ├── DECISIONS.md          Design choices and resolved conflicts
-│   ├── ROADMAP.md            Ordered model and decision improvements
-│   ├── specs/                Maintained requirements and contracts
-│   │   ├── strategy/         Forecasting, planning and social extensions
-│   │   └── learning/         Learning, shadow serving and replay contracts
-│   ├── experiments/          Immutable dated experiment evidence
-│   ├── archive/              Historical instructions, audits and supplied originals
-│   └── local/                Ignored private working notes
-├── data/                     Ignored runtime and research evidence
-└── dist/                     Ignored generated source exports
+│   ├── README.md               Documentation index
+│   ├── START_HERE.md           Development/agent entrypoint
+│   ├── BUILD_STATUS.md         Current behavior, checks and next action
+│   ├── CHATGPT_PROGRESS_REPORT.md  Concise continuation handoff
+│   ├── ROADMAP.md              Maintained priorities
+│   ├── DECISIONS.md            Design decisions and resolved conflicts
+│   ├── MASTER_PLAN_STATUS.md   Acceptance checklist
+│   ├── specs/                  Product and technical contracts
+│   ├── operations/             Worker, weekly research and release guides
+│   ├── plans/                  Original supplied implementation plans
+│   ├── experiments/            Immutable dated evidence and registry
+│   ├── archive/                Superseded material and relocation checksums
+│   └── local/                  Ignored private notes and operational records
+├── data/                       Ignored databases, captures and native artifacts
+└── dist/                       Ignored source exports and audit receipts
 ```
 
-## Application and generated contracts
+## Application boundaries
 
-Backend code is under `backend/src/fpl_app/`: `api`, `jobs`, `providers`, `storage`, `domain`, `features`, `models`, `optimisation`, `evaluation`, `learning`, `strategy` and `social`. Frontend routes are in `apps/web/src/app/`, components in `src/components/` and API bindings in `src/lib/api/`.
+[The backend guide](../backend/README.md) maps Python package ownership. Interface
+routes live in `apps/web/src/app/`, shared UI in `src/components/`, and client
+bindings in `src/lib/api/`. Worker jobs handle long computations; API requests
+submit or inspect jobs. Provider requests stay in the backend.
 
-`backend/src/fpl_app/contracts.py` and API Pydantic models define the runtime contract. `scripts/generate_api.py` generates `apps/web/openapi.json` and `apps/web/src/lib/api/schema.d.ts` offline from the actual app. Run `npm run generate:api` from `apps/web` after installing locked backend dependencies. The original design snapshot is [archived](archive/reference/contracts/openapi-design.json).
+`backend/src/fpl_app/contracts.py` and API request/response models define runtime
+contracts. `scripts/generate_api.py` generates `apps/web/openapi.json` and
+`apps/web/src/lib/api/schema.d.ts`; do not edit generated bindings manually.
 
-`scripts/dev.sh` launches the local services, `scripts/check.sh` runs project checks and `scripts/export_source.py` produces a source-only archive. Keep operator entrypoint paths stable; [scripts/README](../scripts/README.md) documents available commands.
+## Placement rules
 
-## Research and immutable evidence
+- Add maintained requirements under `docs/specs/`; operations under `docs/operations/`.
+- Add measured evidence in a new dated `docs/experiments/` directory and update its index.
+- Keep original reports and supplied plans intact. Record relocations in
+  `docs/archive/relocations.json`; update maintained links instead of rewriting history.
+- Preserve CLI entrypoints under `scripts/`; import implementation from backend modules.
+- Keep source captures, checkpoints, private state and generated datasets under
+  ignored `DATA_DIR`. Private notes belong in ignored `docs/local/`.
+- Keep installed dependencies, caches and active `.next*` builds on disk; they are
+  operational files, not source-tree reorganization targets.
 
-Deadline research uses `scripts/research/deadline_experiments.py`, `freeze_review.py`, `score_forecasts.py` and `post_event_review.py`. Backend modules include `features/deadline.py`, `models/deadline_experiments.py`, `models/points_hurdle.py`, `learning/forecast_benchmark.py` and `learning/post_event.py`. The worker performs durable fitting, finalized scoring and registered final reviews in its matching `DATA_DIR`.
-
-`research/rolling_experiments.py` queues expanding evaluation through `models/rolling_experiments.py`. `research/selection_review.py` registers source-bound shortlists through `evaluation/selection.py` and `learning/selection_review.py`; the worker attaches final selection reviews. `scripts/check_docs.py` verifies archive checksums and local documentation links.
-
-Real-data producers and policy/planning benchmarks remain named entrypoints under `scripts/`; the operator index describes their scopes and evidence modes. Prospective replay uses `run_prospective_journal.py`, `prepare_journal_replay.py`, `evaluate_journal_replay.py` and `learning/{packets,official_replay,paper}.py`.
-
-Preserve ignored `DATA_DIR/{replay_captures,replay_inputs,replay_reports}`, SQLite state and `data/research/` together. They contain source bytes, checkpoints, frozen forecasts, journals and private financial replay reports. Personal screenshots and execution reconciliation remain only in ignored local records. Dependencies, caches and `.next*` builds may be used by running services and are not archival source.
-
-## Documentation boundaries
-
-Active product/data/architecture/build contracts are under `docs/specs/`; essential advanced serving and replay contracts are in `docs/specs/learning/`. Historical status, prompts, audits, old backlogs and handoffs are under `docs/archive/`. [The archive index](archive/README.md) explains authority, supplied-original checksums and the reversible relocation manifest. Experiment reports retain their original bytes and dated assumptions. Neither archived instructions nor earlier test counts override BUILD_STATUS.
+No application package or running-service path was changed by the documentation cleanup.

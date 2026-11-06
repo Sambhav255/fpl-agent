@@ -17,7 +17,7 @@ CONTEXT = [
     "minutes_std5",
     "minutes_last",
     "starts_last",
-    "rest_days",
+    "days_since_last_fixture",
     "club_goals_prior",
     "opponent_conceded_prior",
 ]
@@ -67,11 +67,13 @@ def lag_features(history: list[dict[str, Any]], cutoff: str, event: int) -> dict
         if usable and known_number(usable[-1]["stats"].get("starts"))
         else float("nan")
     )
-    result["rest_days"] = (
+    result["days_since_last_fixture"] = (
         min(60.0, (utc(cutoff) - utc(usable[-1]["kickoff"])).total_seconds() / 86400)
         if usable
         else float("nan")
     )
+    # Read compatibility for old retained feature manifests; new fits use the explicit name.
+    result["rest_days"] = result["days_since_last_fixture"]
     return result
 
 

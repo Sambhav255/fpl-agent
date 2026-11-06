@@ -54,7 +54,17 @@ def verify_docs(root: Path) -> dict:
             raise ValueError("Preserved experiment changed: " + name)
     broken = []
     redirects = []
-    paths = [root / name for name in ("README.md", "AGENTS.md", "CONTRIBUTING.md")]
+    paths = [
+        root / name
+        for name in (
+            "README.md",
+            "AGENTS.md",
+            "CONTRIBUTING.md",
+            "backend/README.md",
+            "scripts/README.md",
+            "apps/web/README.md",
+        )
+    ]
     paths += [
         p
         for p in (root / "docs").rglob("*.md")

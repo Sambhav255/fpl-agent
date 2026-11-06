@@ -52,3 +52,11 @@ def test_broken_active_link_is_detected(tmp_path):
     (root / "README.md").write_text("[Missing](docs/not-there.md)\n")
     with pytest.raises(ValueError, match="Broken documentation links"):
         module.verify_docs(root)
+
+
+def test_package_guides_and_operator_reference_are_checked(tmp_path):
+    root = tree(tmp_path)
+    (root / "backend").mkdir()
+    (root / "backend/README.md").write_text("[Missing guide](../docs/missing.md)\n")
+    with pytest.raises(ValueError, match="backend/README.md"):
+        module.verify_docs(root)

@@ -51,3 +51,31 @@ def test_export_rejects_a_credential_pattern_without_printing_its_value(tmp_path
         module.export_source(root, root / "dist/source.zip")
     assert key not in str(error.value)
     assert not (root / "dist/source.zip").exists()
+
+
+@pytest.mark.parametrize("suffix", [".joblib", ".pkl", ".pt", ".onnx"])
+def test_export_rejects_git_visible_native_artifacts(tmp_path, suffix):
+    root = repository(tmp_path)
+    (root / ("unexpected" + suffix)).write_bytes(b"local trained model")
+    with pytest.raises(ValueError, match="Private/generated source path"):
+        module.export_source(root, root / "dist/source.zip")
+
+
+def test_export_rejects_missing_preserved_evidence(tmp_path):
+    import json
+
+    root = repository(tmp_path)
+    archive = root / "docs/archive"
+    archive.mkdir(parents=True)
+    (archive / "relocations.json").write_text(
+        json.dumps(
+            {
+                "files": [],
+                "preserved_experiment_sha256": {
+                    "docs/experiments/missing.json": "unavailable"
+                },
+            }
+        )
+    )
+    with pytest.raises(ValueError, match="Preserved document omitted"):
+        module.export_source(root, root / "dist/source.zip")

@@ -1,0 +1,337 @@
+{
+  "collection_id": "c6bbb35e50154cdda728d4e40e3f33f3",
+  "collection_sha256": "438e5e032a0a39d7a919f5de911fe8ca86954692c18147366ae44288a44be70f",
+  "coverage_counts": {
+    "1": {
+      "complete": 5865,
+      "missing_or_unfinalized": 165
+    },
+    "2": {
+      "complete": 5272,
+      "missing_or_unfinalized": 758
+    },
+    "3": {
+      "complete": 4654,
+      "missing_or_unfinalized": 1376
+    },
+    "4": {
+      "complete": 4000,
+      "missing_or_unfinalized": 2030
+    },
+    "6": {
+      "complete": 2674,
+      "missing_or_unfinalized": 3356
+    },
+    "8": {
+      "complete": 1339,
+      "missing_or_unfinalized": 4691
+    }
+  },
+  "experiment_id": "38e06464809835ed4fbc55e4c4ba9acae6ae26b0934ba73ba5944375aabc9d0d",
+  "metrics_by_lead": {
+    "1": {
+      "by_position": {
+        "DEF": {
+          "direct_points": {
+            "event_mean_spearman": 0.633817384364269,
+            "mae": 1.4326319984038265,
+            "n": 1086,
+            "rmse": 2.2875622698074944
+          },
+          "points_5": {
+            "event_mean_spearman": 0.6141134014694041,
+            "mae": 1.4061080417434009,
+            "n": 1086,
+            "rmse": 2.41892022528064
+          }
+        },
+        "FWD": {
+          "direct_points": {
+            "event_mean_spearman": 0.7637128366401146,
+            "mae": 1.149312538389574,
+            "n": 395,
+            "rmse": 2.1731364374469244
+          },
+          "points_5": {
+            "event_mean_spearman": 0.7362922230248101,
+            "mae": 1.1350632911392404,
+            "n": 395,
+            "rmse": 2.272066507960615
+          }
+        },
+        "GK": {
+          "direct_points": {
+            "event_mean_spearman": 0.7192669109735953,
+            "mae": 0.8502035770464346,
+            "n": 367,
+            "rmse": 1.5816085533067847
+          },
+          "points_5": {
+            "event_mean_spearman": 0.8794816313940841,
+            "mae": 0.7396457765667575,
+            "n": 367,
+            "rmse": 1.6674700606816768
+          }
+        },
+        "MID": {
+          "direct_points": {
+            "event_mean_spearman": 0.6977546751793338,
+            "mae": 1.1172784482380067,
+            "n": 1493,
+            "rmse": 1.9267178950749047
+          },
+          "points_5": {
+            "event_mean_spearman": 0.6500683157853195,
+            "mae": 1.2031145344943068,
+            "n": 1493,
+            "rmse": 2.1571205455770497
+          }
+        }
+      },
+      "explicit_blank_player_events": 0,
+      "legal_policy_performance": "unavailable; no reconciled same-state prospective comparison",
+      "player_event": {
+        "direct_points": {
+          "event_mean_spearman": 0.6966703233059919,
+          "mae": 1.1942347317946191,
+          "n": 3341,
+          "rmse": 2.047680121677756
+        },
+        "points_5": {
+          "event_mean_spearman": 0.6734000214320085,
+          "mae": 1.2101416741494564,
+          "n": 3341,
+          "rmse": 2.2129309007225033
+        }
+      },
+      "player_fixture": {
+        "minutes": {
+          "direct_minutes": {
+            "event_mean_spearman": 0.7699715805364536,
+            "mae": 14.460055772887515,
+            "n": 3341,
+            "rmse": 22.714337381614197
+          },
+          "minutes_5": {
+            "event_mean_spearman": 0.763169346870404,
+            "mae": 13.878938441584356,
+            "n": 3341,
+            "rmse": 25.408598813091157
+          }
+        },
+        "points": {
+          "direct_points": {
+            "event_mean_spearman": 0.6966703233059919,
+            "mae": 1.1942347317946191,
+            "n": 3341,
+            "rmse": 2.047680121677756
+          },
+          "points_5": {
+            "event_mean_spearman": 0.6734000214320085,
+            "mae": 1.2101416741494564,
+            "n": 3341,
+            "rmse": 2.2129309007225033
+          }
+        }
+      },
+      "probability_calibration": "unavailable; these heads predict signed means and minutes only"
+    },
+    "2": {
+      "by_position": {
+        "DEF": {
+          "direct_points": {
+            "event_mean_spearman": 0.5958865516484064,
+            "mae": 1.5974873621978518,
+            "n": 435,
+            "rmse": 2.470077426378299
+          },
+          "points_5": {
+            "event_mean_spearman": 0.6014751707679504,
+            "mae": 1.5061685823754791,
+            "n": 435,
+            "rmse": 2.5619423356683715
+          }
+        },
+        "FWD": {
+          "direct_points": {
+            "event_mean_spearman": 0.7437839491538671,
+            "mae": 1.1807346094590434,
+            "n": 158,
+            "rmse": 2.0761288871882684
+          },
+          "points_5": {
+            "event_mean_spearman": 0.713052136823247,
+            "mae": 1.1895569620253166,
+            "n": 158,
+            "rmse": 2.34036876354285
+          }
+        },
+        "GK": {
+          "direct_points": {
+            "event_mean_spearman": 0.7450929736793677,
+            "mae": 1.0233268247228515,
+            "n": 148,
+            "rmse": 1.7156984562942845
+          },
+          "points_5": {
+            "event_mean_spearman": 0.9038651114692632,
+            "mae": 0.7959459459459458,
+            "n": 148,
+            "rmse": 1.7250930253020984
+          }
+        },
+        "MID": {
+          "direct_points": {
+            "event_mean_spearman": 0.6243697633889734,
+            "mae": 1.126158319703995,
+            "n": 598,
+            "rmse": 1.7482703945479812
+          },
+          "points_5": {
+            "event_mean_spearman": 0.5884562266383968,
+            "mae": 1.2127647714604237,
+            "n": 598,
+            "rmse": 2.069699423635998
+          }
+        }
+      },
+      "explicit_blank_player_events": 0,
+      "legal_policy_performance": "unavailable; no reconciled same-state prospective comparison",
+      "player_event": {
+        "direct_points": {
+          "event_mean_spearman": 0.6531059444121472,
+          "mae": 1.27435258856801,
+          "n": 1339,
+          "rmse": 2.0447750694091673
+        },
+        "points_5": {
+          "event_mean_spearman": 0.6424906173169225,
+          "mae": 1.259273089370177,
+          "n": 1339,
+          "rmse": 2.240676845860303
+        }
+      },
+      "player_fixture": {
+        "minutes": {
+          "direct_minutes": {
+            "event_mean_spearman": 0.7116939889149483,
+            "mae": 18.94084348788303,
+            "n": 1339,
+            "rmse": 26.999741947140727
+          },
+          "minutes_5": {
+            "event_mean_spearman": 0.7220335443630155,
+            "mae": 15.727433408015932,
+            "n": 1339,
+            "rmse": 28.47674934935399
+          }
+        },
+        "points": {
+          "direct_points": {
+            "event_mean_spearman": 0.6531059444121472,
+            "mae": 1.27435258856801,
+            "n": 1339,
+            "rmse": 2.0447750694091673
+          },
+          "points_5": {
+            "event_mean_spearman": 0.6424906173169225,
+            "mae": 1.259273089370177,
+            "n": 1339,
+            "rmse": 2.240676845860303
+          }
+        }
+      },
+      "probability_calibration": "unavailable; these heads predict signed means and minutes only"
+    }
+  },
+  "runtime_seconds": 101.55305533402134,
+  "support_by_lead": {
+    "1": {
+      "eligible_observed_events": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "outer_events": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "reason": null,
+      "status": "evaluated_research"
+    },
+    "2": {
+      "eligible_observed_events": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "outer_events": [
+        8,
+        9
+      ],
+      "reason": null,
+      "status": "evaluated_research"
+    },
+    "3": {
+      "eligible_observed_events": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "outer_events": [],
+      "reason": "No complete train/validation/outer split after both target-completion embargoes; more historical events required",
+      "status": "unavailable_insufficient_purged_history"
+    },
+    "4": {
+      "eligible_observed_events": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "outer_events": [],
+      "reason": "No complete train/validation/outer split after both target-completion embargoes; more historical events required",
+      "status": "unavailable_insufficient_purged_history"
+    },
+    "6": {
+      "eligible_observed_events": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "outer_events": [],
+      "reason": "No complete train/validation/outer split after both target-completion embargoes; more historical events required",
+      "status": "unavailable_insufficient_purged_history"
+    },
+    "8": {
+      "eligible_observed_events": [
+        8,
+        9
+      ],
+      "outer_events": [],
+      "reason": "No complete train/validation/outer split after both target-completion embargoes; more historical events required",
+      "status": "unavailable_insufficient_purged_history"
+    }
+  }
+}

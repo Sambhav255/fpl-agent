@@ -75,6 +75,15 @@ def export_source(root: Path, output: Path) -> dict:
                 ".ckpt",
                 ".cbm",
                 ".nc",
+                ".joblib",
+                ".pkl",
+                ".pickle",
+                ".pt",
+                ".pth",
+                ".onnx",
+                ".safetensors",
+                ".npy",
+                ".npz",
             }
         ):
             raise ValueError(f"Private/generated source path is Git-visible: {name}")
@@ -86,6 +95,16 @@ def export_source(root: Path, output: Path) -> dict:
             raise ValueError(f"Potential credential pattern in source file: {name}")
         files[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
         contents[name] = raw
+    preservation = contents.get("docs/archive/relocations.json")
+    if preservation is not None:
+        manifest = json.loads(preservation)
+        referenced = [row["path"] for row in manifest.get("files", [])]
+        referenced += list(manifest.get("preserved_experiment_sha256", {}))
+        for name in referenced:
+            if name not in files:
+                raise ValueError(
+                    f"Preserved document omitted from source export: {name}"
+                )
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for name, raw in contents.items():

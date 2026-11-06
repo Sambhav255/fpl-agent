@@ -62,6 +62,18 @@ def projection_players(
 
 
 def inputs(store: Store, kind: str, payload: dict[str, Any]) -> str:
+    if kind == "weekly_tournament":
+        from fpl_app.models.weekly_tournament import training_input as tournament_input
+
+        return tournament_input(store, payload)
+    if kind == "multilead_experiment":
+        from fpl_app.models.multilead_experiments import training_input as multilead_input
+
+        return multilead_input(store, payload)
+    if kind == "simple_experiment":
+        from fpl_app.models.simple_experiments import training_input as simple_training_input
+
+        return simple_training_input(store, payload)
     if kind == "rolling_experiment":
         from fpl_app.models.rolling_experiments import training_input as rolling_training_input
 
@@ -276,7 +288,7 @@ class Queue:
             )
         return self.get(identifier)
 
-    def claim(self, owner: str) -> dict[str, Any] | None:
+    def claim(self, owner: str, identifier: str | None = None) -> dict[str, Any] | None:
         now = time.time()
         with self.store.engine.begin() as connection:
             connection.exec_driver_sql("BEGIN IMMEDIATE")
@@ -300,7 +312,11 @@ class Queue:
             row = (
                 connection.execute(
                     select(jobs)
-                    .where(jobs.c.status == "queued", jobs.c.cancel_requested.is_(False))
+                    .where(
+                        jobs.c.status == "queued",
+                        jobs.c.cancel_requested.is_(False),
+                        *([jobs.c.id == identifier] if identifier is not None else []),
+                    )
                     .order_by(jobs.c.created_at)
                     .limit(1)
                 )
@@ -451,6 +467,18 @@ class Worker:
         kind, payload = job["kind"], job["payload"]
         if kind in self.handlers:
             return dict(self.handlers[kind](payload))
+        if kind == "weekly_tournament":
+            from fpl_app.models.weekly_tournament import train_job as tournament_job
+
+            return tournament_job(self.store, payload)
+        if kind == "multilead_experiment":
+            from fpl_app.models.multilead_experiments import train_job as multilead_train_job
+
+            return multilead_train_job(self.store, payload)
+        if kind == "simple_experiment":
+            from fpl_app.models.simple_experiments import train_job as simple_train_job
+
+            return simple_train_job(self.store, payload)
         if kind == "rolling_experiment":
             from fpl_app.models.rolling_experiments import train_job as rolling_train_job
 
@@ -481,6 +509,28 @@ class Worker:
                 from fpl_app.learning.selection_review import registered_selection_reviews
 
                 result["_artifacts"].extend(registered_selection_reviews(self.store, result))
+                if result["status"] == "final":
+                    from fpl_app.learning.error_report import weekly_error_report
+
+                    refs = {r["resource"]: r["id"] for r in result["source_refs"]}
+                    try:
+                        report = weekly_error_report(
+                            self.store,
+                            [payload["benchmark_id"]],
+                            refs["bootstrap-static/"],
+                            refs["fixtures/"],
+                            refs[f"event/{result['event']}/live/"],
+                            previous_reports=self.store.list("forecast_weekly_error_report"),
+                        )
+                    except ValueError:
+                        # Legacy score fixtures may lack stricter review timing
+                        # or schedule evidence. Preserve the score and disclose
+                        # unavailable diagnostics rather than inventing them.
+                        result["weekly_diagnostics_status"] = "unavailable_review_evidence"
+                    else:
+                        result["_artifacts"].append(
+                            ("forecast_weekly_error_report", report["report_id"], report)
+                        )
             return result
         if kind == "strategy_training":
             from fpl_app.strategy.jobs import train_job
@@ -547,8 +597,8 @@ class Worker:
             return dict(recommendation.model_dump(mode="json"))
         raise ValueError("Unsupported job kind")
 
-    def run_once(self) -> bool:
-        job = self.queue.claim(self.owner)
+    def run_once(self, identifier: str | None = None) -> bool:
+        job = self.queue.claim(self.owner, identifier)
         if job is None:
             return False
         stop = Event()
@@ -592,6 +642,9 @@ class Worker:
                 "learning_review",
                 "deadline_experiment",
                 "rolling_experiment",
+                "simple_experiment",
+                "multilead_experiment",
+                "weekly_tournament",
                 "forecast_benchmark_score",
             }:
                 artifacts.extend(result.pop("_artifacts"))

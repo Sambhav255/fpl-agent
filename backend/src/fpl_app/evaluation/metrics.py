@@ -55,7 +55,7 @@ def forecast_metrics(
     ranks = []
     for event in np.unique(groups):
         mask = groups == event
-        if mask.sum() > 1 and np.std(y[mask]) > 0 and np.std(p[mask]) > 0:
+        if mask.sum() > 1 and len(np.unique(y[mask])) > 1 and len(np.unique(p[mask])) > 1:
             ranks.append(float(pd.Series(y[mask]).rank().corr(pd.Series(p[mask]).rank())))
     result["event_mean_spearman"] = float(np.mean(ranks)) if ranks else None
     if probabilities is not None:

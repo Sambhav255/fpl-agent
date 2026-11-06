@@ -165,6 +165,7 @@ def _implementations() -> list[Path]:
         Path(__file__),
         Path(__file__).with_name("deadline_experiments.py"),
         Path(__file__).with_name("points_hurdle.py"),
+        Path(__file__).with_name("training_eligibility.py"),
         base / "features/deadline.py",
         base / "features/football.py",
         base / "features/pipeline.py",

@@ -737,6 +737,11 @@ def train_experiment(csv_path: Path, output_root: Path, source_commit: str) -> P
     if source["git_commit"] != source_commit or source["sha256"] != checksum(csv_path):
         raise ValueError("pinned source mismatch")
     panel = archive_panel(str(csv_path))
+    from fpl_app.storage import Store
+
+    from .training_eligibility import require_scored_panel
+
+    require_scored_panel(Store(), panel.assign(season="2024/25"))
     return _fit(
         panel,
         output_root,

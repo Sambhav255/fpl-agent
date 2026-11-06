@@ -131,6 +131,14 @@ def run_experiment(store: Store, spec: dict[str, Any]) -> dict[str, Any]:
             "protocol": spec,
             "implementation": _sha(Path(__file__)),
             "dependency_lock": _sha(Path(__file__).parents[3] / "uv.lock"),
+            "shared_code": {
+                name: _sha(Path(__file__).parents[1] / name)
+                for name in (
+                    "evaluation/metrics.py",
+                    "models/rolling_experiments.py",
+                    "models/training_eligibility.py",
+                )
+            },
             "collection": collection["envelope_sha256"],
         }
     )

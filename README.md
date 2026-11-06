@@ -1,10 +1,14 @@
 # FPL Assistant
 
-A local Fantasy Premier League decision tool for squad review, legal transfer comparisons, lineups, captaincy, chip scenarios and saved plans. Built with Next.js, TypeScript, FastAPI, SQLite and a recoverable Python worker. Transfers and chips are executed manually on the official FPL site.
+A local Fantasy Premier League research and decision tool. Review a squad, compare
+legal transfers, choose a lineup and captain, explore chip scenarios, and retain
+plans alongside immutable forecast evidence. Transfers and chips are executed
+manually on the official FPL site.
 
-**[Start here](docs/START_HERE.md)** for users and coding agents. [Current build status](docs/BUILD_STATUS.md) records what works, what was actually checked and what remains gated.
+**[Documentation](docs/README.md)** · **[Build status](docs/BUILD_STATUS.md)** ·
+**[Model experiments](docs/experiments/README.md)** · **[Contributing](CONTRIBUTING.md)**
 
-## Run locally
+## Quick start
 
 Requires Node.js 22, Python 3.12, npm and [uv](https://docs.astral.sh/uv/).
 
@@ -14,39 +18,71 @@ Requires Node.js 22, Python 3.12, npm and [uv](https://docs.astral.sh/uv/).
 bash scripts/dev.sh
 ```
 
-Open the interface at http://127.0.0.1:3000 and API documentation at http://127.0.0.1:8000/docs. The launcher starts the interface, API and worker; Ctrl-C stops all three. Default local use needs no credentials. See [.env.example](.env.example) for configuration. To choose a personal default, set `NEXT_PUBLIC_DEFAULT_TEAM_ID=YOUR_PUBLIC_TEAM_ID` in ignored `apps/web/.env.local`; Python services read exported environment variables.
+- Interface: http://127.0.0.1:3000
+- API documentation: http://127.0.0.1:8000/docs
 
-Import a public team ID or load the labelled synthetic demo. Review the squad, prices, bank, free transfers and chips before analysis. A public import represents deadline data and may miss recent changes. Unknown or stale private financial state blocks affected transfer recommendations while lineup analysis remains available. Review private state again when the gameweek changes; refreshing official data preserves saved corrections.
+The launcher starts the interface, API and recoverable worker. Ctrl-C stops the
+launcher-owned processes. Default use requires no credentials; configuration is
+listed in [.env.example](.env.example). Python services read exported environment
+variables. Put optional interface settings in ignored `apps/web/.env.local`.
 
-## Models and research
+Load the labelled synthetic demo or import a public team ID. Public imports show
+deadline state and can miss recent actions. Confirm current prices, bank, transfer
+inventory and chips before personal transfer analysis. Unknown finances remain
+unknown; eligible lineup analysis can continue independently.
 
-The approximate baseline and numerical planner remain champions. Real CatBoost, Bayesian, TFT, ensemble and policy experiments are retained with source provenance, chronological evaluation and honest coverage limits. Research fitting does not automatically qualify a model for serving or promotion. Bayesian complete player scoring and strict TFT qualification remain gated. Social points adjustment is zero; live Reddit/X collection is disabled.
+## Capabilities and model status
 
-[The latest post-GW9 review](docs/experiments/2026-11-03-gw9-post-event/README.md) records provisional measurements and frozen GW10 challengers. [Operator commands](scripts/README.md) cover collection, research, immutable forecasts, finalized scoring and optional model dependencies. Score retained forecasts before refitting on their outcomes. Registered reviews and enabled schedules require a running worker using the matching `DATA_DIR`; this is not a hosted scheduler.
+| Area              | Available behavior                                                                                                                |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Decision engine   | Rules-aware numerical planner, independent validation, saved plans and stale-input checks                                         |
+| Default forecasts | Labelled approximate football baseline                                                                                            |
+| Forecast research | Actual CatBoost, Ridge, LightGBM, Extra Trees and histogram-boosting experiments; separate mean, probability and quantile outputs |
+| Weekly evaluation | Full-universe forecast freezes, finalized scoring, chronological comparisons and recoverable opt-in jobs                          |
+| Advanced research | Bayesian, TFT and policy experiments with explicit data and qualification gates                                                   |
 
-## Repository
+Research results do not automatically replace the baseline or planner. Historical
+backtests, prospective forecasts and realized policy benefit are separate evidence.
+The [latest weekly competition](docs/experiments/2026-11-06-weekly-tournament/README.md)
+records actual measurements and pending GW10 outcomes.
 
-| Location | Purpose |
-| --- | --- |
-| `apps/web/` | Next.js interface, generated API bindings and frontend tests |
-| `backend/` | FastAPI, worker, rules, forecasts, optimiser and backend tests |
-| `scripts/` | Stable operator commands and research entrypoints |
-| `tests/` | Operator integration tests |
-| `docs/` | Current guide/status, maintained specs, immutable experiments and archive |
-| `data/` | Ignored private state, source snapshots and model artifacts |
+The application uses Next.js, React and TypeScript, a Python FastAPI backend,
+SQLite state, Parquet analytical artifacts and a local worker. Provider requests
+run through the backend. Bayesian, deep-learning, RL and extra research dependencies
+are optional; see the [backend guide](backend/README.md).
 
-Use the [file map](docs/FILE_STRUCTURE.md) for detailed locations, [specifications](docs/specs/README.md) for behavioral contracts and [CONTRIBUTING](CONTRIBUTING.md) for formatting, API generation, optional dependencies and source exports. Obsolete prompts, audits and handoffs are preserved in [docs/archive](docs/archive/README.md); private local records stay ignored.
+## Project layout
 
-## Verify changes
-
-```sh
-(cd backend && uv run pytest && uv run ruff check . && uv run ruff format --check . && uv run mypy src)
-(cd apps/web && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build)
-(cd apps/web && npx playwright install chromium && npm run test:e2e)
-python3 scripts/smoke.py
-backend/.venv/bin/python -m pytest tests
+```text
+apps/web/       Interface, API bindings and browser/unit tests
+backend/        API, worker, forecasting, rules and optimisation
+scripts/        Stable operator commands and research entrypoints
+tests/          Operator and repository checks
+docs/           Guides, specifications, plans and measured evidence
+data/           Ignored local state, source captures and model artifacts
 ```
 
-Browser and integration checks require the API and worker. Demo tests use synthetic team 0; normal CI uses offline fixtures. The optional live check is `python3 scripts/live_smoke.py --team-id YOUR_PUBLIC_TEAM_ID` and preserves private corrections. For production-build and browser-target commands, see [the operator index](scripts/README.md).
+Use the [file map](docs/FILE_STRUCTURE.md) for module ownership and the
+[documentation index](docs/README.md) for navigation. Measured reports remain
+immutable; superseded material is retained in `docs/archive/`.
 
-Keep credentials, databases, manager notes, screenshots and model artifacts out of Git. Existing history contains earlier personal notes; publication requires a fresh inspected source export. Nothing in this setup authorizes transfer submission, a Git push or public deployment.
+## Development and verification
+
+```sh
+(cd backend && uv run pytest && uv run pytest ../tests)
+(cd backend && uv run ruff check . && uv run ruff format --check . && uv run mypy src)
+(cd apps/web && npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build)
+python3 scripts/check_docs.py
+```
+
+Browser checks (`npm run test:e2e` from `apps/web`) and `python3 scripts/smoke.py`
+require an API and worker against isolated synthetic state. Normal CI uses offline
+fixtures; live provider checks are separate. [Contributing](CONTRIBUTING.md) explains
+optional tests, contract generation and the combined check script.
+
+Weekly collection and scoring require the matching local worker and machine uptime;
+configuration is not hosted scheduling. Follow the [operations guide](docs/operations/README.md)
+for the learning loop and recovery.
+
+Keep credentials, manager records, model artifacts and generated output out of Git.
+For a clean history-free source snapshot, follow [release preparation](docs/operations/RELEASE_PREPARATION.md).

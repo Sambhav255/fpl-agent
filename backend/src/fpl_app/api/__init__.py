@@ -250,9 +250,16 @@ def create_app(store: Store | None = None, provider: Provider | None = None) -> 
     def health() -> dict[str, Any]:
         from sqlalchemy import text
 
+        from fpl_app.jobs.health import worker_health
+
         with database.engine.connect() as connection:
             connection.execute(text("SELECT 1"))
-        return {"status": "ok", "database": "ok", "schema_version": 1}
+        return {
+            "status": "ok",
+            "database": "ok",
+            "schema_version": 1,
+            "worker": worker_health(database),
+        }
 
     def current_data(mode: str) -> dict[str, Any]:
         if mode not in ("demo", "live"):

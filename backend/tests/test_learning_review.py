@@ -152,3 +152,17 @@ def test_recurring_pending_and_final_outcomes_are_retained_separately(tmp_path, 
     )
     assert len(store.list("learning_scorecard")) == 1
     assert store.get("state", state.team_id) == before
+
+
+def test_changed_implementation_waits_for_next_slot_without_rewriting_tick(tmp_path, monkeypatch):
+    from fpl_app.learning import review
+
+    store, state, _, _ = prepare_live(tmp_path, monkeypatch)
+    configure_review(store, state.team_id, enabled=True)
+    first = enqueue_due_reviews(store, "2026-11-06T00:00:00Z")
+    assert len(first) == 1
+    before = store.get("review_tick", first[0]["payload"]["tick_id"])
+    monkeypatch.setattr(review, "implementation_digest", lambda: "new-implementation")
+    assert enqueue_due_reviews(store, "2026-11-06T00:01:00Z") == []
+    assert store.get("review_tick", before["tick_id"]) == before
+    assert len(enqueue_due_reviews(store, "2026-11-06T06:00:00Z")) == 1

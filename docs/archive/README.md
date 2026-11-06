@@ -16,6 +16,6 @@ Current product and operational contracts were moved into [specs](../specs/READM
 
 ## Relocation verification
 
-[relocations.json](relocations.json) records all 67 moved files, original and relocated SHA256 hashes, byte sizes and exact Markdown link substitutions. Reversing those substitutions reconstructs every original byte; archive prose and recorded results were not discarded. Supplied originals remain byte-identical and retain [their original package manifest](reference/supplied/fpl_learning_upgrade.sha256.json). Their old wording and paths are intentionally historical.
+[relocations.json](relocations.json) records the verified file relocations, original and relocated SHA256 hashes, byte sizes and exact Markdown link substitutions. Reversing those substitutions reconstructs every original byte; archive prose and recorded results were not discarded. Supplied originals remain byte-identical and retain [their original package manifest](reference/supplied/fpl_learning_upgrade.sha256.json). Their old wording and paths are intentionally historical.
 
 Markdown links in browsable historical records were rebased. Paths written as code, old repository URLs and historical commands retain their original meaning. Immutable experiment reports and supplied originals may still link to former locations; use `previous_path` → `path` in the relocation manifest instead of treating those references as current commands. Running archived probe scripts is optional historical investigation, not part of normal CI.

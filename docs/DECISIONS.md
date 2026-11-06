@@ -107,3 +107,79 @@ The new historical episode adapter v2 requires explicit yellow/red-card statisti
 Use `docs/START_HERE.md` as the common entry point for users and agents, root `AGENTS.md` for editing instructions, and `docs/BUILD_STATUS.md` for current implementation and actual checks. Maintained requirements and serving/replay contracts live under `docs/specs/`. Obsolete execution prompts, audits, backlogs, status narratives, handoffs and supplied originals live under `docs/archive/` and do not request new work or agent delegation.
 
 Archive relocation preserves original content through SHA256-bound reversible Markdown link substitutions in `docs/archive/relocations.json`. Supplied-original bytes and immutable experiment reports remain unchanged. Two immutable reports reference former documentation paths; resolve them through that manifest rather than modifying measured evidence or adding obsolete-path stubs. Ignored private notes, runtime data and research artifacts are preserved in place. Current publication guidance is in CONTRIBUTING; archived prepared exports do not represent the current source.
+
+## 2026-11-03: Master-plan opportunity, data and decision work
+
+Apply one scoring-before-label-reuse boundary to collection training, scheduled
+reviews, audited model panels, rolling/deadline experiments and new research
+runners. Scope events by explicit season; final scores bind original forecasts
+and sufficiently recent outcome observations. Reject ambiguous eventless panels
+when that season has retained forecasts. This conservative timestamp rule can
+require rescoring an unchanged recapture; it never assumes two different provider
+resource hashes identify the same outcome revision.
+
+New opportunity artifacts use typed binary heads and separate chronological
+sigmoid calibration. Latest-data refits remain explicitly uncalibrated, with
+auxiliary method mismatch exposed; legacy artifacts preserve their old numerical
+outputs. Whole-minute per-fixture mixture bounds are an interim projection with
+raw values/deltas retained. The measured binary bundle failed both primary Brier
+objectives, so no promotion follows from implementing classifiers.
+
+Historical identity remains season scoped unless independently reconciled. Archive
+publication lags and deadlines are explicit assumptions; missing modern defensive
+statistics remain missing. Legal policy comparisons share starting state and
+origin evidence; synthetic correctness is separate from prospective performance.
+The ordinary bounded sequence menu now reaches remaining free inventory (up to
+the existing season-rule limit), with bounded wider root seeds and lazy purchases.
+This supersedes the earlier two-replacement implementation choice without making
+a global optimality claim.
+
+Research Ridge/LightGBM and prior-OOF ensembles are inactive. The blend's negative
+result is retained. Worker heartbeat and refit reuse improve local operation;
+complete eligible post-GW9 refitting remains blocked on official finality and
+final scoring. Manual social import uses reviewed claims and deletable lineage;
+it creates evidence branches with zero point adjustment.
+
+## 4 November 2026 — origin-safe direct leads and recovery
+
+Direct-lead research uses target-event embargoes before each validation/test origin, rather than adjacent target weeks for every lead. Incomplete doubles stay incomplete; future results cannot refresh origin history. Short current-season history explicitly blocks leads 3/4/6/8; serving remains one event. Forecast and minutes regressions are retained without post-result retuning.
+
+A weekly collection must durably rescore its consumed frozen benchmarks before either a fresh fit or cached-refit reuse. Scoring is an independent fenced child job bound to the collection receipt; targeted execution cannot claim other queued work. Cancellation of a parent review does not revoke a valid independently committed score. Final bundles are rechecked every six-hour slot for corrections. Legacy score evidence that fails stricter diagnostics remains explicitly unavailable for that report.
+
+Worker health reports actual observations/publications and unknowns, not schedule promises. Optional macOS supervision is generated for review only. Weekly residual reports do not infer causal error labels or user execution from recommendations.
+
+## 6 November 2026 — master-plan continuation
+
+- New enriched/direct-lead feature lists use `days_since_last_fixture` for elapsed
+  time to origin. `lag_features` keeps `rest_days` as a read-compatible alias for
+  retained manifests. This is not scheduled rest before a future match. New archive
+  fits use the same explicit name; old frozen outputs remain unchanged.
+- New registrations can use `CandidateGate`/`assess_candidate`: forecast loss
+  reductions use declared loss units; deterministic planners use net points per
+  event without a stochastic seed gate; stochastic policies additionally require
+  five distinct seeds and simulator bindings. Eight prospective distinct events,
+  paired comparisons, exact protocol bindings and manual review remain required.
+  Legacy `assess_promotion` retains its v1 contract, so old receipts do not change.
+- Cross-season research links require unique matching provider codes and agreeing
+  normalized full names; conflicts remain unresolved. Source links do not attest
+  historical availability or qualify strict production replay.
+- Dependency audit findings are addressed through resolved constraints on existing
+  transitive dependencies and a patched pytest development range. Optional extras
+  remain optional; audit results do not establish forecast quality.
+
+## 6 November 2026 — weekly backend competition
+
+The user prioritised backend forecasting experiments and broad prospective coverage.
+Use a separately registered all-player study, preserving the original GW10 study.
+Six fixed signed-mean methods plus fixed equal-weight means and football baseline
+share current sources. Extra Trees and histogram gradient boosting are optional
+research challengers; scikit-learn joins the research extra without changing base
+startup. Quantiles and shared opportunity heads retain separate meanings/coverage.
+
+Existing opted-in full-universe reviews queue one canonical study per event only
+after the prior event finalizes. Score frozen forecasts before training label reuse.
+Full bootstrap membership and exact fixture coverage prevent partial-source zeros.
+Existing published studies survive code updates; stale review ticks wait for the
+next slot without rewriting old evidence. No automatic promotion follows an RMSE,
+Brier or shortlist improvement. Official-zero overlays are separate sensitivity
+scenarios, never an additional probability multiplier on unconditional point means.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -24,7 +25,7 @@ FIXTURE = [
     "opponent_against_5",
 ]
 MINUTES = ["minutes_5", "appearance_5", "starts_5", "starts_missing"]
-CONGESTION = ["rest_days", "fixtures_next_7d"]
+CONGESTION = ["days_since_last_fixture", "fixtures_next_7d"]
 ROLE_ADVANCED = ["club", "xg_90", "xa_90", "saves_90"]
 REGISTERED_ABLATIONS = {
     "points_position": BASE,
@@ -71,13 +72,17 @@ def experiment_contract() -> dict[str, Any]:
     }
 
 
-def build_archive_multilead(csv_path: Path, maximum_lead: int = 8) -> pd.DataFrame:
+def build_archive_multilead(
+    csv_path: Path, maximum_lead: int = 8, *, season: str = "2024-25"
+) -> pd.DataFrame:
     """Direct lead-specific targets share history frozen at the original origin.
 
     Final archive schedule reconstruction is explicitly assumed. Later observed
     player role, membership, outcomes and statistics are never feature inputs.
     Missing future rows remain missing, and are never manufactured zeros.
     """
+    if not re.fullmatch(r"20\d{2}-\d{2}", season):
+        raise ValueError("Explicit season namespace required")
     if not 1 <= maximum_lead <= 8:
         raise ValueError("maximum lead must be between one and eight")
     raw = pd.read_csv(csv_path)
@@ -113,7 +118,7 @@ def build_archive_multilead(csv_path: Path, maximum_lead: int = 8) -> pd.DataFra
         raise ValueError("missing outcomes are not zero")
     raw["kickoff"] = pd.to_datetime(raw.kickoff, utc=True)
     raw["available_at"] = raw.kickoff + pd.Timedelta(days=7)
-    raw["player_key"] = raw.player_id.map(lambda i: f"fpl:2024-25:{i}")
+    raw["player_key"] = raw.player_id.map(lambda i: f"fpl:{season}:{i}")
     raw["goals"] = raw.get("goals_scored", 0)
     for column in [
         "starts",
@@ -207,7 +212,9 @@ def build_archive_multilead(csv_path: Path, maximum_lead: int = 8) -> pd.DataFra
                     "appearance_5": float((rec.minutes > 0).mean()),
                     "starts_5": float(rec.starts.mean()) if rec.starts.notna().any() else 0,
                     "starts_missing": int(not rec.starts.notna().any()),
-                    "rest_days": min(60, (origin - history.kickoff.max()).total_seconds() / 86400),
+                    "days_since_last_fixture": min(
+                        60, (origin - history.kickoff.max()).total_seconds() / 86400
+                    ),
                     "fixtures_next_7d": int(congestion.get(club, 0)),
                     "xg_90": 90 * float(history.expected_goals.sum(min_count=1)) / minutes,
                     "xa_90": 90 * float(history.expected_assists.sum(min_count=1)) / minutes,
@@ -274,15 +281,38 @@ def run_archive_experiment(csv_path: Path, output_root: Path, maximum_lead: int 
 
     source_path = csv_path.parent / "source.json"
     source = json.loads(source_path.read_text())
-    if source.get("sha256") != checksum(csv_path) or source.get("season") != "2024-25":
+    season = source.get("season", "")
+    if source.get("sha256") != checksum(csv_path) or not re.fullmatch(r"20\d{2}-\d{2}", season):
         raise ValueError("retained source hash or scoring regime mismatch")
     contract = experiment_contract()
     contract["maximum_lead"] = maximum_lead
+    contract["season"] = season
     run = output_root / (datetime.now(UTC).strftime("%Y%m%dT%H%M%S") + "-" + uuid4().hex[:8])
     run.mkdir(parents=True, exist_ok=False)
     # Registration is written before loading targets or fitting any candidate.
+    # Capture implementation and environment before targets are loaded or fitted.
+    from importlib.metadata import version
+
+    root = Path(__file__).resolve().parents[4]
+    implementation = run / "implementation"
+    implementation.mkdir()
+    files = [
+        Path(__file__),
+        root / "backend/src/fpl_app/features/football.py",
+        root / "backend/src/fpl_app/evaluation/metrics.py",
+        root / "backend/uv.lock",
+    ]
+    bindings = {}
+    for path in files:
+        target = implementation / path.name
+        target.write_bytes(path.read_bytes())
+        bindings[str(path.relative_to(root))] = checksum(target)
+    contract["implementation_sha256"] = bindings
+    contract["runtime_versions"] = {
+        name: version(name) for name in ["catboost", "numpy", "pandas", "scipy"]
+    }
     write_json(run / "registered_protocol.json", contract)
-    panel = build_archive_multilead(csv_path, maximum_lead)
+    panel = build_archive_multilead(csv_path, maximum_lead, season=season)
     panel.to_parquet(run / "origin_frozen_panel.parquet", index=False)
     frames = partition_panel(panel)
     train, validation, calibration, test = (frames[n] for n in PARTITIONS)
@@ -342,7 +372,7 @@ def run_archive_experiment(csv_path: Path, output_root: Path, maximum_lead: int 
         "evaluation_kind": "reconstructed_historical_assumed",
         "champion_promoted": False,
         "distinct_actual_seasons": 1,
-        "rules_version": "fpl-2024-25",
+        "rules_version": "fpl-" + season,
         "source": source,
         "source_manifest_sha256": checksum(source_path),
         "dataset_sha256": checksum(run / "origin_frozen_panel.parquet"),
@@ -404,7 +434,7 @@ def run_archive_experiment(csv_path: Path, output_root: Path, maximum_lead: int 
         "model_family": "football_catboost_multilead",
         "model_status": "trained_research",
         "artifact_id": run.name,
-        "rules_version": "fpl-2024-25",
+        "rules_version": "fpl-" + season,
         "supported_horizon": maximum_lead,
         "available_at": datetime.now(UTC).isoformat(),
         "evaluation_kind": report["evaluation_kind"],
@@ -414,7 +444,9 @@ def run_archive_experiment(csv_path: Path, output_root: Path, maximum_lead: int 
         "selected_method": selected,
         "training_config": CONFIG,
         "latest_refit": "latest_research_refit.cbm",
-        "files": {p.name: checksum(p) for p in sorted(run.iterdir()) if p.is_file()},
+        "files": {
+            str(p.relative_to(run)): checksum(p) for p in sorted(run.rglob("*")) if p.is_file()
+        },
     }
     write_json(run / "manifest.json", manifest)
     return run

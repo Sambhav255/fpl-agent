@@ -56,3 +56,6 @@ def test_cached_refit_rejects_mutated_artifact(tmp_path):
     model.write_bytes(b"changed")
     with pytest.raises(ValueError, match="artifact changed"):
         cached_refit(store, "id")
+    model.unlink()
+    with pytest.raises(ValueError, match="artifact unavailable"):
+        cached_refit(store, "id")

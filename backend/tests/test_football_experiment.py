@@ -97,3 +97,14 @@ def test_missing_outcome_and_duplicate_are_not_zeros(tmp_path):
     pd.concat([raw, raw.iloc[:1]]).to_csv(path, index=False)
     with pytest.raises(ValueError, match="duplicate"):
         build_archive_multilead(path)
+
+
+def test_archive_player_ids_are_explicitly_season_scoped(tmp_path):
+    path = tmp_path / "source.csv"
+    archive(path)
+    a = build_archive_multilead(path, 1, season="2022-23")
+    b = build_archive_multilead(path, 1, season="2023-24")
+    assert all(key.startswith("fpl:2022-23:") for key in a.player_key)
+    assert not set(a.player_key) & set(b.player_key)
+    with pytest.raises(ValueError, match="season namespace"):
+        build_archive_multilead(path, 1, season="unscoped")

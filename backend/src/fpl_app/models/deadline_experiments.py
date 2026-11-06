@@ -116,6 +116,7 @@ def training_input(store: Store, payload: dict[str, Any]) -> str:
         for p in (
             Path(__file__),
             Path(__file__).with_name("points_hurdle.py"),
+            Path(__file__).with_name("training_eligibility.py"),
             Path(__file__).parents[1] / "features/deadline.py",
             Path(__file__).parents[1] / "features/football.py",
         )
@@ -149,6 +150,7 @@ def train_job(store: Store, payload: dict[str, Any]) -> dict[str, Any]:
     for path in (
         Path(__file__),
         Path(__file__).with_name("points_hurdle.py"),
+        Path(__file__).with_name("training_eligibility.py"),
         Path(__file__).parents[1] / "features/deadline.py",
         Path(__file__).parents[1] / "features/football.py",
     ):

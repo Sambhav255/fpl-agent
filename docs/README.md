@@ -1,26 +1,29 @@
-# Documentation index
+# Documentation
 
-Begin with [START_HERE](START_HERE.md). [BUILD_STATUS](BUILD_STATUS.md) is the authoritative record of current implementation, checks and remaining limits; [CHATGPT_PROGRESS_REPORT](CHATGPT_PROGRESS_REPORT.md) is its concise continuation summary.
+Start with the guide for your task. Current implementation and verification live in
+[build status](BUILD_STATUS.md); specifications describe requirements, while dated
+experiment reports preserve evidence.
 
-| Reference | Purpose |
-| --- | --- |
-| [Improvement roadmap](ROADMAP.md) | Season strategy, ordered model work and acceptance criteria |
-| [Specifications](specs/README.md) | Product, data, architecture, rules sources, learning and serving contracts |
-| [File map](FILE_STRUCTURE.md) | Source locations, runtime data and generated artifacts |
-| [Decisions](DECISIONS.md) | Recorded design choices and resolved specification conflicts |
-| [Operator commands](../scripts/README.md) | Startup, research, scoring and worker operation |
-| [Contributing](../CONTRIBUTING.md) | Formatting, verification, contract generation and source exports |
-| [Archive](archive/README.md) | Superseded prompts, status, audits, original packages and relocation checksums |
+| I want to…                                  | Read                                                                                           |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Install and use the application             | [Project quick start](../README.md#quick-start)                                                |
+| Resume development or agent work            | [Start here](START_HERE.md)                                                                    |
+| See what works and what remains unavailable | [Build status](BUILD_STATUS.md)                                                                |
+| Understand the source layout                | [File map](FILE_STRUCTURE.md), [backend guide](../backend/README.md)                           |
+| Change product or technical behavior        | [Specifications](specs/README.md), [decisions](DECISIONS.md)                                   |
+| Operate jobs, data and model experiments    | [Operations](operations/README.md)                                                             |
+| Review actual model measurements            | [Experiment registry](experiments/README.md)                                                   |
+| Understand planned work and remaining gates | [Roadmap](ROADMAP.md), [acceptance checklist](MASTER_PLAN_STATUS.md), [plans](plans/README.md) |
+| Prepare a source change or clean export     | [Contributing](../CONTRIBUTING.md), [release preparation](operations/RELEASE_PREPARATION.md)   |
+| Find superseded documents                   | [Archive](archive/README.md)                                                                   |
 
-## Measured evidence
+## Documentation boundaries
 
-Reports under `experiments/` are retained evidence with their original dates, source assumptions and limitations. They do not imply promotion or newly executed checks.
+- **Maintained:** guides, status, specifications, roadmap and operator reference.
+- **Preserved:** original supplied plans, dated experiments and archival records.
+- **Local only:** private manager notes, screenshots and operational logs in ignored
+  `docs/local/`; runtime data, source captures and native artifacts in ignored `data/`.
 
-- [3 November: GW9 post-event review and GW10 freeze](experiments/2026-11-03-gw9-post-event/README.md)
-- [3 November: rolling model evaluation and frozen selection diagnostics](experiments/2026-11-03-decision-quality/README.md)
-- [31 October: deadline model review](experiments/2026-10-31-gw9-model-review/README.md)
-- [14 October: prospective replay producers](experiments/2026-10-14-prospective-replay/README.md)
-- [13 October: finalized real-football experiments](experiments/2026-10-13-real-football-finalized/README.md)
-- Earlier capability reports: [collection](experiments/COLLECTION.md), [CatBoost](experiments/CATBOOST_FOOTBALL.md), [social](experiments/SOCIAL.md), [initial real-football run](experiments/2026-10-13-real-football/README.md).
-
-Immutable reports may mention old documentation locations. Resolve those through the [archive relocation manifest](archive/relocations.json); their bytes were preserved. Private working notes and personal state remain in ignored `docs/local/` and `data/`.
+Old links in immutable reports resolve through the [relocation manifest](archive/relocations.json).
+The [continuation summary](CHATGPT_PROGRESS_REPORT.md) is a compact handoff, not a
+second source of requirements or a replacement for measured evidence.

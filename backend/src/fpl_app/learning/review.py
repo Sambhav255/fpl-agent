@@ -16,7 +16,17 @@ def implementation_digest() -> str:
     root = Path(__file__).resolve().parents[1]
     names = [
         "learning/review.py",
+        "learning/tournament.py",
+        "models/weekly_tournament.py",
+        "evaluation/tournament.py",
         "learning/outcomes.py",
+        "learning/refit_cache.py",
+        "learning/forecast_benchmark.py",
+        "learning/post_event.py",
+        "learning/selection_review.py",
+        "models/training_eligibility.py",
+        "models/opportunity.py",
+        "features/football.py",
         "models/football_catboost.py",
         "domain/rules.py",
     ]
@@ -113,11 +123,60 @@ def enqueue_due_reviews(store: Store, now: str | None = None) -> list[dict[str, 
                 lambda: None,
                 same=lambda existing, new: existing["schedule_sha256"] == new["schedule_sha256"],
             )
+        if tick["implementation_sha256"] != implementation_digest():
+            # Preserve the old tick. A changed implementation resumes at the next
+            # scheduled slot, rather than rewriting evidence or retry-spamming.
+            continue
         results.append(
             Queue(store).enqueue(
                 "learning_review", {"tick_id": tick_id, "team_id": config["team_id"]}
             )
         )
+    return results
+
+
+def score_collection_benchmarks(store: Store, provider, collection: dict[str, Any]) -> list[dict]:
+    """Commit independent, fenced scoring stages before any new labels are reused.
+
+    A scoring job remains useful even if its parent review is cancelled. Its key
+    binds the collection receipt, so a later corrected capture cannot reuse an
+    older completed scoring job. Targeted execution never claims unrelated work.
+    """
+    from fpl_app.jobs import Worker
+    from fpl_app.models.training_eligibility import require_scored_collection
+
+    events = {
+        row["event"] for row in collection["labels"] if row["label_status"] == "final_revision"
+    }
+    queue = Queue(store)
+    results = []
+    for benchmark in store.list("forecast_benchmark"):
+        if benchmark["event"] not in events or str(benchmark["season"]).replace(
+            "-", "/"
+        ) != collection["season"].replace("-", "/"):
+            continue
+        job = queue.enqueue(
+            "forecast_benchmark_score",
+            {
+                "benchmark_id": benchmark["benchmark_id"],
+                "collection_sha256": collection["envelope_sha256"],
+            },
+        )
+        if job["status"] == "queued":
+            Worker(queue, provider=provider).run_once(job["id"])
+        finished = queue.get(job["id"])
+        result = finished.get("result") or {}
+        results.append(
+            {
+                "benchmark_id": benchmark["benchmark_id"],
+                "job_id": job["id"],
+                "status": result.get("status", finished["status"]),
+                "revision": result.get("revision"),
+            }
+        )
+        if finished["status"] != "succeeded" or result.get("status") != "final":
+            raise ValueError("Collection benchmark scoring is incomplete; retry after recovery")
+    require_scored_collection(store, collection)
     return results
 
 
@@ -162,6 +221,7 @@ def run_review(store: Store, provider, tick_id: str) -> dict[str, Any]:
         )
     collection = None
     challenger = None
+    benchmark_scores = []
     config = tick["config"]
     if config["collect"]:
         collection = collect_football(
@@ -178,6 +238,9 @@ def run_review(store: Store, provider, tick_id: str) -> dict[str, Any]:
         )
         bootstrap = json.loads(store.snapshot(bootstrap_source["id"])["raw"])
         try:
+            # Scoring is independent of refit reuse: even unchanged labels need
+            # an outcome receipt at least as recent as the new collection.
+            benchmark_scores = score_collection_benchmarks(store, provider, collection)
             identity = refit_identity(collection, implementation_digest())
             challenger = cached_refit(store, identity)
             if challenger is None:
@@ -205,13 +268,24 @@ def run_review(store: Store, provider, tick_id: str) -> dict[str, Any]:
                 "exception_type": type(exc).__name__,
                 "promoted": False,
             }
+    tournament = None
+    if collection is not None:
+        from fpl_app.learning.tournament import enqueue_tournament
+
+        try:
+            # The optional tournament enforces its own scoring guard at enqueue.
+            tournament = enqueue_tournament(store, collection)
+        except (ValueError, ImportError) as exc:
+            tournament = {"status": "unavailable", "exception_type": type(exc).__name__}
     report = {
+        "weekly_tournament": tournament,
         "review_id": tick_id,
         "team_id": tick["team_id"],
         "scheduled_for": tick["scheduled_for"],
         "decisions": rows,
         "collection_id": None if collection is None else collection["collection_id"],
         "challenger": challenger,
+        "benchmark_scores": benchmark_scores,
         "football_champion": "baseline",
         "strategy_champion": "numerical_planner",
         "promotion": "retain_champions_insufficient_evidence",

@@ -8,7 +8,7 @@ Goal: support a top-10,000 season finish through better weekly decisions. Rank i
 | --- | --- | --- | --- |
 | 1 | Decision quality and honest evaluation | Frozen origin-based shortlists; no outcome-driven eligibility/backfilling; separate ranking and legal policy replay; distinct finalized weekly evidence | Implemented this stage; GW10 prospective selection registered |
 | 2 | Robust model comparison | Earlier inner validation, expanding outer tests, source/checkpoint identity, no outer-target tuning | Executed three fixed enriched challengers over GW5–8; historical results remain exploratory |
-| 3 | Minutes and availability | Improve existing CatBoost appearance/60-minute heads using binary objectives; coherent probabilities, chronological calibration, Brier scores and minutes error; same deadline news for comparisons | **Next implementation task** |
+| 3 | Minutes and availability | Improve existing CatBoost appearance/60-minute heads using binary objectives; coherent probabilities, chronological calibration, Brier scores and minutes error; same deadline news for comparisons | Implemented and measured; both primary Briers worsened |
 | 4 | Better personal decisions | Reconcile current squad/finances; legal same-state Keep/roll/transfer/lineup/captain/bench comparisons; stress-test plausible minutes assumptions | Engine exists; current private state needs reconciliation before transfer advice |
 | 5 | Supported future forecasts | Evaluate direct multi-lead forecasts and future availability assumptions; preserve blanks/doubles and freeze each horizon at origin | One-lead trained support; longer baseline numbers remain conditional scenarios |
 | 6 | Broader model families | Complete Bayesian components and historical provenance; TFT only if it improves the relevant measured objective | Research only; do not add complexity to compensate for weak evidence |
@@ -21,9 +21,9 @@ Retrospective ranking diagnostics of the original frozen GW9 forecasts expose di
 
 A new GW10 selection plan is registered before deadline using the existing 23 canonical forecast streams and 176 origin-eligible players. It fixes the comparator, primary challenger, attacking top-one diagnostic, position top-five lists, deterministic ties, source collection and method identity. Missing selected outcomes remain missing; hindsight never backfills a shortlist. The GW9 analysis is explicitly retrospective and provisional. Neither can silently become a promotion test.
 
-## Next implementation task: opportunity probabilities
+## Opportunity work now measured
 
-Extend the existing `models/football_catboost.py` evaluation path rather than creating a competing probability stack. Compare binary-loss appearance and 60-minute heads with the current heads on expanding chronological folds. Fit calibration on a separate earlier calibration block; enforce `P(60+) <= P(appearance)`, valid expected minutes and distinct probabilities versus point means. Audit substitutes, returning players, short histories and missing statistics. Preserve zero-minute disciplinary outcomes in total points. Never apply availability twice to unconditional mean forecasts.
+The [master-plan stage](experiments/2026-11-03-master-plan/README.md) extended the existing `models/football_catboost.py` path: binary heads, coherent minutes and calibration are implemented and measured. Both primary Briers worsened, so no candidate was promoted. Continue with declared origin-safe multi-lead research and new prospective same-state comparisons. The following remain acceptance criteria for subsequent probability experiments. Compare binary-loss appearance and 60-minute heads with the current heads on expanding chronological folds. Fit calibration on a separate earlier calibration block; enforce `P(60+) <= P(appearance)`, valid expected minutes and distinct probabilities versus point means. Audit substitutes, returning players, short histories and missing statistics. Preserve zero-minute disciplinary outcomes in total points. Never apply availability twice to unconditional mean forecasts.
 
 Keep the experiment small and register configurations before fitting. Report Brier/calibration, minutes errors, likely-starter/position point errors and ranking diagnostics together. Preserve all existing GW9/GW10 forecasts. Score any newly finalized event before consuming it in a new fit. Select on development evidence; retain untouched future monitoring. Do not retune GW10 predictions after observing GW10.
 
@@ -40,3 +40,16 @@ Keep the experiment small and register configurations before fitting. Report Bri
 Production remains baseline football plus the numerical optimiser. Ranking-readiness reports require at least eight distinct finalized prospective event blocks with the same registered method/comparison; repeated captures and training seeds do not create extra weeks. Eight weeks remains a small sample. Any interval is descriptive; a favorable report means review, not automatic activation. Calibration, coverage, legal policy replay, downside and operational checks remain separate release evidence.
 
 Full Bayesian player scoring, strict TFT provenance, future calibrated joint distributions and the current private manager-state reconciliation remain unavailable. See [BUILD_STATUS](BUILD_STATUS.md) for the exact checks and [START_HERE](START_HERE.md) to resume. Retained evidence is linked from [the documentation index](README.md).
+
+## 4 November continuation
+
+[Actual continuation results](experiments/2026-11-04-master-plan/README.md): GW9 finalized/scored; collection-bound rescore recovery, current one-event refit/freeze, origin-frozen direct lead1/2 experiments, weekly diagnostics and health/supervision templates executed. Longer current-season leads remain gated; mixed metrics do not change champions. Next: a new prospective legal same-state study once complete private transfer/chip state is reconciled, plus verified historical mappings/components and permitted real social inputs. Preserve the older registered GW10 study.
+
+## Weekly competition operating now — 6 November
+
+The [backend competition](experiments/2026-11-06-weekly-tournament/README.md) froze
+16 new streams and watches the original 23 canonical streams for all 670 players.
+Next gate is actual finalized GW10 scoring, not another configuration selected on
+these historical outer results. Compare event points, opportunity/minutes, interval
+coverage, likely-starter and position subsets, then freeze the same registered
+procedure for the next event. Optional model promotion remains separately gated.

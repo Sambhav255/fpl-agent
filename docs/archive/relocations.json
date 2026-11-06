@@ -821,6 +821,22 @@
       "relocated_sha256": "b754d26a2f4d6d0dfbe2c6cf685d98d9c429ceaf023e8f1a63b0e21900e3b217",
       "original_size": 1367,
       "link_rewrites": []
+    },
+    {
+      "previous_path": "FPL_MODEL_IMPROVEMENT_MASTER_PLAN_2026_11_03.md",
+      "path": "docs/plans/MODEL_IMPROVEMENT_2026-11-03.md",
+      "original_sha256": "e55c5de31cb76d85317aa54d5dc315c7745ab7609893b376f0490187db0b7b1c",
+      "relocated_sha256": "e55c5de31cb76d85317aa54d5dc315c7745ab7609893b376f0490187db0b7b1c",
+      "original_size": 75687,
+      "link_rewrites": []
+    },
+    {
+      "previous_path": "docs/WORKER_RUNTIME.md",
+      "path": "docs/operations/WORKER_RUNTIME.md",
+      "original_sha256": "53d0f7c90b7931010159bb1f88cfb3f00aec1dcbe67b561f02dc486f100c29eb",
+      "relocated_sha256": "53d0f7c90b7931010159bb1f88cfb3f00aec1dcbe67b561f02dc486f100c29eb",
+      "original_size": 2746,
+      "link_rewrites": []
     }
   ],
   "link_rewrite_offset_unit": "Unicode code points in the original UTF-8 decoded Markdown; apply substitutions in descending offset order.",
@@ -869,6 +885,48 @@
     "docs/experiments/2026-11-03-gw9-post-event/verification.json": "377f79d9288ef2d1edc6cb9f59f3cdad3b01a46e535cf3dbe695adcb07a5c600",
     "docs/experiments/CATBOOST_FOOTBALL.md": "4bc6aa572de4f3e30c1116d30ac416dda05000e0f2d5c664a0cb1b89addb573d",
     "docs/experiments/COLLECTION.md": "22549bef74c93ff443d8fa8c77da817b233c66d91cc28a33d4f8574b42bcd806",
-    "docs/experiments/SOCIAL.md": "aa8c7626a1769f615d5b248c14049fbbf1ee4073e6ac2879b158ea1a0f61b4ea"
-  }
+    "docs/experiments/SOCIAL.md": "aa8c7626a1769f615d5b248c14049fbbf1ee4073e6ac2879b158ea1a0f61b4ea",
+    "docs/experiments/2026-11-03-decision-quality/README.md": "856177191fa0ab0ec3feb44d66e8611570bb30cfaa243187b29f19a6cadc5d4d",
+    "docs/experiments/2026-11-03-decision-quality/gw10-selection-plan.json": "fa412672392f0e9cbff54f4ef7c1010e032198c7f178488d82ec69a74f8984c0",
+    "docs/experiments/2026-11-03-decision-quality/gw9-ranking-diagnostic.json": "95e9359f5b2213b2a148b27fe948e9c6970df1caea259b227966f3270c9f908b",
+    "docs/experiments/2026-11-03-decision-quality/rolling-evaluation.json": "a558ea96f062bd796b49a5e625d5de48a1f753bdc4bbb3694fb6c374ac103c29",
+    "docs/experiments/2026-11-03-decision-quality/verification.json": "0324457bfbfcf7e1cdeb191c5e6aaa081095a0c886172534fa016bc21d379e0a",
+    "docs/experiments/2026-11-03-master-plan/README.md": "8a6249b8b07738e25e84761aa78d31c4d4cf2254fae013dbd26a18b069d75445",
+    "docs/experiments/2026-11-03-oof-ensemble/README.md": "1871d762c50726246dd59522a52e290b969efc9fd8ac3653a4d4c68ce894cf4f",
+    "docs/experiments/2026-11-03-oof-ensemble/protocol-summary.json": "2374384467941b596e6f5fad770a6cc7435feff7cecc4043d5bf2d0894073192",
+    "docs/experiments/2026-11-03-oof-ensemble/report.json": "2382a75c5ecabd9e2b1725f3013b6719b4e4aa345129a70d01d4c7b1bddb1a9f",
+    "docs/experiments/2026-11-03-opportunity/README.md": "a0c6886192f50b5d4d925bb00575899b0c0c267fa9ac6367bb0bbfd94171d2ca",
+    "docs/experiments/2026-11-03-opportunity/protocol.json": "d4f42abde93b5f4331ec8e076a317114efcb56e7a0f619a754eeeaed1a47c935",
+    "docs/experiments/2026-11-03-opportunity/report.json": "8e547688a470a573b3228710eef6bcc9453b7465dc8312116be0d58c39a91528",
+    "docs/experiments/2026-11-03-paper-policy/README.md": "c6b50a81e4d7ade0f187d859da66f6036bc563ed7c2d22afbbb8300077e374df",
+    "docs/experiments/2026-11-03-paper-policy/verification.json": "b7ca93bbb33b1a6be6e39e43217ea3e9f78e1f2082271398f66f72b59d289471",
+    "docs/experiments/2026-11-03-season-foundation/README.md": "6f33111c529e8178c7c075d49c874fcf953a3121d02db0d61598ee61cc44a1a6",
+    "docs/experiments/2026-11-03-season-foundation/manifest.json": "3d23ace2d264a9f99d16b1e281e37ac9b16205cd9c03d88a69590eb9da5d4322",
+    "docs/experiments/2026-11-03-season-foundation/quality.json": "5219f6419213acb74ea05ff0d44d4c9f271274835bf1d223b43fa06f3f4433e3",
+    "docs/experiments/2026-11-03-signed-bps/README.md": "3d0d49203e2a1aaf64f13a500bea820bc4a4900aa0c101d83915de07500a89fb",
+    "docs/experiments/2026-11-03-signed-bps/audit.json": "dda54652067513bf8acce43123d0a6f4fa742c4b9a66a8e31412a22d7dbf0bbc",
+    "docs/experiments/2026-11-03-signed-bps/audit.py": "bc619cd36bd84da7aedcad6ba03044b6cd2bd435659e1e49879ca4ae01f5807f",
+    "docs/experiments/2026-11-03-signed-bps/verification.json": "50bc5339f2d39c04c94e5ba2cc773c656a31cc85d22074c9f9ce52b825a8270a",
+    "docs/experiments/2026-11-03-simple-models/README.md": "ba5f6060da30ef0d28e33ff3d6b5453d8fa0d156da579d461554ad6b129988fd",
+    "docs/experiments/2026-11-03-simple-models/protocol-summary.json": "a50f584655af33f0c9356e113d639cd2ba6d8aba4ce6a4d15589a0e60ae5a150",
+    "docs/experiments/2026-11-03-simple-models/report.json": "4c1886c0381157c094336504f88b4d7f036184ced81770103ab27f54ede2fad7",
+    "docs/experiments/2026-11-03-simple-models/verification.json": "f9c3397c97aaf32233b81d438b983e5b289858cdb39f587d46ec40743a73ea2d",
+    "docs/experiments/2026-11-03-social-manual/README.md": "d2e9b2795d0c5f220bc8f8bc4cccb96a4e2db0b68e2e1ec0e2509e93ec3a9696",
+    "docs/experiments/2026-11-03-social-manual/authored-example.json": "6f847e460d8496c79cb30470492277b6ca9f4b2d4e4e746888deac20037b9e79",
+    "docs/experiments/2026-11-04-master-plan/README.md": "91da223925177c1d40259465ccc9ae663a3072c3ea572b1711d7f618757a5af0",
+    "docs/experiments/2026-11-04-master-plan/metrics.json": "5a3078c493f622dffe3590d2b511f3c6cf9735b28517a58cb7d1cadf3c64f13b",
+    "docs/experiments/2026-11-04-master-plan/protocol.json": "bc3978ec6e4664a162cc0a52e8c46b9f695d6ef273ef0b5291f852ddec2fab26",
+    "docs/experiments/2026-11-06-master-plan/README.md": "be2b6b8c23c9d4c050a8fc69e650623cc78db07dbc45bd3fe0382cda685421f0",
+    "docs/experiments/2026-11-06-master-plan/metrics.json": "02ccd648d336e3f5d0c857e57c735f77633af63129aa874a978b110463767b05",
+    "docs/experiments/2026-11-06-weekly-tournament/README.md": "0ed3d0b4e7ecfd79f70ec6e4edde4f6e00387a7549ecdd2c66c4d6379203a006",
+    "docs/experiments/2026-11-06-weekly-tournament/metrics.json": "381e87229c8811245bfb65ddd807a3020a0ddc100ad8024813f5df1c8958db07"
+  },
+  "extensions": [
+    {
+      "date": "2026-11-06",
+      "purpose": "Repository documentation cleanup; supplied plan and runtime guide preserved, later measured reports added to checksum verification",
+      "relocations_added": 2,
+      "experiment_files_added": 34
+    }
+  ]
 }

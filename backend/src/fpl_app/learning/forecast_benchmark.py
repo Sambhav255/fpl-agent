@@ -62,6 +62,31 @@ def make_benchmark(
                 or not isfinite(row["expected_points"])
             ):
                 raise ValueError("Known player IDs and finite mean forecasts required")
+            for key in (
+                "appearance_probability",
+                "sixty_probability",
+                "expected_minutes",
+                "q0.1",
+                "q0.5",
+                "q0.9",
+            ):
+                if key in row and (type(row[key]) not in (int, float) or not isfinite(row[key])):
+                    raise ValueError("Finite auxiliary forecasts required")
+            for key in ("appearance_probability", "sixty_probability"):
+                if key in row and not 0 <= row[key] <= 1:
+                    raise ValueError("Auxiliary probabilities must be in [0,1]")
+            if (
+                all(k in row for k in ("appearance_probability", "sixty_probability"))
+                and row["sixty_probability"] > row["appearance_probability"]
+            ):
+                raise ValueError("60-minute probability cannot exceed appearance")
+            if "expected_minutes" in row and row["expected_minutes"] < 0:
+                raise ValueError("Nonnegative expected minutes required")
+            if (
+                all(k in row for k in ("q0.1", "q0.5", "q0.9"))
+                and not row["q0.1"] <= row["q0.5"] <= row["q0.9"]
+            ):
+                raise ValueError("Ordered auxiliary quantiles required")
     for rows in (team_predictions or {}).values():
         if len({r["fixture_id"] for r in rows}) != len(rows):
             raise ValueError("Duplicate team-goal forecast fixtures")
@@ -140,6 +165,7 @@ def score_benchmark(store: Store, provider: Any, identifier: str) -> dict[str, A
     )
     for name, model in frozen["models"].items():
         errors, common_errors = [], []
+        final_rows = []
         coverage: Counter[str] = Counter()
         for row in model["predictions"]:
             player = row["player_id"]
@@ -156,6 +182,7 @@ def score_benchmark(store: Store, provider: Any, identifier: str) -> dict[str, A
             coverage[state] += 1
             outcomes.append({"model": name, "player_id": player, "status": state, "points": points})
             if state == "final":
+                final_rows.append(row)
                 assert type(points) is int
                 predicted = float(row["expected_points"])
                 errors.append(predicted - points)
@@ -174,6 +201,10 @@ def score_benchmark(store: Store, provider: Any, identifier: str) -> dict[str, A
             if common_errors
             else None,
         }
+        if any("expected_minutes" in r for r in model["predictions"]):
+            from fpl_app.evaluation.tournament import score_frozen_rows
+
+            metrics[name]["diagnostics"] = score_frozen_rows(final_rows, actual)
     team_metrics = {}
     for name, rows in frozen.get("team_predictions", {}).items():
         goal_errors = []
@@ -218,10 +249,11 @@ def enqueue_due_benchmarks(store: Store, now: str | None = None) -> list[dict[st
     from fpl_app.jobs import Queue
 
     instant = utc(now or utcnow())
+    slot = int(instant.timestamp()) // (6 * 3600)
     scored = {
         r["benchmark_id"]
         for r in store.list("forecast_benchmark_outcome")
-        if r["status"] == "final"
+        if r["status"] == "final" and int(utc(r["scored_at"]).timestamp()) // (6 * 3600) >= slot
     }
     result = []
     for benchmark in store.list("forecast_benchmark"):
@@ -232,7 +264,7 @@ def enqueue_due_benchmarks(store: Store, now: str | None = None) -> list[dict[st
                 "forecast_benchmark_score",
                 {
                     "benchmark_id": benchmark["benchmark_id"],
-                    "check_slot": int(instant.timestamp()) // (6 * 3600),
+                    "check_slot": slot,
                 },
             )
         )

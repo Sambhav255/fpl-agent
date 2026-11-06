@@ -28,6 +28,10 @@ jobs:
           uv sync --locked --project backend
           npm ci --prefix apps/web
           cd apps/web && npx playwright install --with-deps chromium
+      - name: Documentation and source hygiene
+        run: |
+          python3 scripts/check_docs.py
+          python3 scripts/export_source.py
       - name: Backend checks
         working-directory: backend
         run: |

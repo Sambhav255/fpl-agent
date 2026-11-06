@@ -19,15 +19,37 @@ def main():
     parser.add_argument(
         "--benchmark-id", help="Check one explicit benchmark, even before its due time"
     )
+    parser.add_argument(
+        "--collection-id",
+        help="Score all finalized benchmarks consumed by this collection",
+    )
     parser.add_argument("--work-once", action="store_true")
     parser.add_argument(
         "--export", type=Path, help="Export retained scorecards as JSON"
     )
     args = parser.parse_args()
+    if args.collection_id and (args.benchmark_id or not args.work_once):
+        parser.error("--collection-id requires --work-once and excludes --benchmark-id")
     store = Store()
     queue = Queue(store)
-    jobs = (
-        [
+    if args.collection_id:
+        from fpl_app.learning.review import score_collection_benchmarks
+        from fpl_app.providers import Provider
+        from fpl_app.providers.collection import load_collection
+
+        results = score_collection_benchmarks(
+            store, Provider(store), load_collection(store, args.collection_id)
+        )
+        print(
+            json.dumps(
+                {"collection_id": args.collection_id, "benchmark_scores": results}
+            ),
+            flush=True,
+        )
+    if args.collection_id:
+        jobs = []
+    elif args.benchmark_id:
+        jobs = [
             queue.enqueue(
                 "forecast_benchmark_score",
                 {
@@ -36,9 +58,8 @@ def main():
                 },
             )
         ]
-        if args.benchmark_id
-        else enqueue_due_benchmarks(store)
-    )
+    else:
+        jobs = enqueue_due_benchmarks(store)
     print(
         json.dumps({"jobs": [{"id": j["id"], "status": j["status"]} for j in jobs]}),
         flush=True,

@@ -38,8 +38,9 @@ export function PlanningOptions({
         </select>
       </label>
       <p className="muted">
-        Future chips use confirmed inventory. Large sequence searches compare up to two replacements
-        per event, including chip weeks, and report budget limits. Later actions are conditional
+        Future chips use confirmed inventory. Large sequence searches consider at least two
+        replacements or the remaining free transfers, subject to your transfer cap and search
+        budget. Chip weeks also include whole-squad candidates. Later actions are conditional
         proposals.
       </p>
     </>

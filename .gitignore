@@ -42,3 +42,17 @@ Thumbs.db
 # Shared editor layout; local runtime data stays ignored and on disk.
 !.vscode/
 !.vscode/settings.json
+
+# Native model and array artifacts belong in ignored data/
+*.cbm
+*.ckpt
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.nc
+*.npy
+*.npz

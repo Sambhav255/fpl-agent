@@ -447,7 +447,7 @@ def recommend(
             )
             plan.assumptions = [
                 "Complete financial-state path over the declared universe when search exhausts; bounded incumbents otherwise",
-                "Large catalogues restrict ordinary events to at most two replacements; Wildcard/Free Hit admit complete ownership/XI/captain MILP squads; path search remains bounded",
+                "Large catalogues consider up to remaining free inventory or two replacements, subject to the event transfer cap; Wildcard/Free Hit admit complete ownership/XI/captain MILP squads; path search remains bounded",
                 "Conditional declared price path"
                 if settings.price_scenario
                 else "Frozen prices; exact acquisition and selling basis",

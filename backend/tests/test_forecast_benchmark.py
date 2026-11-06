@@ -134,7 +134,7 @@ def test_mutation_and_late_publication_are_rejected(tmp_path):
         )
 
 
-def test_due_scoring_is_durable_idempotent_and_stops_after_final(tmp_path):
+def test_due_scoring_is_durable_idempotent_and_rechecks_later_revisions(tmp_path):
     store, frozen, bootstrap, fixtures = fixture(tmp_path)
     assert not enqueue_due_benchmarks(store)
     due = frozen["check_after"]
@@ -146,7 +146,9 @@ def test_due_scoring_is_durable_idempotent_and_stops_after_final(tmp_path):
     assert worker.run_once()
     assert worker.queue.get(first["id"])["status"] == "succeeded"
     assert len(store.list("forecast_benchmark_outcome")) == 1
-    assert not enqueue_due_benchmarks(store, due)
+    assert enqueue_due_benchmarks(store, due)[0]["id"] == first["id"]
+    later = (datetime.fromisoformat(due) + timedelta(hours=6)).isoformat()
+    assert enqueue_due_benchmarks(store, later)[0]["id"] != first["id"]
 
 
 def test_team_goals_and_different_model_universes_are_compared_explicitly(tmp_path):
@@ -177,3 +179,74 @@ def test_team_goals_and_different_model_universes_are_compared_explicitly(tmp_pa
     assert result["metrics"]["reference"]["common_n"] == 1
     assert result["metrics"]["reference"]["common_mae"] == 2
     assert result["team_goal_metrics"]["goals"]["rmse"] == 0.5
+
+
+def test_frozen_auxiliary_scores_only_final_observed_rows(tmp_path):
+    store, old, bootstrap, fixtures = fixture(tmp_path)
+    models = copy.deepcopy(old["models"])
+    for row in models["reference"]["predictions"]:
+        row.update(
+            expected_minutes=45.0,
+            appearance_probability=0.5,
+            sixty_probability=0.4,
+            position=3,
+            **{"q0.1": -1.0, "q0.5": 2.0, "q0.9": 8.0},
+        )
+    frozen = make_benchmark(
+        store,
+        old["sources"][0]["id"],
+        old["sources"][1]["id"],
+        9,
+        models,
+        produced_at=datetime.now(UTC).isoformat(),
+        protocol={"new_auxiliary": True},
+    )
+    store.put("forecast_benchmark", frozen["benchmark_id"], frozen)
+    result = score_benchmark(
+        store,
+        RetainedProvider(store, bootstrap, fixtures, finalized=True, missing=True),
+        frozen["benchmark_id"],
+    )
+    aux = result["metrics"]["reference"]["diagnostics"]["auxiliary"]
+    assert aux["appearance"]["n"] == 1
+    assert aux["appearance"]["brier"] == 0.25
+    assert aux["minutes_mae"] == 45
+    assert result["metrics"]["reference"]["coverage"]["missing_outcome"] == 1
+    models["reference"]["predictions"][0]["appearance_probability"] = 2
+    with pytest.raises(ValueError, match="probabilities"):
+        make_benchmark(
+            store,
+            old["sources"][0]["id"],
+            old["sources"][1]["id"],
+            9,
+            models,
+            produced_at=datetime.now(UTC).isoformat(),
+            protocol={},
+        )
+
+
+def test_official_zero_sensitivity_preserves_parent_and_doubtful_signed_means(tmp_path):
+    from fpl_app.models.news_sensitivity import freeze_news_sensitivity
+
+    store, old, bootstrap, _fixtures = fixture(tmp_path)
+    bootstrap["elements"][0].update(status="s", chance_of_playing_next_round=0)
+    bootstrap["elements"][1].update(status="d", chance_of_playing_next_round=75)
+    source = store.archive(json.dumps(bootstrap).encode(), "bootstrap-static/")
+    parent = make_benchmark(
+        store,
+        source,
+        old["sources"][1]["id"],
+        9,
+        old["models"],
+        produced_at=datetime.now(UTC).isoformat(),
+        protocol={"study_id": "test"},
+    )
+    store.put("forecast_benchmark", parent["benchmark_id"], parent)
+    before = fingerprint(parent)
+    scenario = freeze_news_sensitivity(store, parent["benchmark_id"])
+    values = scenario["models"]["reference"]["predictions"]
+    assert values[0]["expected_points"] == 0
+    assert values[1]["expected_points"] == -0.5
+    assert fingerprint(checked_benchmark(store, parent["benchmark_id"])) == before
+    store.put("forecast_benchmark", scenario["benchmark_id"], scenario)
+    assert freeze_news_sensitivity(store, parent["benchmark_id"]) == scenario

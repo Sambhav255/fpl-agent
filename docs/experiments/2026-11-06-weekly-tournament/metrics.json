@@ -1,0 +1,998 @@
+{
+  "auxiliary_by_origin_subset": {
+    "likely_starters": {
+      "appearance": {
+        "brier": 0.08650595270615054,
+        "log_loss": 0.3034036598092044,
+        "n": 888,
+        "reliability_bins": [
+          {
+            "lower": 0.4,
+            "n": 4,
+            "observed": 0.25,
+            "predicted": 0.5745475098211474
+          },
+          {
+            "lower": 0.6,
+            "n": 75,
+            "observed": 0.6266666666666667,
+            "predicted": 0.6987775575708552
+          },
+          {
+            "lower": 0.8,
+            "n": 809,
+            "observed": 0.9184177997527813,
+            "predicted": 0.9308444119775048
+          }
+        ]
+      },
+      "minutes_bias": -1.4774775969963796,
+      "minutes_mae": 19.657216972601706,
+      "minutes_n": 888,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.8209459459459459,
+        "mean_interval_width": 6.430641595259462,
+        "n": 888,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.3486309442263464,
+          "0.5": 1.560158755760882,
+          "0.9": 0.7646825582996358
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.1367270251531587,
+        "log_loss": 0.43523800004991964,
+        "n": 888,
+        "reliability_bins": [
+          {
+            "lower": 0.2,
+            "n": 38,
+            "observed": 0.3684210526315789,
+            "predicted": 0.36509801327813124
+          },
+          {
+            "lower": 0.4,
+            "n": 56,
+            "observed": 0.48214285714285715,
+            "predicted": 0.46622969671234343
+          },
+          {
+            "lower": 0.6,
+            "n": 248,
+            "observed": 0.7379032258064516,
+            "predicted": 0.7235711198364486
+          },
+          {
+            "lower": 0.8,
+            "n": 546,
+            "observed": 0.8992673992673993,
+            "predicted": 0.8888641413146314
+          }
+        ]
+      }
+    },
+    "sparse_history": {
+      "appearance": {
+        "brier": 0.12831255140277173,
+        "log_loss": 0.4034402991772417,
+        "n": 68,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 35,
+            "observed": 0.05714285714285714,
+            "predicted": 0.09083781296019561
+          },
+          {
+            "lower": 0.2,
+            "n": 4,
+            "observed": 0.0,
+            "predicted": 0.36499705516376696
+          },
+          {
+            "lower": 0.4,
+            "n": 14,
+            "observed": 0.35714285714285715,
+            "predicted": 0.5109357734184458
+          },
+          {
+            "lower": 0.6,
+            "n": 11,
+            "observed": 0.6363636363636364,
+            "predicted": 0.6869418427070196
+          },
+          {
+            "lower": 0.8,
+            "n": 4,
+            "observed": 1.0,
+            "predicted": 0.8733201812049685
+          }
+        ]
+      },
+      "minutes_bias": 4.042338070879546,
+      "minutes_mae": 13.871832004547999,
+      "minutes_n": 68,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.9264705882352942,
+        "mean_interval_width": 2.1171703388092395,
+        "n": 68,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.07513235246628736,
+          "0.5": 0.375,
+          "0.9": 0.33524983256499347
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.07900016892753388,
+        "log_loss": 0.2744372471987807,
+        "n": 68,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 50,
+            "observed": 0.06,
+            "predicted": 0.045006528494070795
+          },
+          {
+            "lower": 0.2,
+            "n": 10,
+            "observed": 0.0,
+            "predicted": 0.27208316165550805
+          },
+          {
+            "lower": 0.4,
+            "n": 2,
+            "observed": 0.5,
+            "predicted": 0.4703382059281379
+          },
+          {
+            "lower": 0.6,
+            "n": 5,
+            "observed": 0.6,
+            "predicted": 0.6639343214971853
+          },
+          {
+            "lower": 0.8,
+            "n": 1,
+            "observed": 1.0,
+            "predicted": 0.8242438401732559
+          }
+        ]
+      }
+    }
+  },
+  "auxiliary_by_position": {
+    "DEF": {
+      "appearance": {
+        "brier": 0.12493814497025918,
+        "log_loss": 0.39755786960418027,
+        "n": 1086,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 367,
+            "observed": 0.05722070844686648,
+            "predicted": 0.07858325909708234
+          },
+          {
+            "lower": 0.2,
+            "n": 128,
+            "observed": 0.3203125,
+            "predicted": 0.314522770861544
+          },
+          {
+            "lower": 0.4,
+            "n": 112,
+            "observed": 0.4107142857142857,
+            "predicted": 0.4926512915134789
+          },
+          {
+            "lower": 0.6,
+            "n": 125,
+            "observed": 0.68,
+            "predicted": 0.7031972695306672
+          },
+          {
+            "lower": 0.8,
+            "n": 354,
+            "observed": 0.8870056497175142,
+            "predicted": 0.9086545479087077
+          }
+        ]
+      },
+      "minutes_bias": -0.9459467669277484,
+      "minutes_mae": 17.067524878435776,
+      "minutes_n": 1086,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.8646408839779005,
+        "mean_interval_width": 3.1472613991696448,
+        "n": 1086,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.16786279834155965,
+          "0.5": 0.7464476986213031,
+          "0.9": 0.46920664846250454
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.10667389896807068,
+        "log_loss": 0.34440788592170574,
+        "n": 1086,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 559,
+            "observed": 0.059033989266547404,
+            "predicted": 0.05265142767005695
+          },
+          {
+            "lower": 0.2,
+            "n": 95,
+            "observed": 0.28421052631578947,
+            "predicted": 0.28992651808593534
+          },
+          {
+            "lower": 0.4,
+            "n": 63,
+            "observed": 0.49206349206349204,
+            "predicted": 0.49990323540590864
+          },
+          {
+            "lower": 0.6,
+            "n": 157,
+            "observed": 0.7515923566878981,
+            "predicted": 0.7113627343010818
+          },
+          {
+            "lower": 0.8,
+            "n": 212,
+            "observed": 0.8726415094339622,
+            "predicted": 0.8864510297306695
+          }
+        ]
+      }
+    },
+    "FWD": {
+      "appearance": {
+        "brier": 0.10442700705090287,
+        "log_loss": 0.34244276101281673,
+        "n": 395,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 154,
+            "observed": 0.032467532467532464,
+            "predicted": 0.07741693001706978
+          },
+          {
+            "lower": 0.2,
+            "n": 40,
+            "observed": 0.275,
+            "predicted": 0.31482615772784406
+          },
+          {
+            "lower": 0.4,
+            "n": 60,
+            "observed": 0.6333333333333333,
+            "predicted": 0.5072998084272594
+          },
+          {
+            "lower": 0.6,
+            "n": 48,
+            "observed": 0.875,
+            "predicted": 0.6794497827924646
+          },
+          {
+            "lower": 0.8,
+            "n": 93,
+            "observed": 0.9139784946236559,
+            "predicted": 0.9173325322064643
+          }
+        ]
+      },
+      "minutes_bias": 0.5866316659465168,
+      "minutes_mae": 10.646352874228308,
+      "minutes_n": 395,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.9012658227848102,
+        "mean_interval_width": 2.8323645709401033,
+        "n": 395,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.1398840961810666,
+          "0.5": 0.6596410396677773,
+          "0.9": 0.4052136606118208
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.06718845617502471,
+        "log_loss": 0.22670677358890337,
+        "n": 395,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 274,
+            "observed": 0.029197080291970802,
+            "predicted": 0.048997475965887646
+          },
+          {
+            "lower": 0.2,
+            "n": 15,
+            "observed": 0.13333333333333333,
+            "predicted": 0.29791155757830473
+          },
+          {
+            "lower": 0.4,
+            "n": 16,
+            "observed": 0.6875,
+            "predicted": 0.4907806295911773
+          },
+          {
+            "lower": 0.6,
+            "n": 44,
+            "observed": 0.7272727272727273,
+            "predicted": 0.7132617518616944
+          },
+          {
+            "lower": 0.8,
+            "n": 46,
+            "observed": 0.9130434782608695,
+            "predicted": 0.8813964590707714
+          }
+        ]
+      }
+    },
+    "GK": {
+      "appearance": {
+        "brier": 0.025366106051487636,
+        "log_loss": 0.11261683340263799,
+        "n": 367,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 253,
+            "observed": 0.011857707509881422,
+            "predicted": 0.031862772946975794
+          },
+          {
+            "lower": 0.2,
+            "n": 9,
+            "observed": 0.1111111111111111,
+            "predicted": 0.2928730815773699
+          },
+          {
+            "lower": 0.4,
+            "n": 5,
+            "observed": 0.4,
+            "predicted": 0.5208104550663057
+          },
+          {
+            "lower": 0.6,
+            "n": 4,
+            "observed": 0.5,
+            "predicted": 0.6663335148197378
+          },
+          {
+            "lower": 0.8,
+            "n": 96,
+            "observed": 0.96875,
+            "predicted": 0.9476480672387604
+          }
+        ]
+      },
+      "minutes_bias": -0.7340831343222307,
+      "minutes_mae": 4.686762967517176,
+      "minutes_n": 367,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.9346049046321526,
+        "mean_interval_width": 2.0510570373711934,
+        "n": 367,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.10008076711265336,
+          "0.5": 0.4443804824548628,
+          "0.9": 0.22306888081342355
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.021081416169088485,
+        "log_loss": 0.09602352659180492,
+        "n": 367,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 259,
+            "observed": 0.011583011583011582,
+            "predicted": 0.014917400583764345
+          },
+          {
+            "lower": 0.2,
+            "n": 6,
+            "observed": 0.0,
+            "predicted": 0.2658537453480658
+          },
+          {
+            "lower": 0.4,
+            "n": 5,
+            "observed": 0.6,
+            "predicted": 0.47062320615468367
+          },
+          {
+            "lower": 0.6,
+            "n": 6,
+            "observed": 1.0,
+            "predicted": 0.7484617449805522
+          },
+          {
+            "lower": 0.8,
+            "n": 91,
+            "observed": 0.967032967032967,
+            "predicted": 0.9296115362887658
+          }
+        ]
+      }
+    },
+    "MID": {
+      "appearance": {
+        "brier": 0.12489984879189742,
+        "log_loss": 0.3986792177609059,
+        "n": 1493,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 506,
+            "observed": 0.07312252964426877,
+            "predicted": 0.07282760856885946
+          },
+          {
+            "lower": 0.2,
+            "n": 150,
+            "observed": 0.32666666666666666,
+            "predicted": 0.30897239851738334
+          },
+          {
+            "lower": 0.4,
+            "n": 199,
+            "observed": 0.5577889447236181,
+            "predicted": 0.4908618736201689
+          },
+          {
+            "lower": 0.6,
+            "n": 210,
+            "observed": 0.7380952380952381,
+            "predicted": 0.7003003373385371
+          },
+          {
+            "lower": 0.8,
+            "n": 428,
+            "observed": 0.9205607476635514,
+            "predicted": 0.9228533691191123
+          }
+        ]
+      },
+      "minutes_bias": -0.6525139946347079,
+      "minutes_mae": 14.410437405767073,
+      "minutes_n": 1493,
+      "quantiles": {
+        "event_mean_spearman": null,
+        "interval_coverage": 0.8854655056932351,
+        "mean_interval_width": 2.8345738840062857,
+        "n": 1493,
+        "nominal_coverage": 0.8,
+        "pinball": {
+          "0.1": 0.14573561699948484,
+          "0.5": 0.6609473305088789,
+          "0.9": 0.40865908400145873
+        },
+        "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+      },
+      "sixty": {
+        "brier": 0.10174208210165679,
+        "log_loss": 0.32632985356376165,
+        "n": 1493,
+        "reliability_bins": [
+          {
+            "lower": 0.0,
+            "n": 862,
+            "observed": 0.058004640371229696,
+            "predicted": 0.043883635043261246
+          },
+          {
+            "lower": 0.2,
+            "n": 134,
+            "observed": 0.21641791044776118,
+            "predicted": 0.2883881241649354
+          },
+          {
+            "lower": 0.4,
+            "n": 107,
+            "observed": 0.4766355140186916,
+            "predicted": 0.5085353489725456
+          },
+          {
+            "lower": 0.6,
+            "n": 192,
+            "observed": 0.71875,
+            "predicted": 0.7029501062402992
+          },
+          {
+            "lower": 0.8,
+            "n": 198,
+            "observed": 0.8939393939393939,
+            "predicted": 0.8740294910040574
+          }
+        ]
+      }
+    }
+  },
+  "distinct_historical_events": 5,
+  "historical_event_point_metrics": {
+    "app_baseline_reconstructed": {
+      "bias": 0.7538344533957464,
+      "event_mean_spearman": 0.5760263575729434,
+      "mae": 1.8290506224354353,
+      "n": 3341,
+      "rmse": 2.325239676712556
+    },
+    "catboost": {
+      "bias": 0.024145976140343355,
+      "event_mean_spearman": 0.6942587284411488,
+      "mae": 1.1666473419308743,
+      "n": 3341,
+      "rmse": 2.0390521195907647
+    },
+    "catboost_recency": {
+      "bias": 0.0154880091336148,
+      "event_mean_spearman": 0.6938062507862349,
+      "mae": 1.1630425387927505,
+      "n": 3341,
+      "rmse": 2.0414588720824023
+    },
+    "equal_weight": {
+      "bias": 0.002011717482723817,
+      "event_mean_spearman": 0.6910299465346579,
+      "mae": 1.1562901754341335,
+      "n": 3341,
+      "rmse": 2.0426527524440905
+    },
+    "extra_trees": {
+      "bias": -0.0018998189773101802,
+      "event_mean_spearman": 0.6926487296914828,
+      "mae": 1.1480578500921872,
+      "n": 3341,
+      "rmse": 2.06248034588287
+    },
+    "hist_gradient": {
+      "bias": 0.020107131490444328,
+      "event_mean_spearman": 0.6571612165799121,
+      "mae": 1.2207496255843138,
+      "n": 3341,
+      "rmse": 2.142608136957368
+    },
+    "lightgbm": {
+      "bias": 0.017145522496029512,
+      "event_mean_spearman": 0.6871189242624437,
+      "mae": 1.1645144835457168,
+      "n": 3341,
+      "rmse": 2.0514940027903106
+    },
+    "ridge": {
+      "bias": -0.06291651538677882,
+      "event_mean_spearman": 0.6338388908546563,
+      "mae": 1.2921251264584614,
+      "n": 3341,
+      "rmse": 2.1252716360354085
+    }
+  },
+  "origin_subsets": {
+    "likely_starters": {
+      "catboost": {
+        "event_mean_spearman": 0.20690780320007068,
+        "mae": 2.433226756344358,
+        "n": 888,
+        "rmse": 3.126126221211734
+      },
+      "catboost_recency": {
+        "event_mean_spearman": 0.20491513681650794,
+        "mae": 2.432945754625536,
+        "n": 888,
+        "rmse": 3.133279896692535
+      },
+      "equal_weight": {
+        "event_mean_spearman": 0.2047610889545632,
+        "mae": 2.421233657294887,
+        "n": 888,
+        "rmse": 3.135579644603908
+      },
+      "extra_trees": {
+        "event_mean_spearman": 0.19400095377030704,
+        "mae": 2.44345567020273,
+        "n": 888,
+        "rmse": 3.17144640042951
+      },
+      "hist_gradient": {
+        "event_mean_spearman": 0.1470583994180082,
+        "mae": 2.5675709508681535,
+        "n": 888,
+        "rmse": 3.341218844391624
+      },
+      "lightgbm": {
+        "event_mean_spearman": 0.21449307810103058,
+        "mae": 2.4085516598117196,
+        "n": 888,
+        "rmse": 3.1574622904509595
+      },
+      "ridge": {
+        "event_mean_spearman": 0.1817803830604786,
+        "mae": 2.4402091658837044,
+        "n": 888,
+        "rmse": 3.1777009061537496
+      }
+    },
+    "sparse_history": {
+      "catboost": {
+        "event_mean_spearman": 0.6117954162867913,
+        "mae": 0.8779729648215526,
+        "n": 68,
+        "rmse": 1.5945039117738555
+      },
+      "catboost_recency": {
+        "event_mean_spearman": 0.6053913784158643,
+        "mae": 0.8503204263383931,
+        "n": 68,
+        "rmse": 1.5599695704281267
+      },
+      "equal_weight": {
+        "event_mean_spearman": 0.11448098055524472,
+        "mae": 0.8423798037926715,
+        "n": 68,
+        "rmse": 1.5574187520356497
+      },
+      "extra_trees": {
+        "event_mean_spearman": 0.09637924447653554,
+        "mae": 0.9088927639708981,
+        "n": 68,
+        "rmse": 1.6557184204911006
+      },
+      "hist_gradient": {
+        "event_mean_spearman": 0.12115028885575382,
+        "mae": 0.8672600265753319,
+        "n": 68,
+        "rmse": 1.5281064287717439
+      },
+      "lightgbm": {
+        "event_mean_spearman": 0.11738644468730766,
+        "mae": 0.8927753938630055,
+        "n": 68,
+        "rmse": 1.6097240411800082
+      },
+      "ridge": {
+        "event_mean_spearman": 0.11125313888643065,
+        "mae": 0.9495382399842228,
+        "n": 68,
+        "rmse": 1.613831462195574
+      }
+    }
+  },
+  "original_canonical_benchmarks": [
+    {
+      "benchmark_id": "619b2b90f8eb2d3fbf08c7ada6de53576e7b91f89f10cf5245d4562f271d6381",
+      "coverage": [
+        670
+      ],
+      "streams": 11
+    },
+    {
+      "benchmark_id": "8a448b009ce2970c24856affa922b6d07a916a888dfb0e4270d314bd495417de",
+      "coverage": [
+        670
+      ],
+      "streams": 12
+    }
+  ],
+  "primary_metric": "event_point_rmse",
+  "promoted": false,
+  "prospective_benchmarks": [
+    {
+      "benchmark_id": "3a4c45f46d9cb2da5dcc7e81fb741095dff3df8d14c917f5c95a2b5ee8725617",
+      "deadline": "2026-11-06T18:30:00Z",
+      "models": [
+        "ridge",
+        "extra_trees",
+        "hist_gradient",
+        "catboost",
+        "catboost_recency",
+        "lightgbm",
+        "equal_weight",
+        "baseline_football"
+      ],
+      "players_per_model": {
+        "baseline_football": 670,
+        "catboost": 670,
+        "catboost_recency": 670,
+        "equal_weight": 670,
+        "extra_trees": 670,
+        "hist_gradient": 670,
+        "lightgbm": 670,
+        "ridge": 670
+      },
+      "published_at": "2026-11-06T04:26:39.671876+00:00",
+      "study_id": "weekly-backend-2026-11-06-official-zero"
+    },
+    {
+      "benchmark_id": "e0f1da59b4c519728f87473b9c4328fcb25e11997b9d95a0f236f48838c5b0c8",
+      "deadline": "2026-11-06T18:30:00Z",
+      "models": [
+        "ridge",
+        "extra_trees",
+        "hist_gradient",
+        "catboost",
+        "catboost_recency",
+        "lightgbm",
+        "equal_weight",
+        "baseline_football"
+      ],
+      "players_per_model": {
+        "baseline_football": 670,
+        "catboost": 670,
+        "catboost_recency": 670,
+        "equal_weight": 670,
+        "extra_trees": 670,
+        "hist_gradient": 670,
+        "lightgbm": 670,
+        "ridge": 670
+      },
+      "published_at": "2026-11-06T04:24:37.735329+00:00",
+      "study_id": "weekly-backend-2026-11-06"
+    }
+  ],
+  "prospective_outcomes": "pending_official_finalization",
+  "residual_correlations": {
+    "catboost": {
+      "catboost": 1.0,
+      "catboost_recency": 0.9983223236593595,
+      "equal_weight": 0.9933418240021227,
+      "extra_trees": 0.9840494723866915,
+      "hist_gradient": 0.9438890050832837,
+      "lightgbm": 0.9838925281568025,
+      "ridge": 0.9542576973409969
+    },
+    "catboost_recency": {
+      "catboost": 0.9983223236593595,
+      "catboost_recency": 1.0,
+      "equal_weight": 0.9939493459912705,
+      "extra_trees": 0.9853230180088396,
+      "hist_gradient": 0.9461929002317454,
+      "lightgbm": 0.9840966281796084,
+      "ridge": 0.9540035346320722
+    },
+    "equal_weight": {
+      "catboost": 0.9933418240021225,
+      "catboost_recency": 0.9939493459912705,
+      "equal_weight": 1.0,
+      "extra_trees": 0.988195100542076,
+      "hist_gradient": 0.967687950801809,
+      "lightgbm": 0.9913275380807328,
+      "ridge": 0.9680559748584847
+    },
+    "extra_trees": {
+      "catboost": 0.9840494723866914,
+      "catboost_recency": 0.9853230180088396,
+      "equal_weight": 0.9881951005420762,
+      "extra_trees": 1.0,
+      "hist_gradient": 0.9408215721731685,
+      "lightgbm": 0.9734102766679329,
+      "ridge": 0.9500957390385945
+    },
+    "hist_gradient": {
+      "catboost": 0.9438890050832837,
+      "catboost_recency": 0.9461929002317454,
+      "equal_weight": 0.9676879508018089,
+      "extra_trees": 0.9408215721731685,
+      "hist_gradient": 1.0,
+      "lightgbm": 0.9673250325641506,
+      "ridge": 0.9115788746184758
+    },
+    "lightgbm": {
+      "catboost": 0.9838925281568025,
+      "catboost_recency": 0.9840966281796085,
+      "equal_weight": 0.9913275380807328,
+      "extra_trees": 0.9734102766679328,
+      "hist_gradient": 0.9673250325641506,
+      "lightgbm": 0.9999999999999998,
+      "ridge": 0.9429049876029079
+    },
+    "ridge": {
+      "catboost": 0.9542576973409967,
+      "catboost_recency": 0.9540035346320722,
+      "equal_weight": 0.9680559748584848,
+      "extra_trees": 0.9500957390385943,
+      "hist_gradient": 0.9115788746184756,
+      "lightgbm": 0.9429049876029079,
+      "ridge": 1.0
+    }
+  },
+  "rolling_opportunity_comparator": {
+    "appearance": {
+      "brier": 0.1299040540091124,
+      "log_loss": 0.8994660361484644,
+      "n": 3341,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "n": 1253,
+          "observed": 0.047086991221069435,
+          "predicted": 0.0
+        },
+        {
+          "lower": 0.2,
+          "n": 263,
+          "observed": 0.34980988593155893,
+          "predicted": 0.21495564005069712
+        },
+        {
+          "lower": 0.4,
+          "n": 272,
+          "observed": 0.5110294117647058,
+          "predicted": 0.4261029411764706
+        },
+        {
+          "lower": 0.6,
+          "n": 302,
+          "observed": 0.6192052980132451,
+          "predicted": 0.6387417218543047
+        },
+        {
+          "lower": 0.8,
+          "n": 1251,
+          "observed": 0.8457234212629896,
+          "predicted": 0.9544364508393285
+        }
+      ]
+    },
+    "minutes_bias": 0.22776613788286937,
+    "minutes_mae": 13.878938441584356,
+    "minutes_n": 3341,
+    "sixty": {
+      "brier": 0.10989183211945858,
+      "log_loss": 0.7976696071591233,
+      "n": 3341,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "n": 1849,
+          "observed": 0.04597079502433748,
+          "predicted": 0.0
+        },
+        {
+          "lower": 0.2,
+          "n": 274,
+          "observed": 0.2956204379562044,
+          "predicted": 0.2118613138686131
+        },
+        {
+          "lower": 0.4,
+          "n": 202,
+          "observed": 0.4306930693069307,
+          "predicted": 0.42673267326732683
+        },
+        {
+          "lower": 0.6,
+          "n": 227,
+          "observed": 0.5859030837004405,
+          "predicted": 0.6421439060205577
+        },
+        {
+          "lower": 0.8,
+          "n": 789,
+          "observed": 0.8212927756653993,
+          "predicted": 0.9467680608365019
+        }
+      ]
+    }
+  },
+  "shared_auxiliary_metrics": {
+    "appearance": {
+      "brier": 0.1115583143938961,
+      "log_loss": 0.3602427976551939,
+      "n": 3341,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "n": 1280,
+          "observed": 0.0515625,
+          "predicted": 0.06693305843959822
+        },
+        {
+          "lower": 0.2,
+          "n": 327,
+          "observed": 0.3119266055045872,
+          "predicted": 0.3114179770372943
+        },
+        {
+          "lower": 0.4,
+          "n": 376,
+          "observed": 0.523936170212766,
+          "predicted": 0.4944162188321552
+        },
+        {
+          "lower": 0.6,
+          "n": 387,
+          "observed": 0.7338501291989664,
+          "predicted": 0.698298845389518
+        },
+        {
+          "lower": 0.8,
+          "n": 971,
+          "observed": 0.9124613800205973,
+          "predicted": 0.919599476717595
+        }
+      ]
+    },
+    "minutes_bias": -0.6103533628017175,
+    "minutes_mae": 13.760989661535614,
+    "minutes_n": 3341,
+    "quantiles": {
+      "event_mean_spearman": null,
+      "interval_coverage": 0.8859622867404968,
+      "mean_interval_width": 2.849885251887515,
+      "n": 3341,
+      "nominal_coverage": 0.8,
+      "pinball": {
+        "0.1": 0.14722123157768027,
+        "0.5": 0.6647956937689906,
+        "0.9": 0.4075462759187829
+      },
+      "qualification": "Marginal research quantiles; coverage measured, no calibrated guarantee"
+    },
+    "sixty": {
+      "brier": 0.09039961172711422,
+      "log_loss": 0.29512937602767964,
+      "n": 3341,
+      "reliability_bins": [
+        {
+          "lower": 0.0,
+          "n": 1954,
+          "observed": 0.048106448311156604,
+          "predicted": 0.04326957862881331
+        },
+        {
+          "lower": 0.2,
+          "n": 250,
+          "observed": 0.232,
+          "predicted": 0.2890032947681127
+        },
+        {
+          "lower": 0.4,
+          "n": 191,
+          "observed": 0.5026178010471204,
+          "predicted": 0.5032083365176276
+        },
+        {
+          "lower": 0.6,
+          "n": 399,
+          "observed": 0.7368421052631579,
+          "predicted": 0.7080818477072811
+        },
+        {
+          "lower": 0.8,
+          "n": 547,
+          "observed": 0.8994515539305301,
+          "predicted": 0.8887099532746588
+        }
+      ]
+    }
+  }
+}

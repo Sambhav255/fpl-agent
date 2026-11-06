@@ -77,7 +77,7 @@ test("synthetic demo → replacement and financial corrections → validated pla
     .getByRole("combobox", { name: "Planning search", exact: true })
     .selectOption("sequence");
   await expect(
-    page.getByText(/Large sequence searches compare up to two replacements/),
+    page.getByText(/Large sequence searches consider at least two replacements/),
   ).toBeVisible();
   await page.getByRole("button", { name: "Run analysis" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Analysis ready" })).toBeVisible({

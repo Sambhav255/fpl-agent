@@ -150,3 +150,17 @@ def test_advancing_refit_waits_for_frozen_final_scorecards(monkeypatch):
         experiment.training_input(
             Retained(), {"protocol": experiment.advancing_protocol(collection)}
         )
+
+
+def test_elapsed_fixture_feature_has_explicit_name_and_legacy_alias():
+    from fpl_app.features.deadline import CONTEXT
+
+    history = [row(1, "2026-08-01T15:00:00Z", "2026-08-02T15:00:00Z", minutes=90)]
+    features = lag_features(history, "2026-08-04T15:00:00Z", 2)
+    assert features["days_since_last_fixture"] == 3
+    assert features["rest_days"] == features["days_since_last_fixture"]
+    assert "days_since_last_fixture" in CONTEXT
+    assert "rest_days" not in CONTEXT
+    # A delayed outcome is not available even if its fixture is in the past.
+    history[0]["available_at"] = "2026-08-05T15:00:00Z"
+    assert math.isnan(lag_features(history, "2026-08-04T15:00:00Z", 2)["days_since_last_fixture"])

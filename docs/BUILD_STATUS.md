@@ -1,37 +1,76 @@
-# Current build status
+# Build status
 
-Updated 3 November 2026 UTC. Start at [START_HERE](START_HERE.md); follow the ordered [ROADMAP](ROADMAP.md). Latest evidence: [decision-quality work](experiments/2026-11-03-decision-quality/README.md). Earlier [post-GW9 measurements](experiments/2026-11-03-gw9-post-event/README.md) remain unchanged and provisional.
+Updated **6 November 2026 UTC**. This is the current implementation summary.
+[Start here](START_HERE.md) for navigation; the [experiment registry](experiments/README.md)
+contains dated measurements and earlier verification records.
 
-## Implemented this stage
+## Available
 
-- Professional documentation layout: one entry point; maintained contracts in `docs/specs/`; 52 obsolete/history originals archived; 67 total relocations recorded reversibly. All 33 prior experiment files remain unchanged. Private state and research artifacts were preserved. Current instructions and archive authority are explicit.
-- Durable expanding evaluation for three fixed enriched challengers. Earlier inner validation controls stopping; outer weeks are purged and excluded from fitting. Checksum-verified checkpoints support retries. No outer-driven ensemble or serving refit was added.
-- Frozen ranking diagnostics for origin-eligible players: top-five position lists and an unconstrained attacking top-one comparison. Missing selected outcomes do not trigger backfilling. Negative returns are retained. These are not legal squad/transfer/captaincy policy scores.
-- Eligibility reconstructs from checksum-verified retained official collections, not arbitrary feature panels. Actual registration receipts prevent backdating. A study fixes its method/comparator/primary hypothesis and one canonical plan per event. Evidence counts distinct finalized prospective weeks, uses live-source revision ordering, and never activates a champion.
-- Registered selection reviews publish through the recoverable worker after final scoring. Exports include `selection_reviews`. Documentation verification is now reproducible through `scripts/check_docs.py` and included in `scripts/check.sh`.
+- Local Next.js interface, FastAPI backend, SQLite state and recoverable worker.
+- Public squad import, manual financial corrections, stale-input checks, legal
+  lineup/transfer/chip comparisons and saved plans. Transfers remain manual.
+- Labelled approximate football baseline and numerical planner as champions.
+- Immutable official captures, chronological model experiments, source-bound
+  artifacts, finalized scoring and independent recommendation validation.
+- Typed opportunity heads, historical calibration, coherent fixture minutes,
+  signed points, pinned historical archives and explicit missingness/provenance.
+- Opt-in weekly all-player competitions, worker heartbeat/recovery and separate
+  point, opportunity, interval, selection and execution diagnostics.
 
-## Actual experiments and interpretation
+## Latest model evidence
 
-Rolling research job succeeded: **2,671 outer rows per model, GW5–8**. Pooled RMSE: multiscale opportunity **2.0890**, full-context second seed **2.0983**, points hurdle **2.1016**, reconstructed baseline **2.3660**, rolling points **2.2749**. These historical weeks were previously inspected; timing, membership and schedule remain reconstructed assumptions. The hurdle's earlier single-split edge is not consistent across rolling evaluation.
+The [weekly backend competition](experiments/2026-11-06-weekly-tournament/README.md)
+ran six actual mean variants, an equal-weight blend and the football baseline for
+all **670 captured players**. Official-zero sensitivities give **16 new streams**;
+the scorer also watches the original 23 canonical GW10 streams. **39 streams /
+26,130 event-point forecasts** are frozen; GW10 actual outcomes remain pending.
 
-The GW9 ranking review is explicitly retrospective and provisional. For the same predeadline likely-starter pool, baseline's top-five defender list returned 37 points, original CatBoost's 23 and selected full-context/news sensitivity 12. Forward lists returned 24, 34 and 31. One noisy week cannot establish a policy edge, but it demonstrates why league-wide RMSE alone is insufficient.
+Five historical GW5–9 folds / 3,341 event rows: CatBoost has the lowest RMSE
+(**2.03905**), Extra Trees the lowest overall MAE (**1.14806**), and LightGBM the
+lowest likely-starter MAE. Shared auxiliary heads beat matched rolling Briers and
+slightly improve minutes MAE. Nominal 80% intervals cover **88.60%**; this is not
+calibrated joint uncertainty. Latest-data auxiliary refits remain uncalibrated.
 
-A genuinely prospective GW10 selection plan is registered over the existing **23 canonical frozen streams**, with **176 origin-eligible players**. Primary comparison: points-hurdle/news sensitivity versus the named baseline, attacking top-one ranking diagnostic. Position lists are secondary diagnostics. Readiness remains **insufficient evidence**; no GW10 outcomes have been used. Seven existing forecast bundles and all saved manager states passed unchanged-fingerprint checks.
+These are exploratory, reconstructed historical blocks, not prospective policy
+wins. The [earlier continuation](experiments/2026-11-06-master-plan/README.md)
+records multi-season acquisition, cross-season research links, direct-lead evidence
+and negative results. No champion was promoted.
 
-## Current data and runtime
+## Current limits
 
-Latest official check still reports GW9 `finished=false` and `data_checked=false`. Original GW9 forecasts remain unmodified; all ten matches are provisionally finished. The retained 670-player capture contains GW1–8 final labels and 670 preliminary GW9 rows. New model fitting did not consume those preliminary targets.
+- Current-season qualified forecasts do not extend to all longer leads merely
+  because reconstructed prior-season research covers lead 8.
+- Strict historical timing/identity coverage, complete Bayesian scoring, strict
+  TFT release and calibrated joint scenarios retain evidence gates.
+- Genuine social extraction/ablation and qualified RL continuation remain open.
+- Personal legal-policy studies require reconciled finances, committed transfers,
+  hits and chips. The forecast competition does not require private finances.
+- Schedules require the local worker and machine uptime; no OS service is installed.
 
-The research worker was restarted with the current implementation and matching DATA_DIR. It will publish final scorecards, cross-family diagnostics and registered selection reviews after official gates pass. It is a local process, not an operating-system service; it must be restarted after shutdown. Operator paths and command index: [scripts/README](../scripts/README.md).
+The [master-plan checklist](MASTER_PLAN_STATUS.md) distinguishes delivered code,
+executed research and remaining acceptance requirements.
 
-## Verification
+## Verification record
 
-New checks: **533 backend tests passed / 3 skipped** (132 dependency warnings); **18 operator/documentation tests passed**; backend Ruff lint/format passed (**140 files**); mypy passed (**89 source files**); selection and worker integration checks passed; actual durable rolling job succeeded.
+**Latest backend/model stage:** 635 backend tests passed / 3 skipped; 22 operator
+tests passed; Ruff lint/format and mypy passed. Actual full-universe fits, checkpoint
+reloads, coverage guards, retry behavior and separate sensitivity freezes ran.
 
-Archive verification reconstructed all 67 moved originals, checked 52 archived originals and all 33 prior experiment hashes, with zero broken active local links. Two immutable historical references resolve through the relocation crosswalk. A source-only export succeeded with 367 audited files and no Git history; it is local and has not been published. Frontend source was unchanged and frontend/browser suites were not rerun this stage.
+**Prior interface/integration stage:** 13 frontend unit tests, static checks and
+production build passed; isolated smoke passed; desktop/mobile browser checks
+12 passed / 10 optional skipped. These were not rerun for the backend-only stage.
+See each dated report for exact scope. A preceding installed backend dependency
+audit reported zero known vulnerabilities after patching; this is not a new audit.
 
-## Resume here
+**Repository cleanup:** documentation navigation and source layout were consolidated;
+plans/runtime guidance moved with checksums, operational notes remain ignored,
+and native artifacts are excluded from source exports. New checks: **28 operator
+passed**, **5 focused backend passed**, isolated baseline **4 passed / 1 skipped**;
+Ruff and documentation checks passed. These do not replace the earlier full suites.
+See [release preparation](operations/RELEASE_PREPARATION.md) for scope and export guidance.
 
-**Next implementation task: improve the existing CatBoost appearance/60-minute probability heads**, with binary losses, coherent probabilities and separately fitted chronological calibration. Use the roadmap's acceptance criteria and small registered comparisons; do not add another competing probability stack. Preserve the GW9/GW10 freezes and score finalized events before fitting their targets.
+## Next action
 
-Baseline football and the numerical optimiser remain champions. Full Bayesian player scoring, strict TFT historical provenance, calibrated future joint distributions and current private financial reconciliation remain unavailable. Reconcile current squad/finances before personal transfer advice. No account action, model promotion, Git push or deployment occurred. Publication procedures are in [CONTRIBUTING](../CONTRIBUTING.md).
+After official GW10 finalization, score the frozen streams before reusing labels.
+Compare all-player, likely-starter and position results, retain negative findings,
+and freeze the declared weekly procedure for GW11. Keep original studies unchanged.

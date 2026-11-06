@@ -97,3 +97,160 @@ transfers remain, and its lazy ordinary menu permits up to the remaining invento
 (at most five), or two replacements for lower inventory. Current-event transfer
 limits and independent financial/chip validation still apply. Search reports remain
 bounded: a small synthetic exact-oracle match does not certify a full real catalogue.
+
+## Model-improvement research and worker health
+
+The [master-plan execution record](../docs/experiments/2026-11-03-master-plan/README.md)
+tracks completed tasks, actual measurements and remaining gates. These commands
+retain research artifacts and do not promote models or execute transfers.
+
+- `backend/.venv/bin/python scripts/research/opportunity_comparison.py --help`:
+  register and run the legacy/binary opportunity comparison on a read-only SQLite
+  backup; a fresh output directory is required.
+- `backend/.venv/bin/python scripts/research/ingest_season.py --help`: normalize
+  pinned retained archive bytes, preserve unknown timing and verify retries.
+- `backend/.venv/bin/python scripts/research/simple_experiments.py --help`:
+  register/enqueue Ridge and LightGBM comparisons over a verified rolling panel.
+  Install LightGBM with `(cd backend && uv sync --locked --all-extras)` to preserve
+  existing optional packages, or `uv sync --locked --extra research` in a dedicated
+  research environment. The ordinary baseline does not import LightGBM.
+- `backend/.venv/bin/python scripts/research/oof_ensemble.py --help`: register
+  prior-OOF-only convex weights; the first week is development warmup, and current
+  outer labels cannot fit their own weights.
+- `backend/.venv/bin/python scripts/social_manual.py --help`: manually import
+  reviewed authored/permissioned evidence into a dedicated deletable social
+  database, inspect availability branches, or delete posts. Import uses actual
+  observation time. Direct points adjustment remains zero. The committed example
+  is explicitly synthetic; it is not real social evidence.
+- `DATA_DIR=/absolute/intended/data backend/.venv/bin/python scripts/worker_status.py`:
+  read independent worker heartbeats in that store. A missing heartbeat can also
+  mean an older worker; confirm its process/database and restart it with current
+  code and the same exported `DATA_DIR`. A heartbeat expires after 90 seconds;
+  this is local process health, not a supervised service.
+
+Scheduled reviews now reuse checksum-verified fits when finalized revisions,
+historical exposures, mappings, deadlines and implementation are unchanged.
+A new capture timestamp alone does not retrain a model. New finalized or corrected
+labels must pass the shared scoring guard before fitting. Scores must bind the
+original forecast and be observed at least as late as the consumed label capture.
+A conservative revision rejection requires rescoring; it never edits old forecasts.
+
+## 4 November continuation: direct leads, weekly errors and recovery
+
+The [latest execution record](../docs/experiments/2026-11-04-master-plan/README.md)
+contains actual measurements and task dispositions. Use a separate absolute
+`DATA_DIR`; these commands do not change manager state or promote models.
+
+```sh
+export DATA_DIR="$PWD/data/research/master-plan-2026-11-04"
+backend/.venv/bin/python scripts/research/score_forecasts.py \
+  --collection-id c6bbb35e50154cdda728d4e40e3f33f3 --work-once
+backend/.venv/bin/python scripts/research/multilead_experiments.py --help
+backend/.venv/bin/python scripts/research/weekly_error_report.py \
+  --event 9 --output "$DATA_DIR/weekly-report"
+backend/.venv/bin/python scripts/worker_status.py
+```
+
+The collection-bound scoring command runs only the needed independently fenced
+child jobs, verifies their final receipts against the consumed collection, and
+reuses completed identical jobs. A corrected/fresh collection gets its own scoring
+identity. The scheduled review performs this stage before a fresh fit or cached-fit
+reuse. Automatic benchmark polling now rechecks final bundles each six-hour slot;
+finalization no longer disables later correction checks permanently.
+
+`multilead_experiments.py --collection-id ID --work-once` registers fixed direct
+point/minute methods for leads 1/2/3/4/6/8 and queues recoverable work. It cannot
+update player features with intervening results. Complete target events are purged
+before both later origins; missing doubles stay incomplete. Current GW1–9 data
+supports evaluation for leads 1/2 only. Longer leads are explicitly unavailable,
+not silently filled with one-week values. The report is research-only; it publishes
+no serving forecast and does not alter the existing GW10 comparison. Retried jobs
+use their original retained protocol/payload and verified checkpoints; rerunning
+the registration CLI creates a newly timestamped protocol, not a backdated retry.
+
+`weekly_error_report.py` reads retained verified official snapshots, without network
+requests. Optional repeated `--benchmark-id ID` selects streams; repeated
+`--previous-report PATH` supplies content-verified earlier reports for descriptive
+drift. Event revisions count once. Missing probability/component/decision evidence
+remains unavailable; diagnostic associations do not identify causes or execution
+losses. A final scoring job also publishes its own weekly report when the stricter
+source/timing evidence is present. Legacy evidence gaps are disclosed explicitly.
+
+The health API (`/api/v1/health`) includes `worker` liveness and learning receipts.
+The existing response remains an open dictionary, so schema regeneration produced
+no type diff. [Optional macOS worker supervision](../docs/operations/WORKER_RUNTIME.md) documents
+`scripts/macos_worker.py`; generation never installs or starts a service. An older
+already-running process must restart with current code and the intended DATA_DIR
+to provide these features. Do not start duplicate workers for the same store.
+
+## Additional master-plan operators — 6 November
+
+- `research/expand_seasons.py --season 2022-23 --season 2023-24 --revision FULL_SHA --output NEW_IGNORED_DIRECTORY`
+  captures only the fixed Vaastav provider, retains file observation times and
+  hashes, then uses existing normalization. Retries verify bytes offline; partial
+  acquisitions are preserved and require a fresh directory. Fixture coverage is
+  reported explicitly, including incomplete seasons. Historical publication timing
+  remains assumed.
+- `research/link_archive_people.py --bundle NORMALIZED_SEASON_DIRECTORY --bundle OTHER_SEASON_DIRECTORY --output NEW.json`
+  verifies source checksums and emits separate research person links without
+  rewriting source bundles. Code/name conflicts remain unresolved.
+- `research/assess_candidate.py --input REGISTERED_GATE_AND_EVIDENCE.json --output NEW.json`
+  assesses `{"gate": {...}, "evidence": {...}}` with type-specific contracts. It
+  never activates a model. Forecast loss reductions and decision points retain
+  different units; eight prospective event blocks remain mandatory.
+- `run_football_experiment.py` now accepts an explicit season from its checksum-bound
+  `source.json`, instead of forcing all archive identities into 2024–25. New runs
+  retain implementation bytes, lockfile and runtime identities before fitting.
+  Existing studies are unchanged; archive fits remain reconstructed research,
+  not qualified current-season forecasts or calibrated joint scenarios.
+
+## Weekly all-player model competition
+
+The [measured competition](../docs/experiments/2026-11-06-weekly-tournament/README.md)
+uses the existing worker and benchmark scorer. Set an absolute `DATA_DIR` consistently
+for capture, registration, workers and reports. Research extras are optional:
+`(cd backend && uv sync --locked --all-extras)` preserves the installed optional stack.
+
+For a manually selected full-universe collection:
+
+```sh
+backend/.venv/bin/python scripts/research/score_forecasts.py --collection-id COLLECTION_ID --work-once
+backend/.venv/bin/python scripts/research/weekly_tournament.py \
+  --collection-id COLLECTION_ID --study-id DECLARED_STUDY --work-once
+```
+
+This runs the exact queued job, not unrelated queued work. Six registered mean
+methods, fixed equal means, baseline and separate official-zero sensitivities
+freeze before the real deadline. Repeating a published study/event returns
+`already_frozen`; new hypotheses require an honestly timestamped separate study.
+Native checkpoints, calibration/preprocessing, raw/projected auxiliary predictions
+and implementation/lock identities stay in ignored managed artifacts.
+
+Configure subsequent events through the existing opted-in full-universe review:
+
+```sh
+backend/.venv/bin/python scripts/research/configure_tournament.py --enable --study-id DECLARED_STUDY
+backend/.venv/bin/python scripts/research/configure_tournament.py --disable
+backend/.venv/bin/python scripts/worker_status.py
+```
+
+Configuration updates use version checks. Disabling stops new competition jobs;
+existing frozen benchmarks still score. This setting does not create a review
+schedule or install a service: a review already collecting/refitting the full
+universe and a worker using the same DATA_DIR must be running. The default local
+store is now opted into `weekly-backend-2026-11-06`. The previous event must finalize
+before the next study; current source/fixture gaps cannot become synthetic zeros.
+
+To derive additional diagnostics from retained native-unit checksums:
+
+```sh
+backend/.venv/bin/python scripts/research/report_tournament.py \
+  --directory MANAGED_TOURNAMENT_DIRECTORY --output NEW_DIAGNOSTICS.json
+```
+
+`news_sensitivity.py --benchmark-id ID` can freeze the explicitly labelled official-zero
+scenario for an existing parent; it never edits the parent or scales point means by
+appearance again. This overlay is automatic in new tournament jobs. All reported
+auxiliary probabilities/quantiles are shared across point methods, not independent
+model evidence. Current refits remain uncalibrated; event quantiles/appearance for
+doubles are omitted rather than fabricated by summing marginal quantiles.
